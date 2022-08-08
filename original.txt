@@ -1,0 +1,1276 @@
+Maneiras de se incrementar um valor a um comando: 
+
+
+
+
+
+
+Utiliza-se o sinal # na frente do comando seguido do valor desejado.
+    
+exemplo: LDA # x
+
+Onde x é este valor.
+
+
+
+
+
+Indica-se o endereço de memória desejado na frente do comando. O valor carregado para execução do comando será aquele encontrado dentro do endereço indicado.
+
+exemplo: LDA 0001
+
+0001
+                     
+Onde x é o valor a ser considerado (carregado).
+
+OBS.: O valor dentro do quadrado é o conteúdo do endereço de memória
+
+
+
+
+
+Indica-se um endereço de memória e um registro X, o valor carregado é aquele que está no endereço de memória formado pela soma do endereço indicado e o conteúdo do registro.
+
+exemplo: LDA 3000, X
+
+   IX    Onde 0021 é o endereço contido no registro IX
+
+3021
+
+
+
+Indica-se um endereço de memória entre colchetes. O valor carregado é aquele que está no endereço de memória formado pela concatenação do conteúdo do endereço indicado e o conteúdo de seu sucessor.
+
+exemplo: LDA [3000]
+
+3000
+3001
+0102
+    A    
+
+O valor carregado é 4F
+
+
+
+
+
+Indica-se um endereço de memória seguido de um registro, ambos entre colchetes. Soma-se o endereço de memória indicado com o conteúdo do registro; faz-se então a concatenação do conteúdo deste novo endereço formado com o conteúdo do seu sucessor. O valor carregado é o conteúdo deste último endereço.
+
+exemplo: LDA [3000,X]
+
+IX
+3042
+3043
+AF46
+O valor carregado é 3 (três).
+
+
+
+
+
+
+
+
+
+
+Indica-se um endereço de memória entre colchetes seguido de um registro. Faz-se a concatenação do conteúdo deste endereço de memória e o conteúdo de seu sucessor. Soma-se então o valor desta concatenação com o conteúdo do registro indicado. O valor do resultado encontrado é o endereço do valor a ser carregado.
+exemplo: LDA [3000],X
+
+   IX
+3000
+3001        Concatenação: 0100
+0146        Soma: 0146
+
+Valor carregado: 26
+
+
+
+
+Não é necessária a indicação de nenhum endereço de memória.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Relatório dos Comandos do MICRO3
+
+
+
+
+
+
+Código de Operação:
+48 Endereçamento implícito
+Soma o valor do registrador A com o registrador B e armazena o resultado em A.
+
+[A] + [B] -> A
+
+
+
+
+
+
+
+
+Código de Operação:
+24     Endereçamento imediato
+14     Endereçamento direto
+34     Endereçamento indexado
+94     Endereçamento indireto
+C4     Endereçamento indireto pré-indexado
+B4     Endereçamento indireto pós-indexado
+
+Adiciona ao registrador A o valor de um operando, e armazena o resultado nele mesmo (A).
+
+[A] + operando -> A   
+
+
+
+
+
+
+Código de Operação:
+64     Endereçamento imediato
+54     Endereçamento direto
+74     Endereçamento indexado
+D4 Endereçamento indireto
+F4     Endereçamento indireto pré-indexado
+E4     Endereçamento indireto pós-indexado
+
+Adiciona ao registrador B o valor de um operando, e armazena o resultado nele mesmo (B).
+
+[B] + operando -> B
+
+   
+
+
+
+
+
+Código de Operação:
+22     Endereçamento imediato
+12     Endereçamento direto
+32     Endereçamento indexado
+92     Endereçamento indireto
+C2     Endereçamento indireto pré-indexado
+B2     Endereçamento indireto pós-indexado
+
+Faz a função E lógico entre o registrador A e o operando, e armazena o resultado em A
+
+[A] E operando -> A
+
+
+
+
+
+
+
+Código de Operação:
+62     Endereçamento imediato
+52     Endereçamento direto
+72     Endereçamento indexado
+D2    Endereçamento indireto
+F2    Endereçamento indireto pré-indexado
+E2     Endereçamento indireto pós-indexado
+
+Faz a função E lógico entre o registrador B e o operando e armazena o resultado em B.
+
+[B] E operando -> B
+
+
+
+
+
+
+
+
+Código de Operação:
+26     Endereçamento imediato
+16     Endereçamento direto
+36     Endereçamento indexado
+96     Endereçamento indireto
+C6    Endereçamento indireto pré-indexado
+B6     Endereçamento indireto pós-indexado
+
+Adiciona ao registrador A o valor do operando e se o flag R (carry) estiver valendo 1 ele adiciona mais uma unidade ao registrador. Ao final armazena o resultado em A.
+    
+[A] + [R] + operando --> A
+
+
+
+
+
+
+Código de Operação:
+66     Endereçamento imediato
+56     Endereçamento direto
+76     Endereçamento indexado
+D6    Endereçamento indireto
+F6    Endereçamento indireto pré-indexado
+E6     Endereçamento indireto pós-indexado
+
+Adiciona ao registrador B o valor do operando e se o flag R (carry) estiver valendo 1 ele adiciona mais uma unidade ao registrador. Ao final armazena o resultado em B.
+    
+[B] + [R] + operando -> B
+
+
+
+
+
+
+
+
+Código de Operação:
+59     Endereçamento direto
+79     Endereçamento indexado
+D9 Endereçamento indireto
+F9    Endereçamento indireto pré-indexado
+E9     Endereçamento indireto pós-indexado
+
+Ocorre um desvio para a instrução cujo endereço é indicado (qualquer tipo de endereçamento), criando assim um loop.
+
+CO (código de operação) <- AE (endereço indicado)
+
+
+
+
+
+
+
+Código de Operação:
+A5     Endereçamento direto
+Ocorre o desvio para a instrução indicada enquanto o valor chega for positivo, ou seja se o flag  N = 0. O endereçamento deve ser direto.
+
+se [N] = 0 então CO <- AE
+
+
+
+
+
+
+
+
+Código de Operação:
+A3     Endereçamento direto
+Ocorre o desvio para a instrução indicada enquanto o valor for zero ou negativo, ou seja se o flag  N = 1 ou Z = 1. O endereçamento deve ser direto.
+
+se [N] = 1 ou [Z] = 1 então CO <- AE
+
+
+
+
+
+
+
+
+Código de Operação:
+A1     Endereçamento direto
+Ocorre o desvio para a instrução indicada enquanto o valor for diferente de zero, ou seja se o flag Z = 0. O endereçamento deve ser direto.
+
+se [Z] = 0 então CO <- AE
+
+
+
+
+
+Código de Operação:
+A7     Endereçamento direto
+Ocorre o desvio para a instrução indicada se houver overflow, ou seja se o flag D = 1. O endereçamento deve ser direto.
+
+se [D] = 1 então CO <- AE
+
+
+
+
+
+
+
+
+Código de Operação:
+A0     Endereçamento direto
+Ocorre o desvio para a instrução indicada se o valor for igual a zero, ou seja se o flag Z = 1. O endereçamento deve ser direto.
+
+se [Z] = 1 então CO <- AE
+
+
+
+
+
+
+
+
+Código de Operação:
+A4     Endereçamento direto
+Ocorre o desvio para a instrução indicada se o valor for positivo e diferente de zero, ou seja se o flag Z = 0 e N = 0. O endereçamento deve ser direto.
+
+se [Z] = 0 e [N] = 0 então CO <- AE
+
+
+
+
+
+
+Código de Operação:
+A2     Endereçamento direto
+Ocorre o desvio para a instrução indicada se o valor for negativo, ou seja se o flag N = 1. O endereçamento deve ser direto.
+
+se  [N] = 1 então CO <- AE
+
+
+
+
+
+
+
+Código de Operação:
+A6     Endereçamento direto
+Ocorre o desvio para a instrução indicada se houver o “carry”, ou seja se o flag R = 1. O endereçamento deve ser direto.
+
+se  [R] = 1 então CO <- AE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Código de Operação:
+58     Endereçamento direto
+78     Endereçamento indexado
+D8    Endereçamento indireto
+F8    Endereçamento indireto pré-indexado
+E8     Endereçamento indireto pós-indexado
+
+Interrompe a execução do programa atual e chama um sub-programa, o qual tem seu início no endereço indicado.
+O código da operação (CO) onde ocorre a interrupção é armazenado em dois endereços da pilha (PP).
+
+[PP] - 1 <- ( [CO] ) 15-8     ;    [PP] <- ( [CO] + 3 ) 7-0 
+
+O endereço na pilha (PP) passa para dois endereços anteriores. E o código de operação recebe o endereço indicado na instrução.
+
+[PP] <- [PP] - 2    ;    CO <- AE
+
+
+
+
+
+
+
+Código de Operação:
+0D    Endereçamento implícito
+
+Faz com que o flag D passe a valer zero (limpa o valor do flag).
+
+
+
+
+
+
+
+
+
+
+
+
+
+Código de Operação:
+0E     Endereçamento implícito
+
+Faz com que o flag R passe a valer zero (limpa o valor do flag).
+
+
+
+
+
+
+Código de Operação:
+27     Endereçamento imediato
+17    Endereçamento direto
+37     Endereçamento indexado
+97     Endereçamento indireto
+C7    Endereçamento indireto pré-indexado
+B7     Endereçamento indireto pós-indexado
+
+Subtrai um operando do valor do conteúdo de A, porém não armazena o resultado. A comparação é feita a medida que o usuário compara os flags anteriores com os atuais (após a execução do comando).
+
+[A] - Operando
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Código de Operação:
+67     Endereçamento imediato
+57    Endereçamento direto
+77     Endereçamento indexado
+D7 Endereçamento indireto
+F7    Endereçamento indireto pré-indexado
+E7     Endereçamento indireto pós-indexado
+
+Subtrai um operando do valor do conteúdo de B, porém não armazena o resultado. A comparação é feita a medida que o usuário compara os flags anteriores com os atuais (após a execução do comando).
+
+[B] - Operando
+
+
+
+
+
+
+Código de Operação:
+2A Endereçamento imediato
+1A    Endereçamento direto
+3A Endereçamento indexado
+9A    Endereçamento indireto
+CA    Endereçamento indireto pré-indexado
+BA    Endereçamento indireto pós-indexado
+
+Subtrai um operando do valor do conteúdo de IX, porém não armazena o resultado. A comparação é feita a medida que o usuário compara os flags anteriores com os atuais (após a execução do comando).
+
+[IX] - Operando
+
+
+
+
+
+
+
+
+
+
+Código de Operação:
+5A    Endereçamento direto
+7A Endereçamento indexado
+DA    Endereçamento indireto
+FA    Endereçamento indireto pré-indexado
+EA    Endereçamento indireto pós-indexado
+
+Decrementa o registrador IX e se o resultado for diferente de zero, então ocorre um desvio para o endereço indicado.
+
+se [IX] ≠ 0 então CO <- AE senão CO <- [CO]+3
+
+
+
+
+
+
+
+Código de Operação:
+07    Endereçamento implícito
+
+Subtrai uma unidade do conteúdo do registrador A.
+
+A <- [A] -1
+
+
+
+
+
+
+Código de Operação:
+47    Endereçamento implícito
+
+Subtrai uma unidade do conteúdo do registrador B.
+
+B <- [B] -1
+
+
+
+
+
+
+Código de Operação:
+89    Endereçamento implícito
+
+Subtrai uma unidade do conteúdo do registro PP.
+
+PP <- [PP] -1
+
+
+
+
+
+Código de Operação:
+09    Endereçamento implícito
+
+Subtrai uma unidade do conteúdo de IX.
+
+IX <- [IX] -1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Código de Operação:
+6C     Endereçamento imediato
+5C    Endereçamento direto
+7C     Endereçamento indexado
+DC    Endereçamento indireto
+FC    Endereçamento indireto pré-indexado
+EC    Endereçamento indireto pós-indexado
+
+Divisão inteira do conteúdo dos registradores B e A no modo de 16 bits (concatenação dos dois valores na base 2) pelo operando. O resultado é armazenado em A e o resto em B.
+
+[B] : [A] ÷ operando
+exemplo:
+se A = 172(10) = 10101100(2)   e   B = 180(10) =10110100(2)  e  operando = 2(10)
+
+1
+0
+1
+0
+1
+1
+0
+0
+1
+0
+1
+1
+0
+1
+0
+0
+
+|----------------------------------------------------|---------------------------------------------------|
+            A(2)                            B(2)
+logo  A e B =  44212 (10)  que dividido por 2 é igual a 22106(10)
+
+A <- quocient    ;    B <- resto
+
+
+
+
+
+Código de Operação:
+06 Endereçamento implícito
+
+Soma uma unidade ao valor do registrador A.
+
+A <- [A] +1
+
+
+
+
+
+
+
+Código de Operação:
+46 Endereçamento implícito
+
+Soma uma unidade ao valor do registrador B.
+
+B <- [B] +1
+
+
+
+
+
+
+Código de Operação:
+88 Endereçamento implícito
+B
+Soma uma unidade ao valor do registrador PP.
+
+PP <- [PP] +1
+
+
+
+
+
+
+Código de Operação:
+08     Endereçamento implícito
+
+Soma uma unidade ao valor do registrador IX.
+
+IX <- [IX] +1
+
+
+
+
+
+
+
+
+
+
+
+Código de Operação:
+20     Endereçamento imediato
+10    Endereçamento direto
+30     Endereçamento indexado
+90    Endereçamento indireto
+C0  Endereçamento indireto pré-indexado
+B0    Endereçamento indireto pós-indexado
+
+Armazena em A o conteúdo do endereço de memória indicado.
+
+A <- M [AE]
+
+
+
+
+
+Código de Operação:
+60     Endereçamento imediato
+50    Endereçamento direto
+70     Endereçamento indexado
+D0    Endereçamento indireto
+F0  Endereçamento indireto pré-indexado
+E0    Endereçamento indireto pós-indexado
+
+Armazena em B o conteúdo do endereço de memória indicado.
+
+B <- M [AE]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Código de Operação:
+2B     Endereçamento imediato
+1B    Endereçamento direto
+3B     Endereçamento indexado
+9B    Endereçamento indireto
+CB  Endereçamento indireto pré-indexado
+BB    Endereçamento indireto pós-indexado
+
+Armazena em PP o conteúdo do endereço de memória indicado.
+
+PP <- M [AE]
+
+
+
+
+
+
+Código de Operação:
+28     Endereçamento imediato
+18    Endereçamento direto
+38     Endereçamento indexado
+98    Endereçamento indireto
+C8  Endereçamento indireto pré-indexado
+B8    Endereçamento indireto pós-indexado
+
+Armazena em IX o conteúdo do endereço de memória indicado.
+
+IX <- M [AE]
+
+
+
+
+
+
+
+
+
+
+
+
+Código de Operação:
+6B     Endereçamento imediato
+5B Endereçamento direto
+7B     Endereçamento indexado
+DB    Endereçamento indireto
+FB Endereçamento indireto pré-indexado
+EB    Endereçamento indireto pós-indexado
+
+Multiplicação dos registradores B e A no modo de 16 bits (concatenação dos dois valores na base 2) pelo operando. A primeira metade do resultado (os primeiros 8 bits - peso fraco) é armazenado em A e a segunda metade (também 8 bits - peso forte) em B.
+
+[B] : [A] * operando,    A <- peso fraco,     B <- peso forte
+
+
+
+
+
+
+Código de Operação:
+0F  Endereçamento implícito
+
+Faz o complemento lógico do conteúdo de A.
+
+A <- Não [A]
+
+
+
+
+
+
+Código de Operação:
+4F  Endereçamento implícito
+
+Faz o complemento lógico do conteúdo de B.
+
+B <- Não [B]
+
+
+
+
+
+
+Código de Operação:
+00 Endereçamento implícito
+Instrução sem efeito. Incrementa o valor do contador ordinal de 1 byte.
+
+
+
+
+
+
+Código de Operação:
+23     Endereçamento imediato
+13     Endereçamento direto
+33     Endereçamento indexado
+93     Endereçamento indireto
+C3     Endereçamento indireto pré-indexado
+B3     Endereçamento indireto pós-indexado
+
+Faz a função OU inclusivo entre o registrador A e o operando, e armazena o resultado em A
+[A] OU operando -> A
+
+
+
+
+
+
+Código de Operação:
+23     Endereçamento imediato
+13     Endereçamento direto
+33     Endereçamento indexado
+93     Endereçamento indireto
+C3 Endereçamento indireto pré-indexado
+B3     Endereçamento indireto pós-indexado
+
+Faz a função OU inclusivo entre o registrador B e o operando e armazena o resultado em B.
+[B] OU operando -> B
+
+
+
+
+Código de Operação:
+03  Endereçamento implícito
+
+Armazena o conteúdo do registrador A no endereço de pilha PP.
+
+ [PP] <- A    ;    PP <- [PP] - 1
+
+
+
+
+
+
+
+
+Código de Operação:
+43     Endereçamento implícito
+
+Armazena o conteúdo do registrador B no endereço de pilha PP.
+
+ [PP] <- B    ;    PP <- [PP] - 1
+
+
+
+
+
+
+
+
+Código de Operação:
+4E  Endereçamento implícito
+
+Armazena o conteúdo do registrador de flag na pilha.
+
+[PP] <- byte R0 D0 N0 Z0    ;    PP <- [PP] - 1
+
+
+
+
+
+Código de Operação:
+83 Endereçamento implícito
+
+Armazena o conteúdo do registrador IX (2 bytes) em um endereço de pilha PP (1 byte) e no seu sucessor (1 byte).
+
+[PP] - 1 <- [IX] 15-8    ;    [PP] <- [IX] 0-7
+
+PP <- [PP] -2
+
+
+
+
+
+
+
+
+Código de Operação:
+83 Endereçamento implícito
+Retira o conteúdo do endereço de pilha PP e armazena no registrador A.
+
+PP <- [PP] + 1 ; [A] <- M[[PP]]
+
+
+
+
+
+
+
+
+Código de Operação:
+44 Endereçamento implícito
+
+Retira o conteúdo do endereço de pilha PP e armazena no registrador B.
+
+PP <- [PP] + 1 ; [B] <- M[[PP]]
+
+
+
+
+
+
+Código de Operação:
+4D    Endereçamento implícito
+
+Retira o conteúdo do registrador de flag contido na pilha e armazena no microprocessador.
+PP <- [PP] + 1
+
+R <- M[[PP]]7    ;    D <- M[[PP]5,
+
+N <- M[[PP]]3    ;    Z<- M[[PP]]1
+
+
+
+
+
+
+Código de Operação:
+84     Endereçamento implícito
+
+Retira o conteúdo do registrador IX (2 bytes) contido na pilha e armazena no microprocessador.
+PP <- PP + 2
+
+IX 15-8 <- M[[PP]-1]    ;    IX 0-7 <- M[[PP]]
+
+
+
+
+
+Código de Operação:
+05     Endereçamento implícito
+
+Retira o conteúdo (2 bytes) contido na pilha e o atribui ao código de operação atual.
+
+PP <- PP + 2
+
+CO 15-8 <- M[[PP]-1]    ;    CO 0-7 <- M[[PP]]
+
+
+
+
+
+Código de Operação:
+49 Endereçamento implícito
+
+Subtrai o conteúdo de B do conteúdo de A e armazena o resultado em A.
+
+A <-  [A] - [B] 
+
+
+
+
+
+
+Código de Operação:
+0C     Endereçamento implícito
+
+Deslocamento do registrador A de uma posição à direita, recopiando no primeiro bit à esquerda o bit de sinal, ou seja se o número era ímpar ele continuará sendo.
+ O resultado é o mesmo que uma divisão inteira por 2.
+
+A <- [A] ÷ 2
+
+Ex: 01001101 => 00100110
+
+
+
+
+
+Código de Operação:
+4C  Endereçamento implícito
+
+Deslocamento dos dois registradores B e A, considerados como um só grupo de 16 bits (concatenação na base 2) de uma posição à direita, recopiando à esquerda o bit de sinal. O resultado é o mesmo que uma divisão inteira por 2.
+
+B : A <- ( [B] : [A] ) ÷ 2
+
+Ex: [B] 10010001 [A] 01001101 ==> [B : A] 1100100010100110 
+
+
+
+
+
+Código de Operação:
+8D Endereçamento implícito
+
+Atribui o valor 1 ao flag D.
+D <- 1
+
+
+
+
+
+
+Código de Operação:
+8E Endereçamento implícito
+
+Atribui o valor 1 ao flag de carry.
+
+R <- 1
+
+
+
+
+
+
+
+
+Código de Operação:
+0A     Endereçamento implícito
+
+Deslocamento do registrador A de uma posição à esquerda, colocando no último bit à direita o valor zero. O resultado é o mesmo que uma multiplicação por 2.
+
+A <- [A] * 2
+
+Ex: 01001101 => 10011010
+
+
+
+
+
+
+
+
+Código de Operação:
+4A  Endereçamento implícito
+
+Deslocamento dos dois registradores B e A, considerados como um só grupo de 16 bits (concatenação na base 2) de uma posição à esquerda, colocando no último bit à direita o valor zero. O resultado é o mesmo que uma multiplicação por 2.
+
+B : A <- ( [B] : [A] ) * 2
+
+
+Ex: [B] 10010001 [A] 01001101 ==> [B : A] 0010001010011010 
+
+
+
+
+
+
+
+
+Código de Operação:
+0B     Endereçamento implícito
+
+Deslocamento do registrador A de uma posição à direita, colocando no último bit à esquerda o valor zero.
+
+A <- deslocamento de [A] 
+
+Ex: 01001101 => 00100110
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Código de Operação:
+4B  Endereçamento implícito
+
+Deslocamento dos dois registradores B e A, considerados como um só grupo de 16 bits (concatenação na base 2) de uma posição à direita, colocando no último bit à esquerda o valor zero.
+B : A <- deslocamento de ( [B] : [A] )
+
+Ex: [B] 10010001 [A] 01001101 ==> [B : A] 0100100010100110 
+
+
+
+
+
+Código de Operação:
+11     Endereçamento direto
+31     Endereçamento indexado
+91     Endereçamento indireto
+C1 Endereçamento indireto pré-indexado
+B1     Endereçamento indireto pós-indexado
+
+Recopia o conteúdo do registrador A para o endereço de memória indicado.
+AE <- [A]
+
+
+
+
+
+Código de Operação:
+51     Endereçamento direto
+71     Endereçamento indexado
+D1 Endereçamento indireto
+F1 Endereçamento indireto pré-indexado
+E1     Endereçamento indireto pós-indexado
+Recopia o conteúdo do registrador B para o endereço de memória indicado.
+
+AE <- [B]
+
+
+
+
+
+Código de Operação:
+1C     Endereçamento direto
+3C     Endereçamento indexado
+9C     Endereçamento indireto
+CC Endereçamento indireto pré-indexado
+BC    Endereçamento indireto pós-indexado
+
+Recopia o conteúdo do registrador PP para o endereço de memória indicado.
+
+AE <- [PP]
+
+
+
+
+
+
+Código de Operação:
+19     Endereçamento direto
+39     Endereçamento indexado
+99     Endereçamento indireto
+C9 Endereçamento indireto pré-indexado
+B9     Endereçamento indireto pós-indexado
+
+Recopia o conteúdo do registrador IX para o endereço de memória indicado.
+
+AE <- [IX]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Código de Operação:
+25     Endereçamento imediato
+15     Endereçamento direto
+35     Endereçamento indexado
+95     Endereçamento indireto
+C5 Endereçamento indireto pré-indexado
+B5     Endereçamento indireto pós-indexado
+
+Subtrai o operando do conteúdo do registrador A e armazena o resultado em A.
+
+A <- [A] - Operando
+
+
+
+
+
+
+Código de Operação:
+65     Endereçamento imediato
+55     Endereçamento direto
+75     Endereçamento indexado
+D5 Endereçamento indireto
+F5 Endereçamento indireto pré-indexado
+E5     Endereçamento indireto pós-indexado
+
+Subtrai o operando do conteúdo do registrador B e armazena o resultado em B.
+
+B <- [B] - Operando
+
+
+
+
+
+
+
+
+
+
+
+
+
+Código de Operação:
+41 Endereçamento implícito
+
+Recopia o conteúdo do registrador A no registrador B.
+
+B <- [A]
+
+
+
+
+
+Código de Operação:
+42 Endereçamento implícito
+
+Recopia o conteúdo do registrador B no registrador A.
+
+A <- [B]
+
+
+
+
+
+
+Código de Operação:
+80 Endereçamento implícito
+
+Recopia o "registrador duplo" B:A e armazena no registrador IX.
+
+IX 15-8 <- [B]    ;    IX 7-0 <- [A]
+
+
+
+
+
+
+
+
+
+
+
+
+
+Código de Operação:
+82 Endereçamento implícito
+
+Recopia o registrador PP para o registrador IX.
+
+IX <- [PP]
+
+
+
+
+
+
+
+Código de Operação:
+81 Endereçamento implícito
+
+Recopia o registrador IX para o "registrador duplo" B:A.
+
+B <- [IX] 15-8    ;    A <- [IX] 7-0
+
+
+
+
+
+Código de Operação:
+81 Endereçamento implícito
+
+Permuta os conteúdos dos registradores A e B.
+  
+AUX <- [A]        ;    A <- B    ;    B <- [AUX]
+
+
+
+
+
+
+
+
+
+
+
+MICRO3
+
+
+ENDEREÇAMENTOS
+E
+CÓDIGOS
+
+
+
+
+Material utilizado na disciplina de Organização de Computadores

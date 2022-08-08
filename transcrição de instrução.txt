@@ -1,0 +1,6 @@
+SIGNIFICAÇÃO DE CAL
+
+Efetue isto CAL :
+
+Salvamento do endereço da instrução seguinte sobre a pilha bdesvio no endereço efetivo segundo o modo de endereçamento
+
