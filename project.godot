@@ -11,7 +11,12 @@ config_version=4
 [application]
 
 config/name="Mipro"
+run/main_scene="res://Scenes/Editor.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+SoftwareManager="*res://Scripts/SoftwareManager.gd"
 
 [physics]
 
