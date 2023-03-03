@@ -29,6 +29,7 @@ func _on_executar_tudo_button_pressed():
 
 func executar() -> void:
 	var valor_atual_PC: Valor = Valor.novo_de_hex(valor_PC.text)
+	SoftwareManager.fila_instrucoes.clear()
 	SoftwareManager.executar_programa(valor_atual_PC)
 
 func atualizar_valor_PC():

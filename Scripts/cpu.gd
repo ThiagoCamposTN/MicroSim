@@ -38,11 +38,6 @@ var flag_n: Valor = Valor.new(0x0) # Registrador de 1 bit (Negativo)
 var flag_c: Valor = Valor.new(0x0) # Registrador de 1 bit (Carry)
 var flag_o: Valor = Valor.new(0x0) # Registrador de 1 bit (Overflow)
 
-var _flag_z_buffer: Valor = Valor.new(0x0) # Registrador de 1 bit
-var _flag_n_buffer: Valor = Valor.new(0x0) # Registrador de 1 bit
-var _flag_c_buffer: Valor = Valor.new(0x0) # Registrador de 1 bit
-var _flag_o_buffer: Valor = Valor.new(0x0) # Registrador de 1 bit
-
 # unidade de controle
 var registrador_ir : Valor = Valor.new(0x0) # Registrador de instrução - 1 bit (ir)
 
@@ -54,13 +49,13 @@ var alu_saida 		: Valor = Valor.new(0x0000) # Registrador de 16 bits
 
 func atualizar_registrador_a(novo_valor: Valor) -> void:
 	self.registrador_a = novo_valor
-	atualizar_buffers(novo_valor)
 	registrador_a_foi_atualizado.emit()
+	self.atualizar_flags(novo_valor, true, true, false, false)
 
 func atualizar_registrador_b(novo_valor: Valor) -> void:
 	self.registrador_b = novo_valor
-	atualizar_buffers(novo_valor)
 	registrador_b_foi_atualizado.emit()
+	self.atualizar_flags(novo_valor, true, true, false, false)
 
 func atualizar_registrador_pc(novo_valor: Valor) -> void:
 	self.registrador_pc = novo_valor
@@ -69,6 +64,7 @@ func atualizar_registrador_pc(novo_valor: Valor) -> void:
 func atualizar_registrador_ix(novo_valor: Valor) -> void:
 	self.registrador_ix = novo_valor
 	registrador_ix_foi_atualizado.emit()
+	self.atualizar_flags(novo_valor, true, true, false, false)
 
 func atualizar_registrador_pp(novo_valor: Valor) -> void:
 	self.registrador_pp = novo_valor
@@ -202,6 +198,7 @@ func transferir_alu_saida_para_a() -> void:
 	var resultado: Valor = Valor.novo_de_valor(self.alu_saida)
 	resultado._valor = resultado._valor & 0xFF
 	atualizar_registrador_a(resultado)
+	self.atualizar_flags(resultado, true, true, true, true)
 
 func transferir_alu_saida_para_b() -> void:
 	# TODO: Garantir que a saída é 8 bits
@@ -244,37 +241,21 @@ func mover_aux_para_endereco_selecionado() -> void:
 	Memoria.atualizar_valor_no_endereco_selecionado(CPU.registrador_aux)
 	endereco_selecionado_foi_alterado.emit()
 
-func atualizar_buffers(novo_valor: Valor) -> void:
-	_flag_z_buffer = Valor.new(novo_valor.como_int() == 0)
-	_flag_n_buffer = Valor.new(novo_valor.como_int() >= 128)
-
-func calcular_z():
-	self.atualizar_flag_z(_flag_z_buffer)
-
-func calcular_n():
-	self.atualizar_flag_n(_flag_n_buffer)
-
-func calcular_c():
-	self.atualizar_flag_c(_flag_c_buffer)
-
-func calcular_o():
-	self.atualizar_flag_o(_flag_o_buffer)
-
-func atualizar_flag_z(novo_valor: Valor) -> void:
+func atualizar_flag_z(novo_valor: Valor):
 	self.flag_z = novo_valor
-	flag_z_foi_atualizada.emit()
+	self.flag_z_foi_atualizada.emit()
 
-func atualizar_flag_n(novo_valor: Valor) -> void:
+func atualizar_flag_n(novo_valor: Valor):
 	self.flag_n = novo_valor
-	flag_n_foi_atualizada.emit()
+	self.flag_n_foi_atualizada.emit()
 
-func atualizar_flag_c(novo_valor: Valor) -> void:
+func atualizar_flag_c(novo_valor: Valor):
 	self.flag_c = novo_valor
-	flag_c_foi_atualizada.emit()
+	self.flag_c_foi_atualizada.emit()
 
-func atualizar_flag_o(novo_valor: Valor) -> void:
+func atualizar_flag_o(novo_valor: Valor):
 	self.flag_o = novo_valor
-	flag_o_foi_atualizada.emit()
+	self.flag_o_foi_atualizada.emit()
 
 func validar_fim_de_execucao() -> void:
 	# Se a instrução atual for CAL EXIT, finalizar a execução
@@ -295,3 +276,20 @@ func realizar_e_logico_alu_a_alu_b():
 	var resultado: int = self.alu_entrada_a.como_int() & self.alu_entrada_b.como_int()
 	var valor = Valor.new(resultado)
 	atualizar_alu_saida(valor)
+
+func atualizar_flags(valor: Valor, z: bool, n: bool, c: bool, o: bool):
+	if z:
+		self.flag_z = Valor.new(valor.como_int() == 0)
+		self.flag_z_foi_atualizada.emit()
+	
+	if n:
+		self.flag_n = Valor.new(valor.como_int() >= 128)
+		self.flag_n_foi_atualizada.emit()
+	
+	if c:
+		self.flag_c_foi_atualizada.emit()
+	
+	if o:
+		self.flag_o_foi_atualizada.emit()
+	
+	SoftwareManager.realizar_calculo_de_flags()

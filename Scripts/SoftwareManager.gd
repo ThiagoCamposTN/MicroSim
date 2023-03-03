@@ -351,3 +351,11 @@ func prepara_o_estado_inicial(emitir_sinal_de_finalização: bool = true):
 
 func pausar_execução():
 	em_execução = false
+
+func realizar_calculo_de_flags():
+	# pode haver multiplos calcular flags empurrados pois pode haver
+	# multiplas operacoes que dão push da flag em seguida uma da outra
+	self.fila_instrucoes.push_front("calcular_flags")
+
+func calcular_flags():
+	pass
