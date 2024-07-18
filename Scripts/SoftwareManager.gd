@@ -19,8 +19,7 @@ func _ready():
 #	pass
 
 func load_memory(memory_path):
-	var file = File.new()
-	file.open(memory_path, File.READ)
-	self.memory_size = file.get_len()
+	var file := FileAccess.open(memory_path, FileAccess.READ)
+	self.memory_size = file.get_length()
 	self.memory_data = file.get_buffer(memory_size)
 	file.close()

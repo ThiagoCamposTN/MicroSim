@@ -1,23 +1,23 @@
 extends HBoxContainer
 
-onready var identificador : Label = $Endereco/Identificador
+@onready var identificador : Label = $Endereco/Identificador
 
-onready var h0 : Label = $Hexadecimal/H0
-onready var h1 : Label = $Hexadecimal/H1
-onready var h2 : Label = $Hexadecimal/H2
-onready var h3 : Label = $Hexadecimal/H3
-onready var h4 : Label = $Hexadecimal/H4
-onready var h5 : Label = $Hexadecimal/H5
-onready var h6 : Label = $Hexadecimal/H6
-onready var h7 : Label = $Hexadecimal/H7
-onready var h8 : Label = $Hexadecimal/H8
-onready var h9 : Label = $Hexadecimal/H9
-onready var hA : Label = $Hexadecimal/HA
-onready var hB : Label = $Hexadecimal/HB
-onready var hC : Label = $Hexadecimal/HC
-onready var hD : Label = $Hexadecimal/HD
-onready var hE : Label = $Hexadecimal/HE
-onready var hF : Label = $Hexadecimal/HF
+@onready var h0 : Label = $Hexadecimal/H0
+@onready var h1 : Label = $Hexadecimal/H1
+@onready var h2 : Label = $Hexadecimal/H2
+@onready var h3 : Label = $Hexadecimal/H3
+@onready var h4 : Label = $Hexadecimal/H4
+@onready var h5 : Label = $Hexadecimal/H5
+@onready var h6 : Label = $Hexadecimal/H6
+@onready var h7 : Label = $Hexadecimal/H7
+@onready var h8 : Label = $Hexadecimal/H8
+@onready var h9 : Label = $Hexadecimal/H9
+@onready var hA : Label = $Hexadecimal/HA
+@onready var hB : Label = $Hexadecimal/HB
+@onready var hC : Label = $Hexadecimal/HC
+@onready var hD : Label = $Hexadecimal/HD
+@onready var hE : Label = $Hexadecimal/HE
+@onready var hF : Label = $Hexadecimal/HF
 
 var line_number = 0
 var hex_values = []

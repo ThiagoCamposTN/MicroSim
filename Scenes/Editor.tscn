@@ -1,162 +1,124 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://cm5igs7dc12fd"]
 
-[ext_resource path="res://Scripts/code_container.gd" type="Script" id=1]
-[ext_resource path="res://Fonts/DroidSansMono/DroidSansMono.tres" type="DynamicFont" id=2]
+[ext_resource type="Script" path="res://Scripts/code_container.gd" id="1"]
+[ext_resource type="FontFile" path="res://Fonts/DroidSansMono/DroidSansMono.tres" id="2"]
 
 [node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
-margin_right = 430.0
-margin_bottom = 26.0
-script = ExtResource( 1 )
+layout_mode = 2
+script = ExtResource("1")
 
 [node name="Cabeçalho" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_right = 430.0
-margin_bottom = 22.0
+layout_mode = 2
 
 [node name="Endereco" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/Cabeçalho"]
-margin_right = 38.0
-margin_bottom = 22.0
+layout_mode = 2
 
 [node name="Identificador" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Endereco"]
-margin_right = 30.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "..."
 
 [node name="VSeparator" type="VSeparator" parent="ScrollContainer/VBoxContainer/Cabeçalho/Endereco"]
-margin_left = 34.0
-margin_right = 38.0
-margin_bottom = 22.0
+layout_mode = 2
 
 [node name="Hexadecimal" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/Cabeçalho"]
-margin_left = 42.0
-margin_right = 430.0
-margin_bottom = 22.0
+layout_mode = 2
 
 [node name="H0" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_right = 20.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "00"
 
 [node name="H1" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 24.0
-margin_right = 44.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "01"
 
 [node name="H2" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 48.0
-margin_right = 68.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "02"
 
 [node name="H3" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 72.0
-margin_right = 92.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "03"
 
 [node name="H4" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 96.0
-margin_right = 116.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "04"
 
 [node name="H5" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 120.0
-margin_right = 140.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "05"
 
 [node name="H6" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 144.0
-margin_right = 164.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "06"
 
 [node name="H7" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 168.0
-margin_right = 188.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "07"
 
 [node name="H8" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 192.0
-margin_right = 212.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "08"
 
 [node name="H9" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 216.0
-margin_right = 236.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "09"
 
 [node name="HA" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 240.0
-margin_right = 260.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "0A"
 
 [node name="HB" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 264.0
-margin_right = 284.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "0B"
 
 [node name="HC" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 288.0
-margin_right = 308.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "0C"
 
 [node name="HD" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 312.0
-margin_right = 332.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "0D"
 
 [node name="HE" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 336.0
-margin_right = 356.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "0E"
 
 [node name="HF" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 360.0
-margin_right = 380.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "0F"
 
 [node name="VSeparator" type="VSeparator" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
-margin_left = 384.0
-margin_right = 388.0
-margin_bottom = 22.0
+layout_mode = 2
 
 [node name="Cabeçalho2" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-margin_top = 26.0
-margin_right = 430.0
-margin_bottom = 26.0
+layout_mode = 2
