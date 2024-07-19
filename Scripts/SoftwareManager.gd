@@ -1,12 +1,9 @@
 extends Node
 
-var memory_size : int = 4096 # 0x1000
-var memory_location_path = ""
-var memory_data = null
+var memory_size 		: int 		= 4096 # 0x1000
+var memory_file_path 	: String 	= ""
 
-func _enter_tree():
-	self.memory_location_path = "res://MEMORIA.MEM"
-	load_memory(self.memory_location_path)
+var memory_data 		: PackedByteArray
 
 
 # Called when the node enters the scene tree for the first time.
@@ -18,8 +15,11 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func load_memory(memory_path):
-	var file := FileAccess.open(memory_path, FileAccess.READ)
-	self.memory_size = file.get_length()
-	self.memory_data = file.get_buffer(memory_size)
+func recarregar_memoria():
+	var file : FileAccess = FileAccess.open(self.memory_file_path, FileAccess.READ)
+	self.memory_data = file.get_buffer(file.get_length())
 	file.close()
+
+func alterar_caminho_memoria(caminho : String):
+	self.memory_file_path = caminho
+	self.recarregar_memoria()

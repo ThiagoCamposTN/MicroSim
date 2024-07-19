@@ -1,2 +1,5 @@
+res://Scenes/Main.tscn
 res://Scenes/Editor.tscn
+res://Scripts/SoftwareManager.gd
+res://Scripts/Principal.gd
 res://Scripts/code_container.gd

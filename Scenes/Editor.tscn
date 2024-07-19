@@ -1,124 +1,120 @@
-[gd_scene load_steps=3 format=3 uid="uid://cm5igs7dc12fd"]
+[gd_scene load_steps=4 format=3 uid="uid://cm5igs7dc12fd"]
 
 [ext_resource type="Script" path="res://Scripts/code_container.gd" id="1"]
 [ext_resource type="FontFile" path="res://Fonts/DroidSansMono/DroidSansMono.tres" id="2"]
+[ext_resource type="PackedScene" path="res://Objects/hex_line.tscn" id="2_wj4wp"]
 
-[node name="Control" type="Control"]
-layout_mode = 3
+[node name="ScrollContainer" type="ScrollContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 script = ExtResource("1")
+line_scene = ExtResource("2_wj4wp")
 
-[node name="Cabeçalho" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
+[node name="Cabeçalho" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="Endereco" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/Cabeçalho"]
+[node name="Endereco" type="HBoxContainer" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="Identificador" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Endereco"]
+[node name="Identificador" type="Label" parent="VBoxContainer/Cabeçalho/Endereco"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "..."
 
-[node name="VSeparator" type="VSeparator" parent="ScrollContainer/VBoxContainer/Cabeçalho/Endereco"]
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/Cabeçalho/Endereco"]
 layout_mode = 2
 
-[node name="Hexadecimal" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/Cabeçalho"]
+[node name="Hexadecimal" type="HBoxContainer" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="H0" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="H0" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "00"
 
-[node name="H1" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="H1" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "01"
 
-[node name="H2" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="H2" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "02"
 
-[node name="H3" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="H3" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "03"
 
-[node name="H4" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="H4" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "04"
 
-[node name="H5" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="H5" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "05"
 
-[node name="H6" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="H6" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "06"
 
-[node name="H7" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="H7" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "07"
 
-[node name="H8" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="H8" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "08"
 
-[node name="H9" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="H9" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "09"
 
-[node name="HA" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="HA" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "0A"
 
-[node name="HB" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="HB" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "0B"
 
-[node name="HC" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="HC" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "0C"
 
-[node name="HD" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="HD" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "0D"
 
-[node name="HE" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="HE" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "0E"
 
-[node name="HF" type="Label" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="HF" type="Label" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 text = "0F"
 
-[node name="VSeparator" type="VSeparator" parent="ScrollContainer/VBoxContainer/Cabeçalho/Hexadecimal"]
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/Cabeçalho/Hexadecimal"]
 layout_mode = 2
 
-[node name="Cabeçalho2" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
+[node name="Cabeçalho2" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2

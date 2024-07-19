@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://dd4buxa54gig7"]
+
+[ext_resource type="PackedScene" uid="uid://cm5igs7dc12fd" path="res://Scenes/Editor.tscn" id="1_mmwr3"]
+[ext_resource type="Script" path="res://Scripts/Principal.gd" id="1_p8pv5"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Principal" type="TabBar" parent="TabContainer"]
+layout_mode = 2
+script = ExtResource("1_p8pv5")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Principal"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="TabContainer/Principal/HBoxContainer"]
+layout_mode = 2
+text = "Arquivo de Memória: "
+
+[node name="LineEdit" type="LineEdit" parent="TabContainer/Principal/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+text = "res://MEMORIA.MEM"
+placeholder_text = "Caminho para o arquivo de memória"
+editable = false
+caret_blink = true
+
+[node name="Button" type="Button" parent="TabContainer/Principal/HBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Carregar"
+
+[node name="Memória" type="TabBar" parent="TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="ScrollContainer" parent="TabContainer/Memória" instance=ExtResource("1_mmwr3")]
+layout_mode = 1
+
+[connection signal="pressed" from="TabContainer/Principal/HBoxContainer/Button" to="TabContainer/Principal" method="_on_button_pressed"]
