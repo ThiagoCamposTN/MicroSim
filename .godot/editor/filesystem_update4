@@ -1,5 +1,8 @@
+res://Scripts/Principal.gd
 res://Scenes/Main.tscn
 res://Scenes/Editor.tscn
+res://Objects/executor_de_programa.tscn
+res://Objects/registradores.tscn
+res://Objects/executor_de_programa.gd
 res://Scripts/SoftwareManager.gd
-res://Scripts/Principal.gd
-res://Scripts/code_container.gd
+res://Scripts/utils.gd

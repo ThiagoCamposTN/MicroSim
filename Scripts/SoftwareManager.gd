@@ -5,7 +5,6 @@ var memory_file_path 	: String 	= ""
 
 var memory_data 		: PackedByteArray
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
@@ -23,3 +22,11 @@ func recarregar_memoria():
 func alterar_caminho_memoria(caminho : String):
 	self.memory_file_path = caminho
 	self.recarregar_memoria()
+
+func executar_codigo(endereco_inicial : String, codigo : String):
+	var endereco 		: int 				= Utils.de_hex_string_para_inteiro(endereco_inicial)
+	var codigo_divido 	: PackedStringArray = codigo.split("\n")
+	
+	print("codigo")
+	print(endereco)
+	print(codigo_divido[1])

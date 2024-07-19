@@ -1,0 +1,113 @@
+[gd_scene format=3 uid="uid://b43gj8a6co0l6"]
+
+[node name="VBoxContainer" type="VBoxContainer"]
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+text = "Registrador A - "
+
+[node name="Label2" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+text = "fef"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer3"]
+layout_mode = 2
+text = "Registrador B - "
+
+[node name="Label2" type="Label" parent="HBoxContainer3"]
+layout_mode = 2
+text = "fef"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer4"]
+layout_mode = 2
+text = "Registrador IX - "
+
+[node name="Label2" type="Label" parent="HBoxContainer4"]
+layout_mode = 2
+text = "fef"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer5"]
+layout_mode = 2
+text = "Registrador PP	 - "
+
+[node name="Label2" type="Label" parent="HBoxContainer5"]
+layout_mode = 2
+text = "fef"
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer6"]
+layout_mode = 2
+text = "Registrador CO	 - "
+
+[node name="Label2" type="Label" parent="HBoxContainer6"]
+layout_mode = 2
+text = "fef"
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer7"]
+layout_mode = 2
+text = "Registrador CC	 - "
+
+[node name="Label2" type="Label" parent="HBoxContainer7"]
+layout_mode = 2
+text = "fef"
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer8"]
+layout_mode = 2
+text = "Flag z	 - "
+
+[node name="Label2" type="Label" parent="HBoxContainer8"]
+layout_mode = 2
+text = "fef"
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer9"]
+layout_mode = 2
+text = "Flag n	 - "
+
+[node name="Label2" type="Label" parent="HBoxContainer9"]
+layout_mode = 2
+text = "fef"
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer10"]
+layout_mode = 2
+text = "Flag r	 - "
+
+[node name="Label2" type="Label" parent="HBoxContainer10"]
+layout_mode = 2
+text = "fef"
+
+[node name="HBoxContainer11" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer11"]
+layout_mode = 2
+text = "Flag d	 - "
+
+[node name="Label2" type="Label" parent="HBoxContainer11"]
+layout_mode = 2
+text = "fef"

@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dd4buxa54gig7"]
+[gd_scene load_steps=5 format=3 uid="uid://dd4buxa54gig7"]
 
 [ext_resource type="PackedScene" uid="uid://cm5igs7dc12fd" path="res://Scenes/Editor.tscn" id="1_mmwr3"]
 [ext_resource type="Script" path="res://Scripts/Principal.gd" id="1_p8pv5"]
+[ext_resource type="PackedScene" uid="uid://b43gj8a6co0l6" path="res://Objects/registradores.tscn" id="2_pfwce"]
+[ext_resource type="PackedScene" uid="uid://jgcr8laoykqj" path="res://Objects/executor_de_programa.tscn" id="3_0ofiw"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -23,16 +25,25 @@ grow_vertical = 2
 layout_mode = 2
 script = ExtResource("1_p8pv5")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Principal"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="HSplitContainer" type="HSplitContainer" parent="TabContainer/Principal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Label" type="Label" parent="TabContainer/Principal/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Principal/HSplitContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Principal/HSplitContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Principal/HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Arquivo de Memória: "
 
-[node name="LineEdit" type="LineEdit" parent="TabContainer/Principal/HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="TabContainer/Principal/HSplitContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 text = "res://MEMORIA.MEM"
@@ -40,10 +51,19 @@ placeholder_text = "Caminho para o arquivo de memória"
 editable = false
 caret_blink = true
 
-[node name="Button" type="Button" parent="TabContainer/Principal/HBoxContainer"]
+[node name="Button" type="Button" parent="TabContainer/Principal/HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 disabled = true
 text = "Carregar"
+
+[node name="HSeparator" type="HSeparator" parent="TabContainer/Principal/HSplitContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Registradores" parent="TabContainer/Principal/HSplitContainer/VBoxContainer" instance=ExtResource("2_pfwce")]
+layout_mode = 2
+
+[node name="Executor" parent="TabContainer/Principal/HSplitContainer" instance=ExtResource("3_0ofiw")]
+layout_mode = 2
 
 [node name="Memória" type="TabBar" parent="TabContainer"]
 visible = false
@@ -51,5 +71,9 @@ layout_mode = 2
 
 [node name="ScrollContainer" parent="TabContainer/Memória" instance=ExtResource("1_mmwr3")]
 layout_mode = 1
+offset_left = 10.0
+offset_top = 9.0
+offset_right = -8.0
+offset_bottom = -9.0
 
-[connection signal="pressed" from="TabContainer/Principal/HBoxContainer/Button" to="TabContainer/Principal" method="_on_button_pressed"]
+[connection signal="pressed" from="TabContainer/Principal/HSplitContainer/VBoxContainer/HBoxContainer/Button" to="TabContainer/Principal" method="_on_button_pressed"]

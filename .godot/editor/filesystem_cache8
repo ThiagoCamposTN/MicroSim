@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1721339815
+::res://::1721416348
 default_env.tres::Environment::-1::1721338856::0::1::::<><>::
 icon.png::CompressedTexture2D::6436198338111624148::1721338582::1721338870::1::::<><>::
 image75.png::CompressedTexture2D::859985690216692123::1721338582::1721338870::1::::<><>::
@@ -16,10 +16,14 @@ LICENSE.txt::TextFile::-1::1721338582::0::1::::<><>::
 ::res://Objects/::1721338582
 byte.tscn::PackedScene::-1::1721338856::0::1::::<><>::res://Fonts/DroidSansMono/DroidSansMono.tres
 hex_line.tscn::PackedScene::-1::1721338856::0::1::::<><>::res://Scripts/hex_line.gd<>res://Fonts/DroidSansMono/DroidSansMono.tres<>res://Objects/byte.tscn
-::res://Scenes/::1721339687
-Editor.tscn::PackedScene::5677536269364021225::1721339687::0::1::::<><>::res://Scripts/code_container.gd<>res://Fonts/DroidSansMono/DroidSansMono.tres
-::res://Scripts/::1721339616
-code_container.gd::GDScript::-1::1721339616::0::1::::<>VBoxContainer<>::
+registradores.tscn::PackedScene::4480081835093761897::1721416758::0::1::::<><>::
+executador_de_programa.tscn::PackedScene::644239402031633713::1721416791::0::1::::<><>::
+::res://Scenes/::1721416579
+Editor.tscn::PackedScene::5677536269364021225::1721416579::0::1::::<><>::res://Scripts/code_container.gd<>res://Fonts/DroidSansMono/DroidSansMono.tres<>res://Objects/hex_line.tscn
+Main.tscn::PackedScene::7429793179171113292::1721416820::0::1::::<><>::uid://cm5igs7dc12fd::::res://Scenes/Editor.tscn<>res://Scripts/Principal.gd<>uid://b43gj8a6co0l6::::res://Objects/registradores.tscn<>uid://jgcr8laoykqj::::res://Objects/executador_de_programa.tscn
+::res://Scripts/::1721355702
+code_container.gd::GDScript::-1::1721348329::0::1::::<>VBoxContainer<>::
 hex_line.gd::GDScript::-1::1721338856::0::1::::<>HBoxContainer<>::
-SoftwareManager.gd::GDScript::-1::1721339149::0::1::::<>Node<>::
+Principal.gd::GDScript::-1::1721355702::0::1::::<>TabBar<>::
+SoftwareManager.gd::GDScript::-1::1721348869::0::1::::<>Node<>::
 ::res://__pycache__/::1721338645

@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://jgcr8laoykqj"]
+
+[ext_resource type="Script" path="res://Objects/executor_de_programa.gd" id="1_ds6ok"]
+
+[node name="VBoxContainer2" type="VBoxContainer"]
+script = ExtResource("1_ds6ok")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Endereço inicial: "
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CodeEdit" type="CodeEdit" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+text = "Executar programa"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
