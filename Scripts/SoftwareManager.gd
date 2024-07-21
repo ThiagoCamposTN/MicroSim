@@ -24,7 +24,7 @@ func alterar_caminho_memoria(caminho : String):
 func executar_codigo(endereco_inicial : String, codigo : String):
 	var endereco 		: int 				= Utils.de_hex_string_para_inteiro(endereco_inicial)
 	var codigo_divido 	: PackedStringArray = codigo.split("\n")
-	
-	print("codigo")
-	print(endereco)
-	print(codigo_divido[1])
+	#
+	#print("codigo")
+	#print(endereco)
+	#print(codigo_divido[1])

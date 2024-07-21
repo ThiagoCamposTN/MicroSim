@@ -1,113 +1,116 @@
-[gd_scene format=3 uid="uid://b43gj8a6co0l6"]
+[gd_scene load_steps=2 format=3 uid="uid://b43gj8a6co0l6"]
+
+[ext_resource type="Script" path="res://Objects/registradores.gd" id="1_5p0nd"]
 
 [node name="VBoxContainer" type="VBoxContainer"]
+script = ExtResource("1_5p0nd")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer2"]
+[node name="RegistradorA" type="Label" parent="HBoxContainer2"]
 layout_mode = 2
 text = "Registrador A - "
 
-[node name="Label2" type="Label" parent="HBoxContainer2"]
+[node name="ValorRegistradorA" type="Label" parent="HBoxContainer2"]
 layout_mode = 2
 text = "fef"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer3"]
+[node name="RegistradorB" type="Label" parent="HBoxContainer3"]
 layout_mode = 2
 text = "Registrador B - "
 
-[node name="Label2" type="Label" parent="HBoxContainer3"]
+[node name="ValorRegistradorB" type="Label" parent="HBoxContainer3"]
 layout_mode = 2
 text = "fef"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer4"]
+[node name="RegistradorIX" type="Label" parent="HBoxContainer4"]
 layout_mode = 2
 text = "Registrador IX - "
 
-[node name="Label2" type="Label" parent="HBoxContainer4"]
+[node name="ValorRegistradorIX" type="Label" parent="HBoxContainer4"]
 layout_mode = 2
 text = "fef"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer5"]
+[node name="RegistradorPP" type="Label" parent="HBoxContainer5"]
 layout_mode = 2
 text = "Registrador PP	 - "
 
-[node name="Label2" type="Label" parent="HBoxContainer5"]
+[node name="ValorRegistradorPP" type="Label" parent="HBoxContainer5"]
 layout_mode = 2
 text = "fef"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer6"]
+[node name="RegistradorCO" type="Label" parent="HBoxContainer6"]
 layout_mode = 2
 text = "Registrador CO	 - "
 
-[node name="Label2" type="Label" parent="HBoxContainer6"]
+[node name="ValorRegistradorCO" type="Label" parent="HBoxContainer6"]
 layout_mode = 2
 text = "fef"
 
 [node name="HBoxContainer7" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer7"]
+[node name="RegistradorCC" type="Label" parent="HBoxContainer7"]
 layout_mode = 2
 text = "Registrador CC	 - "
 
-[node name="Label2" type="Label" parent="HBoxContainer7"]
+[node name="ValorRegistradorCC" type="Label" parent="HBoxContainer7"]
 layout_mode = 2
 text = "fef"
 
 [node name="HBoxContainer8" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer8"]
+[node name="FlagZ" type="Label" parent="HBoxContainer8"]
 layout_mode = 2
 text = "Flag z	 - "
 
-[node name="Label2" type="Label" parent="HBoxContainer8"]
+[node name="ValorFlagZ" type="Label" parent="HBoxContainer8"]
 layout_mode = 2
 text = "fef"
 
 [node name="HBoxContainer9" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer9"]
+[node name="FlagN" type="Label" parent="HBoxContainer9"]
 layout_mode = 2
 text = "Flag n	 - "
 
-[node name="Label2" type="Label" parent="HBoxContainer9"]
+[node name="ValorFlagN" type="Label" parent="HBoxContainer9"]
 layout_mode = 2
 text = "fef"
 
 [node name="HBoxContainer10" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer10"]
+[node name="FlagR" type="Label" parent="HBoxContainer10"]
 layout_mode = 2
 text = "Flag r	 - "
 
-[node name="Label2" type="Label" parent="HBoxContainer10"]
+[node name="ValorFlagR" type="Label" parent="HBoxContainer10"]
 layout_mode = 2
 text = "fef"
 
 [node name="HBoxContainer11" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer11"]
+[node name="FlagD" type="Label" parent="HBoxContainer11"]
 layout_mode = 2
 text = "Flag d	 - "
 
-[node name="Label2" type="Label" parent="HBoxContainer11"]
+[node name="ValorFlagD" type="Label" parent="HBoxContainer11"]
 layout_mode = 2
 text = "fef"

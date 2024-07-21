@@ -17,3 +17,5 @@ func _on_button_pressed():
 	var endereco_inicial 	: String = $HBoxContainer/LineEdit.text
 	var codigo 				: String = $CodeEdit.text
 	clicou_em_executar.emit(endereco_inicial, codigo)
+	CPU.atualizar_registrador_a(54)
+	CPU.atualizar_registrador_b(67)
