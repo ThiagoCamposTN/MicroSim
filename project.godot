@@ -18,6 +18,8 @@ config/icon="res://icon.png"
 [autoload]
 
 SoftwareManager="*res://Scripts/SoftwareManager.gd"
+CPU="*res://Scripts/cpu.gd"
+Memoria="*res://Scripts/memoria.gd"
 
 [physics]
 
