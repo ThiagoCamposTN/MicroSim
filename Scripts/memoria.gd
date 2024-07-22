@@ -21,3 +21,10 @@ func sobrescrever_memoria(dados : PackedByteArray):
 	if dados.size() != TAMANHO_MEMORIA:
 		push_error("A quantidade de dados a serem escritos na memória (", dados.size(), ") é diferente de ", TAMANHO_MEMORIA , ".")
 	self.dados = dados
+
+func sobrescrever_parte_da_memoria(novos_dados: PackedByteArray, endereco_inicial: int):
+	var dados_finais = PackedByteArray()
+	dados_finais.append_array(dados.slice(0, endereco_inicial)) 								# Conteúdo antes dos dados sendo sobrescritos
+	dados_finais.append_array(novos_dados) 														# Dados que estão sobrescrevendo
+	dados_finais.append_array(dados.slice(endereco_inicial + novos_dados.size(), dados.size())) # Conteúdo após os dados sendo sobrescritos
+	self.dados = dados_finais
