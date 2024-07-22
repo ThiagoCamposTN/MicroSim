@@ -15,8 +15,9 @@ func _process(delta):
 
 func _on_button_pressed():
 	var endereco_inicial 	: String = $HBoxContainer/LineEdit.text
+	# TODO: Colocar um erro se o campo de endereço inicial estiver vazio?
 	var codigo 				: String = $CodeEdit.text
 	clicou_em_executar.emit(endereco_inicial, codigo)
-	SoftwareManager.salvar_codigo_em_memoria(codigo)
+	SoftwareManager.salvar_codigo_em_memoria(codigo, endereco_inicial)
 	CPU.atualizar_registrador_a(54)
 	CPU.atualizar_registrador_b(67)

@@ -29,7 +29,7 @@ func executar_codigo(endereco_inicial : String, codigo : String):
 	#print(endereco)
 	#print(codigo_divido[1])
 
-func salvar_codigo_em_memoria(codigo: String):
+func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 	var parte_memoria = Array()
 	var linhas = codigo.split("\n", false)
 	print("Antes: ", Memoria.dados.slice(0,10))
@@ -47,5 +47,5 @@ func salvar_codigo_em_memoria(codigo: String):
 			parte_memoria.push_back(0x12)
 			parte_memoria.push_back(0x00)
 	print("Parte: ", PackedByteArray(parte_memoria))
-	Memoria.sobrescrever_parte_da_memoria(parte_memoria, 0)
+	Memoria.sobrescrever_parte_da_memoria(parte_memoria, Utils.de_hex_string_para_inteiro(endereco_inicial))
 	print("Depois: ", Memoria.dados.slice(0,10))

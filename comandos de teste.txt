@@ -1,0 +1,4 @@
+LDA #10
+LDA #8
+ABA
+CAL EXIT
