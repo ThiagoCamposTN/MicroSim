@@ -66,7 +66,10 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 			parte_memoria.push_back(0x48) # ABA
 		elif valores[0] == "STA":
 			parte_memoria.push_back(0x11) # STA
-			parte_memoria.push_back(int(valores[1]))
+			var valor_em_hex 	= Utils.formatar_hex_como_endereco(valores[1])
+			var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
+			for valor in valor_dividido:
+				parte_memoria.push_back(valor)
 		elif (valores[0] == "CAL" and valores[1] == "EXIT") or valores[0] == "CALEXIT":
 			parte_memoria.push_back(0x58)
 			parte_memoria.push_back(0x12)
@@ -159,6 +162,8 @@ func decodificar_instrucao(instrucao : int):
 		# O conteúdo da memória no endereço fornecido é lido
 		var dado = Memoria.ler_dado_no_endereco(endereco)
 		
+		print("primeira parte do endereço: ", dado)
+		
 		# O valor é transferido ao AUX via o BUS de Dados
 		CPU.atualizar_registrador_aux(dado)
 		
@@ -171,13 +176,15 @@ func decodificar_instrucao(instrucao : int):
 		# O conteúdo da memória no endereço fornecido é lido
 		dado = Memoria.ler_dado_no_endereco(endereco)
 		
+		print("segunda parte do endereço: ", dado)
+		
 		# O valor é transferido ao DON via o BUS de Dados
 		CPU.atualizar_registrador_don(dado)
 		
 		# Une DON e AUX para formar um endereço 16 bits que é transferido para RAD
 		CPU.unir_don_ao_aux_e_mover_para_rad()
 		
-		print(CPU.registrador_rad)
+		print("endereço final: ", CPU.registrador_rad)
 		
 		# O CO é incrementado em 2
 		CPU.incrementar_registrador_co(2)
