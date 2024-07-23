@@ -15,10 +15,15 @@ text = "Endereço inicial: "
 [node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+text = "1"
 
 [node name="CodeEdit" type="CodeEdit" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
+text = "LDA #10
+LDA #8
+ABA
+CAL EXIT"
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 2

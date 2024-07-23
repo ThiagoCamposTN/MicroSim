@@ -114,3 +114,25 @@ text = "Flag d	 - "
 [node name="ValorFlagD" type="Label" parent="HBoxContainer11"]
 layout_mode = 2
 text = "fef"
+
+[node name="HBoxContainer12" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="RegistradorDON" type="Label" parent="HBoxContainer12"]
+layout_mode = 2
+text = "Registrador DON	 - "
+
+[node name="ValorRegistradorDON" type="Label" parent="HBoxContainer12"]
+layout_mode = 2
+text = "fef"
+
+[node name="HBoxContainer13" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="RegistradorCO" type="Label" parent="HBoxContainer13"]
+layout_mode = 2
+text = "Registrador CO	 - "
+
+[node name="ValorRegistradorCO" type="Label" parent="HBoxContainer13"]
+layout_mode = 2
+text = "fef"

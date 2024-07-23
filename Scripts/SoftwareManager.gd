@@ -21,13 +21,34 @@ func alterar_caminho_memoria(caminho : String):
 	self.memory_file_path = caminho
 	self.recarregar_memoria()
 
-func executar_codigo(endereco_inicial : String, codigo : String):
-	var endereco 		: int 				= Utils.de_hex_string_para_inteiro(endereco_inicial)
-	var codigo_divido 	: PackedStringArray = codigo.split("\n")
-	#
-	#print("codigo")
-	#print(endereco)
-	#print(codigo_divido[1])
+func executar_programa(endereco_inicial : int):
+	print(endereco_inicial)
+	
+	var em_execução : bool = true
+
+	# Inicia-se a fase de acesso à instrução;
+	CPU.iniciar_registrador_co(endereco_inicial)
+
+	while em_execução:
+		# Transferência do CO (Contador Ordinal) para o RAD (Registrador de Endereço);
+		CPU.mover_co_para_rad()
+
+		var dado : int = CPU.ler_dado_do_endereço_do_rad()
+
+		# O valor é transferido ao DON (Registrador de Dados) via o BUS de Dados;
+		CPU.atualizar_registrador_don(dado)
+#
+		# O valor é transferido ao DCOD (Decodificador de instrução);
+		CPU.transferir_don_para_dcod()
+#
+		# O CO é incrementado em 1;
+		CPU.incrementar_registrador_co(1)
+
+		em_execução = decodificar_instrucao(CPU.registrador_dcod)
+	
+		# Fim da instrução.
+	
+	# Fim da execução
 
 func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 	var parte_memoria = Array()
@@ -49,3 +70,35 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 	print("Parte: ", PackedByteArray(parte_memoria))
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, Utils.de_hex_string_para_inteiro(endereco_inicial))
 	print("Depois: ", Memoria.dados.slice(0,10))
+
+func decodificar_instrucao(instrucao : int):
+	# LDA - endereçamento direto
+	if instrucao == 0x20:
+		# Transferência do CO para o RAD
+		CPU.mover_co_para_rad()
+		
+		# O CO é incrementado em 1
+		CPU.incrementar_registrador_co(1)
+		
+		# Transferência do RAD para o Endereço de Memória via o BUS de Endereço
+		var endereco = CPU.registrador_rad
+		
+		# O conteúdo da memória no endereço fornecido é lido
+		var dado = Memoria.ler_dado_no_endereco(endereco)
+		
+		# O valor é transferido ao DON via o BUS de Dados
+		CPU.atualizar_registrador_don(dado)
+		
+		# O valor é transferido do DON para o Registrador A
+		CPU.atualizar_registrador_a(CPU.registrador_don)
+		
+		# A flag Z (zero) é verificada
+		# calcular_z()
+		
+		# A flag N (negativo) é verificada
+		# calcular_n()
+	else:
+		# comando invalido
+		return false
+	
+	return true

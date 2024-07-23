@@ -28,3 +28,6 @@ func sobrescrever_parte_da_memoria(novos_dados: PackedByteArray, endereco_inicia
 	dados_finais.append_array(novos_dados) 														# Dados que estão sobrescrevendo
 	dados_finais.append_array(dados.slice(endereco_inicial + novos_dados.size(), dados.size())) # Conteúdo após os dados sendo sobrescritos
 	self.dados = dados_finais
+
+func ler_dado_no_endereco(endereco : int):
+	return self.dados[endereco]
