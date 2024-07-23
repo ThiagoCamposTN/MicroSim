@@ -5,6 +5,8 @@ extends Node
 const TAMANHO_MEMORIA : int = 0x1000 # 4096
 var dados : PackedByteArray
 
+signal memoria_foi_atualizada
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# TODO: no futuro, permitir alterar o tamanho de memória
@@ -16,6 +18,8 @@ func _process(delta):
 
 func atualizar_dado_no_endereco(endereco : int, valor : int):
 	dados.set(endereco, valor)
+	print("endereco: ", endereco, " | valor: ", valor)
+	memoria_foi_atualizada.emit()
 
 func sobrescrever_memoria(dados : PackedByteArray):
 	if dados.size() != TAMANHO_MEMORIA:

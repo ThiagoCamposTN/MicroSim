@@ -61,3 +61,27 @@ func transferir_don_para_dcod() -> void:
 
 func iniciar_registrador_co(endereco : int) -> void:
 	self.registrador_co = endereco
+
+func atualizar_registrador_aux(novo_valor : int) -> void:
+	self.registrador_aux = novo_valor
+
+func incrementar_registrador_rad(quantia : int) -> void:
+	self.registrador_rad += quantia
+
+func unir_don_ao_aux_e_mover_para_rad() -> void:
+	self.registrador_rad = self.registrador_don + (self.registrador_aux << 8)
+
+func transferir_a_para_don() -> void:
+	atualizar_registrador_don(self.registrador_a)
+
+func transferir_a_para_ula_a() -> void:
+	self.ula_entrada_a = self.registrador_a
+	
+func transferir_b_para_ula_b() -> void:
+	self.ula_entrada_b = self.registrador_b
+
+func adicao_ula_a_ula_b() -> void:
+	self.ula_saida = self.ula_entrada_a + self.ula_entrada_b
+	
+func transferir_ula_saida_para_a() -> void:
+	atualizar_registrador_a(self.ula_saida)

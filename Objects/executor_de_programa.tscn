@@ -21,8 +21,9 @@ text = "1"
 layout_mode = 2
 size_flags_vertical = 3
 text = "LDA #10
-LDA #8
+LDB #8
 ABA
+STA 0000
 CAL EXIT"
 
 [node name="Button" type="Button" parent="."]

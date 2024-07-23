@@ -36,7 +36,7 @@ func executar_programa(endereco_inicial : int):
 		# O valor é transferido ao DON (Registrador de Dados) via o BUS de Dados;
 		CPU.atualizar_registrador_don(dado)
 #
-		# O valor é transferido ao DCOD (Decodificador de instrução);
+		# O valor de DON é transferido ao DCOD (Decodificador de instrução) via o BUS de Dados;
 		CPU.transferir_don_para_dcod()
 #
 		# O CO é incrementado em 1;
@@ -51,7 +51,7 @@ func executar_programa(endereco_inicial : int):
 func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 	var parte_memoria = Array()
 	var linhas = codigo.split("\n", false)
-	print("Antes: ", Memoria.dados.slice(0,10))
+	print("Antes: ", Memoria.dados.slice(0,15))
 
 	for linha in linhas:
 		var valores = linha.split(" ", false)
@@ -64,16 +64,21 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 			parte_memoria.push_back(int(valores[1]))
 		elif valores[0] == "ABA":
 			parte_memoria.push_back(0x48) # ABA
+		elif valores[0] == "STA":
+			parte_memoria.push_back(0x11) # STA
+			parte_memoria.push_back(int(valores[1]))
 		elif (valores[0] == "CAL" and valores[1] == "EXIT") or valores[0] == "CALEXIT":
 			parte_memoria.push_back(0x58)
 			parte_memoria.push_back(0x12)
 			parte_memoria.push_back(0x00)
 	print("Parte: ", PackedByteArray(parte_memoria))
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, Utils.de_hex_string_para_inteiro(endereco_inicial))
-	print("Depois: ", Memoria.dados.slice(0,10))
+	print("Depois: ", Memoria.dados.slice(0,15))
 
 func decodificar_instrucao(instrucao : int):
 	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
+	
+	print(instrucao)
 	
 	# LDA - endereçamento direto
 	if instrucao == 0x20:
@@ -127,6 +132,24 @@ func decodificar_instrucao(instrucao : int):
 		# calcular_n()
 	# ABA - endereçamento implícito
 	elif instrucao == 0x48:
+		# Transferência do A para a ULA A
+		CPU.transferir_a_para_ula_a()
+		
+		# Transferência do B para a ULA B
+		CPU.transferir_b_para_ula_b()
+		
+		# Adição de 8 bits na ULA
+		CPU.adicao_ula_a_ula_b()
+		
+		# Transferência da saída da ULA para A
+		CPU.transferir_ula_saida_para_a()
+		
+		# TODO: Verificar as flags
+		
+	# STA - endereçamento direto
+	elif instrucao == 0x11:
+		# Fase de pesquisa e endereço do operando
+		
 		# Transferência do CO para o RAD
 		CPU.mover_co_para_rad()
 		
@@ -136,17 +159,11 @@ func decodificar_instrucao(instrucao : int):
 		# O conteúdo da memória no endereço fornecido é lido
 		var dado = Memoria.ler_dado_no_endereco(endereco)
 		
-		# O valor é transferido ao DON via o BUS de Dados
-		CPU.atualizar_registrador_don(dado)
+		# O valor é transferido ao AUX via o BUS de Dados
+		CPU.atualizar_registrador_aux(dado)
 		
-		# O CO é incrementado em 1
-		CPU.incrementar_registrador_co(1)
-		
-		# Transferência do CO para o RAD
-		CPU.mover_co_para_rad()
-		
-		# O CO é incrementado em 1
-		CPU.incrementar_registrador_co(1)
+		# O RAD é incrementado em 1
+		CPU.incrementar_registrador_rad(1)
 		
 		# Transferência do RAD para o Endereço de Memória via o BUS de Endereço
 		endereco = CPU.registrador_rad
@@ -157,10 +174,27 @@ func decodificar_instrucao(instrucao : int):
 		# O valor é transferido ao DON via o BUS de Dados
 		CPU.atualizar_registrador_don(dado)
 		
-		# O valor é transferido do DON para o Registrador A
-		CPU.atualizar_registrador_a(CPU.registrador_don)
+		# Une DON e AUX para formar um endereço 16 bits que é transferido para RAD
+		CPU.unir_don_ao_aux_e_mover_para_rad()
 		
-		# TODO: Verificar as flags
+		print(CPU.registrador_rad)
+		
+		# O CO é incrementado em 2
+		CPU.incrementar_registrador_co(2)
+		
+		# Fase de execução
+		
+		# Transferência do RAD para o Endereço de Memória via o BUS de Endereço
+		endereco = CPU.registrador_rad
+		
+		# O valor de A é transferido ao DON
+		CPU.transferir_a_para_don()
+		
+		# O valor de DON é transferido para a memória
+		CPU.transferir_a_para_don()
+		
+		# O conteúdo da memória no endereço fornecido é substituído por DON via o BUS de Dados
+		Memoria.atualizar_dado_no_endereco(endereco, CPU.registrador_don)
 	else:
 		# comando invalido
 		return false

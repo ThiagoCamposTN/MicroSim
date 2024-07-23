@@ -25,3 +25,4 @@ func _on_button_pressed():
 	SoftwareManager.executar_programa(numero_endereco)
 	#CPU.atualizar_registrador_a(54)
 	#CPU.atualizar_registrador_b(67)
+	print("Dado no endereço de memória [0000]: ", Memoria.dados[0])
