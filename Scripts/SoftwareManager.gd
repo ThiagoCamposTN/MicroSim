@@ -22,8 +22,6 @@ func alterar_caminho_memoria(caminho : String):
 	self.recarregar_memoria()
 
 func executar_programa(endereco_inicial : int):
-	print(endereco_inicial)
-	
 	var em_execução : bool = true
 
 	# Inicia-se a fase de acesso à instrução;
@@ -61,6 +59,9 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 		if valores[0] == "LDA":
 			parte_memoria.push_back(0x20) # LDA
 			parte_memoria.push_back(int(valores[1]))
+		elif valores[0] == "LDB":
+			parte_memoria.push_back(0x60) # LDB
+			parte_memoria.push_back(int(valores[1]))
 		elif valores[0] == "ABA":
 			parte_memoria.push_back(0x48) # ABA
 		elif (valores[0] == "CAL" and valores[1] == "EXIT") or valores[0] == "CALEXIT":
@@ -91,6 +92,31 @@ func decodificar_instrucao(instrucao : int):
 		
 		# O valor é transferido do DON para o Registrador A
 		CPU.atualizar_registrador_a(CPU.registrador_don)
+		
+		# A flag Z (zero) é verificada
+		# calcular_z()
+		
+		# A flag N (negativo) é verificada
+		# calcular_n()
+	# LDB - endereçamento direto
+	elif instrucao == 0x60:
+		# Transferência do CO para o RAD
+		CPU.mover_co_para_rad()
+		
+		# O CO é incrementado em 1
+		CPU.incrementar_registrador_co(1)
+		
+		# Transferência do RAD para o Endereço de Memória via o BUS de Endereço
+		var endereco = CPU.registrador_rad
+		
+		# O conteúdo da memória no endereço fornecido é lido
+		var dado = Memoria.ler_dado_no_endereco(endereco)
+		
+		# O valor é transferido ao DON via o BUS de Dados
+		CPU.atualizar_registrador_don(dado)
+		
+		# O valor é transferido do DON para o Registrador B
+		CPU.atualizar_registrador_b(CPU.registrador_don)
 		
 		# A flag Z (zero) é verificada
 		# calcular_z()
