@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/HexView.gd" id="1_6ype7"]
 [ext_resource type="FontFile" path="res://Fonts/DroidSansMono/DroidSansMono.tres" id="2_rcbqw"]
 
-[node name="HexView" type="ScrollContainer"]
+[node name="HexView" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,151 +11,160 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6ype7")
 
-[node name="HexGrid" type="GridContainer" parent="."]
+[node name="Cabeçalho" type="GridContainer" parent="."]
 layout_mode = 2
 columns = 18
 
-[node name="Identificador" type="Label" parent="HexGrid"]
+[node name="Identificador" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "..."
 
-[node name="VSeparator" type="VSeparator" parent="HexGrid"]
+[node name="VSeparator" type="VSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="H0" type="Label" parent="HexGrid"]
+[node name="H0" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "00"
 
-[node name="H1" type="Label" parent="HexGrid"]
+[node name="H1" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "01"
 
-[node name="H2" type="Label" parent="HexGrid"]
+[node name="H2" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "02"
 
-[node name="H3" type="Label" parent="HexGrid"]
+[node name="H3" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "03"
 
-[node name="H4" type="Label" parent="HexGrid"]
+[node name="H4" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "04"
 
-[node name="H5" type="Label" parent="HexGrid"]
+[node name="H5" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "05"
 
-[node name="H6" type="Label" parent="HexGrid"]
+[node name="H6" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "06"
 
-[node name="H7" type="Label" parent="HexGrid"]
+[node name="H7" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "07"
 
-[node name="H8" type="Label" parent="HexGrid"]
+[node name="H8" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "08"
 
-[node name="H9" type="Label" parent="HexGrid"]
+[node name="H9" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "09"
 
-[node name="HA" type="Label" parent="HexGrid"]
+[node name="HA" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "0A"
 
-[node name="HB" type="Label" parent="HexGrid"]
+[node name="HB" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "0B"
 
-[node name="HC" type="Label" parent="HexGrid"]
+[node name="HC" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "0C"
 
-[node name="HD" type="Label" parent="HexGrid"]
+[node name="HD" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "0D"
 
-[node name="HE" type="Label" parent="HexGrid"]
+[node name="HE" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "0E"
 
-[node name="HF" type="Label" parent="HexGrid"]
+[node name="HF" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "0F"
 
-[node name="HSeparator2" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator2" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HexGrid"]
+[node name="Label" type="Label" parent="Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "
 "
 
-[node name="HSeparator3" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator3" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator5" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator5" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator6" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator6" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator4" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator4" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator7" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator7" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator8" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator8" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator9" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator9" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator10" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator10" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator11" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator11" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator12" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator12" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator13" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator13" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator14" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator14" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator15" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator15" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator16" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator16" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator17" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator17" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator18" type="HSeparator" parent="HexGrid"]
+[node name="HSeparator18" type="HSeparator" parent="Cabeçalho"]
 layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HexGrid" type="GridContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 18
