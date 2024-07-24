@@ -1,6 +1,8 @@
 extends Control
 
 
+var HexViewByte = preload("res://Scenes/HexViewByte.tscn")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	inicializar_hex_grid()
@@ -12,11 +14,11 @@ func _process(delta):
 	pass
 
 func adicionar_label(texto: String, nome: String = ""):
-	var label = Label.new()
+	var label = HexViewByte.instantiate()
 	if nome:
 		label.name = nome
 	label.text = texto
-	$HexGrid.add_child(label)
+	$ScrollContainer/HexGrid.add_child(label)
 
 func inicializar_hex_grid():
 	var current_linha = 0
@@ -25,13 +27,13 @@ func inicializar_hex_grid():
 		var endereco_celula = Utils.int_para_hex(current_linha, 3)
 		if current_linha % 16 == 0:
 			adicionar_label(endereco_celula)
-			$HexGrid.add_child(VSeparator.new())
+			$ScrollContainer/HexGrid.add_child(VSeparator.new())
 		
 		adicionar_label(Utils.int_para_hex(celula, 2), endereco_celula)
 		current_linha += 1
 
 func atualizar_celula(posicao : int):
-	var celula : Label = get_node("HexGrid").get_node(Utils.int_para_hex(posicao, 3))
+	var celula : Label = $ScrollContainer/HexGrid.get_node(Utils.int_para_hex(posicao, 3))
 	celula.text = Utils.int_para_hex(Memoria.dados[posicao], 2)
 
 func atualizar_grupo_de_celulas(endereco, tamanho):
