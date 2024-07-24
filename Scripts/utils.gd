@@ -13,3 +13,6 @@ static func de_endereco_hex_para_bytes(valor : String) -> PackedByteArray:
 	for i in range(0, valor.length(), 2):
 		resultado.push_back(Utils.de_hex_string_para_inteiro(valor.substr(i, 2)) )
 	return resultado
+
+static func int_para_hex(valor : int, casas : int) -> String:
+	return (("%0" + str(casas) + "x") % valor).to_upper()

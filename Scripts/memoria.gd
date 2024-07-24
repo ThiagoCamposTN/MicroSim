@@ -6,6 +6,7 @@ const TAMANHO_MEMORIA : int = 0x1000 # 4096
 var dados : PackedByteArray
 
 signal memoria_foi_atualizada
+signal grupo_da_memoria_foi_atualizado
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,7 +20,7 @@ func _process(delta):
 func atualizar_dado_no_endereco(endereco : int, valor : int):
 	dados.set(endereco, valor)
 	print("endereco: ", endereco, " | valor: ", valor)
-	memoria_foi_atualizada.emit()
+	memoria_foi_atualizada.emit(endereco)
 
 func sobrescrever_memoria(dados : PackedByteArray):
 	if dados.size() != TAMANHO_MEMORIA:
@@ -32,6 +33,7 @@ func sobrescrever_parte_da_memoria(novos_dados: PackedByteArray, endereco_inicia
 	dados_finais.append_array(novos_dados) 														# Dados que estão sobrescrevendo
 	dados_finais.append_array(dados.slice(endereco_inicial + novos_dados.size(), dados.size())) # Conteúdo após os dados sendo sobrescritos
 	self.dados = dados_finais
+	grupo_da_memoria_foi_atualizado.emit(endereco_inicial, novos_dados.size())
 
 func ler_dado_no_endereco(endereco : int):
 	return self.dados[endereco]
