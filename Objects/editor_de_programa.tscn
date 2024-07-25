@@ -5,6 +5,10 @@
 [node name="VBoxContainer2" type="VBoxContainer"]
 script = ExtResource("1_ds6ok")
 
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Programa"
+
 [node name="CodeEdit" type="CodeEdit" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
@@ -13,6 +17,13 @@ LDB #8
 ABA
 STA 0000
 CAL EXIT"
+minimap_draw = true
+highlight_all_occurrences = true
+highlight_current_line = true
+gutters_draw_line_numbers = true
+code_completion_enabled = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
