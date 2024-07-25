@@ -1,30 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://jgcr8laoykqj"]
+[gd_scene load_steps=2 format=3 uid="uid://cn15sjsyqk3sy"]
 
 [ext_resource type="Script" path="res://Objects/executor_de_programa.gd" id="1_ds6ok"]
 
-[node name="VBoxContainer2" type="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer"]
 script = ExtResource("1_ds6ok")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="."]
 layout_mode = 2
 text = "Endereço inicial: "
 
-[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "1"
-
-[node name="CodeEdit" type="CodeEdit" parent="."]
-layout_mode = 2
-size_flags_vertical = 3
-text = "LDA #10
-LDB #8
-ABA
-STA 0000
-CAL EXIT"
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 2

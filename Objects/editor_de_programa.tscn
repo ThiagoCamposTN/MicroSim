@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://jgcr8laoykqj"]
+
+[ext_resource type="Script" path="res://Objects/editor_de_programa.gd" id="1_ds6ok"]
+
+[node name="VBoxContainer2" type="VBoxContainer"]
+script = ExtResource("1_ds6ok")
+
+[node name="CodeEdit" type="CodeEdit" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+text = "LDA #10
+LDB #8
+ABA
+STA 0000
+CAL EXIT"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "A partir do endereço: "
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1"
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Salvar na memória"
+
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_button_pressed"]
