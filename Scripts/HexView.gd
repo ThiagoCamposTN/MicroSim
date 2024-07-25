@@ -51,7 +51,7 @@ func atualizar_grupo_de_celulas(endereco, tamanho):
 		i+=1
 
 func ao_clicar_elemento(elemento: Button):
-	var opcode = "?"
+	var opcode = "???"
 	if Utils.de_hex_string_para_inteiro(elemento.text) == 0x20:
 		opcode = "LDA (endereçamento imediato)"
 	elif Utils.de_hex_string_para_inteiro(elemento.text) == 0x60:

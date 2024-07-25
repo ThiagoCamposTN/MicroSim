@@ -9,6 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 3
 script = ExtResource("1_6ype7")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -17,95 +18,130 @@ size_flags_horizontal = 3
 
 [node name="Cabeçalho" type="GridContainer" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_constants/h_separation = 7
 columns = 18
 
-[node name="Identificador" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="Identificador" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "..."
+flat = true
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="H0" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="H0" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "00"
+flat = true
 
-[node name="H1" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="H1" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "01"
+flat = true
 
-[node name="H2" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="H2" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "02"
+flat = true
 
-[node name="H3" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="H3" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "03"
+flat = true
 
-[node name="H4" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="H4" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "04"
+flat = true
 
-[node name="H5" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="H5" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "05"
+flat = true
 
-[node name="H6" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="H6" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "06"
+flat = true
 
-[node name="H7" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="H7" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "07"
+flat = true
 
-[node name="H8" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="H8" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "08"
+flat = true
 
-[node name="H9" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="H9" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "09"
+flat = true
 
-[node name="HA" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="HA" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "0A"
+flat = true
 
-[node name="HB" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="HB" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "0B"
+flat = true
 
-[node name="HC" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="HC" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "0C"
+flat = true
 
-[node name="HD" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="HD" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "0D"
+flat = true
 
-[node name="HE" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="HE" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "0E"
+flat = true
 
-[node name="HF" type="Label" parent="VBoxContainer/Cabeçalho"]
+[node name="HF" type="Button" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
+disabled = true
 text = "0F"
+flat = true
 
 [node name="HSeparator2" type="HSeparator" parent="VBoxContainer/Cabeçalho"]
 layout_mode = 2
