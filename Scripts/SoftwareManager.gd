@@ -2,8 +2,6 @@ extends Node
 
 var memory_file_path 	: String 	= ""
 
-enum Enderecamentos { POS_INDEXADO, PRE_INDEXADO, INDIRETO, IMEDIATO, DIRETO, IMPLICITO, INDEXADO }
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
@@ -44,7 +42,7 @@ func executar_programa(endereco_inicial : int):
 		# O CO é incrementado em 1;
 		CPU.incrementar_registrador_co(1)
 
-		em_execução = decodificar_instrucao(CPU.registrador_dcod)
+		em_execução = executar_instrucao(CPU.registrador_dcod)
 	
 		# Fim da instrução.
 	
@@ -56,7 +54,7 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 	print("Antes: ", Memoria.dados.slice(0,15))
 
 	for linha in linhas:
-		var comando : Comando = self.parsear_linha(linha)
+		var comando : CODEC.Instrucao = CODEC.codificar(linha)
 		
 		if not comando:
 			# comando inválido
@@ -65,25 +63,25 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 		print("comando: tipo - ", comando.tipo, ", mnemonico: ", comando.mnemonico, ", parametros: ", comando.parametros)
 		
 		if comando.mnemonico == "LDA":
-			if comando.tipo == Enderecamentos.IMEDIATO:
+			if comando.tipo == CODEC.Enderecamentos.IMEDIATO:
 				parte_memoria.push_back(0x20) # LDA
 				parte_memoria.push_back(int(comando.parametros[0]))
 		elif comando.mnemonico == "LDB":
-			if comando.tipo == Enderecamentos.IMEDIATO:
+			if comando.tipo == CODEC.Enderecamentos.IMEDIATO:
 				parte_memoria.push_back(0x60) # LDB
 				parte_memoria.push_back(int(comando.parametros[0]))
 		elif comando.mnemonico == "ABA":
-			if comando.tipo == Enderecamentos.IMPLICITO:
+			if comando.tipo == CODEC.Enderecamentos.IMPLICITO:
 				parte_memoria.push_back(0x48) # ABA
 		elif comando.mnemonico == "STA":
-			if comando.tipo == Enderecamentos.DIRETO:
+			if comando.tipo == CODEC.Enderecamentos.DIRETO:
 				parte_memoria.push_back(0x11) # STA
 				var valor_em_hex 	= Utils.formatar_hex_como_endereco(comando.parametros[0])
 				var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
 				for valor in valor_dividido:
 					parte_memoria.push_back(valor)
 		elif comando.mnemonico == "CAL":
-			if comando.tipo == Enderecamentos.DIRETO:
+			if comando.tipo == CODEC.Enderecamentos.DIRETO:
 				parte_memoria.push_back(0x58) # CAL
 				
 				if comando.parametros[0] == "EXIT":
@@ -100,7 +98,7 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, Utils.de_hex_string_para_inteiro(endereco_inicial))
 	print("Depois: ", Memoria.dados.slice(0,15))
 
-func decodificar_instrucao(instrucao : int):
+func executar_instrucao(instrucao : int):
 	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
 	
 	print(instrucao)
@@ -229,79 +227,3 @@ func decodificar_instrucao(instrucao : int):
 		return false
 	
 	return true
-
-
-class Comando:
-	var tipo 		: Enderecamentos
-	var mnemonico	: String
-	var parametros	: PackedStringArray
-	
-	func _init(tipo : Enderecamentos, mnemonico : String):
-		self.tipo = tipo
-		self.mnemonico = mnemonico
-
-func parsear_linha(linha : String) -> Comando:
-	var mnemonico 	= linha.substr(0, 3)
-	var resto 		= linha.substr(3)
-	
-	# Endereçamento implicito
-	if not resto:
-		return Comando.new(Enderecamentos.IMPLICITO, mnemonico)
-	
-	# Endereçamento pré-indexado
-	var enderecamento_pre_indexado = detectar_parametros(resto, r'\[(.+?),(.+?)\]')
-	if enderecamento_pre_indexado:
-		var comando := Comando.new(Enderecamentos.PRE_INDEXADO, mnemonico)
-		comando.parametros = obter_parametros(enderecamento_pre_indexado)
-		return comando
-	
-	# Endereçamento pós-indexado
-	var enderecamento_pos_indexado = detectar_parametros(resto, r'\[(.+?)\],(.+)')
-	if enderecamento_pos_indexado:
-		var comando := Comando.new(Enderecamentos.POS_INDEXADO, mnemonico)
-		comando.parametros = obter_parametros(enderecamento_pos_indexado)
-		return comando
-	
-	# Endereçamento indireto
-	var enderecamento_indireto = detectar_parametros(resto, r'\[(.+?)\]')
-	if enderecamento_indireto:
-		var comando := Comando.new(Enderecamentos.INDIRETO, mnemonico)
-		comando.parametros = obter_parametros(enderecamento_indireto)
-		return comando
-	
-	# Endereçamento indexado
-	var enderecamento_indexado = detectar_parametros(resto, r'(.+?),(.+)')
-	if enderecamento_indexado:
-		var comando := Comando.new(Enderecamentos.INDEXADO, mnemonico)
-		comando.parametros = obter_parametros(enderecamento_indexado)
-		return comando
-	
-	# Endereçamento imediato
-	var enderecamento_imediato = detectar_parametros(resto, r'#(.+)')
-	if enderecamento_imediato:
-		var comando := Comando.new(Enderecamentos.IMEDIATO, mnemonico)
-		comando.parametros = obter_parametros(enderecamento_imediato)
-		return comando
-	
-	# Endereçamento direto
-	var enderecamento_direto = detectar_parametros(resto, r'(.+)')
-	if enderecamento_direto:
-		var comando := Comando.new(Enderecamentos.DIRETO, mnemonico)
-		comando.parametros = obter_parametros(enderecamento_direto)
-		return comando
-	
-	return null
-
-func detectar_parametros(string_com_parametros : String, expressao_regex : String) -> RegExMatch:
-	var regex := RegEx.new()
-	regex.compile(expressao_regex)
-	var enderecamento = regex.search(string_com_parametros)
-	return enderecamento
-
-func obter_parametros(parametros_detectados : RegExMatch):
-	var resultados : PackedStringArray = parametros_detectados.get_strings()
-	var parametros : PackedStringArray 
-	resultados.remove_at(0)
-	for i in resultados:
-		parametros.push_back(i.strip_edges())
-	return parametros
