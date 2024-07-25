@@ -59,31 +59,44 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 		var comando : Comando = self.parsear_linha(linha)
 		
 		if not comando:
+			# comando inválido
 			return
 		
 		print("comando: tipo - ", comando.tipo, ", mnemonico: ", comando.mnemonico, ", parametros: ", comando.parametros)
 		
-		var valores = linha.split(" ", false)
-		
-		if valores[0] == "LDA":
-			parte_memoria.push_back(0x20) # LDA
-			parte_memoria.push_back(int(valores[1]))
-		elif valores[0] == "LDB":
-			parte_memoria.push_back(0x60) # LDB
-			parte_memoria.push_back(int(valores[1]))
-		elif valores[0] == "ABA":
-			parte_memoria.push_back(0x48) # ABA
-		elif valores[0] == "STA":
-			parte_memoria.push_back(0x11) # STA
-			var valor_em_hex 	= Utils.formatar_hex_como_endereco(valores[1])
-			var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
-			for valor in valor_dividido:
-				parte_memoria.push_back(valor)
-		elif (valores[0] == "CAL" and valores[1] == "EXIT") or valores[0] == "CALEXIT":
-			parte_memoria.push_back(0x58)
-			parte_memoria.push_back(0x12)
-			parte_memoria.push_back(0x00)
-	print("Parte: ", PackedByteArray(parte_memoria))
+		if comando.mnemonico == "LDA":
+			if comando.tipo == Enderecamentos.IMEDIATO:
+				parte_memoria.push_back(0x20) # LDA
+				parte_memoria.push_back(int(comando.parametros[0]))
+		elif comando.mnemonico == "LDB":
+			if comando.tipo == Enderecamentos.IMEDIATO:
+				parte_memoria.push_back(0x60) # LDB
+				parte_memoria.push_back(int(comando.parametros[0]))
+		elif comando.mnemonico == "ABA":
+			if comando.tipo == Enderecamentos.IMPLICITO:
+				parte_memoria.push_back(0x48) # ABA
+		elif comando.mnemonico == "STA":
+			if comando.tipo == Enderecamentos.DIRETO:
+				parte_memoria.push_back(0x11) # STA
+				var valor_em_hex 	= Utils.formatar_hex_como_endereco(comando.parametros[0])
+				var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
+				for valor in valor_dividido:
+					parte_memoria.push_back(valor)
+		elif comando.mnemonico == "CAL":
+			if comando.tipo == Enderecamentos.DIRETO:
+				parte_memoria.push_back(0x58) # CAL
+				
+				if comando.parametros[0] == "EXIT":
+					parte_memoria.push_back(0x12)
+					parte_memoria.push_back(0x00)
+				else:
+					var valor_em_hex 	= Utils.formatar_hex_como_endereco(comando.parametros[0])
+					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
+					for valor in valor_dividido:
+						parte_memoria.push_back(valor)
+		else:
+			# comando não existe
+			pass
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, Utils.de_hex_string_para_inteiro(endereco_inicial))
 	print("Depois: ", Memoria.dados.slice(0,15))
 
