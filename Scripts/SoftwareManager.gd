@@ -104,9 +104,8 @@ func executar_instrucao(instrucao : int):
 	
 	print(instrucao)
 	
-	# LDA - endereçamento direto
 	match instrucao:
-		0x20:
+		0x20: # LDA - endereçamento imediato
 			# Transferência do CO para o RAD
 			CPU.mover_co_para_rad()
 			
@@ -130,8 +129,7 @@ func executar_instrucao(instrucao : int):
 			
 			# A flag N (negativo) é verificada
 			# calcular_n()
-		# LDB - endereçamento direto
-		0x60:
+		0x60: # LDB - endereçamento imediato
 			# Transferência do CO para o RAD
 			CPU.mover_co_para_rad()
 			
@@ -155,8 +153,7 @@ func executar_instrucao(instrucao : int):
 			
 			# A flag N (negativo) é verificada
 			# calcular_n()
-		# ABA - endereçamento implícito
-		0x48:
+		0x48: # ABA - endereçamento implícito
 			# Transferência do A para a ULA A
 			CPU.transferir_a_para_ula_a()
 			
@@ -170,9 +167,7 @@ func executar_instrucao(instrucao : int):
 			CPU.transferir_ula_saida_para_a()
 			
 			# TODO: Verificar as flags
-			
-		# STA - endereçamento direto
-		0x11:
+		0x11: # STA - endereçamento direto
 			# Fase de pesquisa e endereço do operando
 			
 			# Transferência do CO para o RAD

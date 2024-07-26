@@ -12,6 +12,25 @@ class Instrucao:
 	func _init(tipo : Enderecamentos, mnemonico : String):
 		self.tipo = tipo
 		self.mnemonico = mnemonico
+	
+	func tipo_como_string() -> String:
+		match self.tipo:
+			Enderecamentos.POS_INDEXADO:
+				return "pós-indexado"
+			Enderecamentos.PRE_INDEXADO:
+				return "pré-indexado"
+			Enderecamentos.INDIRETO:
+				return "indireto"
+			Enderecamentos.IMEDIATO:
+				return "imediato"
+			Enderecamentos.DIRETO:
+				return "direto"
+			Enderecamentos.IMPLICITO:
+				return "implícito"
+			Enderecamentos.INDEXADO:
+				return "indexado"
+			_ :
+				return ""
 
 static func codificar(linha : String) -> Instrucao:
 	var mnemonico 	= linha.substr(0, 3)
@@ -78,3 +97,19 @@ static func extrair_parametros(parametros_detectados : RegExMatch):
 	for i in resultados:
 		parametros.push_back(i.strip_edges())
 	return parametros
+
+static func decodificar(opcode : int) -> Instrucao:
+	match opcode:
+		0x20: # LDA - endereçamento imediato
+			return Instrucao.new(CODEC.Enderecamentos.IMEDIATO, "LDA")
+		0x60: # LDB - endereçamento imediato
+			return Instrucao.new(CODEC.Enderecamentos.IMEDIATO, "LDB")
+		0x48: # ABA - endereçamento implícito
+			return Instrucao.new(CODEC.Enderecamentos.IMPLICITO, "ABA")
+		0x11: # STA - endereçamento direto
+			return Instrucao.new(CODEC.Enderecamentos.DIRETO, "STA")
+		0x58: # CAL - endereçamento direto
+			return Instrucao.new(CODEC.Enderecamentos.DIRETO, "CAL")
+		_:
+			# comando invalido
+			return null

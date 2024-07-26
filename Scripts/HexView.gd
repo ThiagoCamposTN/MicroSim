@@ -18,7 +18,7 @@ func adicionar_label(texto: String, nome: String = ""):
 	var hex_view_byte : Button = HexViewByte.instantiate()
 	if nome:
 		hex_view_byte.name = nome
-		hex_view_byte.pressed.connect(ao_clicar_elemento.bind(hex_view_byte))
+		hex_view_byte.focus_entered.connect(ao_clicar_elemento.bind(hex_view_byte))
 	else:
 		hex_view_byte.disabled = true
 		hex_view_byte.focus_mode = FOCUS_NONE
@@ -52,10 +52,13 @@ func atualizar_grupo_de_celulas(endereco, tamanho):
 
 func ao_clicar_elemento(elemento: Button):
 	var opcode = "???"
-	if Utils.de_hex_string_para_inteiro(elemento.text) == 0x20:
-		opcode = "LDA (endereçamento imediato)"
-	elif Utils.de_hex_string_para_inteiro(elemento.text) == 0x60:
-		opcode = "LDB (endereçamento imediato)"
+	var instrucao = CODEC.decodificar(Utils.de_hex_string_para_inteiro(elemento.text))
+	
+	if instrucao:
+		opcode = "{mnemonico} (endereçamento {tipo})".format({
+				"mnemonico": instrucao.mnemonico, 
+				"tipo": instrucao.tipo_como_string()
+			})
 	
 	var text = """
 	Endereço ([color=gray]{end_hex}[/color]):
