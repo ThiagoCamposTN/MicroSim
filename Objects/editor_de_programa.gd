@@ -22,5 +22,5 @@ func _on_button_pressed():
 	var codigo 				: String = $CodeEdit.text
 	SoftwareManager.salvar_codigo_em_memoria(codigo, endereco_inicial)
 	var numero_endereco : int = Utils.de_hex_string_para_inteiro(endereco_inicial)
-	print("Dado no endereço de memória [0000]: ", Memoria.dados[0])
+	print("Dado no endereço de memória [0000]: ", Memoria.ler_conteudo_no_endereco(0))
 	

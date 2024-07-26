@@ -28,7 +28,7 @@ func adicionar_label(texto: String, nome: String = ""):
 func inicializar_hex_grid():
 	var current_linha = 0
 	
-	for celula in Memoria.dados:
+	for celula in Memoria.celulas:
 		var endereco_celula = Utils.int_para_hex(current_linha, 3)
 		if current_linha % 16 == 0:
 			adicionar_label(endereco_celula)
@@ -42,7 +42,8 @@ func inicializar_hex_grid():
 
 func atualizar_celula(posicao : int):
 	var celula : Button = %HexGrid.get_node(Utils.int_para_hex(posicao, 3))
-	celula.text = Utils.int_para_hex(Memoria.dados[posicao], 2)
+	var conteudo : int = Memoria.ler_conteudo_no_endereco(posicao)
+	celula.text = Utils.int_para_hex(conteudo, 2)
 
 func atualizar_grupo_de_celulas(endereco, tamanho):
 	var i = endereco

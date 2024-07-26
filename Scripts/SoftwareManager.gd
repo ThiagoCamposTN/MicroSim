@@ -51,7 +51,7 @@ func executar_programa(endereco_inicial : int):
 func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 	var parte_memoria = Array()
 	var linhas = codigo.split("\n", false)
-	print("Antes: ", Memoria.dados.slice(0,15))
+	print("Antes: ", Memoria.celulas.slice(0,15))
 
 	for linha in linhas:
 		var comando : CODEC.Instrucao = CODEC.codificar(linha)
@@ -97,7 +97,7 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 				# comando não existe
 				pass
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, Utils.de_hex_string_para_inteiro(endereco_inicial))
-	print("Depois: ", Memoria.dados.slice(0,15))
+	print("Depois: ", Memoria.celulas.slice(0,15))
 
 func executar_instrucao(instrucao : int):
 	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
@@ -116,7 +116,7 @@ func executar_instrucao(instrucao : int):
 			var endereco = CPU.registrador_rad
 			
 			# O conteúdo da memória no endereço fornecido é lido
-			var dado = Memoria.ler_dado_no_endereco(endereco)
+			var dado = Memoria.ler_conteudo_no_endereco(endereco)
 			
 			# O valor é transferido ao DON via o BUS de Dados
 			CPU.atualizar_registrador_don(dado)
@@ -140,7 +140,7 @@ func executar_instrucao(instrucao : int):
 			var endereco = CPU.registrador_rad
 			
 			# O conteúdo da memória no endereço fornecido é lido
-			var dado = Memoria.ler_dado_no_endereco(endereco)
+			var dado = Memoria.ler_conteudo_no_endereco(endereco)
 			
 			# O valor é transferido ao DON via o BUS de Dados
 			CPU.atualizar_registrador_don(dado)
@@ -177,7 +177,7 @@ func executar_instrucao(instrucao : int):
 			var endereco = CPU.registrador_rad
 			
 			# O conteúdo da memória no endereço fornecido é lido
-			var dado = Memoria.ler_dado_no_endereco(endereco)
+			var dado = Memoria.ler_conteudo_no_endereco(endereco)
 			
 			print("primeira parte do endereço: ", dado)
 			
@@ -191,7 +191,7 @@ func executar_instrucao(instrucao : int):
 			endereco = CPU.registrador_rad
 			
 			# O conteúdo da memória no endereço fornecido é lido
-			dado = Memoria.ler_dado_no_endereco(endereco)
+			dado = Memoria.ler_conteudo_no_endereco(endereco)
 			
 			print("segunda parte do endereço: ", dado)
 			

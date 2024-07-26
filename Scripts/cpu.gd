@@ -53,8 +53,8 @@ func ler_dado_do_endereço_do_rad() -> int:
 	# Transferência do RAD para o Endereço de Memória via o BUS (Barramento) de Endereço;
 	var endereco = CPU.registrador_rad
 	# O conteúdo da memória no endereço fornecido é lido;
-	var dado = Memoria.dados[endereco]
-	return dado
+	var conteudo = Memoria.ler_conteudo_no_endereco(endereco)
+	return conteudo
 
 func transferir_don_para_dcod() -> void:
 	CPU.registrador_dcod = CPU.registrador_don
