@@ -54,7 +54,7 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 	print("Antes: ", Memoria.celulas.slice(0,15))
 
 	for linha in linhas:
-		var instrucao : Compilador.Instrucao = Compilador.compilar(linha)
+		var instrucao : Instrucao = Compilador.compilar(linha)
 		
 		if not instrucao:
 			# instrução inválida
@@ -64,27 +64,27 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 		
 		match instrucao.mnemonico:
 			"LDA":
-				if instrucao.enderecamento == Compilador.Enderecamentos.IMEDIATO:
+				if instrucao.enderecamento == Instrucao.Enderecamentos.IMEDIATO:
 					var valor = Utils.de_hex_string_para_inteiro(instrucao.parametros[0])
 					parte_memoria.push_back(0x20) # LDA
 					parte_memoria.push_back(valor)
 			"LDB":
-				if instrucao.enderecamento == Compilador.Enderecamentos.IMEDIATO:
+				if instrucao.enderecamento == Instrucao.Enderecamentos.IMEDIATO:
 					var valor = Utils.de_hex_string_para_inteiro(instrucao.parametros[0])
 					parte_memoria.push_back(0x60) # LDB
 					parte_memoria.push_back(valor)
 			"ABA":
-				if instrucao.enderecamento == Compilador.Enderecamentos.IMPLICITO:
+				if instrucao.enderecamento == Instrucao.Enderecamentos.IMPLICITO:
 					parte_memoria.push_back(0x48) # ABA
 			"STA":
-				if instrucao.enderecamento == Compilador.Enderecamentos.DIRETO:
+				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
 					parte_memoria.push_back(0x11) # STA
 					var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
 					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
 					for valor in valor_dividido:
 						parte_memoria.push_back(valor)
 			"CAL":
-				if instrucao.enderecamento == Compilador.Enderecamentos.DIRETO:
+				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
 					parte_memoria.push_back(0x58) # CAL
 					
 					if instrucao.parametros[0] == "EXIT":

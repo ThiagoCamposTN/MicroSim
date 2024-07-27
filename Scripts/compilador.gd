@@ -1,36 +1,4 @@
-extends Node
-
 class_name Compilador
-
-enum Enderecamentos { POS_INDEXADO, PRE_INDEXADO, INDIRETO, IMEDIATO, DIRETO, IMPLICITO, INDEXADO }
-
-class Instrucao:
-	var enderecamento 		: Enderecamentos
-	var mnemonico	: String
-	var parametros	: PackedStringArray
-	
-	func _init(enderecamento : Enderecamentos, mnemonico : String):
-		self.enderecamento = enderecamento
-		self.mnemonico = mnemonico
-	
-	func enderecamento_como_string() -> String:
-		match self.enderecamento:
-			Enderecamentos.POS_INDEXADO:
-				return "pós-indexado"
-			Enderecamentos.PRE_INDEXADO:
-				return "pré-indexado"
-			Enderecamentos.INDIRETO:
-				return "indireto"
-			Enderecamentos.IMEDIATO:
-				return "imediato"
-			Enderecamentos.DIRETO:
-				return "direto"
-			Enderecamentos.IMPLICITO:
-				return "implícito"
-			Enderecamentos.INDEXADO:
-				return "indexado"
-			_ :
-				return ""
 
 static func compilar(linha : String) -> Instrucao:
 	var mnemonico 	= linha.substr(0, 3)
@@ -38,47 +6,47 @@ static func compilar(linha : String) -> Instrucao:
 	
 	# Endereçamento implicito
 	if not restante:
-		return Instrucao.new(Enderecamentos.IMPLICITO, mnemonico)
+		return Instrucao.new(Instrucao.Enderecamentos.IMPLICITO, mnemonico)
 	
 	# Endereçamento pré-indexado
 	var enderecamento_pre_indexado = detectar_parametros(restante, r'\[(.+?),(.+?)\]')
 	if enderecamento_pre_indexado:
-		var instrucao := Instrucao.new(Enderecamentos.PRE_INDEXADO, mnemonico)
+		var instrucao := Instrucao.new(Instrucao.Enderecamentos.PRE_INDEXADO, mnemonico)
 		instrucao.parametros = extrair_parametros(enderecamento_pre_indexado)
 		return instrucao
 	
 	# Endereçamento pós-indexado
 	var enderecamento_pos_indexado = detectar_parametros(restante, r'\[(.+?)\],(.+)')
 	if enderecamento_pos_indexado:
-		var instrucao := Instrucao.new(Enderecamentos.POS_INDEXADO, mnemonico)
+		var instrucao := Instrucao.new(Instrucao.Enderecamentos.POS_INDEXADO, mnemonico)
 		instrucao.parametros = extrair_parametros(enderecamento_pos_indexado)
 		return instrucao
 	
 	# Endereçamento indireto
 	var enderecamento_indireto = detectar_parametros(restante, r'\[(.+?)\]')
 	if enderecamento_indireto:
-		var instrucao := Instrucao.new(Enderecamentos.INDIRETO, mnemonico)
+		var instrucao := Instrucao.new(Instrucao.Enderecamentos.INDIRETO, mnemonico)
 		instrucao.parametros = extrair_parametros(enderecamento_indireto)
 		return instrucao
 	
 	# Endereçamento indexado
 	var enderecamento_indexado = detectar_parametros(restante, r'(.+?),(.+)')
 	if enderecamento_indexado:
-		var instrucao := Instrucao.new(Enderecamentos.INDEXADO, mnemonico)
+		var instrucao := Instrucao.new(Instrucao.Enderecamentos.INDEXADO, mnemonico)
 		instrucao.parametros = extrair_parametros(enderecamento_indexado)
 		return instrucao
 	
 	# Endereçamento imediato
 	var enderecamento_imediato = detectar_parametros(restante, r'#(.+)')
 	if enderecamento_imediato:
-		var instrucao := Instrucao.new(Enderecamentos.IMEDIATO, mnemonico)
+		var instrucao := Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, mnemonico)
 		instrucao.parametros = extrair_parametros(enderecamento_imediato)
 		return instrucao
 	
 	# Endereçamento direto
 	var enderecamento_direto = detectar_parametros(restante, r'(.+)')
 	if enderecamento_direto:
-		var instrucao := Instrucao.new(Enderecamentos.DIRETO, mnemonico)
+		var instrucao := Instrucao.new(Instrucao.Enderecamentos.DIRETO, mnemonico)
 		instrucao.parametros = extrair_parametros(enderecamento_direto)
 		return instrucao
 	
@@ -101,15 +69,15 @@ static func extrair_parametros(parametros_detectados : RegExMatch):
 static func descompilar(opcode : int) -> Instrucao:
 	match opcode:
 		0x20: # LDA - endereçamento imediato
-			return Instrucao.new(Compilador.Enderecamentos.IMEDIATO, "LDA")
+			return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, "LDA")
 		0x60: # LDB - endereçamento imediato
-			return Instrucao.new(Compilador.Enderecamentos.IMEDIATO, "LDB")
+			return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, "LDB")
 		0x48: # ABA - endereçamento implícito
-			return Instrucao.new(Compilador.Enderecamentos.IMPLICITO, "ABA")
+			return Instrucao.new(Instrucao.Enderecamentos.IMPLICITO, "ABA")
 		0x11: # STA - endereçamento direto
-			return Instrucao.new(Compilador.Enderecamentos.DIRETO, "STA")
+			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "STA")
 		0x58: # CAL - endereçamento direto
-			return Instrucao.new(Compilador.Enderecamentos.DIRETO, "CAL")
+			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "CAL")
 		_:
 			# comando invalido
 			return null
