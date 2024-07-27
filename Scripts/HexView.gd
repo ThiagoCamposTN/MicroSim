@@ -26,20 +26,19 @@ func adicionar_label(texto: String, nome: String = ""):
 	elementos_viewer.append(hex_view_byte)
 
 func inicializar_hex_grid():
-	var current_linha = 0
+	var current_linha : int = 0
 	
 	for celula in Memoria.celulas:
 		var endereco_celula = Utils.int_para_hex(current_linha, 3)
 		if current_linha % 16 == 0:
 			adicionar_label(endereco_celula)
-			elementos_viewer
 			elementos_viewer.append(VSeparator.new())
 		adicionar_label(Utils.int_para_hex(celula, 2), endereco_celula)
 		current_linha += 1
-
+	
 	for label in elementos_viewer:
-		%HexGrid.add_child(elementos_viewer.pop_front())
-
+		%HexGrid.add_child(label)
+	
 func atualizar_celula(posicao : int):
 	var celula : Button = %HexGrid.get_node(Utils.int_para_hex(posicao, 3))
 	var conteudo : int = Memoria.ler_conteudo_no_endereco(posicao)
