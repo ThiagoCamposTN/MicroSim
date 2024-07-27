@@ -16,3 +16,14 @@ static func de_endereco_hex_para_bytes(valor : String) -> PackedByteArray:
 
 static func int_para_hex(valor : int, casas : int) -> String:
 	return (("%0" + str(casas) + "x") % valor).to_upper()
+
+static func int_para_bin(valor : int) -> String:
+	# Baseado nessa função por Ryn
+	# https://forum.godotengine.org/t/convert-int-to-binary-string/63279/3
+	if valor == 0:
+		return "0"
+	var bin_str: String = ""
+	while valor > 0:
+		bin_str = str(valor & 1) + bin_str
+		valor = valor >> 1
+	return bin_str

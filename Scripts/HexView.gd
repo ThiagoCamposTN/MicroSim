@@ -52,7 +52,9 @@ func atualizar_grupo_de_celulas(endereco, tamanho):
 
 func ao_clicar_elemento(elemento: Button):
 	var opcode = "???"
-	var instrucao = Compilador.descompilar(Utils.de_hex_string_para_inteiro(elemento.text))
+	var valor_em_int 	= Utils.de_hex_string_para_inteiro(elemento.text)
+	var instrucao 		= Compilador.descompilar(valor_em_int)
+	var endereco_em_int = Utils.de_hex_string_para_inteiro(elemento.name)
 	
 	if instrucao:
 		opcode = "{mnemonico} (endereçamento {enderecamento})".format({
@@ -63,13 +65,13 @@ func ao_clicar_elemento(elemento: Button):
 	var text = """
 	Endereço ([color=gray]{end_hex}[/color]):
 		* Hex: [b]{end_hex}[/b]
-		* Dec: [b]{end_dec}[/b]
+		* Bin: [b]{end_bin}[/b]
 		
 	Valor ([color=gray]{valor}[/color]):
 		* Hex: [b]{valor}[/b]
-		* Dec: [b]{decimal}[/b]
+		* Bin: [b]{binario}[/b]
 		* Como mnemônico: [b]{opcode}[/b]
-	""".format({"end_hex": elemento.name, "end_dec": Utils.de_hex_string_para_inteiro(elemento.name), "valor": elemento.text,
-		"decimal": Utils.de_hex_string_para_inteiro(elemento.text), "opcode": opcode})
+	""".format({"end_hex": elemento.name, "end_bin": Utils.int_para_bin(endereco_em_int) , "valor": elemento.text,
+		"binario": Utils.int_para_bin(valor_em_int), "opcode": opcode})
 	
 	get_node("Inspetor/Label").text = text
