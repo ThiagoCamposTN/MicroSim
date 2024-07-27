@@ -1,6 +1,6 @@
 extends Node
 
-class_name CODEC
+class_name Compilador
 
 enum Enderecamentos { POS_INDEXADO, PRE_INDEXADO, INDIRETO, IMEDIATO, DIRETO, IMPLICITO, INDEXADO }
 
@@ -32,7 +32,7 @@ class Instrucao:
 			_ :
 				return ""
 
-static func codificar(linha : String) -> Instrucao:
+static func compilar(linha : String) -> Instrucao:
 	var mnemonico 	= linha.substr(0, 3)
 	var restante 	= linha.substr(3, -1)
 	
@@ -98,18 +98,18 @@ static func extrair_parametros(parametros_detectados : RegExMatch):
 		parametros.push_back(i.strip_edges())
 	return parametros
 
-static func decodificar(opcode : int) -> Instrucao:
+static func descompilar(opcode : int) -> Instrucao:
 	match opcode:
 		0x20: # LDA - endereçamento imediato
-			return Instrucao.new(CODEC.Enderecamentos.IMEDIATO, "LDA")
+			return Instrucao.new(Compilador.Enderecamentos.IMEDIATO, "LDA")
 		0x60: # LDB - endereçamento imediato
-			return Instrucao.new(CODEC.Enderecamentos.IMEDIATO, "LDB")
+			return Instrucao.new(Compilador.Enderecamentos.IMEDIATO, "LDB")
 		0x48: # ABA - endereçamento implícito
-			return Instrucao.new(CODEC.Enderecamentos.IMPLICITO, "ABA")
+			return Instrucao.new(Compilador.Enderecamentos.IMPLICITO, "ABA")
 		0x11: # STA - endereçamento direto
-			return Instrucao.new(CODEC.Enderecamentos.DIRETO, "STA")
+			return Instrucao.new(Compilador.Enderecamentos.DIRETO, "STA")
 		0x58: # CAL - endereçamento direto
-			return Instrucao.new(CODEC.Enderecamentos.DIRETO, "CAL")
+			return Instrucao.new(Compilador.Enderecamentos.DIRETO, "CAL")
 		_:
 			# comando invalido
 			return null

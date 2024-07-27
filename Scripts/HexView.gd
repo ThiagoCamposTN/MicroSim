@@ -53,7 +53,7 @@ func atualizar_grupo_de_celulas(endereco, tamanho):
 
 func ao_clicar_elemento(elemento: Button):
 	var opcode = "???"
-	var instrucao = CODEC.decodificar(Utils.de_hex_string_para_inteiro(elemento.text))
+	var instrucao = Compilador.descompilar(Utils.de_hex_string_para_inteiro(elemento.text))
 	
 	if instrucao:
 		opcode = "{mnemonico} (endereçamento {tipo})".format({

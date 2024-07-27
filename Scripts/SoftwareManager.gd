@@ -54,7 +54,7 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 	print("Antes: ", Memoria.celulas.slice(0,15))
 
 	for linha in linhas:
-		var comando : CODEC.Instrucao = CODEC.codificar(linha)
+		var comando : Compilador.Instrucao = Compilador.compilar(linha)
 		
 		if not comando:
 			# comando inválido
@@ -64,25 +64,25 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 		
 		match comando.mnemonico:
 			"LDA":
-				if comando.tipo == CODEC.Enderecamentos.IMEDIATO:
+				if comando.tipo == Compilador.Enderecamentos.IMEDIATO:
 					parte_memoria.push_back(0x20) # LDA
 					parte_memoria.push_back(int(comando.parametros[0]))
 			"LDB":
-				if comando.tipo == CODEC.Enderecamentos.IMEDIATO:
+				if comando.tipo == Compilador.Enderecamentos.IMEDIATO:
 					parte_memoria.push_back(0x60) # LDB
 					parte_memoria.push_back(int(comando.parametros[0]))
 			"ABA":
-				if comando.tipo == CODEC.Enderecamentos.IMPLICITO:
+				if comando.tipo == Compilador.Enderecamentos.IMPLICITO:
 					parte_memoria.push_back(0x48) # ABA
 			"STA":
-				if comando.tipo == CODEC.Enderecamentos.DIRETO:
+				if comando.tipo == Compilador.Enderecamentos.DIRETO:
 					parte_memoria.push_back(0x11) # STA
 					var valor_em_hex 	= Utils.formatar_hex_como_endereco(comando.parametros[0])
 					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
 					for valor in valor_dividido:
 						parte_memoria.push_back(valor)
 			"CAL":
-				if comando.tipo == CODEC.Enderecamentos.DIRETO:
+				if comando.tipo == Compilador.Enderecamentos.DIRETO:
 					parte_memoria.push_back(0x58) # CAL
 					
 					if comando.parametros[0] == "EXIT":
