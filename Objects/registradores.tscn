@@ -27,6 +27,17 @@ text = "Registrador B - "
 layout_mode = 2
 text = "*"
 
+[node name="HBoxContainer6" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="RegistradorPC" type="Label" parent="HBoxContainer6"]
+layout_mode = 2
+text = "Registrador PC - "
+
+[node name="ValorRegistradorPC" type="Label" parent="HBoxContainer6"]
+layout_mode = 2
+text = "*"
+
 [node name="HBoxContainer4" type="HBoxContainer" parent="."]
 layout_mode = 2
 
@@ -49,25 +60,47 @@ text = "Registrador PP	 - "
 layout_mode = 2
 text = "*"
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="."]
+[node name="HBoxContainer12" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="RegistradorCO" type="Label" parent="HBoxContainer6"]
+[node name="RegistradorMBR" type="Label" parent="HBoxContainer12"]
 layout_mode = 2
-text = "Registrador CO	 - "
+text = "Registrador MBR	 - "
 
-[node name="ValorRegistradorCO" type="Label" parent="HBoxContainer6"]
+[node name="ValorRegistradorMBR" type="Label" parent="HBoxContainer12"]
 layout_mode = 2
 text = "*"
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="."]
+[node name="HBoxContainer13" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="RegistradorCC" type="Label" parent="HBoxContainer7"]
+[node name="RegistradorAUX" type="Label" parent="HBoxContainer13"]
 layout_mode = 2
-text = "Registrador CC	 - "
+text = "Registrador AUX	 - "
 
-[node name="ValorRegistradorCC" type="Label" parent="HBoxContainer7"]
+[node name="ValorRegistradorAUX" type="Label" parent="HBoxContainer13"]
+layout_mode = 2
+text = "*"
+
+[node name="HBoxContainer14" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="RegistradorMAR" type="Label" parent="HBoxContainer14"]
+layout_mode = 2
+text = "Registrador MAR	 - "
+
+[node name="ValorRegistradorMAR" type="Label" parent="HBoxContainer14"]
+layout_mode = 2
+text = "*"
+
+[node name="HBoxContainer15" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="RegistradorIR" type="Label" parent="HBoxContainer15"]
+layout_mode = 2
+text = "Registrador IR	 - "
+
+[node name="ValorRegistradorIR" type="Label" parent="HBoxContainer15"]
 layout_mode = 2
 text = "*"
 
@@ -112,27 +145,5 @@ layout_mode = 2
 text = "Flag d	 - "
 
 [node name="ValorFlagD" type="Label" parent="HBoxContainer11"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer12" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="RegistradorDON" type="Label" parent="HBoxContainer12"]
-layout_mode = 2
-text = "Registrador DON	 - "
-
-[node name="ValorRegistradorDON" type="Label" parent="HBoxContainer12"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer13" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="RegistradorCO" type="Label" parent="HBoxContainer13"]
-layout_mode = 2
-text = "Registrador CO	 - "
-
-[node name="ValorRegistradorCO" type="Label" parent="HBoxContainer13"]
 layout_mode = 2
 text = "*"

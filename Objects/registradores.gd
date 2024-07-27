@@ -6,8 +6,8 @@ extends VBoxContainer
 func _ready():
 	CPU.registrador_a_foi_atualizado.connect(atualizar_registrador_a)
 	CPU.registrador_b_foi_atualizado.connect(atualizar_registrador_b)
-	CPU.registrador_don_foi_atualizado.connect(atualizar_registrador_don)
-	CPU.registrador_co_foi_atualizado.connect(atualizar_registrador_co)
+	CPU.registrador_mbr_foi_atualizado.connect(atualizar_registrador_mbr)
+	CPU.registrador_pc_foi_atualizado.connect(atualizar_registrador_pc)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -20,8 +20,8 @@ func atualizar_registrador_a():
 func atualizar_registrador_b():
 	$HBoxContainer3/ValorRegistradorB.text = str(Utils.int_para_hex(CPU.registrador_b, 2))
 	
-func atualizar_registrador_don():
-	$HBoxContainer12/ValorRegistradorDON.text = str(Utils.int_para_hex(CPU.registrador_don, 2))
+func atualizar_registrador_mbr():
+	$HBoxContainer12/ValorRegistradorMBR.text = str(Utils.int_para_hex(CPU.registrador_mbr, 2))
 	
-func atualizar_registrador_co():
-	$HBoxContainer13/ValorRegistradorCO.text = str(Utils.int_para_hex(CPU.registrador_co, 2))
+func atualizar_registrador_pc():
+	$HBoxContainer6/ValorRegistradorPC.text = str(Utils.int_para_hex(CPU.registrador_pc, 2))

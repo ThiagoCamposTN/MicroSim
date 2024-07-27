@@ -25,24 +25,24 @@ func executar_programa(endereco_inicial : int):
 	var em_execução : bool = true
 
 	# Inicia-se a fase de acesso à instrução;
-	CPU.iniciar_registrador_co(endereco_inicial)
+	CPU.iniciar_registrador_pc(endereco_inicial)
 
 	while em_execução:
 		# Transferência do CO (Contador Ordinal) para o RAD (Registrador de Endereço);
-		CPU.mover_co_para_rad()
+		CPU.mover_pc_para_mar()
 
-		var dado : int = CPU.ler_dado_do_endereço_do_rad()
+		var dado : int = CPU.ler_dado_do_endereço_do_mar()
 
 		# O valor é transferido ao DON (Registrador de Dados) via o BUS de Dados;
-		CPU.atualizar_registrador_don(dado)
+		CPU.atualizar_registrador_mbr(dado)
 #
 		# O valor de DON é transferido ao DCOD (Decodificador de instrução) via o BUS de Dados;
-		CPU.transferir_don_para_dcod()
+		CPU.transferir_mbr_para_ir()
 #
 		# O CO é incrementado em 1;
-		CPU.incrementar_registrador_co(1)
+		CPU.incrementar_registrador_pc(1)
 
-		em_execução = executar_instrucao(CPU.registrador_dcod)
+		em_execução = executar_instrucao(CPU.registrador_ir)
 	
 		# Fim da instrução.
 	
@@ -108,23 +108,23 @@ func executar_instrucao(instrucao : int):
 	
 	match instrucao:
 		0x20: # LDA - endereçamento imediato
-			# Transferência do CO para o RAD
-			CPU.mover_co_para_rad()
+			# Transferência de PC para MAR
+			CPU.mover_pc_para_mar()
 			
-			# O CO é incrementado em 1
-			CPU.incrementar_registrador_co(1)
+			# PC é incrementado em 1
+			CPU.incrementar_registrador_pc(1)
 			
-			# Transferência do RAD para o Endereço de Memória via o BUS de Endereço
-			var endereco = CPU.registrador_rad
+			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
+			var endereco = CPU.registrador_mar
 			
 			# O conteúdo da memória no endereço fornecido é lido
 			var dado = Memoria.ler_conteudo_no_endereco(endereco)
 			
-			# O valor é transferido ao DON via o BUS de Dados
-			CPU.atualizar_registrador_don(dado)
+			# O valor é transferido ao MBR via o BUS de Dados
+			CPU.atualizar_registrador_mbr(dado)
 			
-			# O valor é transferido do DON para o Registrador A
-			CPU.atualizar_registrador_a(CPU.registrador_don)
+			# O valor é transferido de MBR para o Registrador A
+			CPU.atualizar_registrador_a(CPU.registrador_mbr)
 			
 			# A flag Z (zero) é verificada
 			# calcular_z()
@@ -132,23 +132,23 @@ func executar_instrucao(instrucao : int):
 			# A flag N (negativo) é verificada
 			# calcular_n()
 		0x60: # LDB - endereçamento imediato
-			# Transferência do CO para o RAD
-			CPU.mover_co_para_rad()
+			# Transferência de PC para MAR
+			CPU.mover_pc_para_mar()
 			
-			# O CO é incrementado em 1
-			CPU.incrementar_registrador_co(1)
+			# PC é incrementado em 1
+			CPU.incrementar_registrador_pc(1)
 			
-			# Transferência do RAD para o Endereço de Memória via o BUS de Endereço
-			var endereco = CPU.registrador_rad
+			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
+			var endereco = CPU.registrador_mar
 			
 			# O conteúdo da memória no endereço fornecido é lido
 			var dado = Memoria.ler_conteudo_no_endereco(endereco)
 			
-			# O valor é transferido ao DON via o BUS de Dados
-			CPU.atualizar_registrador_don(dado)
+			# O valor é transferido ao MBR via o BUS de Dados
+			CPU.atualizar_registrador_mbr(dado)
 			
-			# O valor é transferido do DON para o Registrador B
-			CPU.atualizar_registrador_b(CPU.registrador_don)
+			# O valor é transferido de MBR para o Registrador B
+			CPU.atualizar_registrador_b(CPU.registrador_mbr)
 			
 			# A flag Z (zero) é verificada
 			# calcular_z()
@@ -156,27 +156,27 @@ func executar_instrucao(instrucao : int):
 			# A flag N (negativo) é verificada
 			# calcular_n()
 		0x48: # ABA - endereçamento implícito
-			# Transferência do A para a ULA A
-			CPU.transferir_a_para_ula_a()
+			# Transferência do A para a ALU A
+			CPU.transferir_a_para_alu_a()
 			
-			# Transferência do B para a ULA B
-			CPU.transferir_b_para_ula_b()
+			# Transferência do B para a ALU B
+			CPU.transferir_b_para_alu_b()
 			
-			# Adição de 8 bits na ULA
-			CPU.adicao_ula_a_ula_b()
+			# Adição de 8 bits na ALU
+			CPU.adicao_alu_a_alu_b()
 			
-			# Transferência da saída da ULA para A
-			CPU.transferir_ula_saida_para_a()
+			# Transferência da saída da ALU para A
+			CPU.transferir_alu_saida_para_a()
 			
 			# TODO: Verificar as flags
 		0x11: # STA - endereçamento direto
 			# Fase de pesquisa e endereço do operando
 			
-			# Transferência do CO para o RAD
-			CPU.mover_co_para_rad()
+			# Transferência de PC para MAR
+			CPU.mover_pc_para_mar()
 			
-			# Transferência do RAD para o Endereço de Memória via o BUS de Endereço
-			var endereco = CPU.registrador_rad
+			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
+			var endereco = CPU.registrador_mar
 			
 			# O conteúdo da memória no endereço fornecido é lido
 			var dado = Memoria.ler_conteudo_no_endereco(endereco)
@@ -186,41 +186,41 @@ func executar_instrucao(instrucao : int):
 			# O valor é transferido ao AUX via o BUS de Dados
 			CPU.atualizar_registrador_aux(dado)
 			
-			# O RAD é incrementado em 1
-			CPU.incrementar_registrador_rad(1)
+			# O MAR é incrementado em 1
+			CPU.incrementar_registrador_mar(1)
 			
-			# Transferência do RAD para o Endereço de Memória via o BUS de Endereço
-			endereco = CPU.registrador_rad
+			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+			endereco = CPU.registrador_mar
 			
 			# O conteúdo da memória no endereço fornecido é lido
 			dado = Memoria.ler_conteudo_no_endereco(endereco)
 			
 			print("segunda parte do endereço: ", dado)
 			
-			# O valor é transferido ao DON via o BUS de Dados
-			CPU.atualizar_registrador_don(dado)
+			# O valor é transferido ao MBR via o BUS de Dados
+			CPU.atualizar_registrador_mbr(dado)
 			
-			# Une DON e AUX para formar um endereço 16 bits que é transferido para RAD
-			CPU.unir_don_ao_aux_e_mover_para_rad()
+			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
+			CPU.unir_mbr_ao_aux_e_mover_para_mar()
 			
-			print("endereço final: ", CPU.registrador_rad)
+			print("endereço final: ", CPU.registrador_mar)
 			
-			# O CO é incrementado em 2
-			CPU.incrementar_registrador_co(2)
+			# O PC é incrementado em 2
+			CPU.incrementar_registrador_pc(2)
 			
 			# Fase de execução
 			
-			# Transferência do RAD para o Endereço de Memória via o BUS de Endereço
-			endereco = CPU.registrador_rad
+			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+			endereco = CPU.registrador_mar
 			
-			# O valor de A é transferido ao DON
-			CPU.transferir_a_para_don()
+			# O valor de A é transferido ao MBR
+			CPU.transferir_a_para_mbr()
 			
-			# O valor de DON é transferido para a memória
-			CPU.transferir_a_para_don()
+			# O valor de MBR é transferido para a memória
+			CPU.transferir_a_para_mbr()
 			
-			# O conteúdo da memória no endereço fornecido é substituído por DON via o BUS de Dados
-			Memoria.atualizar_dado_no_endereco(endereco, CPU.registrador_don)
+			# O conteúdo da memória no endereço fornecido é substituído por MBR via o BUS de Dados
+			Memoria.atualizar_dado_no_endereco(endereco, CPU.registrador_mbr)
 		_:
 			# instrucao invalido
 			return false
