@@ -15,13 +15,13 @@ func _process(delta):
 	pass
 
 func atualizar_registrador_a():
-	$HBoxContainer2/ValorRegistradorA.text = str(CPU.registrador_a)
+	$HBoxContainer2/ValorRegistradorA.text = str(Utils.int_para_hex(CPU.registrador_a, 2))
 
 func atualizar_registrador_b():
-	$HBoxContainer3/ValorRegistradorB.text = str(CPU.registrador_b)
+	$HBoxContainer3/ValorRegistradorB.text = str(Utils.int_para_hex(CPU.registrador_b, 2))
 	
 func atualizar_registrador_don():
-	$HBoxContainer12/ValorRegistradorDON.text = str(CPU.registrador_don)
+	$HBoxContainer12/ValorRegistradorDON.text = str(Utils.int_para_hex(CPU.registrador_don, 2))
 	
 func atualizar_registrador_co():
-	$HBoxContainer13/ValorRegistradorCO.text = str(CPU.registrador_co)
+	$HBoxContainer13/ValorRegistradorCO.text = str(Utils.int_para_hex(CPU.registrador_co, 2))

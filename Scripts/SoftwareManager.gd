@@ -65,12 +65,14 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 		match comando.mnemonico:
 			"LDA":
 				if comando.tipo == Compilador.Enderecamentos.IMEDIATO:
+					var valor = Utils.de_hex_string_para_inteiro(comando.parametros[0])
 					parte_memoria.push_back(0x20) # LDA
-					parte_memoria.push_back(int(comando.parametros[0]))
+					parte_memoria.push_back(valor)
 			"LDB":
 				if comando.tipo == Compilador.Enderecamentos.IMEDIATO:
+					var valor = Utils.de_hex_string_para_inteiro(comando.parametros[0])
 					parte_memoria.push_back(0x60) # LDB
-					parte_memoria.push_back(int(comando.parametros[0]))
+					parte_memoria.push_back(valor)
 			"ABA":
 				if comando.tipo == Compilador.Enderecamentos.IMPLICITO:
 					parte_memoria.push_back(0x48) # ABA
