@@ -5,16 +5,16 @@ class_name Compilador
 enum Enderecamentos { POS_INDEXADO, PRE_INDEXADO, INDIRETO, IMEDIATO, DIRETO, IMPLICITO, INDEXADO }
 
 class Instrucao:
-	var tipo 		: Enderecamentos
+	var enderecamento 		: Enderecamentos
 	var mnemonico	: String
 	var parametros	: PackedStringArray
 	
-	func _init(tipo : Enderecamentos, mnemonico : String):
-		self.tipo = tipo
+	func _init(enderecamento : Enderecamentos, mnemonico : String):
+		self.enderecamento = enderecamento
 		self.mnemonico = mnemonico
 	
-	func tipo_como_string() -> String:
-		match self.tipo:
+	func enderecamento_como_string() -> String:
+		match self.enderecamento:
 			Enderecamentos.POS_INDEXADO:
 				return "pós-indexado"
 			Enderecamentos.PRE_INDEXADO:

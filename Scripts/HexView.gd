@@ -56,9 +56,9 @@ func ao_clicar_elemento(elemento: Button):
 	var instrucao = Compilador.descompilar(Utils.de_hex_string_para_inteiro(elemento.text))
 	
 	if instrucao:
-		opcode = "{mnemonico} (endereçamento {tipo})".format({
+		opcode = "{mnemonico} (endereçamento {enderecamento})".format({
 				"mnemonico": instrucao.mnemonico, 
-				"tipo": instrucao.tipo_como_string()
+				"enderecamento": instrucao.enderecamento_como_string()
 			})
 	
 	var text = """

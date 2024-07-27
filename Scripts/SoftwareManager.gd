@@ -54,49 +54,49 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 	print("Antes: ", Memoria.celulas.slice(0,15))
 
 	for linha in linhas:
-		var comando : Compilador.Instrucao = Compilador.compilar(linha)
+		var instrucao : Compilador.Instrucao = Compilador.compilar(linha)
 		
-		if not comando:
-			# comando inválido
+		if not instrucao:
+			# instrução inválida
 			return
 		
-		print("comando: tipo - ", comando.tipo, ", mnemonico: ", comando.mnemonico, ", parametros: ", comando.parametros)
+		print("instrução: enderecamento - ", instrucao.enderecamento, ", mnemonico: ", instrucao.mnemonico, ", parametros: ", instrucao.parametros)
 		
-		match comando.mnemonico:
+		match instrucao.mnemonico:
 			"LDA":
-				if comando.tipo == Compilador.Enderecamentos.IMEDIATO:
-					var valor = Utils.de_hex_string_para_inteiro(comando.parametros[0])
+				if instrucao.enderecamento == Compilador.Enderecamentos.IMEDIATO:
+					var valor = Utils.de_hex_string_para_inteiro(instrucao.parametros[0])
 					parte_memoria.push_back(0x20) # LDA
 					parte_memoria.push_back(valor)
 			"LDB":
-				if comando.tipo == Compilador.Enderecamentos.IMEDIATO:
-					var valor = Utils.de_hex_string_para_inteiro(comando.parametros[0])
+				if instrucao.enderecamento == Compilador.Enderecamentos.IMEDIATO:
+					var valor = Utils.de_hex_string_para_inteiro(instrucao.parametros[0])
 					parte_memoria.push_back(0x60) # LDB
 					parte_memoria.push_back(valor)
 			"ABA":
-				if comando.tipo == Compilador.Enderecamentos.IMPLICITO:
+				if instrucao.enderecamento == Compilador.Enderecamentos.IMPLICITO:
 					parte_memoria.push_back(0x48) # ABA
 			"STA":
-				if comando.tipo == Compilador.Enderecamentos.DIRETO:
+				if instrucao.enderecamento == Compilador.Enderecamentos.DIRETO:
 					parte_memoria.push_back(0x11) # STA
-					var valor_em_hex 	= Utils.formatar_hex_como_endereco(comando.parametros[0])
+					var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
 					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
 					for valor in valor_dividido:
 						parte_memoria.push_back(valor)
 			"CAL":
-				if comando.tipo == Compilador.Enderecamentos.DIRETO:
+				if instrucao.enderecamento == Compilador.Enderecamentos.DIRETO:
 					parte_memoria.push_back(0x58) # CAL
 					
-					if comando.parametros[0] == "EXIT":
+					if instrucao.parametros[0] == "EXIT":
 						parte_memoria.push_back(0x12)
 						parte_memoria.push_back(0x00)
 					else:
-						var valor_em_hex 	= Utils.formatar_hex_como_endereco(comando.parametros[0])
+						var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
 						var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
 						for valor in valor_dividido:
 							parte_memoria.push_back(valor)
 			_:
-				# comando não existe
+				# instrução não existe
 				pass
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, Utils.de_hex_string_para_inteiro(endereco_inicial))
 	print("Depois: ", Memoria.celulas.slice(0,15))
@@ -222,7 +222,7 @@ func executar_instrucao(instrucao : int):
 			# O conteúdo da memória no endereço fornecido é substituído por DON via o BUS de Dados
 			Memoria.atualizar_dado_no_endereco(endereco, CPU.registrador_don)
 		_:
-			# comando invalido
+			# instrucao invalido
 			return false
 	
 	return true
