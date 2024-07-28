@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://jgcr8laoykqj"]
+[gd_scene load_steps=3 format=3 uid="uid://jgcr8laoykqj"]
 
 [ext_resource type="Script" path="res://Objects/editor_de_programa.gd" id="1_ds6ok"]
+[ext_resource type="PackedScene" uid="uid://kgtibjxuld4x" path="res://Objects/entrada_de_endereço.tscn" id="2_rkaqy"]
 
 [node name="VBoxContainer2" type="VBoxContainer"]
 script = ExtResource("1_ds6ok")
@@ -32,10 +33,8 @@ layout_mode = 2
 layout_mode = 2
 text = "A partir do endereço: "
 
-[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+[node name="LineEdit2" parent="HBoxContainer" instance=ExtResource("2_rkaqy")]
 layout_mode = 2
-size_flags_horizontal = 3
-text = "1"
 
 [node name="Button" type="Button" parent="HBoxContainer"]
 layout_mode = 2

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cn15sjsyqk3sy"]
+[gd_scene load_steps=3 format=3 uid="uid://cn15sjsyqk3sy"]
 
 [ext_resource type="Script" path="res://Objects/executor_de_programa.gd" id="1_ds6ok"]
+[ext_resource type="PackedScene" uid="uid://kgtibjxuld4x" path="res://Objects/entrada_de_endereço.tscn" id="2_6tjpm"]
 
 [node name="HBoxContainer" type="HBoxContainer"]
 script = ExtResource("1_ds6ok")
@@ -9,10 +10,8 @@ script = ExtResource("1_ds6ok")
 layout_mode = 2
 text = "Endereço inicial: "
 
-[node name="LineEdit" type="LineEdit" parent="."]
+[node name="LineEdit" parent="." instance=ExtResource("2_6tjpm")]
 layout_mode = 2
-size_flags_horizontal = 3
-text = "1"
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 2

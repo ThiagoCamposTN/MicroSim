@@ -48,7 +48,7 @@ func executar_programa(endereco_inicial : int):
 	
 	# Fim da execução
 
-func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
+func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 	var parte_memoria = Array()
 	var linhas = codigo.split("\n", false)
 	print("Antes: ", Memoria.celulas.slice(0,15))
@@ -98,7 +98,7 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: String):
 			_:
 				# instrução não existe
 				pass
-	Memoria.sobrescrever_parte_da_memoria(parte_memoria, Utils.de_hex_string_para_inteiro(endereco_inicial))
+	Memoria.sobrescrever_parte_da_memoria(parte_memoria, endereco_inicial)
 	print("Depois: ", Memoria.celulas.slice(0,15))
 
 func executar_instrucao(instrucao : int):

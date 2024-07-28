@@ -15,8 +15,6 @@ func _process(delta):
 
 
 func _on_button_pressed():
-	# TODO: Colocar um erro se o campo de endereço inicial estiver vazio?
-	var endereco_inicial 	: String 	= $LineEdit.text
-	var numero_endereco 	: int 		= Utils.de_hex_string_para_inteiro(endereco_inicial)
+	var numero_endereco : int = $LineEdit.obter_endereco()
 	SoftwareManager.executar_programa(numero_endereco)
 	#clicou_em_executar.emit(endereco_inicial)

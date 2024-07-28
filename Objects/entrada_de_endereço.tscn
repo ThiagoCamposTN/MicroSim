@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://kgtibjxuld4x"]
+
+[ext_resource type="Script" path="res://Objects/entrada_de_endereço.gd" id="1_gkovj"]
+
+[node name="LineEdit" type="LineEdit"]
+size_flags_horizontal = 3
+text = "0001"
+script = ExtResource("1_gkovj")
+
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
