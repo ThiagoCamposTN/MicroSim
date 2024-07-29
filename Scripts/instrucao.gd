@@ -28,3 +28,8 @@ func enderecamento_como_string() -> String:
 			return "indexado"
 		_ :
 			return ""
+
+static func instrucao_call_exit(instrucao : Instrucao):
+	if not instrucao:
+		return false
+	return (instrucao.mnemonico == "CAL") and (instrucao.parametros == PackedStringArray(["12", "00"]))
