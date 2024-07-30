@@ -2,148 +2,71 @@
 
 [ext_resource type="Script" path="res://Objects/registradores.gd" id="1_5p0nd"]
 
-[node name="VBoxContainer" type="VBoxContainer"]
+[node name="Registradores" type="VBoxContainer"]
+offset_right = 1153.0
+offset_bottom = 401.0
+size_flags_horizontal = 3
 script = ExtResource("1_5p0nd")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Registradores:"
+
+[node name="RegistradorGrid" type="GridContainer" parent="."]
+layout_mode = 2
+theme_override_constants/h_separation = 20
+columns = 4
+
+[node name="CCLabel" type="Label" parent="RegistradorGrid"]
+layout_mode = 2
+text = "CC"
+
+[node name="CCBitsContainer" type="GridContainer" parent="RegistradorGrid"]
+layout_mode = 2
+columns = 4
+
+[node name="ZValue" type="Button" parent="RegistradorGrid/CCBitsContainer"]
+layout_mode = 2
+disabled = true
+text = "0"
+
+[node name="NValue" type="Button" parent="RegistradorGrid/CCBitsContainer"]
+layout_mode = 2
+disabled = true
+text = "0"
+
+[node name="RValue" type="Button" parent="RegistradorGrid/CCBitsContainer"]
+layout_mode = 2
+disabled = true
+text = "0"
+
+[node name="DValue" type="Button" parent="RegistradorGrid/CCBitsContainer"]
+layout_mode = 2
+disabled = true
+text = "0"
+
+[node name="ZLabel" type="Label" parent="RegistradorGrid/CCBitsContainer"]
+layout_mode = 2
+text = "Z"
+horizontal_alignment = 1
+
+[node name="NLabel" type="Label" parent="RegistradorGrid/CCBitsContainer"]
+layout_mode = 2
+text = "N"
+horizontal_alignment = 1
+
+[node name="RLabel" type="Label" parent="RegistradorGrid/CCBitsContainer"]
+layout_mode = 2
+text = "R"
+horizontal_alignment = 1
+
+[node name="DLabel" type="Label" parent="RegistradorGrid/CCBitsContainer"]
+layout_mode = 2
+text = "D"
+horizontal_alignment = 1
+
+[node name="EmptyLabel" type="Label" parent="RegistradorGrid"]
 layout_mode = 2
 
-[node name="RegistradorA" type="Label" parent="HBoxContainer2"]
+[node name="EmptyLabel2" type="Label" parent="RegistradorGrid"]
 layout_mode = 2
-text = "Registrador A - "
-
-[node name="ValorRegistradorA" type="Label" parent="HBoxContainer2"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="RegistradorB" type="Label" parent="HBoxContainer3"]
-layout_mode = 2
-text = "Registrador B - "
-
-[node name="ValorRegistradorB" type="Label" parent="HBoxContainer3"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer6" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="RegistradorPC" type="Label" parent="HBoxContainer6"]
-layout_mode = 2
-text = "Registrador PC - "
-
-[node name="ValorRegistradorPC" type="Label" parent="HBoxContainer6"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="RegistradorIX" type="Label" parent="HBoxContainer4"]
-layout_mode = 2
-text = "Registrador IX - "
-
-[node name="ValorRegistradorIX" type="Label" parent="HBoxContainer4"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer5" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="RegistradorPP" type="Label" parent="HBoxContainer5"]
-layout_mode = 2
-text = "Registrador PP	 - "
-
-[node name="ValorRegistradorPP" type="Label" parent="HBoxContainer5"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer12" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="RegistradorMBR" type="Label" parent="HBoxContainer12"]
-layout_mode = 2
-text = "Registrador MBR	 - "
-
-[node name="ValorRegistradorMBR" type="Label" parent="HBoxContainer12"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer13" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="RegistradorAUX" type="Label" parent="HBoxContainer13"]
-layout_mode = 2
-text = "Registrador AUX	 - "
-
-[node name="ValorRegistradorAUX" type="Label" parent="HBoxContainer13"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer14" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="RegistradorMAR" type="Label" parent="HBoxContainer14"]
-layout_mode = 2
-text = "Registrador MAR	 - "
-
-[node name="ValorRegistradorMAR" type="Label" parent="HBoxContainer14"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer15" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="RegistradorIR" type="Label" parent="HBoxContainer15"]
-layout_mode = 2
-text = "Registrador IR	 - "
-
-[node name="ValorRegistradorIR" type="Label" parent="HBoxContainer15"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer8" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="FlagZ" type="Label" parent="HBoxContainer8"]
-layout_mode = 2
-text = "Flag z	 - "
-
-[node name="ValorFlagZ" type="Label" parent="HBoxContainer8"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer9" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="FlagN" type="Label" parent="HBoxContainer9"]
-layout_mode = 2
-text = "Flag n	 - "
-
-[node name="ValorFlagN" type="Label" parent="HBoxContainer9"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer10" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="FlagR" type="Label" parent="HBoxContainer10"]
-layout_mode = 2
-text = "Flag r	 - "
-
-[node name="ValorFlagR" type="Label" parent="HBoxContainer10"]
-layout_mode = 2
-text = "*"
-
-[node name="HBoxContainer11" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="FlagD" type="Label" parent="HBoxContainer11"]
-layout_mode = 2
-text = "Flag d	 - "
-
-[node name="ValorFlagD" type="Label" parent="HBoxContainer11"]
-layout_mode = 2
-text = "*"

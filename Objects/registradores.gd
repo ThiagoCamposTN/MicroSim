@@ -1,27 +1,54 @@
 extends VBoxContainer
 
 # TODO: talvez criar apenas uma função que passa o registrador atualizado como parâmetro
+@onready var grid_container : Container = $RegistradorGrid
+
+var registradores = [
+	{"nome": "A", 	"propriedade": "registrador_a", "sinal": CPU.registrador_a_foi_atualizado,
+		"bytes": 1, "tooltip": "Registrador A para armazenamento de dados."},
+	{"nome": "B", 	"propriedade": "registrador_b", "sinal": CPU.registrador_b_foi_atualizado,
+		"bytes": 1, "tooltip": "Registrador B para armazenamento de dados."},
+	{"nome": "MBR", "propriedade": "registrador_mbr", "sinal": CPU.registrador_mbr_foi_atualizado,
+		"bytes": 1, "tooltip": "Registrador MBR, que guarda bytes vindo da memória."},
+	{"nome": "PC", 	"propriedade": "registrador_pc", "sinal": CPU.registrador_pc_foi_atualizado,
+		"bytes": 1, "tooltip": "Registrador PC (Program Counter), que armazena o ponteiro de aonde o programa está executando na memória."},
+	{"nome": "IX", 	"propriedade": "registrador_ix", "sinal": CPU.registrador_pc_foi_atualizado,
+		"bytes": 1, "tooltip": "Registrador IX."},
+	{"nome": "PP", 	"propriedade": "registrador_ix", "sinal": CPU.registrador_pc_foi_atualizado,
+		"bytes": 1, "tooltip": "Registrador IX."},
+	{"nome": "AUX", 	"propriedade": "registrador_ix", "sinal": CPU.registrador_pc_foi_atualizado,
+		"bytes": 1, "tooltip": "Registrador IX."},
+	{"nome": "MAR", 	"propriedade": "registrador_ix", "sinal": CPU.registrador_pc_foi_atualizado,
+		"bytes": 1, "tooltip": "Registrador IX."},
+	{"nome": "IR", 	"propriedade": "registrador_ix", "sinal": CPU.registrador_pc_foi_atualizado,
+		"bytes": 1, "tooltip": "Registrador IX."},
+]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	CPU.registrador_a_foi_atualizado.connect(atualizar_registrador_a)
-	CPU.registrador_b_foi_atualizado.connect(atualizar_registrador_b)
-	CPU.registrador_mbr_foi_atualizado.connect(atualizar_registrador_mbr)
-	CPU.registrador_pc_foi_atualizado.connect(atualizar_registrador_pc)
+	for registrador in registradores:
+		var valor_registrador = CPU.get(registrador["propriedade"])
+		var valor_convertido = str(Utils.int_para_hex(valor_registrador, registrador["bytes"] * 2))
+
+		var label := Label.new()
+		label.text = registrador["nome"]
+		label.tooltip_text = registrador["tooltip"]
+		label.mouse_filter = Control.MOUSE_FILTER_PASS
+		
+		var text := Button.new()
+		text.disabled = true
+		text.text = valor_convertido
+		
+		grid_container.add_child(label)
+		grid_container.add_child(text)
+		
+		registrador["sinal"].connect(atualizar_registrador.bind(text, registrador["propriedade"], registrador["bytes"] * 2))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 
-func atualizar_registrador_a():
-	$HBoxContainer2/ValorRegistradorA.text = str(Utils.int_para_hex(CPU.registrador_a, 2))
-
-func atualizar_registrador_b():
-	$HBoxContainer3/ValorRegistradorB.text = str(Utils.int_para_hex(CPU.registrador_b, 2))
-	
-func atualizar_registrador_mbr():
-	$HBoxContainer12/ValorRegistradorMBR.text = str(Utils.int_para_hex(CPU.registrador_mbr, 2))
-	
-func atualizar_registrador_pc():
-	$HBoxContainer6/ValorRegistradorPC.text = str(Utils.int_para_hex(CPU.registrador_pc, 2))
+func atualizar_registrador(node: Button, propriedade: String, digitos: int) -> void:
+	var novo_valor = CPU.get(propriedade)
+	node.text = str(Utils.int_para_hex(novo_valor, digitos))
