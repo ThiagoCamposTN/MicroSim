@@ -215,6 +215,7 @@ size_flags_horizontal = 3
 columns = 18
 
 [node name="Inspetor" type="Panel" parent="HSplitContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
