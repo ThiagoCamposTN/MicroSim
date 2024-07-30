@@ -74,4 +74,4 @@ func ao_clicar_elemento(elemento: Button):
 	""".format({"end_hex": elemento.name, "end_bin": Utils.int_para_bin(endereco_em_int) , "valor": elemento.text,
 		"binario": Utils.int_para_bin(valor_em_int), "opcode": opcode})
 	
-	get_node("Inspetor/Label").text = text
+	get_node("HSplitContainer/Inspetor/Label").text = text

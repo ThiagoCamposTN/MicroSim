@@ -26,55 +26,7 @@ grow_vertical = 2
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="Principal" type="TabBar" parent="VBoxContainer/TabContainer"]
-layout_mode = 2
-script = ExtResource("1_p8pv5")
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Principal"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("2_h2p1t")
-
-[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/TabContainer/Principal/MarginContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = "Arquivo de Memória: "
-
-[node name="MemoriaLineEdit" type="LineEdit" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 0)
-layout_mode = 2
-text = "res://MEMORIA.MEM"
-placeholder_text = "Caminho para o arquivo de memória"
-editable = false
-caret_blink = true
-
-[node name="Button" type="Button" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-disabled = true
-text = "Carregar"
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Registradores" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/VBoxContainer" instance=ExtResource("2_pfwce")]
-layout_mode = 2
-
-[node name="Executor" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer" instance=ExtResource("3_0ofiw")]
-layout_mode = 2
+current_tab = 1
 
 [node name="Memória" type="TabBar" parent="VBoxContainer/TabContainer"]
 visible = false
@@ -83,7 +35,59 @@ layout_mode = 2
 [node name="HexView" parent="VBoxContainer/TabContainer/Memória" instance=ExtResource("5_rebeb")]
 layout_mode = 1
 
+[node name="Execução" type="TabBar" parent="VBoxContainer/TabContainer"]
+layout_mode = 2
+script = ExtResource("1_p8pv5")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Execução"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_h2p1t")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/TabContainer/Execução/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Arquivo de Memória: "
+
+[node name="MemoriaLineEdit" type="LineEdit" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+text = "res://MEMORIA.MEM"
+placeholder_text = "Caminho para o arquivo de memória"
+editable = false
+caret_blink = true
+
+[node name="Button" type="Button" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Carregar"
+
+[node name="HexView" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer" instance=ExtResource("5_rebeb")]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Registradores" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer" instance=ExtResource("2_pfwce")]
+layout_mode = 2
+
+[node name="Executor" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer" instance=ExtResource("3_0ofiw")]
+layout_mode = 2
+
 [node name="Executor" parent="VBoxContainer" instance=ExtResource("5_80ls4")]
 layout_mode = 2
 
-[connection signal="pressed" from="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer/Button" to="VBoxContainer/TabContainer/Principal" method="_on_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer/Button" to="VBoxContainer/TabContainer/Execução" method="_on_button_pressed"]
