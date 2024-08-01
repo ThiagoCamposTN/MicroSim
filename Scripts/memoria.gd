@@ -38,3 +38,6 @@ func sobrescrever_parte_da_memoria(novos_dados: PackedByteArray, endereco_inicia
 
 func ler_conteudo_no_endereco(endereco : int):
 	return self.celulas[endereco]
+
+func ler_hex_no_endereco(endereco : int):
+	return Utils.int_para_hex(self.ler_conteudo_no_endereco(endereco), 2)

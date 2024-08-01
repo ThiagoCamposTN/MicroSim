@@ -66,18 +66,42 @@ static func extrair_parametros(parametros_detectados : RegExMatch):
 		parametros.push_back(i.strip_edges())
 	return parametros
 
-static func descompilar(opcode : int) -> Instrucao:
-	match opcode:
-		0x20: # LDA - endereçamento imediato
+static func descompilar(opcode_hex : String) -> Instrucao:
+	match opcode_hex:
+		"20": # LDA - endereçamento imediato
 			return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, "LDA")
-		0x60: # LDB - endereçamento imediato
+		"60": # LDB - endereçamento imediato
 			return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, "LDB")
-		0x48: # ABA - endereçamento implícito
+		"48": # ABA - endereçamento implícito
 			return Instrucao.new(Instrucao.Enderecamentos.IMPLICITO, "ABA")
-		0x11: # STA - endereçamento direto
+		"11": # STA - endereçamento direto
 			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "STA")
-		0x58: # CAL - endereçamento direto
+		"58": # CAL - endereçamento direto
 			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "CAL")
 		_:
 			# comando invalido
 			return null
+
+static func buscar_parametros_na_memoria(endereco : int, tipo_enderecamento : Instrucao.Enderecamentos) -> PackedStringArray:
+	var parametros : PackedStringArray
+	
+	match tipo_enderecamento:
+		Instrucao.Enderecamentos.POS_INDEXADO:
+			pass
+		Instrucao.Enderecamentos.PRE_INDEXADO:
+			pass
+		Instrucao.Enderecamentos.INDIRETO:
+			pass
+		Instrucao.Enderecamentos.IMEDIATO:
+			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
+		Instrucao.Enderecamentos.DIRETO:
+			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
+			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 2))
+		Instrucao.Enderecamentos.IMPLICITO:
+			pass
+		Instrucao.Enderecamentos.INDEXADO:
+			pass
+		_:
+			pass
+	
+	return parametros
