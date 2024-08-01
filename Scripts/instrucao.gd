@@ -43,7 +43,7 @@ func instrucao_em_string() -> String:
 		Enderecamentos.DIRETO:
 			return self.mnemonico + " " + "".join(self.parametros)
 		Enderecamentos.IMPLICITO:
-			return ""
+			return self.mnemonico
 		Enderecamentos.INDEXADO:
 			return ""
 		_ :

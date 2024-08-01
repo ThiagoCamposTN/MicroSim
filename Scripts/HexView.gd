@@ -41,8 +41,7 @@ func inicializar_hex_grid():
 	
 func atualizar_celula(posicao : int):
 	var celula : Button = %HexGrid.get_node(Utils.int_para_hex(posicao, 3))
-	var conteudo : int = Memoria.ler_conteudo_no_endereco(posicao)
-	celula.text = Utils.int_para_hex(conteudo, 2)
+	celula.text = Memoria.ler_hex_no_endereco(posicao)
 
 func atualizar_grupo_de_celulas(endereco, tamanho):
 	var i = endereco
@@ -52,8 +51,8 @@ func atualizar_grupo_de_celulas(endereco, tamanho):
 
 func ao_clicar_elemento(elemento: Button):
 	var opcode = "???"
+	var instrucao 		= Compilador.descompilar(elemento.text)
 	var valor_em_int 	= Utils.de_hex_string_para_inteiro(elemento.text)
-	var instrucao 		= Compilador.descompilar(valor_em_int)
 	var endereco_em_int = Utils.de_hex_string_para_inteiro(elemento.name)
 	
 	if instrucao:

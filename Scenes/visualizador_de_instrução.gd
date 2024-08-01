@@ -6,7 +6,7 @@ extends VBoxContainer
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	SoftwareManager.alterar_caminho_memoria("res://MEMORIA.MEM")
-	descompilar_a_partir_do_endereco("000")
+	descompilar_a_partir_do_endereco("FE0")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -17,7 +17,7 @@ func descompilar_a_partir_do_endereco(endereco : String):
 	var valor 			: String
 	var instrucao_atual : Instrucao
 	
-	while endereco_int < 0x1000:
+	while endereco_int < Memoria.celulas.size():
 		valor 			= Memoria.ler_hex_no_endereco(endereco_int)
 		instrucao_atual = Compilador.descompilar(valor)
 		
@@ -37,7 +37,7 @@ func descompilar_a_partir_do_endereco(endereco : String):
 		label_bytes.text = valor
 		endereco_int += 1
 		
-		if instrucao_atual:
+		if instrucao_atual and instrucao_atual.parametros.size():
 			label_bytes.text += " " + " ".join(instrucao_atual.parametros)
 			endereco_int += instrucao_atual.parametros.size()
 		
