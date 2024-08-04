@@ -41,6 +41,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/ScrollContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/h_separation = 50
 columns = 3

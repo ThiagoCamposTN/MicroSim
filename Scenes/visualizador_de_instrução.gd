@@ -2,20 +2,30 @@ extends Panel
 
 # baseado em ghidra e em cheat engine
 
-@onready var grade = $VBoxContainer/ScrollContainer/GridContainer
+@onready var container_grade : ScrollContainer = $VBoxContainer/ScrollContainer
+var grade : GridContainer
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#SoftwareManager.alterar_caminho_memoria("res://MEMORIA.MEM")
-	#descompilar_a_partir_do_endereco("FE0")
-	pass
+	# no futuro, talvez seja viável criar tudo no começo
+	# e só ocultar o que não estaria visível no momento
+	grade = GridContainer.new()
+	grade.set_columns(3)
+	container_grade.add_child(grade)
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 
 func descompilar_a_partir_do_endereco(endereco : int):
+	grade.queue_free()
+	
+	grade = GridContainer.new()
+	grade.set_columns(3)
+	container_grade.add_child(grade)
+	
 	var valor 			: String
 	var instrucao_atual : Instrucao
 	

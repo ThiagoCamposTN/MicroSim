@@ -1,6 +1,5 @@
-[gd_scene load_steps=11 format=3 uid="uid://dd4buxa54gig7"]
+[gd_scene load_steps=10 format=3 uid="uid://dd4buxa54gig7"]
 
-[ext_resource type="Script" path="res://Scenes/aba_memoria.gd" id="1_k3qc3"]
 [ext_resource type="Script" path="res://Scripts/Principal.gd" id="1_p8pv5"]
 [ext_resource type="Theme" uid="uid://cue378diorxs8" path="res://Themes/default.tres" id="2_h2p1t"]
 [ext_resource type="PackedScene" uid="uid://b43gj8a6co0l6" path="res://Objects/registradores.tscn" id="2_pfwce"]
@@ -30,12 +29,9 @@ grow_vertical = 2
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 1
 
 [node name="Memória" type="TabBar" parent="VBoxContainer/TabContainer"]
-visible = false
 layout_mode = 2
-script = ExtResource("1_k3qc3")
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Memória"]
 layout_mode = 1
@@ -67,6 +63,7 @@ size_flags_stretch_ratio = 0.4
 layout_mode = 2
 
 [node name="Execução" type="TabBar" parent="VBoxContainer/TabContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("1_p8pv5")
 
@@ -91,13 +88,7 @@ layout_mode = 2
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Registradores" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_pfwce")]
-layout_mode = 2
-
-[node name="Inspetor" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_6wfq0")]
+[node name="Registradores" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer" instance=ExtResource("2_pfwce")]
 layout_mode = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer"]

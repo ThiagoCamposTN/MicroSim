@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cirseeqq4hnvy"]
+[gd_scene load_steps=4 format=3 uid="uid://cirseeqq4hnvy"]
 
 [ext_resource type="Script" path="res://Scripts/HexView.gd" id="1_6ype7"]
+[ext_resource type="PackedScene" uid="uid://b7a8sstmoy227" path="res://Scenes/HexViewByte.tscn" id="2_kg88y"]
 [ext_resource type="FontFile" path="res://Fonts/DroidSansMono/DroidSansMono.tres" id="2_rcbqw"]
 
 [node name="HexView" type="MarginContainer"]
@@ -12,6 +13,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_6ype7")
+hex_view_byte_scene = ExtResource("2_kg88y")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -213,19 +215,3 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 18
-
-[node name="Inspetor" type="Panel" parent="HBoxContainer"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.25
-
-[node name="Label" type="RichTextLabel" parent="HBoxContainer/Inspetor"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-bbcode_enabled = true

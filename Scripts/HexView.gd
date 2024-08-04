@@ -1,9 +1,9 @@
 extends Control
 
+signal hex_foi_selecionado
 
-var HexViewByte = preload("res://Scenes/HexViewByte.tscn")
+@export var hex_view_byte_scene : PackedScene
 var elementos_viewer : Array = []
-@onready var inspetor_label = $HBoxContainer/Inspetor/Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -16,7 +16,7 @@ func _process(delta):
 	pass
 
 func adicionar_label(texto: String, nome: String = ""):
-	var hex_view_byte : Button = HexViewByte.instantiate()
+	var hex_view_byte : Button = hex_view_byte_scene.instantiate()
 	if nome:
 		hex_view_byte.name = nome
 		hex_view_byte.focus_entered.connect(ao_clicar_elemento.bind(hex_view_byte))
@@ -51,27 +51,4 @@ func atualizar_grupo_de_celulas(endereco, tamanho):
 		i+=1
 
 func ao_clicar_elemento(elemento: Button):
-	var opcode = "???"
-	var instrucao 		= Compilador.descompilar(elemento.text)
-	var valor_em_int 	= Utils.de_hex_string_para_inteiro(elemento.text)
-	var endereco_em_int = Utils.de_hex_string_para_inteiro(elemento.name)
-	
-	if instrucao:
-		opcode = "{mnemonico} (endereçamento {enderecamento})".format({
-				"mnemonico": instrucao.mnemonico, 
-				"enderecamento": instrucao.enderecamento_como_string()
-			})
-	
-	var text = """
-	Endereço ([color=gray]{end_hex}[/color]):
-		* Hex: [b]{end_hex}[/b]
-		* Bin: [b]{end_bin}[/b]
-		
-	Valor ([color=gray]{valor}[/color]):
-		* Hex: [b]{valor}[/b]
-		* Bin: [b]{binario}[/b]
-		* Como mnemônico: [b]{opcode}[/b]
-	""".format({"end_hex": elemento.name, "end_bin": Utils.int_para_bin(endereco_em_int) , "valor": elemento.text,
-		"binario": Utils.int_para_bin(valor_em_int), "opcode": opcode})
-	
-	inspetor_label.text = text
+	hex_foi_selecionado.emit(elemento)
