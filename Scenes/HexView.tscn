@@ -13,213 +13,215 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_6ype7")
 
-[node name="HSplitContainer" type="HSplitContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Cabeçalho" type="GridContainer" parent="HSplitContainer/VBoxContainer"]
+[node name="Cabeçalho" type="GridContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 7
 columns = 18
 
-[node name="Identificador" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="Identificador" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "..."
 flat = true
 
-[node name="VSeparator" type="VSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="H0" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="H0" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "00"
 flat = true
 
-[node name="H1" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="H1" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "01"
 flat = true
 
-[node name="H2" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="H2" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "02"
 flat = true
 
-[node name="H3" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="H3" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "03"
 flat = true
 
-[node name="H4" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="H4" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "04"
 flat = true
 
-[node name="H5" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="H5" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "05"
 flat = true
 
-[node name="H6" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="H6" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "06"
 flat = true
 
-[node name="H7" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="H7" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "07"
 flat = true
 
-[node name="H8" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="H8" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "08"
 flat = true
 
-[node name="H9" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="H9" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "09"
 flat = true
 
-[node name="HA" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HA" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "0A"
 flat = true
 
-[node name="HB" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HB" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "0B"
 flat = true
 
-[node name="HC" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HC" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "0C"
 flat = true
 
-[node name="HD" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HD" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "0D"
 flat = true
 
-[node name="HE" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HE" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "0E"
 flat = true
 
-[node name="HF" type="Button" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HF" type="Button" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 disabled = true
 text = "0F"
 flat = true
 
-[node name="HSeparator2" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator2" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_rcbqw")
 text = "
 "
 
-[node name="HSeparator3" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator3" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator5" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator5" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator6" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator6" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator4" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator4" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator7" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator7" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator8" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator8" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator9" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator9" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator10" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator10" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator11" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator11" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator12" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator12" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator13" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator13" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator14" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator14" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator15" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator15" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator16" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator16" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator17" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator17" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="HSeparator18" type="HSeparator" parent="HSplitContainer/VBoxContainer/Cabeçalho"]
+[node name="HSeparator18" type="HSeparator" parent="HBoxContainer/VBoxContainer/Cabeçalho"]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HexGrid" type="GridContainer" parent="HSplitContainer/VBoxContainer/ScrollContainer"]
+[node name="HexGrid" type="GridContainer" parent="HBoxContainer/VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 18
 
-[node name="Inspetor" type="Panel" parent="HSplitContainer"]
+[node name="Inspetor" type="Panel" parent="HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
 
-[node name="Label" type="RichTextLabel" parent="HSplitContainer/Inspetor"]
+[node name="Label" type="RichTextLabel" parent="HBoxContainer/Inspetor"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

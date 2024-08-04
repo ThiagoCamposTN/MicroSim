@@ -3,6 +3,7 @@ extends Control
 
 var HexViewByte = preload("res://Scenes/HexViewByte.tscn")
 var elementos_viewer : Array = []
+@onready var inspetor_label = $HBoxContainer/Inspetor/Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -73,4 +74,4 @@ func ao_clicar_elemento(elemento: Button):
 	""".format({"end_hex": elemento.name, "end_bin": Utils.int_para_bin(endereco_em_int) , "valor": elemento.text,
 		"binario": Utils.int_para_bin(valor_em_int), "opcode": opcode})
 	
-	get_node("HSplitContainer/Inspetor/Label").text = text
+	inspetor_label.text = text

@@ -12,8 +12,8 @@ func _ready():
 #	pass
 
 func recarregar_memoria():
-	var file : FileAccess = FileAccess.open(self.memory_file_path, FileAccess.READ)
-	var dados = file.get_buffer(file.get_length())
+	var file 	: FileAccess 		= FileAccess.open(self.memory_file_path, FileAccess.READ)
+	var dados 	: PackedByteArray 	= file.get_buffer(file.get_length())
 	Memoria.sobrescrever_memoria(dados)
 	file.close()
 

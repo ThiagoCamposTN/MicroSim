@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm0k2wmg5ydh1"]
+
+[ext_resource type="Script" path="res://Objects/carregador_de_memoria.gd" id="1_u2bbl"]
+
+[node name="HBoxContainer" type="HBoxContainer"]
+script = ExtResource("1_u2bbl")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Arquivo de Memória: "
+
+[node name="MemoriaLineEdit" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+text = "res://MEMORIA.MEM"
+placeholder_text = "Caminho para o arquivo de memória"
+editable = false
+caret_blink = true
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+disabled = true
+text = "Carregar"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
