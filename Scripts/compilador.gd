@@ -68,6 +68,8 @@ static func extrair_parametros(parametros_detectados : RegExMatch):
 
 static func descompilar(opcode_hex : String) -> Instrucao:
 	match opcode_hex:
+		"10": # LDA - endereçamento direto
+			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "LDA")
 		"20": # LDA - endereçamento imediato
 			return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, "LDA")
 		"60": # LDB - endereçamento imediato

@@ -56,8 +56,8 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 	for linha in linhas:
 		var instrucao : Instrucao = Compilador.compilar(linha)
 		
+		# instrução inválida
 		if not instrucao:
-			# instrução inválida
 			return
 		
 		#print("instrução: enderecamento - ", instrucao.enderecamento, ", mnemonico: ", instrucao.mnemonico, ", parametros: ", instrucao.parametros)
@@ -68,6 +68,12 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 					var valor = Utils.de_hex_string_para_inteiro(instrucao.parametros[0])
 					parte_memoria.push_back(0x20) # LDA
 					parte_memoria.push_back(valor)
+				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
+					parte_memoria.push_back(0x10) # LDA
+					var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
+					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
+					for valor in valor_dividido:
+						parte_memoria.push_back(valor)
 			"LDB":
 				if instrucao.enderecamento == Instrucao.Enderecamentos.IMEDIATO:
 					var valor = Utils.de_hex_string_para_inteiro(instrucao.parametros[0])
@@ -127,15 +133,6 @@ func executar_instrucao(instrucao : int):
 			
 			# PC é incrementado em 1
 			CPU.incrementar_registrador_pc(1)
-			
-			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
-			endereco = CPU.registrador_mar
-			
-			# O conteúdo da memória no endereço fornecido é lido
-			dado = Memoria.ler_conteudo_no_endereco(endereco)
-			
-			# O valor é transferido ao MBR via o BUS de Dados
-			CPU.atualizar_registrador_mbr(dado)
 		Instrucao.Enderecamentos.DIRETO:
 			# Transferência de PC para MAR
 			CPU.mover_pc_para_mar()
@@ -145,8 +142,6 @@ func executar_instrucao(instrucao : int):
 			
 			# O conteúdo da memória no endereço fornecido é lido
 			dado = Memoria.ler_conteudo_no_endereco(endereco)
-			
-			#print("primeira parte do endereço: ", dado)
 			
 			# O valor é transferido ao AUX via o BUS de Dados
 			CPU.atualizar_registrador_aux(dado)
@@ -160,15 +155,11 @@ func executar_instrucao(instrucao : int):
 			# O conteúdo da memória no endereço fornecido é lido
 			dado = Memoria.ler_conteudo_no_endereco(endereco)
 			
-			#print("segunda parte do endereço: ", dado)
-			
 			# O valor é transferido ao MBR via o BUS de Dados
 			CPU.atualizar_registrador_mbr(dado)
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
 			CPU.unir_mbr_ao_aux_e_mover_para_mar()
-			
-			#print("endereço final: ", CPU.registrador_mar)
 			
 			# O PC é incrementado em 2
 			CPU.incrementar_registrador_pc(2)
@@ -182,6 +173,15 @@ func executar_instrucao(instrucao : int):
 	# Fase de execução
 	match instrucao_descompilada.mnemonico:
 		"LDA":
+			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
+			endereco = CPU.registrador_mar
+			
+			# O conteúdo da memória no endereço fornecido é lido
+			dado = Memoria.ler_conteudo_no_endereco(endereco)
+			
+			# O valor é transferido ao MBR via o BUS de Dados
+			CPU.atualizar_registrador_mbr(dado)
+			
 			# O valor é transferido de MBR para o Registrador A
 			CPU.atualizar_registrador_a(CPU.registrador_mbr)
 			
@@ -191,6 +191,15 @@ func executar_instrucao(instrucao : int):
 			# A flag N (negativo) é verificada
 			# calcular_n()
 		"LDB":
+			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
+			endereco = CPU.registrador_mar
+			
+			# O conteúdo da memória no endereço fornecido é lido
+			dado = Memoria.ler_conteudo_no_endereco(endereco)
+			
+			# O valor é transferido ao MBR via o BUS de Dados
+			CPU.atualizar_registrador_mbr(dado)
+			
 			# O valor é transferido de MBR para o Registrador B
 			CPU.atualizar_registrador_b(CPU.registrador_mbr)
 			
@@ -218,9 +227,6 @@ func executar_instrucao(instrucao : int):
 			endereco = CPU.registrador_mar
 			
 			# O valor de A é transferido ao MBR
-			CPU.transferir_a_para_mbr()
-			
-			# O valor de MBR é transferido para a memória
 			CPU.transferir_a_para_mbr()
 			
 			# O conteúdo da memória no endereço fornecido é substituído por MBR via o BUS de Dados
