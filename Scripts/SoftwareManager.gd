@@ -55,6 +55,7 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 
 	for linha in linhas:
 		var instrucao : Instrucao = Compilador.compilar(linha)
+		var deve_pular_parametros = false
 		
 		# instrução inválida
 		if not instrucao:
@@ -65,45 +66,46 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 		match instrucao.mnemonico:
 			"LDA":
 				if instrucao.enderecamento == Instrucao.Enderecamentos.IMEDIATO:
-					var valor = Utils.de_hex_string_para_inteiro(instrucao.parametros[0])
-					parte_memoria.push_back(0x20) # LDA
-					parte_memoria.push_back(valor)
+					parte_memoria.push_back(0x20)
 				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
-					parte_memoria.push_back(0x10) # LDA
-					var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
-					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
-					for valor in valor_dividido:
-						parte_memoria.push_back(valor)
+					parte_memoria.push_back(0x10)
 			"LDB":
 				if instrucao.enderecamento == Instrucao.Enderecamentos.IMEDIATO:
-					var valor = Utils.de_hex_string_para_inteiro(instrucao.parametros[0])
-					parte_memoria.push_back(0x60) # LDB
-					parte_memoria.push_back(valor)
+					parte_memoria.push_back(0x60)
 			"ABA":
 				if instrucao.enderecamento == Instrucao.Enderecamentos.IMPLICITO:
-					parte_memoria.push_back(0x48) # ABA
+					parte_memoria.push_back(0x48)
 			"STA":
 				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
-					parte_memoria.push_back(0x11) # STA
-					var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
-					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
-					for valor in valor_dividido:
-						parte_memoria.push_back(valor)
+					parte_memoria.push_back(0x11)
 			"CAL":
 				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
-					parte_memoria.push_back(0x58) # CAL
+					parte_memoria.push_back(0x58)
 					
 					if instrucao.parametros[0] == "EXIT":
 						parte_memoria.push_back(0x12)
 						parte_memoria.push_back(0x00)
-					else:
-						var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
-						var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
-						for valor in valor_dividido:
-							parte_memoria.push_back(valor)
+						deve_pular_parametros = true
 			_:
 				# instrução não existe
 				pass
+		
+		# Resolução dos parâmetros da instrução na memória
+		if not deve_pular_parametros:
+			match instrucao.enderecamento:
+				Instrucao.Enderecamentos.IMEDIATO:
+					var valor = Utils.de_hex_string_para_inteiro(instrucao.parametros[0])
+					parte_memoria.push_back(valor)
+				Instrucao.Enderecamentos.DIRETO:
+					var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
+					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
+					for valor in valor_dividido:
+						parte_memoria.push_back(valor)
+				Instrucao.Enderecamentos.IMPLICITO:
+					# Não precisa tratar parâmetros
+					pass
+			
+
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, endereco_inicial)
 	#print("Depois: ", Memoria.celulas.slice(0,15))
 
@@ -228,6 +230,15 @@ func executar_instrucao(instrucao : int):
 			
 			# O valor de A é transferido ao MBR
 			CPU.transferir_a_para_mbr()
+			
+			# O conteúdo da memória no endereço fornecido é substituído por MBR via o BUS de Dados
+			Memoria.atualizar_dado_no_endereco(endereco, CPU.registrador_mbr)
+		"STB":
+			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+			endereco = CPU.registrador_mar
+			
+			# O valor de B é transferido ao MBR
+			CPU.transferir_b_para_mbr()
 			
 			# O conteúdo da memória no endereço fornecido é substituído por MBR via o BUS de Dados
 			Memoria.atualizar_dado_no_endereco(endereco, CPU.registrador_mbr)
