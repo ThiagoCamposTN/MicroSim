@@ -51,7 +51,7 @@ func executar_programa(endereco_inicial : int):
 func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 	var parte_memoria = Array()
 	var linhas = codigo.split("\n", false)
-	print("Antes: ", Memoria.celulas.slice(0,15))
+	#print("Antes: ", Memoria.celulas.slice(0,15))
 
 	for linha in linhas:
 		var instrucao : Instrucao = Compilador.compilar(linha)
@@ -60,7 +60,7 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 			# instrução inválida
 			return
 		
-		print("instrução: enderecamento - ", instrucao.enderecamento, ", mnemonico: ", instrucao.mnemonico, ", parametros: ", instrucao.parametros)
+		#print("instrução: enderecamento - ", instrucao.enderecamento, ", mnemonico: ", instrucao.mnemonico, ", parametros: ", instrucao.parametros)
 		
 		match instrucao.mnemonico:
 			"LDA":
@@ -99,15 +99,29 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 				# instrução não existe
 				pass
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, endereco_inicial)
-	print("Depois: ", Memoria.celulas.slice(0,15))
+	#print("Depois: ", Memoria.celulas.slice(0,15))
 
 func executar_instrucao(instrucao : int):
 	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
+	var instrucao_em_hex 		: String 	= Utils.int_para_hex(instrucao, 2)
+	var instrucao_descompilada 	: Instrucao = Compilador.descompilar(instrucao_em_hex)
 	
-	print(instrucao)
+	# se não a instrução não existe
+	if not instrucao_descompilada:
+		return false
 	
-	match instrucao:
-		0x20: # LDA - endereçamento imediato
+	var endereco
+	var dado
+	
+	# Fase de pesquisa e endereço do operando
+	match instrucao_descompilada.enderecamento:
+		Instrucao.Enderecamentos.POS_INDEXADO:
+			pass
+		Instrucao.Enderecamentos.PRE_INDEXADO:
+			pass
+		Instrucao.Enderecamentos.INDIRETO:
+			pass
+		Instrucao.Enderecamentos.IMEDIATO:
 			# Transferência de PC para MAR
 			CPU.mover_pc_para_mar()
 			
@@ -115,73 +129,24 @@ func executar_instrucao(instrucao : int):
 			CPU.incrementar_registrador_pc(1)
 			
 			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
-			var endereco = CPU.registrador_mar
+			endereco = CPU.registrador_mar
 			
 			# O conteúdo da memória no endereço fornecido é lido
-			var dado = Memoria.ler_conteudo_no_endereco(endereco)
+			dado = Memoria.ler_conteudo_no_endereco(endereco)
 			
 			# O valor é transferido ao MBR via o BUS de Dados
 			CPU.atualizar_registrador_mbr(dado)
-			
-			# O valor é transferido de MBR para o Registrador A
-			CPU.atualizar_registrador_a(CPU.registrador_mbr)
-			
-			# A flag Z (zero) é verificada
-			# calcular_z()
-			
-			# A flag N (negativo) é verificada
-			# calcular_n()
-		0x60: # LDB - endereçamento imediato
-			# Transferência de PC para MAR
-			CPU.mover_pc_para_mar()
-			
-			# PC é incrementado em 1
-			CPU.incrementar_registrador_pc(1)
-			
-			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
-			var endereco = CPU.registrador_mar
-			
-			# O conteúdo da memória no endereço fornecido é lido
-			var dado = Memoria.ler_conteudo_no_endereco(endereco)
-			
-			# O valor é transferido ao MBR via o BUS de Dados
-			CPU.atualizar_registrador_mbr(dado)
-			
-			# O valor é transferido de MBR para o Registrador B
-			CPU.atualizar_registrador_b(CPU.registrador_mbr)
-			
-			# A flag Z (zero) é verificada
-			# calcular_z()
-			
-			# A flag N (negativo) é verificada
-			# calcular_n()
-		0x48: # ABA - endereçamento implícito
-			# Transferência do A para a ALU A
-			CPU.transferir_a_para_alu_a()
-			
-			# Transferência do B para a ALU B
-			CPU.transferir_b_para_alu_b()
-			
-			# Adição de 8 bits na ALU
-			CPU.adicao_alu_a_alu_b()
-			
-			# Transferência da saída da ALU para A
-			CPU.transferir_alu_saida_para_a()
-			
-			# TODO: Verificar as flags
-		0x11: # STA - endereçamento direto
-			# Fase de pesquisa e endereço do operando
-			
+		Instrucao.Enderecamentos.DIRETO:
 			# Transferência de PC para MAR
 			CPU.mover_pc_para_mar()
 			
 			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
-			var endereco = CPU.registrador_mar
+			endereco = CPU.registrador_mar
 			
 			# O conteúdo da memória no endereço fornecido é lido
-			var dado = Memoria.ler_conteudo_no_endereco(endereco)
+			dado = Memoria.ler_conteudo_no_endereco(endereco)
 			
-			print("primeira parte do endereço: ", dado)
+			#print("primeira parte do endereço: ", dado)
 			
 			# O valor é transferido ao AUX via o BUS de Dados
 			CPU.atualizar_registrador_aux(dado)
@@ -195,7 +160,7 @@ func executar_instrucao(instrucao : int):
 			# O conteúdo da memória no endereço fornecido é lido
 			dado = Memoria.ler_conteudo_no_endereco(endereco)
 			
-			print("segunda parte do endereço: ", dado)
+			#print("segunda parte do endereço: ", dado)
 			
 			# O valor é transferido ao MBR via o BUS de Dados
 			CPU.atualizar_registrador_mbr(dado)
@@ -203,13 +168,52 @@ func executar_instrucao(instrucao : int):
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
 			CPU.unir_mbr_ao_aux_e_mover_para_mar()
 			
-			print("endereço final: ", CPU.registrador_mar)
+			#print("endereço final: ", CPU.registrador_mar)
 			
 			# O PC é incrementado em 2
 			CPU.incrementar_registrador_pc(2)
+		Instrucao.Enderecamentos.IMPLICITO:
+			pass
+		Instrucao.Enderecamentos.INDEXADO:
+			pass
+		_:
+			pass
+	
+	# Fase de execução
+	match instrucao_descompilada.mnemonico:
+		"LDA":
+			# O valor é transferido de MBR para o Registrador A
+			CPU.atualizar_registrador_a(CPU.registrador_mbr)
 			
-			# Fase de execução
+			# A flag Z (zero) é verificada
+			# calcular_z()
 			
+			# A flag N (negativo) é verificada
+			# calcular_n()
+		"LDB":
+			# O valor é transferido de MBR para o Registrador B
+			CPU.atualizar_registrador_b(CPU.registrador_mbr)
+			
+			# A flag Z (zero) é verificada
+			# calcular_z()
+			
+			# A flag N (negativo) é verificada
+			# calcular_n()
+		"ABA":
+			# Transferência do A para a ALU A
+			CPU.transferir_a_para_alu_a()
+			
+			# Transferência do B para a ALU B
+			CPU.transferir_b_para_alu_b()
+			
+			# Adição de 8 bits na ALU
+			CPU.adicao_alu_a_alu_b()
+			
+			# Transferência da saída da ALU para A
+			CPU.transferir_alu_saida_para_a()
+			
+			# TODO: Verificar as flags
+		"STA":
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			endereco = CPU.registrador_mar
 			
@@ -222,7 +226,7 @@ func executar_instrucao(instrucao : int):
 			# O conteúdo da memória no endereço fornecido é substituído por MBR via o BUS de Dados
 			Memoria.atualizar_dado_no_endereco(endereco, CPU.registrador_mbr)
 		_:
-			# instrucao invalido
+			# instrução inválida
 			return false
 	
 	return true
