@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://jgcr8laoykqj"]
 
 [ext_resource type="Script" path="res://Objects/editor_de_programa.gd" id="1_ds6ok"]
-[ext_resource type="PackedScene" path="res://Objects/entrada_de_endereço.tscn" id="2_rkaqy"]
+[ext_resource type="PackedScene" uid="uid://kgtibjxuld4x" path="res://Objects/entrada_de_endereço.tscn" id="2_rkaqy"]
 
 [node name="VBoxContainer2" type="VBoxContainer"]
 script = ExtResource("1_ds6ok")

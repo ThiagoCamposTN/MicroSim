@@ -5,7 +5,9 @@ extends Node
 signal registrador_a_foi_atualizado
 signal registrador_b_foi_atualizado
 signal registrador_mbr_foi_atualizado
+signal registrador_mar_foi_atualizado
 signal registrador_pc_foi_atualizado
+signal registrador_ix_foi_atualizado
 
 # registradores
 var registrador_a	: int = 0x00	# Registrador de 8 bits
@@ -43,6 +45,14 @@ func atualizar_registrador_b(novo_valor : int) -> void:
 func atualizar_registrador_mbr(novo_valor : int) -> void:
 	self.registrador_mbr = novo_valor
 	registrador_mbr_foi_atualizado.emit()
+
+func atualizar_registrador_mar(novo_valor : int) -> void:
+	self.registrador_mar = novo_valor
+	registrador_mar_foi_atualizado.emit()
+
+func atualizar_registrador_ix(novo_valor : int) -> void:
+	self.registrador_ix = novo_valor
+	registrador_ix_foi_atualizado.emit()
 
 func incrementar_registrador_pc(quantia : int) -> void:
 	self.registrador_pc += quantia
@@ -85,8 +95,19 @@ func transferir_a_para_alu_a() -> void:
 func transferir_b_para_alu_b() -> void:
 	self.alu_entrada_b = self.registrador_b
 
+func transferir_mar_para_alu_a() -> void:
+	self.alu_entrada_a = self.registrador_mar
+	
+func transferir_ix_para_alu_b() -> void:
+	self.alu_entrada_b = self.registrador_ix
+
 func adicao_alu_a_alu_b() -> void:
+	# TODO: Lidar com flags e overflow
 	self.alu_saida = self.alu_entrada_a + self.alu_entrada_b
 	
 func transferir_alu_saida_para_a() -> void:
+	# TODO: Garantir que a saída é 8 bits
 	atualizar_registrador_a(self.alu_saida)
+
+func transferir_alu_saida_para_mar() -> void:
+	atualizar_registrador_mar(self.alu_saida)

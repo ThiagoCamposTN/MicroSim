@@ -73,6 +73,14 @@ static func descompilar(opcode_hex : String) -> Instrucao:
 			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "LDA")
 		"20":
 			return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, "LDA")
+		"30":
+			return Instrucao.new(Instrucao.Enderecamentos.INDEXADO, "LDA")
+		"90":
+			return Instrucao.new(Instrucao.Enderecamentos.INDIRETO, "LDA")
+		"C0":
+			return Instrucao.new(Instrucao.Enderecamentos.PRE_INDEXADO, "LDA")
+		"B0":
+			return Instrucao.new(Instrucao.Enderecamentos.POS_INDEXADO, "LDA")
 		
 		# LDB
 		"60":
@@ -122,7 +130,8 @@ static func buscar_parametros_na_memoria(endereco : int, tipo_enderecamento : In
 		Instrucao.Enderecamentos.IMPLICITO:
 			pass
 		Instrucao.Enderecamentos.INDEXADO:
-			pass
+			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
+			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 2))
 		_:
 			pass
 	

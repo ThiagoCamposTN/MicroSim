@@ -69,6 +69,8 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 					parte_memoria.push_back(0x20)
 				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
 					parte_memoria.push_back(0x10)
+				if instrucao.enderecamento == Instrucao.Enderecamentos.INDEXADO:
+					parte_memoria.push_back(0x30)
 			"LDB":
 				if instrucao.enderecamento == Instrucao.Enderecamentos.IMEDIATO:
 					parte_memoria.push_back(0x60)
@@ -107,6 +109,11 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 				Instrucao.Enderecamentos.IMPLICITO:
 					# Não precisa tratar parâmetros
 					pass
+				Instrucao.Enderecamentos.INDEXADO:
+					var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
+					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
+					for valor in valor_dividido:
+						parte_memoria.push_back(valor)
 			
 
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, endereco_inicial)
@@ -171,7 +178,38 @@ func executar_instrucao(instrucao : int):
 		Instrucao.Enderecamentos.IMPLICITO:
 			pass
 		Instrucao.Enderecamentos.INDEXADO:
-			pass
+			# Transferência de PC para MAR
+			CPU.mover_pc_para_mar()
+			
+			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
+			endereco = CPU.registrador_mar
+			
+			# O conteúdo da memória no endereço fornecido é lido
+			dado = Memoria.ler_conteudo_no_endereco(endereco)
+			
+			# O valor é transferido ao AUX via o BUS de Dados
+			CPU.atualizar_registrador_aux(dado)
+			
+			# O MAR é incrementado em 1
+			CPU.incrementar_registrador_mar(1)
+			
+			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+			endereco = CPU.registrador_mar
+			
+			# O conteúdo da memória no endereço fornecido é lido
+			dado = Memoria.ler_conteudo_no_endereco(endereco)
+			
+			# O valor é transferido ao MBR via o BUS de Dados
+			CPU.atualizar_registrador_mbr(dado)
+			
+			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
+			CPU.unir_mbr_ao_aux_e_mover_para_mar()
+			
+			CPU.transferir_mar_para_alu_a()
+			CPU.transferir_ix_para_alu_b()
+			CPU.adicao_alu_a_alu_b()
+			CPU.transferir_alu_saida_para_mar()
+			CPU.incrementar_registrador_pc(2)
 		_:
 			pass
 	

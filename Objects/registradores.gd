@@ -12,7 +12,7 @@ var registradores = [
 		"bytes": 1, "tooltip": "Registrador MBR, que guarda bytes vindo da memória."},
 	{"nome": "PC", 	"propriedade": "registrador_pc", "sinal": CPU.registrador_pc_foi_atualizado,
 		"bytes": 1, "tooltip": "Registrador PC (Program Counter), que armazena o ponteiro de aonde o programa está executando na memória."},
-	{"nome": "IX", 	"propriedade": "registrador_ix", "sinal": CPU.registrador_pc_foi_atualizado,
+	{"nome": "IX", 	"propriedade": "registrador_ix", "sinal": CPU.registrador_ix_foi_atualizado,
 		"bytes": 1, "tooltip": "Registrador IX."},
 	{"nome": "PP", 	"propriedade": "registrador_ix", "sinal": CPU.registrador_pc_foi_atualizado,
 		"bytes": 1, "tooltip": "Registrador IX."},

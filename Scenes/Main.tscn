@@ -30,10 +30,8 @@ grow_vertical = 2
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 1
 
 [node name="Memória" type="TabBar" parent="VBoxContainer/TabContainer"]
-visible = false
 layout_mode = 2
 script = ExtResource("1_k3qc3")
 
@@ -67,6 +65,7 @@ size_flags_stretch_ratio = 0.4
 layout_mode = 2
 
 [node name="Execução" type="TabBar" parent="VBoxContainer/TabContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("1_p8pv5")
 
