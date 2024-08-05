@@ -68,16 +68,24 @@ static func extrair_parametros(parametros_detectados : RegExMatch):
 
 static func descompilar(opcode_hex : String) -> Instrucao:
 	match opcode_hex:
-		"10": # LDA - endereçamento direto
+		# LDA
+		"10":
 			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "LDA")
-		"20": # LDA - endereçamento imediato
+		"20":
 			return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, "LDA")
-		"60": # LDB - endereçamento imediato
+		
+		# LDB
+		"60":
 			return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, "LDB")
-		"48": # ABA - endereçamento implícito
+		
+		#ABA
+		"48":
 			return Instrucao.new(Instrucao.Enderecamentos.IMPLICITO, "ABA")
-		"11": # STA - endereçamento direto
+		
+		#STA
+		"11":
 			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "STA")
+		
 		# STB
 		"51":
 			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "STB")
