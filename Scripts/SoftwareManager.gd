@@ -78,6 +78,9 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 			"STA":
 				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
 					parte_memoria.push_back(0x11)
+			"STB":
+				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
+					parte_memoria.push_back(0x51)
 			"CAL":
 				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
 					parte_memoria.push_back(0x58)

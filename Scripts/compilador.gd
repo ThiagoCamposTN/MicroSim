@@ -78,7 +78,19 @@ static func descompilar(opcode_hex : String) -> Instrucao:
 			return Instrucao.new(Instrucao.Enderecamentos.IMPLICITO, "ABA")
 		"11": # STA - endereçamento direto
 			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "STA")
-		"58": # CAL - endereçamento direto
+		# STB
+		"51":
+			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "STB")
+		"71":
+			return Instrucao.new(Instrucao.Enderecamentos.INDEXADO, "STB")
+		"D1":
+			return Instrucao.new(Instrucao.Enderecamentos.INDIRETO, "STB")
+		"F1":
+			return Instrucao.new(Instrucao.Enderecamentos.PRE_INDEXADO, "STB")
+		"E1":
+			return Instrucao.new(Instrucao.Enderecamentos.POS_INDEXADO, "STB")
+		
+		"58": # CAL - endereçamento
 			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "CAL")
 		_:
 			# comando invalido

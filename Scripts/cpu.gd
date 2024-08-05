@@ -76,6 +76,9 @@ func unir_mbr_ao_aux_e_mover_para_mar() -> void:
 func transferir_a_para_mbr() -> void:
 	atualizar_registrador_mbr(self.registrador_a)
 
+func transferir_b_para_mbr() -> void:
+	atualizar_registrador_mbr(self.registrador_b)
+
 func transferir_a_para_alu_a() -> void:
 	self.alu_entrada_a = self.registrador_a
 	
