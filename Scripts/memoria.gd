@@ -2,8 +2,9 @@ extends Node
 
 # na documentação, memória teria 65536 Kib,
 # mas na prática a memória possui 4096 Kib
-const TAMANHO_MEMORIA : int = 0x1000 # 4096
-var celulas : PackedByteArray
+const TAMANHO_MEMORIA 		: int = 0x1000 # 4096
+var celulas 				: PackedByteArray
+var endereco_selecionado 	: int
 
 signal memoria_foi_atualizada
 signal grupo_da_memoria_foi_atualizado
@@ -17,10 +18,12 @@ func _ready():
 func _process(delta):
 	pass
 
-func atualizar_dado_no_endereco(endereco : int, valor : int):
-	celulas.set(endereco, valor)
-	print("endereco: ", endereco, " | valor: ", valor)
-	memoria_foi_atualizada.emit(endereco)
+func atualizar_valor_no_endereco_selecionado(valor : int):
+	celulas.set(self.endereco_selecionado, valor)
+
+	# TODO: talvez o emit não leve parâmetro e a memória 
+	# acesse o `self.endereco_selecionado` por padrão
+	memoria_foi_atualizada.emit(self.endereco_selecionado)
 
 func sobrescrever_memoria(celulas : PackedByteArray):
 	if celulas.size() != TAMANHO_MEMORIA:
@@ -36,8 +39,8 @@ func sobrescrever_parte_da_memoria(novos_dados: PackedByteArray, endereco_inicia
 	self.celulas = dados_finais
 	grupo_da_memoria_foi_atualizado.emit(endereco_inicial, novos_dados.size())
 
-func ler_conteudo_no_endereco(endereco : int):
-	return self.celulas[endereco]
+func ler_conteudo_no_endereco_selecionado():
+	return self.celulas[self.endereco_selecionado]
 
 func ler_hex_no_endereco(endereco : int):
-	return Utils.int_para_hex(self.ler_conteudo_no_endereco(endereco), 2)
+	return Utils.int_para_hex(self.celulas[endereco], 2)

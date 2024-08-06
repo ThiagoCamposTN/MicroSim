@@ -8,6 +8,8 @@ signal registrador_mbr_foi_atualizado
 signal registrador_mar_foi_atualizado
 signal registrador_pc_foi_atualizado
 signal registrador_ix_foi_atualizado
+signal endereco_selecionado_foi_alterado
+signal registrador_aux_foi_atualizado
 
 # registradores
 var registrador_a	: int = 0x00	# Registrador de 8 bits
@@ -61,13 +63,6 @@ func incrementar_registrador_pc(quantia : int) -> void:
 func mover_pc_para_mar() -> void:
 	CPU.registrador_mar = CPU.registrador_pc
 
-func ler_dado_do_endereço_do_mar() -> int:
-	# Transferência do MAR para o Endereço de Memória via o BUS (Barramento) de Endereço;
-	var endereco = CPU.registrador_mar
-	# O conteúdo da memória no endereço fornecido é lido;
-	var conteudo = Memoria.ler_conteudo_no_endereco(endereco)
-	return conteudo
-
 func transferir_mbr_para_ir() -> void:
 	CPU.registrador_ir = CPU.registrador_mbr
 
@@ -76,6 +71,7 @@ func iniciar_registrador_pc(endereco : int) -> void:
 
 func atualizar_registrador_aux(novo_valor : int) -> void:
 	self.registrador_aux = novo_valor
+	registrador_aux_foi_atualizado.emit()
 
 func incrementar_registrador_mar(quantia : int) -> void:
 	self.registrador_mar += quantia
@@ -111,3 +107,18 @@ func transferir_alu_saida_para_a() -> void:
 
 func transferir_alu_saida_para_mar() -> void:
 	atualizar_registrador_mar(self.alu_saida)
+
+func mover_mar_ao_endereco_de_memoria() -> void:
+	Memoria.endereco_selecionado = CPU.registrador_mar
+	endereco_selecionado_foi_alterado.emit()
+
+func mover_valor_da_memoria_ao_aux() -> void:
+	var valor = Memoria.ler_conteudo_no_endereco_selecionado()
+	CPU.atualizar_registrador_aux(valor)
+
+func mover_valor_da_memoria_ao_mbr() -> void:
+	var valor = Memoria.ler_conteudo_no_endereco_selecionado()
+	CPU.atualizar_registrador_mbr(valor)
+
+func mover_mbr_para_endereco_selecionado() -> void:
+	Memoria.atualizar_valor_no_endereco_selecionado(CPU.registrador_mbr)

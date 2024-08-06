@@ -30,11 +30,12 @@ func executar_programa(endereco_inicial : int):
 	while em_execução:
 		# Transferência do CO (Contador Ordinal) para o RAD (Registrador de Endereço);
 		CPU.mover_pc_para_mar()
-
-		var dado : int = CPU.ler_dado_do_endereço_do_mar()
-
-		# O valor é transferido ao DON (Registrador de Dados) via o BUS de Dados;
-		CPU.atualizar_registrador_mbr(dado)
+		
+		# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+		CPU.mover_mar_ao_endereco_de_memoria()
+		
+		# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
+		CPU.mover_valor_da_memoria_ao_mbr()
 #
 		# O valor de DON é transferido ao DCOD (Decodificador de instrução) via o BUS de Dados;
 		CPU.transferir_mbr_para_ir()
@@ -74,6 +75,8 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 			"LDB":
 				if instrucao.enderecamento == Instrucao.Enderecamentos.IMEDIATO:
 					parte_memoria.push_back(0x60)
+				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
+					parte_memoria.push_back(0x50)
 			"ABA":
 				if instrucao.enderecamento == Instrucao.Enderecamentos.IMPLICITO:
 					parte_memoria.push_back(0x48)
@@ -128,9 +131,6 @@ func executar_instrucao(instrucao : int):
 	if not instrucao_descompilada:
 		return false
 	
-	var endereco
-	var dado
-	
 	# Fase de pesquisa e endereço do operando
 	match instrucao_descompilada.enderecamento:
 		Instrucao.Enderecamentos.POS_INDEXADO:
@@ -149,26 +149,20 @@ func executar_instrucao(instrucao : int):
 			# Transferência de PC para MAR
 			CPU.mover_pc_para_mar()
 			
-			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
-			endereco = CPU.registrador_mar
+			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+			CPU.mover_mar_ao_endereco_de_memoria()
 			
-			# O conteúdo da memória no endereço fornecido é lido
-			dado = Memoria.ler_conteudo_no_endereco(endereco)
-			
-			# O valor é transferido ao AUX via o BUS de Dados
-			CPU.atualizar_registrador_aux(dado)
+			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
+			CPU.mover_valor_da_memoria_ao_aux()
 			
 			# O MAR é incrementado em 1
 			CPU.incrementar_registrador_mar(1)
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			endereco = CPU.registrador_mar
+			CPU.mover_mar_ao_endereco_de_memoria()
 			
-			# O conteúdo da memória no endereço fornecido é lido
-			dado = Memoria.ler_conteudo_no_endereco(endereco)
-			
-			# O valor é transferido ao MBR via o BUS de Dados
-			CPU.atualizar_registrador_mbr(dado)
+			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
+			CPU.mover_valor_da_memoria_ao_mbr()
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
 			CPU.unir_mbr_ao_aux_e_mover_para_mar()
@@ -181,26 +175,20 @@ func executar_instrucao(instrucao : int):
 			# Transferência de PC para MAR
 			CPU.mover_pc_para_mar()
 			
-			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
-			endereco = CPU.registrador_mar
+			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+			CPU.mover_mar_ao_endereco_de_memoria()
 			
-			# O conteúdo da memória no endereço fornecido é lido
-			dado = Memoria.ler_conteudo_no_endereco(endereco)
-			
-			# O valor é transferido ao AUX via o BUS de Dados
-			CPU.atualizar_registrador_aux(dado)
+			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
+			CPU.mover_valor_da_memoria_ao_aux()
 			
 			# O MAR é incrementado em 1
 			CPU.incrementar_registrador_mar(1)
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			endereco = CPU.registrador_mar
+			CPU.mover_mar_ao_endereco_de_memoria()
 			
-			# O conteúdo da memória no endereço fornecido é lido
-			dado = Memoria.ler_conteudo_no_endereco(endereco)
-			
-			# O valor é transferido ao MBR via o BUS de Dados
-			CPU.atualizar_registrador_mbr(dado)
+			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
+			CPU.mover_valor_da_memoria_ao_mbr()
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
 			CPU.unir_mbr_ao_aux_e_mover_para_mar()
@@ -216,14 +204,11 @@ func executar_instrucao(instrucao : int):
 	# Fase de execução
 	match instrucao_descompilada.mnemonico:
 		"LDA":
-			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
-			endereco = CPU.registrador_mar
+			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+			CPU.mover_mar_ao_endereco_de_memoria()
 			
-			# O conteúdo da memória no endereço fornecido é lido
-			dado = Memoria.ler_conteudo_no_endereco(endereco)
-			
-			# O valor é transferido ao MBR via o BUS de Dados
-			CPU.atualizar_registrador_mbr(dado)
+			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
+			CPU.mover_valor_da_memoria_ao_mbr()
 			
 			# O valor é transferido de MBR para o Registrador A
 			CPU.atualizar_registrador_a(CPU.registrador_mbr)
@@ -234,14 +219,11 @@ func executar_instrucao(instrucao : int):
 			# A flag N (negativo) é verificada
 			# calcular_n()
 		"LDB":
-			# Transferência de MAR para o Endereço de Memória via o BUS de Endereço
-			endereco = CPU.registrador_mar
+			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+			CPU.mover_mar_ao_endereco_de_memoria()
 			
-			# O conteúdo da memória no endereço fornecido é lido
-			dado = Memoria.ler_conteudo_no_endereco(endereco)
-			
-			# O valor é transferido ao MBR via o BUS de Dados
-			CPU.atualizar_registrador_mbr(dado)
+			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
+			CPU.mover_valor_da_memoria_ao_mbr()
 			
 			# O valor é transferido de MBR para o Registrador B
 			CPU.atualizar_registrador_b(CPU.registrador_mbr)
@@ -267,22 +249,22 @@ func executar_instrucao(instrucao : int):
 			# TODO: Verificar as flags
 		"STA":
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			endereco = CPU.registrador_mar
+			CPU.mover_mar_ao_endereco_de_memoria()
 			
 			# O valor de A é transferido ao MBR
 			CPU.transferir_a_para_mbr()
 			
-			# O conteúdo da memória no endereço fornecido é substituído por MBR via o BUS de Dados
-			Memoria.atualizar_dado_no_endereco(endereco, CPU.registrador_mbr)
+			# O conteúdo da memória no endereço selecionado é substituído por MBR via o BUS de Dados
+			CPU.mover_mbr_para_endereco_selecionado()
 		"STB":
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			endereco = CPU.registrador_mar
+			CPU.mover_mar_ao_endereco_de_memoria()
 			
 			# O valor de B é transferido ao MBR
 			CPU.transferir_b_para_mbr()
 			
-			# O conteúdo da memória no endereço fornecido é substituído por MBR via o BUS de Dados
-			Memoria.atualizar_dado_no_endereco(endereco, CPU.registrador_mbr)
+			# O conteúdo da memória no endereço selecionado é substituído por MBR via o BUS de Dados
+			CPU.mover_mbr_para_endereco_selecionado()
 		_:
 			# instrução inválida
 			return false

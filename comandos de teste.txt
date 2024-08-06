@@ -1,6 +1,7 @@
 LDA #10
-LDA #8
+LDB #8
 ABA
+STA 0000
 CAL EXIT
 
 --

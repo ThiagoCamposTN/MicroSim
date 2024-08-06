@@ -30,7 +30,7 @@ static func compilar(linha : String) -> Instrucao:
 		return instrucao
 	
 	# Endereçamento indexado
-	var enderecamento_indexado = detectar_parametros(restante, r'(.+?),(.+)')
+	var enderecamento_indexado = detectar_parametros(restante, r'(.+?),.+')
 	if enderecamento_indexado:
 		var instrucao := Instrucao.new(Instrucao.Enderecamentos.INDEXADO, mnemonico)
 		instrucao.parametros = extrair_parametros(enderecamento_indexado)
@@ -83,6 +83,8 @@ static func descompilar(opcode_hex : String) -> Instrucao:
 			return Instrucao.new(Instrucao.Enderecamentos.POS_INDEXADO, "LDA")
 		
 		# LDB
+		"50":
+			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "LDB")
 		"60":
 			return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, "LDB")
 		
