@@ -67,52 +67,7 @@ static func extrair_parametros(parametros_detectados : RegExMatch):
 	return parametros
 
 static func descompilar(opcode_hex : String) -> Instrucao:
-	match opcode_hex:
-		# LDA
-		"10":
-			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "LDA")
-		"20":
-			return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, "LDA")
-		"30":
-			return Instrucao.new(Instrucao.Enderecamentos.INDEXADO, "LDA")
-		"90":
-			return Instrucao.new(Instrucao.Enderecamentos.INDIRETO, "LDA")
-		"C0":
-			return Instrucao.new(Instrucao.Enderecamentos.PRE_INDEXADO, "LDA")
-		"B0":
-			return Instrucao.new(Instrucao.Enderecamentos.POS_INDEXADO, "LDA")
-		
-		# LDB
-		"50":
-			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "LDB")
-		"60":
-			return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, "LDB")
-		
-		#ABA
-		"48":
-			return Instrucao.new(Instrucao.Enderecamentos.IMPLICITO, "ABA")
-		
-		#STA
-		"11":
-			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "STA")
-		
-		# STB
-		"51":
-			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "STB")
-		"71":
-			return Instrucao.new(Instrucao.Enderecamentos.INDEXADO, "STB")
-		"D1":
-			return Instrucao.new(Instrucao.Enderecamentos.INDIRETO, "STB")
-		"F1":
-			return Instrucao.new(Instrucao.Enderecamentos.PRE_INDEXADO, "STB")
-		"E1":
-			return Instrucao.new(Instrucao.Enderecamentos.POS_INDEXADO, "STB")
-		
-		"58": # CAL - endereçamento
-			return Instrucao.new(Instrucao.Enderecamentos.DIRETO, "CAL")
-		_:
-			# comando invalido
-			return null
+	return BancoDeInstrucoes.byte_para_mnemonico(opcode_hex)
 
 static func buscar_parametros_na_memoria(endereco : int, tipo_enderecamento : Instrucao.Enderecamentos) -> PackedStringArray:
 	var parametros : PackedStringArray
