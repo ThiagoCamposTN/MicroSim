@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="InstrucaoRes" load_steps=2 format=3 uid="uid://dybpg6plo02qh"]
+
+[ext_resource type="Script" path="res://Scripts/InstrucaoRes.gd" id="1_jt77i"]
+
+[resource]
+script = ExtResource("1_jt77i")
+nome = "Call"
+"mnemônico" = "CAL"
+"descrição" = "Chama um sub-programa num endereço especificado."
+"instruções" = Array[String]([])
+direto = "58"
+imediato = ""
+indexado = "78"
+indireto = "D8"
+pos_indexado = "E8"
+pre_indexado = "F8"
+implicito = ""

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="InstrucaoRes" load_steps=2 format=3 uid="uid://c0llajw2ap4sc"]
+
+[ext_resource type="Script" path="res://Scripts/InstrucaoRes.gd" id="1_lv84m"]
+
+[resource]
+script = ExtResource("1_lv84m")
+nome = "Add A to B"
+"mnemônico" = "ABA"
+"descrição" = "Adição do valor do registrador A em B"
+"instruções" = Array[String]([])
+direto = ""
+imediato = ""
+indexado = ""
+indireto = ""
+pos_indexado = ""
+pre_indexado = ""
+implicito = "48"

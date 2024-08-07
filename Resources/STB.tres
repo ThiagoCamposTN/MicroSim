@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="InstrucaoRes" load_steps=2 format=3 uid="uid://crdn5hgwmqe16"]
+
+[ext_resource type="Script" path="res://Scripts/InstrucaoRes.gd" id="1_kj3j0"]
+
+[resource]
+script = ExtResource("1_kj3j0")
+nome = "Store B"
+"mnemônico" = "STB"
+"descrição" = "Armazena o valor do registrador B no endereço de memória especificado."
+"instruções" = Array[String]([])
+direto = "51"
+imediato = ""
+indexado = "71"
+indireto = "D1"
+pos_indexado = "E1"
+pre_indexado = "F1"
+implicito = ""
