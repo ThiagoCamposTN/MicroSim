@@ -72,8 +72,8 @@ func byte_para_mnemonico(byte: String) -> Instrucao:
 				return Instrucao.new(Instrucao.Enderecamentos.INDEXADO, operacao.mnemônico)
 	return null
 
-func get_instrucoes(mnemonico: String):
+func get_microcodigos(mnemonico: String):
 	var operacao = encontrar_operador(mnemonico)
 	if operacao != null:
-		return operacao.instruções
+		return operacao.microcodigos
 	return null

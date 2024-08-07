@@ -5,7 +5,7 @@ class_name Operador
 @export var mnemônico 	: String
 @export var descrição 	: String
 
-@export var instruções 	: Array[String]
+@export var microcodigos 	: Array[String]
 
 @export_category("Bytecodes")
 @export var direto : String

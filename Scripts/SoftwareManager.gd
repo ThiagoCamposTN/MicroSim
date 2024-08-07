@@ -173,13 +173,13 @@ func executar_instrucao(instrucao : int):
 			pass
 	
 	# Fase de execução
-	# Busca a lista de instrucoes enumeradas no recurso do operador
-	var lista_de_instrucoes = Operacoes.get_instrucoes(instrucao_descompilada.mnemonico)
-	if lista_de_instrucoes:
-		for i in lista_de_instrucoes:
-			# Chama a função declarada em CPU que tem nome equivalente ao especificado no recurso do operador
-			# Exemplo: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
-			CPU.call(i)
+	# Busca a lista de microcodigos enumeradas no recurso do Operador
+	var microcodigos = Operacoes.get_microcodigos(instrucao_descompilada.mnemonico)
+	if microcodigos:
+		for microcodigo in microcodigos:
+			# Chama a função declarada em CPU que tem nome equivalente ao especificado nos microcodigos do operador
+			# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
+			CPU.call(microcodigo)
 	else:
 		return false
 	
