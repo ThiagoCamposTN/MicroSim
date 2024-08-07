@@ -52,7 +52,6 @@ func executar_programa(endereco_inicial : int):
 func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 	var parte_memoria = Array()
 	var linhas = codigo.split("\n", false)
-	#print("Antes: ", Memoria.celulas.slice(0,15))
 
 	for linha in linhas:
 		var instrucao : Instrucao = Compilador.compilar(linha)
@@ -62,41 +61,13 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 		if not instrucao:
 			return
 		
-		#print("instrução: enderecamento - ", instrucao.enderecamento, ", mnemonico: ", instrucao.mnemonico, ", parametros: ", instrucao.parametros)
+		var byte = BancoDeInstrucoes.mnemonico_para_byte(instrucao.mnemonico, instrucao.enderecamento)
+		parte_memoria.push_back(Utils.de_hex_string_para_inteiro(byte))
 		
-		match instrucao.mnemonico:
-			"LDA":
-				if instrucao.enderecamento == Instrucao.Enderecamentos.IMEDIATO:
-					parte_memoria.push_back(0x20)
-				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
-					parte_memoria.push_back(0x10)
-				if instrucao.enderecamento == Instrucao.Enderecamentos.INDEXADO:
-					parte_memoria.push_back(0x30)
-			"LDB":
-				if instrucao.enderecamento == Instrucao.Enderecamentos.IMEDIATO:
-					parte_memoria.push_back(0x60)
-				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
-					parte_memoria.push_back(0x50)
-			"ABA":
-				if instrucao.enderecamento == Instrucao.Enderecamentos.IMPLICITO:
-					parte_memoria.push_back(0x48)
-			"STA":
-				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
-					parte_memoria.push_back(0x11)
-			"STB":
-				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
-					parte_memoria.push_back(0x51)
-			"CAL":
-				if instrucao.enderecamento == Instrucao.Enderecamentos.DIRETO:
-					parte_memoria.push_back(0x58)
-					
-					if instrucao.parametros[0] == "EXIT":
-						parte_memoria.push_back(0x12)
-						parte_memoria.push_back(0x00)
-						deve_pular_parametros = true
-			_:
-				# instrução não existe
-				pass
+		if instrucao.parametros and instrucao.parametros[0] == "EXIT":
+			parte_memoria.push_back(0x12)
+			parte_memoria.push_back(0x00)
+			deve_pular_parametros = true
 		
 		# Resolução dos parâmetros da instrução na memória
 		if not deve_pular_parametros:
