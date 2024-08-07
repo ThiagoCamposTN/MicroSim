@@ -67,7 +67,7 @@ static func extrair_parametros(parametros_detectados : RegExMatch):
 	return parametros
 
 static func descompilar(opcode_hex : String) -> Instrucao:
-	return BancoDeInstrucoes.byte_para_mnemonico(opcode_hex)
+	return Operacoes.byte_para_mnemonico(opcode_hex)
 
 static func buscar_parametros_na_memoria(endereco : int, tipo_enderecamento : Instrucao.Enderecamentos) -> PackedStringArray:
 	var parametros : PackedStringArray

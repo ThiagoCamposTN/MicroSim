@@ -1,6 +1,6 @@
 extends Node
 
-var instrucoes : Array[InstrucaoRes]
+var operacoes : Array[Operador]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,56 +20,56 @@ func carregar_recursos():
 		while file_name != "":
 			if not dir.current_is_dir():
 				var file_path = path + file_name
-				instrucoes.append(load(file_path))
+				operacoes.append(load(file_path))
 			file_name = dir.get_next()
 	else:
 		print("An error occurred when trying to access the path.")
 
-func encontrar_operador(mnemonico: String) -> InstrucaoRes:
-	for operador in instrucoes:
+func encontrar_operador(mnemonico: String) -> Operador:
+	for operador in operacoes:
 		if operador.mnemônico == mnemonico:
 			return operador
 	return null
 
 func mnemonico_para_byte(mnemonico: String, endereçamento: Instrucao.Enderecamentos) -> String:
-	var instrucao = encontrar_operador(mnemonico)
-	if instrucao:
+	var operacao = encontrar_operador(mnemonico)
+	if operacao:
 		match endereçamento:
 			Instrucao.Enderecamentos.POS_INDEXADO:
-				return instrucao.pos_indexado
+				return operacao.pos_indexado
 			Instrucao.Enderecamentos.PRE_INDEXADO:
-				return instrucao.pre_indexado
+				return operacao.pre_indexado
 			Instrucao.Enderecamentos.INDIRETO:
-				return instrucao.indireto
+				return operacao.indireto
 			Instrucao.Enderecamentos.IMEDIATO:
-				return instrucao.imediato
+				return operacao.imediato
 			Instrucao.Enderecamentos.DIRETO:
-				return instrucao.direto
+				return operacao.direto
 			Instrucao.Enderecamentos.IMPLICITO:
-				return instrucao.implicito
+				return operacao.implicito
 			Instrucao.Enderecamentos.INDEXADO:
-				return instrucao.indexado
+				return operacao.indexado
 	
 	print("Instrução não encontrada.")
 	return ""
 
 func byte_para_mnemonico(byte: String) -> Instrucao:
-	for instrucao in instrucoes:
+	for operacao in operacoes:
 		match byte:
-			instrucao.pos_indexado:
-				return Instrucao.new(Instrucao.Enderecamentos.POS_INDEXADO, instrucao.mnemônico)
-			instrucao.pre_indexado:
-				return Instrucao.new(Instrucao.Enderecamentos.PRE_INDEXADO, instrucao.mnemônico)
-			instrucao.indireto:
-				return Instrucao.new(Instrucao.Enderecamentos.INDIRETO, instrucao.mnemônico)
-			instrucao.imediato:
-				return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, instrucao.mnemônico)
-			instrucao.direto:
-				return Instrucao.new(Instrucao.Enderecamentos.DIRETO, instrucao.mnemônico)
-			instrucao.implicito:
-				return Instrucao.new(Instrucao.Enderecamentos.IMPLICITO, instrucao.mnemônico)
-			instrucao.indexado:
-				return Instrucao.new(Instrucao.Enderecamentos.INDEXADO, instrucao.mnemônico)
+			operacao.pos_indexado:
+				return Instrucao.new(Instrucao.Enderecamentos.POS_INDEXADO, operacao.mnemônico)
+			operacao.pre_indexado:
+				return Instrucao.new(Instrucao.Enderecamentos.PRE_INDEXADO, operacao.mnemônico)
+			operacao.indireto:
+				return Instrucao.new(Instrucao.Enderecamentos.INDIRETO, operacao.mnemônico)
+			operacao.imediato:
+				return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, operacao.mnemônico)
+			operacao.direto:
+				return Instrucao.new(Instrucao.Enderecamentos.DIRETO, operacao.mnemônico)
+			operacao.implicito:
+				return Instrucao.new(Instrucao.Enderecamentos.IMPLICITO, operacao.mnemônico)
+			operacao.indexado:
+				return Instrucao.new(Instrucao.Enderecamentos.INDEXADO, operacao.mnemônico)
 	return null
 
 func get_instrucoes(mnemonico: String):

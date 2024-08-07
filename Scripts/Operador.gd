@@ -1,5 +1,5 @@
 extends Resource
-class_name InstrucaoRes
+class_name Operador
 
 @export var nome 		: String
 @export var mnemônico 	: String

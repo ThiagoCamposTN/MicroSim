@@ -61,7 +61,7 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 		if not instrucao:
 			return
 		
-		var byte = BancoDeInstrucoes.mnemonico_para_byte(instrucao.mnemonico, instrucao.enderecamento)
+		var byte = Operacoes.mnemonico_para_byte(instrucao.mnemonico, instrucao.enderecamento)
 		parte_memoria.push_back(Utils.de_hex_string_para_inteiro(byte))
 		
 		if instrucao.parametros and instrucao.parametros[0] == "EXIT":
@@ -174,7 +174,7 @@ func executar_instrucao(instrucao : int):
 	
 	# Fase de execução
 	# Busca a lista de instrucoes enumeradas no recurso do operador
-	var lista_de_instrucoes = BancoDeInstrucoes.get_instrucoes(instrucao_descompilada.mnemonico)
+	var lista_de_instrucoes = Operacoes.get_instrucoes(instrucao_descompilada.mnemonico)
 	if lista_de_instrucoes:
 		for i in lista_de_instrucoes:
 			# Chama a função declarada em CPU que tem nome equivalente ao especificado no recurso do operador
