@@ -43,6 +43,7 @@ func inicializar_hex_grid():
 func atualizar_celula(posicao : int):
 	var celula : Button = %HexGrid.get_node(Utils.int_para_hex(posicao, 3))
 	celula.text = Memoria.ler_hex_no_endereco(posicao)
+	celula.add_theme_color_override("font_color", Color.CYAN)
 
 func atualizar_grupo_de_celulas(endereco, tamanho):
 	var i = endereco
