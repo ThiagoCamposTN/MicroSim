@@ -25,24 +25,30 @@ func carregar_recursos():
 	else:
 		print("An error occurred when trying to access the path.")
 
+func encontrar_operador(mnemonico: String) -> InstrucaoRes:
+	for operador in instrucoes:
+		if operador.mnemônico == mnemonico:
+			return operador
+	return null
+
 func mnemonico_para_byte(mnemonico: String, endereçamento: Instrucao.Enderecamentos) -> String:
-	for instrucao in instrucoes:
-		if instrucao.mnemônico == mnemonico:
-			match endereçamento:
-				Instrucao.Enderecamentos.POS_INDEXADO:
-					return instrucao.pos_indexado
-				Instrucao.Enderecamentos.PRE_INDEXADO:
-					return instrucao.pre_indexado
-				Instrucao.Enderecamentos.INDIRETO:
-					return instrucao.indireto
-				Instrucao.Enderecamentos.IMEDIATO:
-					return instrucao.imediato
-				Instrucao.Enderecamentos.DIRETO:
-					return instrucao.direto
-				Instrucao.Enderecamentos.IMPLICITO:
-					return instrucao.implicito
-				Instrucao.Enderecamentos.INDEXADO:
-					return instrucao.indexado
+	var instrucao = encontrar_operador(mnemonico)
+	if instrucao:
+		match endereçamento:
+			Instrucao.Enderecamentos.POS_INDEXADO:
+				return instrucao.pos_indexado
+			Instrucao.Enderecamentos.PRE_INDEXADO:
+				return instrucao.pre_indexado
+			Instrucao.Enderecamentos.INDIRETO:
+				return instrucao.indireto
+			Instrucao.Enderecamentos.IMEDIATO:
+				return instrucao.imediato
+			Instrucao.Enderecamentos.DIRETO:
+				return instrucao.direto
+			Instrucao.Enderecamentos.IMPLICITO:
+				return instrucao.implicito
+			Instrucao.Enderecamentos.INDEXADO:
+				return instrucao.indexado
 	
 	print("Instrução não encontrada.")
 	return ""
@@ -64,6 +70,10 @@ func byte_para_mnemonico(byte: String) -> Instrucao:
 				return Instrucao.new(Instrucao.Enderecamentos.IMPLICITO, instrucao.mnemônico)
 			instrucao.indexado:
 				return Instrucao.new(Instrucao.Enderecamentos.INDEXADO, instrucao.mnemônico)
-	
-	print("Byte não encontrado.")
+	return null
+
+func get_instrucoes(mnemonico: String):
+	var operacao = encontrar_operador(mnemonico)
+	if operacao != null:
+		return operacao.instruções
 	return null

@@ -173,71 +173,14 @@ func executar_instrucao(instrucao : int):
 			pass
 	
 	# Fase de execução
-	match instrucao_descompilada.mnemonico:
-		"LDA":
-			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			CPU.mover_mar_ao_endereco_de_memoria()
-			
-			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-			CPU.mover_valor_da_memoria_ao_mbr()
-			
-			# O valor é transferido de MBR para o Registrador A
-			CPU.atualizar_registrador_a(CPU.registrador_mbr)
-			
-			# A flag Z (zero) é verificada
-			# calcular_z()
-			
-			# A flag N (negativo) é verificada
-			# calcular_n()
-		"LDB":
-			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			CPU.mover_mar_ao_endereco_de_memoria()
-			
-			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-			CPU.mover_valor_da_memoria_ao_mbr()
-			
-			# O valor é transferido de MBR para o Registrador B
-			CPU.atualizar_registrador_b(CPU.registrador_mbr)
-			
-			# A flag Z (zero) é verificada
-			# calcular_z()
-			
-			# A flag N (negativo) é verificada
-			# calcular_n()
-		"ABA":
-			# Transferência do A para a ALU A
-			CPU.transferir_a_para_alu_a()
-			
-			# Transferência do B para a ALU B
-			CPU.transferir_b_para_alu_b()
-			
-			# Adição de 8 bits na ALU
-			CPU.adicao_alu_a_alu_b()
-			
-			# Transferência da saída da ALU para A
-			CPU.transferir_alu_saida_para_a()
-			
-			# TODO: Verificar as flags
-		"STA":
-			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			CPU.mover_mar_ao_endereco_de_memoria()
-			
-			# O valor de A é transferido ao MBR
-			CPU.transferir_a_para_mbr()
-			
-			# O conteúdo da memória no endereço selecionado é substituído por MBR via o BUS de Dados
-			CPU.mover_mbr_para_endereco_selecionado()
-		"STB":
-			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			CPU.mover_mar_ao_endereco_de_memoria()
-			
-			# O valor de B é transferido ao MBR
-			CPU.transferir_b_para_mbr()
-			
-			# O conteúdo da memória no endereço selecionado é substituído por MBR via o BUS de Dados
-			CPU.mover_mbr_para_endereco_selecionado()
-		_:
-			# instrução inválida
-			return false
+	# Busca a lista de instrucoes enumeradas no recurso do operador
+	var lista_de_instrucoes = BancoDeInstrucoes.get_instrucoes(instrucao_descompilada.mnemonico)
+	if lista_de_instrucoes:
+		for i in lista_de_instrucoes:
+			# Chama a função declarada em CPU que tem nome equivalente ao especificado no recurso do operador
+			# Exemplo: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
+			CPU.call(i)
+	else:
+		return false
 	
 	return true

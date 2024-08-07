@@ -66,6 +66,12 @@ func mover_pc_para_mar() -> void:
 func transferir_mbr_para_ir() -> void:
 	CPU.registrador_ir = CPU.registrador_mbr
 
+func transferir_mbr_para_a() -> void:
+	atualizar_registrador_a(registrador_mbr)
+
+func transferir_mbr_para_b() -> void:
+	atualizar_registrador_b(registrador_mbr)
+
 func iniciar_registrador_pc(endereco : int) -> void:
 	self.registrador_pc = endereco
 
@@ -122,3 +128,9 @@ func mover_valor_da_memoria_ao_mbr() -> void:
 
 func mover_mbr_para_endereco_selecionado() -> void:
 	Memoria.atualizar_valor_no_endereco_selecionado(CPU.registrador_mbr)
+
+func calcular_z():
+	push_warning("Função calcular_z não implementada!")
+
+func calcular_n():
+	push_warning("Função calcular_n não implementada!")
