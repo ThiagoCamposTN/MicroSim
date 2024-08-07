@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="InstrucaoRes" load_steps=2 format=3 uid="uid://djakyx5v55ovh"]
+
+[ext_resource type="Script" path="res://Scripts/InstrucaoRes.gd" id="1_7skaf"]
+
+[resource]
+script = ExtResource("1_7skaf")
+nome = "Load A"
+"mnemônico" = "LDA"
+"descrição" = "Carrega o registrador A com um byte de memória."
+"instruções" = Array[String]([])
+direto = "10"
+imediato = "20"
+indexado = "30"
+indireto = "90"
+pos_indexado = "B0"
+pre_indexado = "C0"
+implicito = ""
