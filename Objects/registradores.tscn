@@ -25,22 +25,24 @@ text = "CC"
 layout_mode = 2
 columns = 4
 
-[node name="ZValue" type="Button" parent="RegistradorGrid/CCBitsContainer"]
+[node name="ZFlag" type="Button" parent="RegistradorGrid/CCBitsContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "0"
 
-[node name="NValue" type="Button" parent="RegistradorGrid/CCBitsContainer"]
+[node name="NFlag" type="Button" parent="RegistradorGrid/CCBitsContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "0"
 
-[node name="RValue" type="Button" parent="RegistradorGrid/CCBitsContainer"]
+[node name="RFlag" type="Button" parent="RegistradorGrid/CCBitsContainer"]
 layout_mode = 2
 disabled = true
 text = "0"
 
-[node name="DValue" type="Button" parent="RegistradorGrid/CCBitsContainer"]
+[node name="DFlag" type="Button" parent="RegistradorGrid/CCBitsContainer"]
 layout_mode = 2
 disabled = true
 text = "0"

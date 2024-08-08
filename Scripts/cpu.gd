@@ -17,6 +17,11 @@ signal alu_entrada_a_foi_atualizado
 signal alu_entrada_b_foi_atualizado
 signal alu_saida_foi_atualizado
 
+signal flag_z_foi_atualizada
+signal flag_n_foi_atualizada
+signal flag_r_foi_atualizada
+signal flag_d_foi_atualizada
+
 # registradores
 var registrador_a	: int = 0x00	# Registrador de 8 bits
 var registrador_b	: int = 0x08	# Registrador de 8 bits
@@ -33,6 +38,10 @@ var flag_n : int = 0x0 # Registrador de 1 bit
 var flag_r : int = 0x0 # Registrador de 1 bit
 var flag_d : int = 0x1 # Registrador de 1 bit
 
+var _flag_z_buffer : int = 0x0 # Registrador de 1 bit
+var _flag_n_buffer : int = 0x0 # Registrador de 1 bit
+
+
 # unidade de controle
 var registrador_ir : int # Registrador de instrução - 1 bit (ir)
 
@@ -44,10 +53,12 @@ var alu_saida 		: int # Registrador de 16 bits
 
 func atualizar_registrador_a(novo_valor : int) -> void:
 	self.registrador_a = novo_valor
+	atualizar_buffers(novo_valor)
 	registrador_a_foi_atualizado.emit()
 
 func atualizar_registrador_b(novo_valor : int) -> void:
 	self.registrador_b = novo_valor
+	atualizar_buffers(novo_valor)
 	registrador_b_foi_atualizado.emit()
 
 func atualizar_registrador_pc(novo_valor : int) -> void:
@@ -160,8 +171,14 @@ func mover_mbr_para_endereco_selecionado() -> void:
 	Memoria.atualizar_valor_no_endereco_selecionado(CPU.registrador_mbr)
 	endereco_selecionado_foi_alterado.emit()
 
+func atualizar_buffers(novo_valor: int) -> void:
+	_flag_z_buffer = (novo_valor == 0)
+	_flag_n_buffer = (novo_valor >= 128)
+
 func calcular_z():
-	push_warning("Função calcular_z não implementada!")
+	self.flag_z = _flag_z_buffer
+	flag_z_foi_atualizada.emit()
 
 func calcular_n():
-	push_warning("Função calcular_n não implementada!")
+	self.flag_n = _flag_n_buffer
+	flag_n_foi_atualizada.emit()

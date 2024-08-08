@@ -43,6 +43,9 @@ func _ready():
 		grid_container.add_child(text)
 		
 		registrador["sinal"].connect(atualizar_registrador.bind(text, registrador["propriedade"], registrador["bytes"] * 2))
+	
+	CPU.flag_z_foi_atualizada.connect(atualizar_registrador.bind(%ZFlag, "flag_z", 1))
+	CPU.flag_n_foi_atualizada.connect(atualizar_registrador.bind(%NFlag, "flag_n", 1))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
