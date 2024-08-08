@@ -40,7 +40,8 @@ var flag_d : int = 0x1 # Registrador de 1 bit
 
 var _flag_z_buffer : int = 0x0 # Registrador de 1 bit
 var _flag_n_buffer : int = 0x0 # Registrador de 1 bit
-
+var _flag_r_buffer : int = 0x0 # Registrador de 1 bit
+var _flag_d_buffer : int = 0x0 # Registrador de 1 bit
 
 # unidade de controle
 var registrador_ir : int # Registrador de instrução - 1 bit (ir)
@@ -182,3 +183,11 @@ func calcular_z():
 func calcular_n():
 	self.flag_n = _flag_n_buffer
 	flag_n_foi_atualizada.emit()
+
+func calcular_r():
+	self.flag_r = _flag_r_buffer
+	flag_r_foi_atualizada.emit()
+
+func calcular_d():
+	self.flag_d = _flag_d_buffer
+	flag_d_foi_atualizada.emit()

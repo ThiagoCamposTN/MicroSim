@@ -38,11 +38,13 @@ disabled = true
 text = "0"
 
 [node name="RFlag" type="Button" parent="RegistradorGrid/CCBitsContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "0"
 
 [node name="DFlag" type="Button" parent="RegistradorGrid/CCBitsContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "0"
