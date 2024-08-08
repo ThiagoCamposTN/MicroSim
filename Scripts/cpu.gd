@@ -4,12 +4,18 @@ extends Node
 
 signal registrador_a_foi_atualizado
 signal registrador_b_foi_atualizado
-signal registrador_mbr_foi_atualizado
-signal registrador_mar_foi_atualizado
 signal registrador_pc_foi_atualizado
 signal registrador_ix_foi_atualizado
-signal endereco_selecionado_foi_alterado
+signal registrador_pp_foi_atualizado
+signal registrador_mbr_foi_atualizado
 signal registrador_aux_foi_atualizado
+signal registrador_mar_foi_atualizado
+signal registrador_ir_foi_atualizado
+signal endereco_selecionado_foi_alterado
+
+signal alu_entrada_a_foi_atualizado
+signal alu_entrada_b_foi_atualizado
+signal alu_saida_foi_atualizado
 
 # registradores
 var registrador_a	: int = 0x00	# Registrador de 8 bits
@@ -44,27 +50,54 @@ func atualizar_registrador_b(novo_valor : int) -> void:
 	self.registrador_b = novo_valor
 	registrador_b_foi_atualizado.emit()
 
-func atualizar_registrador_mbr(novo_valor : int) -> void:
-	self.registrador_mbr = novo_valor
-	registrador_mbr_foi_atualizado.emit()
-
-func atualizar_registrador_mar(novo_valor : int) -> void:
-	self.registrador_mar = novo_valor
-	registrador_mar_foi_atualizado.emit()
+func atualizar_registrador_pc(novo_valor : int) -> void:
+	self.registrador_pc = novo_valor
+	registrador_pc_foi_atualizado.emit()
 
 func atualizar_registrador_ix(novo_valor : int) -> void:
 	self.registrador_ix = novo_valor
 	registrador_ix_foi_atualizado.emit()
 
+func atualizar_registrador_pp(novo_valor : int) -> void:
+	self.registrador_pp = novo_valor
+	registrador_pp_foi_atualizado.emit()
+
+func atualizar_registrador_mbr(novo_valor : int) -> void:
+	self.registrador_mbr = novo_valor
+	registrador_mbr_foi_atualizado.emit()
+
+func atualizar_registrador_aux(novo_valor : int) -> void:
+	self.registrador_aux = novo_valor
+	registrador_aux_foi_atualizado.emit()
+
+func atualizar_registrador_mar(novo_valor : int) -> void:
+	self.registrador_mar = novo_valor
+	registrador_mar_foi_atualizado.emit()
+
+func atualizar_registrador_ir(novo_valor : int) -> void:
+	self.registrador_ir = novo_valor
+	registrador_ir_foi_atualizado.emit()
+
+func atualizar_alu_entrada_a(novo_valor : int) -> void:
+	self.alu_entrada_a = novo_valor
+	alu_entrada_a_foi_atualizado.emit()
+
+func atualizar_alu_entrada_b(novo_valor : int) -> void:
+	self.alu_entrada_b = novo_valor
+	alu_entrada_b_foi_atualizado.emit()
+
+func atualizar_alu_saida(novo_valor : int) -> void:
+	self.alu_saida = novo_valor
+	alu_saida_foi_atualizado.emit()
+
 func incrementar_registrador_pc(quantia : int) -> void:
-	self.registrador_pc += quantia
-	registrador_pc_foi_atualizado.emit()
+	atualizar_registrador_pc(self.registrador_pc + quantia)
 
 func mover_pc_para_mar() -> void:
-	CPU.registrador_mar = CPU.registrador_pc
+	atualizar_registrador_mar(self.registrador_pc)
 
 func transferir_mbr_para_ir() -> void:
-	CPU.registrador_ir = CPU.registrador_mbr
+	atualizar_registrador_ir(self.registrador_mbr)
 
 func transferir_mbr_para_a() -> void:
 	atualizar_registrador_a(registrador_mbr)
@@ -73,17 +106,13 @@ func transferir_mbr_para_b() -> void:
 	atualizar_registrador_b(registrador_mbr)
 
 func iniciar_registrador_pc(endereco : int) -> void:
-	self.registrador_pc = endereco
-
-func atualizar_registrador_aux(novo_valor : int) -> void:
-	self.registrador_aux = novo_valor
-	registrador_aux_foi_atualizado.emit()
+	atualizar_registrador_pc(endereco)
 
 func incrementar_registrador_mar(quantia : int) -> void:
-	self.registrador_mar += quantia
+	atualizar_registrador_mar(self.registrador_mar + quantia)
 
 func unir_mbr_ao_aux_e_mover_para_mar() -> void:
-	self.registrador_mar = self.registrador_mbr + (self.registrador_aux << 8)
+	atualizar_registrador_mar(self.registrador_mbr + (self.registrador_aux << 8))
 
 func transferir_a_para_mbr() -> void:
 	atualizar_registrador_mbr(self.registrador_a)
@@ -92,20 +121,21 @@ func transferir_b_para_mbr() -> void:
 	atualizar_registrador_mbr(self.registrador_b)
 
 func transferir_a_para_alu_a() -> void:
-	self.alu_entrada_a = self.registrador_a
+	atualizar_alu_entrada_a(self.registrador_a)
 	
 func transferir_b_para_alu_b() -> void:
-	self.alu_entrada_b = self.registrador_b
+	atualizar_alu_entrada_b(self.registrador_b)
 
 func transferir_mar_para_alu_a() -> void:
-	self.alu_entrada_a = self.registrador_mar
+	atualizar_alu_entrada_a(self.registrador_mar)
+
 	
 func transferir_ix_para_alu_b() -> void:
-	self.alu_entrada_b = self.registrador_ix
+	atualizar_alu_entrada_b(self.registrador_ix)
 
 func adicao_alu_a_alu_b() -> void:
 	# TODO: Lidar com flags e overflow
-	self.alu_saida = self.alu_entrada_a + self.alu_entrada_b
+	atualizar_alu_saida(self.alu_entrada_a + self.alu_entrada_b)
 	
 func transferir_alu_saida_para_a() -> void:
 	# TODO: Garantir que a saída é 8 bits
@@ -128,6 +158,7 @@ func mover_valor_da_memoria_ao_mbr() -> void:
 
 func mover_mbr_para_endereco_selecionado() -> void:
 	Memoria.atualizar_valor_no_endereco_selecionado(CPU.registrador_mbr)
+	endereco_selecionado_foi_alterado.emit()
 
 func calcular_z():
 	push_warning("Função calcular_z não implementada!")
