@@ -18,3 +18,9 @@ func _on_button_pressed():
 	var numero_endereco : int = $LineEdit.obter_endereco()
 	SoftwareManager.executar_programa(numero_endereco)
 	clicou_em_executar.emit(numero_endereco)
+
+
+func _on_check_button_toggled(toggled_on: bool):
+	#print(toggled_on)
+	SoftwareManager.unica_instrucao = toggled_on
+	pass # Replace with function body.

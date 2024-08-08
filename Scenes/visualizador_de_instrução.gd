@@ -65,3 +65,6 @@ func descompilar_a_partir_do_endereco(endereco : int):
 			label_instrucao.text = "??"
 		
 		grade.add_child(label_instrucao)
+
+		if SoftwareManager.unica_instrucao:
+			break

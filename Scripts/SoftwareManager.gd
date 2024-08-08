@@ -1,6 +1,7 @@
 extends Node
 
 var memory_file_path 	: String 	= ""
+var unica_instrucao := false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -44,6 +45,9 @@ func executar_programa(endereco_inicial : int):
 		CPU.incrementar_registrador_pc(1)
 
 		em_execução = executar_instrucao(CPU.registrador_ir)
+		
+		if unica_instrucao:
+			return
 	
 		# Fim da instrução.
 	

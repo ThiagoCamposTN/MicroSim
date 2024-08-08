@@ -14,7 +14,7 @@ text = "Programa"
 layout_mode = 2
 size_flags_vertical = 3
 text = "LDA #10
-LDB #8
+LDB #9
 ABA
 STA 0000
 CAL EXIT"
