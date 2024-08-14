@@ -47,7 +47,7 @@ func atualizar_celula(posicao : int):
 
 func atualizar_grupo_de_celulas(endereco, tamanho):
 	var i = endereco
-	while (i <= endereco + tamanho):
+	while (i < endereco + tamanho):
 		atualizar_celula(i)
 		i+=1
 
