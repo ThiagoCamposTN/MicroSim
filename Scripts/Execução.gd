@@ -2,7 +2,7 @@ extends TabBar
 
 @onready var registradores 		= $MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer/Registradores
 @onready var inspetor 			= $MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer/Inspetor
-@onready var visualizador_hex 	= $MarginContainer/HSplitContainer/VBoxContainer/HexView
+#@onready var visualizador_hex 	= $MarginContainer/HSplitContainer/VBoxContainer/HexView
 
 @onready var executor = $MarginContainer/HSplitContainer/VBoxContainer2/Executor
 @onready var descompilador = $MarginContainer/HSplitContainer/VBoxContainer2/Panel
@@ -12,7 +12,7 @@ func _ready():
 	if %MemoriaLineEdit:
 		SoftwareManager.alterar_caminho_memoria(%MemoriaLineEdit.text)
 	
-	visualizador_hex.hex_foi_selecionado.connect(inspetor.atualizar_tela)
+	#visualizador_hex.hex_foi_selecionado.connect(inspetor.atualizar_tela)
 	
 	executor.clicou_em_executar.connect(execucao_iniciada)
 

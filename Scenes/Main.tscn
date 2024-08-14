@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://dd4buxa54gig7"]
+[gd_scene load_steps=12 format=3 uid="uid://dd4buxa54gig7"]
 
+[ext_resource type="Script" path="res://Scenes/Principal.gd" id="1_f7wj2"]
 [ext_resource type="Script" path="res://Scenes/aba_memoria.gd" id="1_k3qc3"]
-[ext_resource type="Script" path="res://Scripts/Principal.gd" id="1_p8pv5"]
+[ext_resource type="Script" path="res://Scripts/Execução.gd" id="1_p8pv5"]
 [ext_resource type="Theme" uid="uid://cue378diorxs8" path="res://Themes/default.tres" id="2_h2p1t"]
 [ext_resource type="PackedScene" uid="uid://b43gj8a6co0l6" path="res://Objects/registradores.tscn" id="2_pfwce"]
 [ext_resource type="PackedScene" uid="uid://bm0k2wmg5ydh1" path="res://Objects/carregador_de_memoria.tscn" id="2_rec7b"]
@@ -31,11 +32,56 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Memória" type="TabBar" parent="VBoxContainer/TabContainer"]
+[node name="Principal" type="TabBar" parent="VBoxContainer/TabContainer"]
+layout_mode = 2
+script = ExtResource("1_f7wj2")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/TabContainer/Principal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Principal/HSplitContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/VBoxContainer" instance=ExtResource("2_rec7b")]
+layout_mode = 2
+
+[node name="HexView" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/VBoxContainer" instance=ExtResource("5_rebeb")]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Registradores" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer2" instance=ExtResource("2_pfwce")]
+layout_mode = 2
+
+[node name="Inspetor" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer2" instance=ExtResource("4_6wfq0")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer/TabContainer/Principal/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Programação" type="TabBar" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer"]
 layout_mode = 2
 script = ExtResource("1_k3qc3")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Memória"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Programação"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,32 +90,20 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_h2p1t")
 
-[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/TabContainer/Memória/MarginContainer"]
-layout_mode = 2
+[node name="Editor" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Programação" instance=ExtResource("3_0ofiw")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Memória/MarginContainer/HSplitContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" parent="VBoxContainer/TabContainer/Memória/MarginContainer/HSplitContainer/VBoxContainer" instance=ExtResource("2_rec7b")]
-layout_mode = 2
-
-[node name="HexView" parent="VBoxContainer/TabContainer/Memória/MarginContainer/HSplitContainer/VBoxContainer" instance=ExtResource("5_rebeb")]
-layout_mode = 2
-
-[node name="Inspetor" parent="VBoxContainer/TabContainer/Memória/MarginContainer/HSplitContainer/VBoxContainer" instance=ExtResource("4_6wfq0")]
-layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.4
-
-[node name="Editor" parent="VBoxContainer/TabContainer/Memória/MarginContainer/HSplitContainer" instance=ExtResource("3_0ofiw")]
-layout_mode = 2
-
-[node name="Execução" type="TabBar" parent="VBoxContainer/TabContainer"]
+[node name="Execução" type="TabBar" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer"]
 visible = false
 layout_mode = 2
 script = ExtResource("1_p8pv5")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Execução"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Execução"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -78,43 +112,28 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_h2p1t")
 
-[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/TabContainer/Execução/MarginContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Execução/MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Execução/MarginContainer/HSplitContainer"]
 layout_mode = 2
 
-[node name="HexView" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer" instance=ExtResource("5_rebeb")]
-layout_mode = 2
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Registradores" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_pfwce")]
-layout_mode = 2
-
-[node name="Inspetor" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_6wfq0")]
-layout_mode = 2
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer2"]
 layout_mode = 2
 text = "Programa"
 
-[node name="Panel" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer2" instance=ExtResource("6_ixvrv")]
+[node name="Panel" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer2" instance=ExtResource("6_ixvrv")]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Executor" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer2" instance=ExtResource("5_80ls4")]
+[node name="Executor" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer2" instance=ExtResource("5_80ls4")]
 layout_mode = 2
 
-[node name="Label" parent="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer2/Executor" index="0"]
+[node name="Label" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer2/Executor" index="0"]
 text = "Endereço: "
 
-[editable path="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer/HexView"]
-[editable path="VBoxContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer2/Executor"]
+[node name="Execução Visual" type="TabBar" parent="VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+
+[editable path="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer2/Executor"]

@@ -7,7 +7,7 @@ signal memoria_carregada
 func _ready():
 	memoria_carregada.connect(SoftwareManager.alterar_caminho_memoria)
 	
-	# para 4teste
+	# para teste
 	self.carregar_memoria()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
