@@ -19,8 +19,8 @@ signal alu_saida_foi_atualizado
 
 signal flag_z_foi_atualizada
 signal flag_n_foi_atualizada
-signal flag_r_foi_atualizada
-signal flag_d_foi_atualizada
+signal flag_c_foi_atualizada
+signal flag_o_foi_atualizada
 
 # registradores
 var registrador_a	: int = 0x00	# Registrador de 8 bits
@@ -33,15 +33,15 @@ var registrador_aux : int			# Registrador auxiliar - 8 bits
 var registrador_mar : int			# Registrador de endereço de memória - 16 bits (rad)
 
 # flags
-var flag_z : int = 0x0 # Registrador de 1 bit
-var flag_n : int = 0x0 # Registrador de 1 bit
-var flag_r : int = 0x0 # Registrador de 1 bit
-var flag_d : int = 0x1 # Registrador de 1 bit
+var flag_z : int = 0x0 # Registrador de 1 bit (Zero)
+var flag_n : int = 0x0 # Registrador de 1 bit (Negativo)
+var flag_c : int = 0x0 # Registrador de 1 bit (Carry)
+var flag_o : int = 0x1 # Registrador de 1 bit (Overflow)
 
 var _flag_z_buffer : int = 0x0 # Registrador de 1 bit
 var _flag_n_buffer : int = 0x0 # Registrador de 1 bit
-var _flag_r_buffer : int = 0x0 # Registrador de 1 bit
-var _flag_d_buffer : int = 0x0 # Registrador de 1 bit
+var _flag_c_buffer : int = 0x0 # Registrador de 1 bit
+var _flag_o_buffer : int = 0x0 # Registrador de 1 bit
 
 # unidade de controle
 var registrador_ir : int # Registrador de instrução - 1 bit (ir)
@@ -185,9 +185,9 @@ func calcular_n():
 	flag_n_foi_atualizada.emit()
 
 func calcular_r():
-	self.flag_r = _flag_r_buffer
-	flag_r_foi_atualizada.emit()
+	self.flag_c = _flag_c_buffer
+	flag_c_foi_atualizada.emit()
 
 func calcular_d():
-	self.flag_d = _flag_d_buffer
-	flag_d_foi_atualizada.emit()
+	self.flag_o = _flag_o_buffer
+	flag_o_foi_atualizada.emit()

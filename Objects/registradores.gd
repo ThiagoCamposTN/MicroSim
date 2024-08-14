@@ -46,8 +46,8 @@ func _ready():
 	
 	CPU.flag_z_foi_atualizada.connect(atualizar_registrador.bind(%ZFlag, "flag_z", 1))
 	CPU.flag_n_foi_atualizada.connect(atualizar_registrador.bind(%NFlag, "flag_n", 1))
-	CPU.flag_r_foi_atualizada.connect(atualizar_registrador.bind(%RFlag, "flag_r", 1))
-	CPU.flag_d_foi_atualizada.connect(atualizar_registrador.bind(%DFlag, "flag_d", 1))
+	CPU.flag_c_foi_atualizada.connect(atualizar_registrador.bind(%CFlag, "flag_c", 1))
+	CPU.flag_o_foi_atualizada.connect(atualizar_registrador.bind(%OFlag, "flag_o", 1))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
