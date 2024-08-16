@@ -1,7 +1,8 @@
 extends Node
 
 var memory_file_path 	: String 	= ""
-var unica_instrucao := false
+var unica_instrucao 	: bool 		= false
+var em_execução 		: bool 		= false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -9,26 +10,10 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-func recarregar_memoria():
-	var file 	: FileAccess 		= FileAccess.open(self.memory_file_path, FileAccess.READ)
-	var dados 	: PackedByteArray 	= file.get_buffer(file.get_length())
-	Memoria.sobrescrever_memoria(dados)
-	file.close()
-
-func alterar_caminho_memoria(caminho : String):
-	self.memory_file_path = caminho
-	self.recarregar_memoria()
-
-func executar_programa(endereco_inicial : int):
-	var em_execução : bool = true
-
-	# Inicia-se a fase de acesso à instrução;
-	CPU.iniciar_registrador_pc(endereco_inicial)
-
-	while em_execução:
+func _process(delta):
+	if em_execução:
+		# Inicia-se a fase de acesso à instrução;
+	
 		# Transferência do CO (Contador Ordinal) para o RAD (Registrador de Endereço);
 		CPU.mover_pc_para_mar()
 		
@@ -47,11 +32,25 @@ func executar_programa(endereco_inicial : int):
 		em_execução = executar_instrucao(CPU.registrador_ir)
 		
 		if unica_instrucao:
-			return
+			em_execução = false
 	
 		# Fim da instrução.
 	
 	# Fim da execução
+
+func recarregar_memoria():
+	var file 	: FileAccess 		= FileAccess.open(self.memory_file_path, FileAccess.READ)
+	var dados 	: PackedByteArray 	= file.get_buffer(file.get_length())
+	Memoria.sobrescrever_memoria(dados)
+	file.close()
+
+func alterar_caminho_memoria(caminho : String):
+	self.memory_file_path = caminho
+	self.recarregar_memoria()
+
+func executar_programa(endereco_inicial : int):
+	CPU.iniciar_registrador_pc(endereco_inicial)
+	em_execução = true
 
 func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 	var parte_memoria = Array()
