@@ -4,7 +4,8 @@ extends Panel
 
 @onready var container_grade : ScrollContainer = $VBoxContainer/ScrollContainer
 var grade : GridContainer
-
+var iniciar_descompilação : bool = false
+var endereço_inicial : int
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,41 +18,32 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
-
-func descompilar_a_partir_do_endereco(endereco : int):
-	grade.queue_free()
+	if iniciar_descompilação:
+		var valor 			: String
+		var instrucao_atual : Instrucao
 	
-	grade = GridContainer.new()
-	grade.set_columns(3)
-	container_grade.add_child(grade)
-	
-	var valor 			: String
-	var instrucao_atual : Instrucao
-	
-	while endereco < Memoria.celulas.size():
-		valor 			= Memoria.ler_hex_no_endereco(endereco)
+		valor 			= Memoria.ler_hex_no_endereco(endereço_inicial)
 		instrucao_atual = Compilador.descompilar(valor)
 		
 		if instrucao_atual:
 			instrucao_atual.opcode 		= valor
-			instrucao_atual.parametros 	= Compilador.buscar_parametros_na_memoria(endereco, instrucao_atual.enderecamento)
+			instrucao_atual.parametros 	= Compilador.buscar_parametros_na_memoria(endereço_inicial, instrucao_atual.enderecamento)
 		
 		# Parte do endereço
 		
 		var label_endereco := Label.new()
-		label_endereco.text = Utils.int_para_hex(endereco, 3)
+		label_endereco.text = Utils.int_para_hex(endereço_inicial, 3)
 		grade.add_child(label_endereco)
 		
 		# Parte dos bytes
 		
 		var label_bytes := Label.new()
 		label_bytes.text = valor
-		endereco += 1
+		endereço_inicial += 1
 		
 		if instrucao_atual and instrucao_atual.parametros.size():
 			label_bytes.text += " " + " ".join(instrucao_atual.parametros)
-			endereco += instrucao_atual.parametros.size()
+			endereço_inicial += instrucao_atual.parametros.size()
 		
 		grade.add_child(label_bytes)
 		
@@ -67,4 +59,18 @@ func descompilar_a_partir_do_endereco(endereco : int):
 		grade.add_child(label_instrucao)
 
 		if SoftwareManager.unica_instrucao:
-			break
+			iniciar_descompilação = false
+		
+		if endereço_inicial >= Memoria.celulas.size():
+			iniciar_descompilação = false
+
+func descompilar_a_partir_do_endereco(endereco : int):
+	grade.queue_free()
+	
+	grade = GridContainer.new()
+	grade.set_columns(3)
+	container_grade.add_child(grade)
+	
+	# TODO: no futuro, usar o PC da memória diretamente ao invés de declarar o endereço
+	endereço_inicial = endereco
+	iniciar_descompilação = true
