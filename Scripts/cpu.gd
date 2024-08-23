@@ -102,8 +102,8 @@ func atualizar_alu_saida(novo_valor : int) -> void:
 	self.alu_saida = novo_valor
 	alu_saida_foi_atualizado.emit()
 
-func incrementar_registrador_pc(quantia : int) -> void:
-	atualizar_registrador_pc(self.registrador_pc + quantia)
+func incrementar_registrador_pc() -> void:
+	atualizar_registrador_pc(self.registrador_pc + 1)
 
 func mover_pc_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_pc)
@@ -120,8 +120,8 @@ func transferir_mbr_para_b() -> void:
 func iniciar_registrador_pc(endereco : int) -> void:
 	atualizar_registrador_pc(endereco)
 
-func incrementar_registrador_mar(quantia : int) -> void:
-	atualizar_registrador_mar(self.registrador_mar + quantia)
+func incrementar_registrador_mar() -> void:
+	atualizar_registrador_mar(self.registrador_mar + 1)
 
 func unir_mbr_ao_aux_e_mover_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_mbr + (self.registrador_aux << 8))

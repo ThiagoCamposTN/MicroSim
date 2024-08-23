@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://dd4buxa54gig7"]
+[gd_scene load_steps=13 format=3 uid="uid://dd4buxa54gig7"]
 
 [ext_resource type="Script" path="res://Scenes/Principal.gd" id="1_f7wj2"]
 [ext_resource type="Script" path="res://Scenes/aba_memoria.gd" id="1_k3qc3"]
 [ext_resource type="Script" path="res://Scripts/Execução.gd" id="1_p8pv5"]
+[ext_resource type="Script" path="res://Scenes/Programa.gd" id="1_xtbw1"]
 [ext_resource type="Theme" uid="uid://cue378diorxs8" path="res://Themes/default.tres" id="2_h2p1t"]
 [ext_resource type="PackedScene" uid="uid://b43gj8a6co0l6" path="res://Objects/registradores.tscn" id="2_pfwce"]
 [ext_resource type="PackedScene" uid="uid://bm0k2wmg5ydh1" path="res://Objects/carregador_de_memoria.tscn" id="2_rec7b"]
@@ -12,13 +13,14 @@
 [ext_resource type="PackedScene" uid="uid://cirseeqq4hnvy" path="res://Scenes/HexView.tscn" id="5_rebeb"]
 [ext_resource type="PackedScene" uid="uid://c1uckvrljlsq3" path="res://Scenes/visualizador_de_instrução.tscn" id="6_ixvrv"]
 
-[node name="Control" type="Control"]
+[node name="Programa" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_xtbw1")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -76,6 +78,7 @@ layout_mode = 2
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer/TabContainer/Principal/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_h2p1t")
 
 [node name="Programação" type="TabBar" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer"]
 layout_mode = 2
@@ -90,13 +93,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_h2p1t")
 
-[node name="Editor" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Programação" instance=ExtResource("3_0ofiw")]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Editor" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Programação/MarginContainer" instance=ExtResource("3_0ofiw")]
+layout_mode = 2
 
 [node name="Execução" type="TabBar" parent="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer"]
 visible = false
@@ -135,5 +133,20 @@ text = "Endereço: "
 [node name="Execução Visual" type="TabBar" parent="VBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="AvancarMicrocodigoButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Avançar microcódigo"
+
+[node name="AvancarInstrucaoButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Avançar instrução"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/AvancarMicrocodigoButton" to="." method="_on_avancar_microcodigo_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/AvancarInstrucaoButton" to="." method="_on_avancar_instrucao_button_pressed"]
 
 [editable path="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer2/Executor"]

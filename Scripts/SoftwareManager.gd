@@ -1,42 +1,32 @@
 extends Node
 
-var memory_file_path 	: String 	= ""
-var unica_instrucao 	: bool 		= false
-var em_execução 		: bool 		= false
+var memory_file_path 	: String 		= ""
+var unica_instrucao 	: bool 			= false
+var em_execução 		: bool 			= false
+var fila_instrucoes 	: Array[String] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if em_execução:
-		# Inicia-se a fase de acesso à instrução;
-	
-		# Transferência do CO (Contador Ordinal) para o RAD (Registrador de Endereço);
-		CPU.mover_pc_para_mar()
-		
-		# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-		CPU.mover_mar_ao_endereco_de_memoria()
-		
-		# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-		CPU.mover_valor_da_memoria_ao_mbr()
-#
-		# O valor de DON é transferido ao DCOD (Decodificador de instrução) via o BUS de Dados;
-		CPU.transferir_mbr_para_ir()
-#
-		# O CO é incrementado em 1;
-		CPU.incrementar_registrador_pc(1)
+		if fila_instrucoes.size() > 0:
+			var instrucao = fila_instrucoes.pop_front()
+			print("Executando: ", instrucao)
 
-		em_execução = executar_instrucao(CPU.registrador_ir)
-		
-		if unica_instrucao:
-			em_execução = false
-	
-		# Fim da instrução.
-	
-	# Fim da execução
+			if CPU.has_method(instrucao):
+				CPU.call(instrucao)
+			else:
+				self.call(instrucao)
+			
+			if unica_instrucao:
+				em_execução = false
+				unica_instrucao = false
+		else:
+			adicionar_instrucao_na_fila()
+			
 
 func recarregar_memoria():
 	var file 	: FileAccess 		= FileAccess.open(self.memory_file_path, FileAccess.READ)
@@ -96,9 +86,34 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, endereco_inicial)
 	#print("Depois: ", Memoria.celulas.slice(0,15))
 
-func executar_instrucao(instrucao : int):
+func adicionar_instrucao_na_fila():
+	# Coloca todos os microcódigos necessários para a execução de uma instrução na fila
+	# Inicia-se a fase de acesso à instrução;
+
+	# Transferência do CO (Contador Ordinal) para o RAD (Registrador de Endereço);
+	fila_instrucoes.push_back("mover_pc_para_mar")
+	
+	# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+	fila_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
+	
+	# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
+	fila_instrucoes.push_back("mover_valor_da_memoria_ao_mbr")
+	
+	# O valor de DON é transferido ao DCOD (Decodificador de instrução) via o BUS de Dados;
+	fila_instrucoes.push_back("transferir_mbr_para_ir")
+
+	# O CO é incrementado em 1;
+	fila_instrucoes.push_back("incrementar_registrador_pc")
+
+	fila_instrucoes.push_back("adicionar_instrucao")
+	# Fim da instrução.
+	
+	# Fim da execução
+
+
+func adicionar_instrucao():
 	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
-	var instrucao_em_hex 		: String 	= Utils.int_para_hex(instrucao, 2)
+	var instrucao_em_hex 		: String 	= Utils.int_para_hex(CPU.registrador_ir, 2)
 	var instrucao_descompilada 	: Instrucao = Compilador.descompilar(instrucao_em_hex)
 	
 	# se não a instrução não existe
@@ -115,63 +130,65 @@ func executar_instrucao(instrucao : int):
 			pass
 		Instrucao.Enderecamentos.IMEDIATO:
 			# Transferência de PC para MAR
-			CPU.mover_pc_para_mar()
-			
+			fila_instrucoes.push_back("mover_pc_para_mar")
+
 			# PC é incrementado em 1
-			CPU.incrementar_registrador_pc(1)
+			fila_instrucoes.push_back("incrementar_registrador_pc")
 		Instrucao.Enderecamentos.DIRETO:
 			# Transferência de PC para MAR
-			CPU.mover_pc_para_mar()
+			fila_instrucoes.push_back("mover_pc_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			CPU.mover_mar_ao_endereco_de_memoria()
+			fila_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
-			CPU.mover_valor_da_memoria_ao_aux()
+			fila_instrucoes.push_back("mover_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			CPU.incrementar_registrador_mar(1)
+			fila_instrucoes.push_back("incrementar_registrador_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			CPU.mover_mar_ao_endereco_de_memoria()
+			fila_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-			CPU.mover_valor_da_memoria_ao_mbr()
+			fila_instrucoes.push_back("mover_valor_da_memoria_ao_mbr")
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
-			CPU.unir_mbr_ao_aux_e_mover_para_mar()
+			fila_instrucoes.push_back("unir_mbr_ao_aux_e_mover_para_mar")
 			
 			# O PC é incrementado em 2
-			CPU.incrementar_registrador_pc(2)
+			fila_instrucoes.push_back("incrementar_registrador_pc")
+			fila_instrucoes.push_back("incrementar_registrador_pc")
 		Instrucao.Enderecamentos.IMPLICITO:
 			pass
 		Instrucao.Enderecamentos.INDEXADO:
 			# Transferência de PC para MAR
-			CPU.mover_pc_para_mar()
+			fila_instrucoes.push_back("mover_pc_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			CPU.mover_mar_ao_endereco_de_memoria()
+			fila_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
-			CPU.mover_valor_da_memoria_ao_aux()
+			fila_instrucoes.push_back("mover_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			CPU.incrementar_registrador_mar(1)
+			fila_instrucoes.push_back("incrementar_registrador_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			CPU.mover_mar_ao_endereco_de_memoria()
+			fila_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-			CPU.mover_valor_da_memoria_ao_mbr()
+			fila_instrucoes.push_back("mover_valor_da_memoria_ao_mbr")
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
-			CPU.unir_mbr_ao_aux_e_mover_para_mar()
+			fila_instrucoes.push_back("unir_mbr_ao_aux_e_mover_para_mar")
 			
-			CPU.transferir_mar_para_alu_a()
-			CPU.transferir_ix_para_alu_b()
-			CPU.adicao_alu_a_alu_b()
-			CPU.transferir_alu_saida_para_mar()
-			CPU.incrementar_registrador_pc(2)
+			fila_instrucoes.push_back("transferir_mar_para_alu_a")
+			fila_instrucoes.push_back("transferir_ix_para_alu_b")
+			fila_instrucoes.push_back("adicao_alu_a_alu_b")
+			fila_instrucoes.push_back("transferir_alu_saida_para_mar")
+			fila_instrucoes.push_back("incrementar_registrador_pc")
+			fila_instrucoes.push_back("incrementar_registrador_pc")
 		_:
 			pass
 	
@@ -182,8 +199,6 @@ func executar_instrucao(instrucao : int):
 		for microcodigo in microcodigos:
 			# Chama a função declarada em CPU que tem nome equivalente ao especificado nos microcodigos do operador
 			# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
-			CPU.call(microcodigo)
+			fila_instrucoes.push_back(microcodigo)
 	else:
-		return false
-	
-	return true
+		em_execução = false
