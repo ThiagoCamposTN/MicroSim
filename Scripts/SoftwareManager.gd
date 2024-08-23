@@ -11,13 +11,19 @@ var unica_instrucao 	: bool 			= false
 var instrucao_executada : bool 			= false
 var ultima_operacao		: String		= ""
 
+@export var time_delay 	: float 		= 0.1
+var execucao_timer		: Timer
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	execucao_timer = Timer.new()
+	execucao_timer.one_shot = true
+	add_child(execucao_timer)
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if em_execução:
+	if em_execução and execucao_timer.is_stopped():
 		if fila_instrucoes.size() > 0:
 			var instrucao = fila_instrucoes.pop_front()
 			ultima_operacao = instrucao
@@ -40,6 +46,7 @@ func _process(delta):
 				adicionar_instrucao_na_fila()
 				instrucao_executada = true
 		microoperacao_executada.emit()
+		execucao_timer.start(time_delay)
 
 func recarregar_memoria():
 	var file 	: FileAccess 		= FileAccess.open(self.memory_file_path, FileAccess.READ)
