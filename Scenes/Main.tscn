@@ -134,19 +134,43 @@ text = "Endereço: "
 visible = false
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="AvancarMicrocodigoButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="PCLabel" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
+text = "PC: "
+
+[node name="PCLineEdit" type="LineEdit" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0000"
+
+[node name="AvancarMicrocodigoButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Executa o próximo microcódigo localizado pelo Contador de Programa e interrompe a execução."
 text = "Avançar microcódigo"
 
-[node name="AvancarInstrucaoButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="AvancarInstrucaoButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
-disabled = true
+tooltip_text = "Executa a próxima instrução localizada pelo Contador de Programa e interrompe a execução."
 text = "Avançar instrução"
 
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/AvancarMicrocodigoButton" to="." method="_on_avancar_microcodigo_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/AvancarInstrucaoButton" to="." method="_on_avancar_instrucao_button_pressed"]
+[node name="ExecutarTudoButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Executa todas as instruções em sequência a partir do endereço pelo Contador de Programa até o próximo comando de parada ou instrução inválida."
+text = "Executar tudo"
+
+[connection signal="text_changed" from="VBoxContainer/MarginContainer/HBoxContainer/PCLineEdit" to="." method="_on_pc_line_edit_text_changed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/AvancarMicrocodigoButton" to="." method="_on_avancar_microcodigo_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/AvancarInstrucaoButton" to="." method="_on_avancar_instrucao_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/ExecutarTudoButton" to="." method="_on_executar_tudo_button_pressed"]
 
 [editable path="VBoxContainer/TabContainer/Principal/HSplitContainer/TabContainer/Execução/MarginContainer/HSplitContainer/VBoxContainer2/Executor"]

@@ -1,9 +1,12 @@
 extends Node
 
 var memory_file_path 	: String 		= ""
-var unica_instrucao 	: bool 			= false
+var unico_microcodigo 	: bool 			= false
 var em_execução 		: bool 			= false
 var fila_instrucoes 	: Array[String] = []
+
+var unica_instrucao 	: bool 			= false
+var instrucao_executada : bool 			= false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,11 +24,17 @@ func _process(delta):
 			else:
 				self.call(instrucao)
 			
-			if unica_instrucao:
+			if unico_microcodigo:
+				em_execução = false
+				unico_microcodigo = false
+		else:
+			if instrucao_executada and unica_instrucao:
 				em_execução = false
 				unica_instrucao = false
-		else:
-			adicionar_instrucao_na_fila()
+				instrucao_executada = false
+			else:
+				adicionar_instrucao_na_fila()
+				instrucao_executada = true
 			
 
 func recarregar_memoria():
