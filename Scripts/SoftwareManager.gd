@@ -1,5 +1,7 @@
 extends Node
 
+signal microoperacao_executada
+
 var memory_file_path 	: String 		= ""
 var unico_microcodigo 	: bool 			= false
 var em_execução 		: bool 			= false
@@ -7,6 +9,7 @@ var fila_instrucoes 	: Array[String] = []
 
 var unica_instrucao 	: bool 			= false
 var instrucao_executada : bool 			= false
+var ultima_operacao		: String		= ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,6 +20,7 @@ func _process(delta):
 	if em_execução:
 		if fila_instrucoes.size() > 0:
 			var instrucao = fila_instrucoes.pop_front()
+			ultima_operacao = instrucao
 			print("Executando: ", instrucao)
 
 			if CPU.has_method(instrucao):
@@ -35,7 +39,7 @@ func _process(delta):
 			else:
 				adicionar_instrucao_na_fila()
 				instrucao_executada = true
-			
+		microoperacao_executada.emit()
 
 func recarregar_memoria():
 	var file 	: FileAccess 		= FileAccess.open(self.memory_file_path, FileAccess.READ)
