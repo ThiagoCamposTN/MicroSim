@@ -27,3 +27,10 @@ static func int_para_bin(valor : int) -> String:
 		bin_str = str(valor & 1) + bin_str
 		valor = valor >> 1
 	return bin_str
+
+static func limitar_para_endereco(valor : int) -> int:
+	if valor < 0:
+		return 0
+	if valor >= Memoria.TAMANHO_MEMORIA:
+		return Memoria.TAMANHO_MEMORIA - 1
+	return valor
