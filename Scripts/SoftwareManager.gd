@@ -6,7 +6,6 @@ signal execucao_finalizada
 
 var memory_file_path 	: String 		= ""
 var unico_microcodigo 	: bool 			= false
-var em_execução 		: bool 			= false
 var fila_instrucoes 	: Array[String] = []
 
 var unica_instrucao 	: bool 			= false
@@ -18,6 +17,9 @@ var execucao_timer		: Timer
 var config_inicial		: ConfigFile
 
 
+enum Estado {BUSCANDO, EXECUTANDO, PARADO}
+var estado_atual : Estado = Estado.PARADO
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	execucao_timer = Timer.new()
@@ -28,18 +30,31 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if em_execução and (execucao_timer.is_stopped() or Teste.teste_em_execucao):
-		if fila_instrucoes.size() > 0:
-			var instrucao = fila_instrucoes.pop_front()
-			ultima_operacao = instrucao
-			
-			if not Teste.teste_em_execucao:
-				print("Executando: ", instrucao)
+	if execucao_timer.is_stopped() or Teste.teste_em_execucao:
+		match estado_atual:
+			Estado.PARADO:
+				return
+			Estado.BUSCANDO:
+				if fila_instrucoes.size() == 0:
+					adicionar_instrucao_na_fila()
+					estado_atual = Estado.EXECUTANDO
+					return
+			Estado.EXECUTANDO:
+				if fila_instrucoes.size() == 0:
+					estado_atual = Estado.BUSCANDO
+					adicionar_instrucao()
+					
+					if unica_instrucao:
+						estado_atual = Estado.PARADO
+					return
+					
+		var instrucao = fila_instrucoes.pop_front()
 
-			if CPU.has_method(instrucao):
-				CPU.call(instrucao)
-			else:
-				self.call(instrucao)
+		if not Teste.teste_em_execucao:
+				print("Executando: ", instrucao)
+		
+		if CPU.has_method(instrucao):
+			CPU.call(instrucao)
 			
 			if unico_microcodigo:
 				pausar_execução()
@@ -57,7 +72,7 @@ func _process(delta):
 
 func executar_programa(endereco_inicial : int):
 	CPU.iniciar_registrador_pc(endereco_inicial)
-	em_execução = true
+	estado_atual = Estado.BUSCANDO
 
 func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: int):
 	var parte_memoria = Array()
@@ -100,8 +115,6 @@ func adicionar_instrucao_na_fila():
 
 	# O CO é incrementado em 1;
 	fila_instrucoes.push_back("incrementar_registrador_pc")
-
-	fila_instrucoes.push_back("adicionar_instrucao")
 	# Fim da instrução.
 	
 	# Fim da execução
