@@ -1,7 +1,7 @@
 extends TabBar
 
 @onready var inspetor 			= %Inspetor
-@onready var visualizador_hex 	= $HSplitContainer/VBoxContainer/HexView
+@onready var visualizador_hex 	= %HexView
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
