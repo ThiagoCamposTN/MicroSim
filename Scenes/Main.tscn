@@ -146,31 +146,32 @@ alignment = 2
 layout_mode = 2
 text = "Descompilar"
 
-[node name="Execução Visual" type="TabBar" parent="VBoxContainer/TabContainer"]
+[node name="Execução Visual" type="TabBar" parent="VBoxContainer/TabContainer" node_paths=PackedStringArray("fluxo")]
 visible = false
 layout_mode = 2
 script = ExtResource("13_vadsj")
+fluxo = NodePath("Fluxo")
 
-[node name="Image75" type="Sprite2D" parent="VBoxContainer/TabContainer/Execução Visual"]
+[node name="Image75" type="TextureRect" parent="VBoxContainer/TabContainer/Execução Visual"]
 self_modulate = Color(1, 0.152941, 1, 1)
-position = Vector2(589, 284.5)
+layout_mode = 0
+offset_left = 171.0
+offset_top = 16.0
+offset_right = 817.0
+offset_bottom = 432.0
 scale = Vector2(1.29567, 1.29567)
 texture = ExtResource("13_16ics")
 
-[node name="Line2D" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual"]
-points = PackedVector2Array(840, 184, 922, 157, 985, 157, 985, 397, 923, 397, 840, 373)
-closed = true
-width = 3.0
-
-[node name="Line2D2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual"]
-points = PackedVector2Array(922, 397, 922, 157)
-closed = true
-width = 3.0
-
 [node name="Registradores" type="Control" parent="VBoxContainer/TabContainer/Execução Visual"]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
 
 [node name="RegistradorALabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
 layout_mode = 0
@@ -186,6 +187,8 @@ offset_left = 272.0
 offset_top = 101.0
 offset_right = 308.0
 offset_bottom = 143.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "00"
 
 [node name="RegistradorBLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
@@ -202,6 +205,8 @@ offset_left = 273.0
 offset_top = 153.0
 offset_right = 309.0
 offset_bottom = 195.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "00"
 
 [node name="RegistradorPCLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
@@ -218,6 +223,8 @@ offset_left = 252.0
 offset_top = 205.0
 offset_right = 308.0
 offset_bottom = 247.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "0000"
 
 [node name="RegistradorIXLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
@@ -234,6 +241,8 @@ offset_left = 251.0
 offset_top = 257.0
 offset_right = 307.0
 offset_bottom = 299.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "6E35"
 
 [node name="RegistradorMARLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
@@ -250,6 +259,8 @@ offset_left = 429.0
 offset_top = 256.0
 offset_right = 485.0
 offset_bottom = 298.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "0000"
 
 [node name="RegistradorPPLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
@@ -266,6 +277,8 @@ offset_left = 252.0
 offset_top = 309.0
 offset_right = 308.0
 offset_bottom = 351.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "0000"
 
 [node name="RegistradorMBRLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
@@ -282,6 +295,8 @@ offset_left = 449.0
 offset_top = 101.0
 offset_right = 486.0
 offset_bottom = 143.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "00"
 
 [node name="RegistradorAUXLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
@@ -298,6 +313,8 @@ offset_left = 448.0
 offset_top = 192.0
 offset_right = 485.0
 offset_bottom = 234.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "00"
 
 [node name="RegistradorZLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
@@ -314,6 +331,8 @@ offset_left = 421.0
 offset_top = 328.0
 offset_right = 447.0
 offset_bottom = 370.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "0"
 
 [node name="RegistradorNLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
@@ -330,6 +349,8 @@ offset_left = 448.0
 offset_top = 328.0
 offset_right = 474.0
 offset_bottom = 370.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "0"
 
 [node name="RegistradorCLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
@@ -346,6 +367,8 @@ offset_left = 474.0
 offset_top = 328.0
 offset_right = 500.0
 offset_bottom = 370.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "0"
 
 [node name="RegistradorOLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
@@ -362,6 +385,8 @@ offset_left = 502.0
 offset_top = 328.0
 offset_right = 528.0
 offset_bottom = 370.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "0"
 
 [node name="RegistradorIRLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
@@ -380,64 +405,79 @@ offset_right = 483.0
 offset_bottom = 473.0
 text = "00"
 
-[node name="Line2D3" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual"]
-points = PackedVector2Array(188, 88, 678, 88, 680, 535, 188, 534)
-closed = true
-
 [node name="Linhas" type="Control" parent="VBoxContainer/TabContainer/Execução Visual"]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
 
 [node name="mover_pc_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(311, 225, 390, 225, 390, 277, 426, 277)
-texture_mode = 1
-joint_mode = 2
-begin_cap_mode = 2
-end_cap_mode = 2
-antialiased = true
+points = PackedVector2Array(311, 225, 392, 225, 392, 281, 424, 281)
+width = 2.0
 
 [node name="mover_mar_ao_endereco_de_memoria" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(490, 277, 839, 277)
+points = PackedVector2Array(488, 281, 840, 281)
+width = 2.0
 
 [node name="mover_valor_da_memoria_ao_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(491, 122, 549, 122, 955, 121, 955, 151)
+points = PackedVector2Array(952, 153, 952, 121, 496, 121)
+width = 2.0
 
 [node name="transferir_mbr_para_ir" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
 points = PackedVector2Array(447, 122, 390, 122, 391, 454, 440, 454)
+width = 2.0
 
 [node name="mover_valor_da_memoria_ao_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(490, 212, 549, 212, 549, 122, 955, 123, 956, 153)
+points = PackedVector2Array(490, 212, 549, 212, 549, 122, 952, 121, 952, 153)
+width = 2.0
 
 [node name="transferir_mbr_para_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(442, 124, 390, 124, 313, 124)
+points = PackedVector2Array(442, 124, 313, 124)
+width = 2.0
 
 [node name="transferir_mbr_para_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(445, 123, 390, 124, 389, 174, 312, 176)
+points = PackedVector2Array(448, 121, 392, 121, 392, 177, 312, 177)
+width = 2.0
 
 [node name="transferir_a_para_alu_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(315, 123, 390, 124, 389, 371, 239, 371, 238, 385)
+points = PackedVector2Array(312, 121, 392, 121, 392, 369, 240, 369, 240, 385)
+width = 2.0
 
 [node name="transferir_b_para_alu_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(311, 177, 389, 180, 389, 371, 321, 371, 321, 383)
+points = PackedVector2Array(311, 177, 392, 177, 392, 369, 320, 369, 320, 385)
+width = 2.0
 
 [node name="transferir_alu_saida_para_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(307, 500, 392, 496, 390, 124, 315, 122)
+points = PackedVector2Array(312, 497, 392, 497, 392, 121, 312, 121)
+width = 2.0
 
 [node name="transferir_alu_saida_para_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(307, 500, 392, 496, 390, 174, 314, 178)
+points = PackedVector2Array(312, 497, 392, 497, 392, 177, 312, 177)
+width = 2.0
 
 [node name="unir_mbr_ao_aux_e_mover_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(446, 210, 389, 210, 389, 280, 425, 280)
+position = Vector2(0, 1)
+points = PackedVector2Array(448, 209, 392, 209, 392, 281, 424, 281)
+width = 2.0
 
 [node name="transferir_a_para_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(314, 124, 390, 124, 444, 122)
+points = PackedVector2Array(312, 121, 440, 121)
+width = 2.0
 
 [node name="mover_mbr_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(494, 123, 956, 122, 958, 158)
+points = PackedVector2Array(496, 121, 952, 121, 952, 153)
+width = 2.0
 
-visible = false
-layout_mode = 2
+[node name="Fluxo" type="ColorRect" parent="VBoxContainer/TabContainer/Execução Visual"]
+layout_mode = 0
+offset_left = -32.0
+offset_top = 1.0
+offset_right = -16.0
+offset_bottom = 18.0
+color = Color(1, 1, 0, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2

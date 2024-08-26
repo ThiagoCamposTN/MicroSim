@@ -1,8 +1,9 @@
 extends TabBar
 
 var registradores_interagindo : Array[Button] = []
-var tweens: Array[Tween]
-var bolinha
+var tweens			: Array[Tween]
+@export var fluxo 	: ColorRect
+var fluxo_tween		: Tween
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -60,8 +61,9 @@ func atualizar_linha():
 		return
 	
 	resetar_linhas()
-	var no : Line2D = self.get_node(caminho_linha)
-	no.default_color = Color.CYAN
+	#var no : Line2D = self.get_node(caminho_linha)
+	#no.default_color = Color.CYAN
+	caminhar_fluxo(get_node(caminho_linha))
 
 func acender_registradores_interagindo() -> void:
 	for reg in registradores_interagindo:
@@ -111,3 +113,26 @@ func atualizar_registrador(registrador: String):
 			get_node("Registradores/RegistradorOButton").text = Utils.int_para_hex(CPU.flag_o, 1)
 		"IR":
 			get_node("Registradores/RegistradorIRButton").text = Utils.int_para_hex(CPU.registrador_ir, 2)
+
+func caminhar_fluxo(caminho: Line2D):
+	var tempo_caminho = 1 # segundos
+	if fluxo_tween:
+		fluxo_tween.kill()
+	
+	var distancia_total = 0
+	for i in range(0, caminho.points.size()):
+		if i == 0:
+			continue
+		else:
+			distancia_total += caminho.points[i].distance_to(caminho.points[i-1])
+	
+	var tempo_por_distancia = tempo_caminho/distancia_total
+	
+	fluxo_tween = create_tween()
+	for i in range(0, caminho.points.size()):
+		if i == 0:
+			fluxo_tween.tween_property(fluxo, "position", caminho.points[i], 0.5).set_trans(Tween.TRANS_LINEAR).from(caminho.points[0])
+		else:
+			var distancia = caminho.points[i].distance_to(caminho.points[i-1])
+			fluxo_tween.tween_property(fluxo, "position", caminho.points[i], distancia*tempo_por_distancia).set_trans(Tween.TRANS_LINEAR)
+	fluxo_tween.set_loops()
