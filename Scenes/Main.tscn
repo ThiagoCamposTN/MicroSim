@@ -234,7 +234,7 @@ offset_left = 251.0
 offset_top = 257.0
 offset_right = 307.0
 offset_bottom = 299.0
-text = "0000"
+text = "6E35"
 
 [node name="RegistradorMARLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
 layout_mode = 0

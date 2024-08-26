@@ -7,8 +7,19 @@ var bolinha
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	SoftwareManager.microoperacao_executada.connect(atualizar_linha)
-	pass # Replace with function body.
-
+	
+	CPU.registrador_a_foi_atualizado.connect(atualizar_registrador.bind("A"))
+	CPU.registrador_b_foi_atualizado.connect(atualizar_registrador.bind("B"))
+	CPU.registrador_pc_foi_atualizado.connect(atualizar_registrador.bind("PC"))
+	CPU.registrador_ix_foi_atualizado.connect(atualizar_registrador.bind("IX"))
+	CPU.registrador_mar_foi_atualizado.connect(atualizar_registrador.bind("MAR"))
+	CPU.registrador_pp_foi_atualizado.connect(atualizar_registrador.bind("PP"))
+	CPU.registrador_mbr_foi_atualizado.connect(atualizar_registrador.bind("MBR"))
+	CPU.flag_z_foi_atualizada.connect(atualizar_registrador.bind("Z"))
+	CPU.flag_n_foi_atualizada.connect(atualizar_registrador.bind("N"))
+	CPU.flag_c_foi_atualizada.connect(atualizar_registrador.bind("C"))
+	CPU.flag_o_foi_atualizada.connect(atualizar_registrador.bind("O"))
+	CPU.registrador_ir_foi_atualizado.connect(atualizar_registrador.bind("IR"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -73,3 +84,30 @@ func resetar_linhas():
 	for no : Line2D in self.get_node("Linhas").get_children():
 		no.default_color = Color.WHITE
 		no.default_color.a = 0.5
+
+func atualizar_registrador(registrador: String):
+	match registrador:
+		"A":
+			get_node("Registradores/RegistradorAButton").text = Utils.int_para_hex(CPU.registrador_a, 2)
+		"B":
+			get_node("Registradores/RegistradorBButton").text = Utils.int_para_hex(CPU.registrador_b, 2)
+		"PC":
+			get_node("Registradores/RegistradorPCButton").text = Utils.int_para_hex(CPU.registrador_pc, 4)
+		"IX":
+			get_node("Registradores/RegistradorIXButton").text = Utils.int_para_hex(CPU.registrador_ix, 4)
+		"MAR":
+			get_node("Registradores/RegistradorMARButton").text = Utils.int_para_hex(CPU.registrador_mar, 4)
+		"PP":
+			get_node("Registradores/RegistradorPPButton").text = Utils.int_para_hex(CPU.registrador_pp, 4)
+		"MBR":
+			get_node("Registradores/RegistradorMBRButton").text = Utils.int_para_hex(CPU.registrador_mbr, 2)
+		"Z":
+			get_node("Registradores/RegistradorZButton").text = Utils.int_para_hex(CPU.flag_z, 1)
+		"N":
+			get_node("Registradores/RegistradorNButton").text = Utils.int_para_hex(CPU.flag_n, 1)
+		"C":
+			get_node("Registradores/RegistradorCButton").text = Utils.int_para_hex(CPU.flag_c, 1)
+		"O":
+			get_node("Registradores/RegistradorOButton").text = Utils.int_para_hex(CPU.flag_o, 1)
+		"IR":
+			get_node("Registradores/RegistradorIRButton").text = Utils.int_para_hex(CPU.registrador_ir, 2)
