@@ -1,6 +1,5 @@
 extends TabBar
 
-@onready var descompilador = $MarginContainer/HSplitContainer/VBoxContainer2/Panel
 
 @onready var painel_instrucoes : Tree = %PainelInstrucoes
 var painel_root

@@ -20,7 +20,6 @@ func atualizar_linha():
 	if not SoftwareManager.ultima_operacao:
 		return
 	
-	
 	# Resolvendo caixas
 	apagar_tweens()
 	
@@ -44,11 +43,13 @@ func atualizar_linha():
 	acender_registradores_interagindo()
 	
 	# Resolvendo linhas
-	var no : Line2D = self.get_node("Linhas/" + SoftwareManager.ultima_operacao)
+	var caminho_linha = "Linhas/" + SoftwareManager.ultima_operacao
 	
-	if not no:
+	if not self.has_node(caminho_linha):
 		return
+	
 	resetar_linhas()
+	var no : Line2D = self.get_node(caminho_linha)
 	no.default_color = Color.CYAN
 
 func acender_registradores_interagindo() -> void:
