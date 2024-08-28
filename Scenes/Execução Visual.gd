@@ -1,9 +1,12 @@
 extends TabBar
 
-var registradores_interagindo : Array[Button] = []
-var tweens			: Array[Tween]
-@export var fluxo 	: ColorRect
-var fluxo_tween		: Tween
+var registradores_interagindo 	: Array[Button] = []
+var tweens						: Array[Tween]
+
+@export var fluxo 				: ColorRect
+var fluxo_tween					: Tween
+@export var tempo_fluxo			: float = 1
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,13 +30,13 @@ func _process(delta):
 	pass
 
 func atualizar_linha():
+	# Resolvendo caixas
+	apagar_tweens()
+	
 	if SoftwareManager.fila_instrucoes.size() == 0:
 		return
 	if not SoftwareManager.ultima_operacao:
 		return
-	
-	# Resolvendo caixas
-	apagar_tweens()
 	
 	if not CPU.has_method(SoftwareManager.ultima_operacao):
 		return
@@ -81,6 +84,11 @@ func apagar_tweens():
 		for reg in registradores_interagindo:
 			reg.modulate = Color.WHITE
 		registradores_interagindo.clear()
+	
+	if fluxo_tween:
+		fluxo_tween.kill()
+		fluxo.visible = false
+		
 
 func resetar_linhas():
 	for no : Line2D in self.get_node("Linhas").get_children():
@@ -115,10 +123,7 @@ func atualizar_registrador(registrador: String):
 			get_node("Registradores/RegistradorIRButton").text = Utils.int_para_hex(CPU.registrador_ir, 2)
 
 func caminhar_fluxo(caminho: Line2D):
-	var tempo_caminho = 1 # segundos
-	if fluxo_tween:
-		fluxo_tween.kill()
-	
+	fluxo.visible = true
 	var distancia_total = 0
 	for i in range(0, caminho.points.size()):
 		if i == 0:
@@ -126,7 +131,7 @@ func caminhar_fluxo(caminho: Line2D):
 		else:
 			distancia_total += caminho.points[i].distance_to(caminho.points[i-1])
 	
-	var tempo_por_distancia = tempo_caminho/distancia_total
+	var tempo_por_distancia = tempo_fluxo/distancia_total
 	
 	fluxo_tween = create_tween()
 	for i in range(0, caminho.points.size()):
@@ -135,4 +140,5 @@ func caminhar_fluxo(caminho: Line2D):
 		else:
 			var distancia = caminho.points[i].distance_to(caminho.points[i-1])
 			fluxo_tween.tween_property(fluxo, "position", caminho.points[i], distancia*tempo_por_distancia).set_trans(Tween.TRANS_LINEAR)
+	fluxo_tween.tween_interval(0.3)
 	fluxo_tween.set_loops()

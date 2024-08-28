@@ -151,6 +151,7 @@ visible = false
 layout_mode = 2
 script = ExtResource("13_vadsj")
 fluxo = NodePath("Fluxo")
+tempo_fluxo = 0.865
 
 [node name="Image75" type="TextureRect" parent="VBoxContainer/TabContainer/Execução Visual"]
 self_modulate = Color(1, 0.152941, 1, 1)
@@ -464,19 +465,21 @@ points = PackedVector2Array(448, 209, 392, 209, 392, 281, 424, 281)
 width = 2.0
 
 [node name="transferir_a_para_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(312, 121, 440, 121)
+position = Vector2(0, 1)
+points = PackedVector2Array(312, 120, 448, 120)
 width = 2.0
+texture_mode = 1
 
 [node name="mover_mbr_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
 points = PackedVector2Array(496, 121, 952, 121, 952, 153)
 width = 2.0
 
 [node name="Fluxo" type="ColorRect" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
-offset_left = -32.0
-offset_top = 1.0
-offset_right = -16.0
-offset_bottom = 18.0
+layout_mode = 1
+offset_left = -40.0
+offset_top = -15.0
+offset_right = -24.0
+offset_bottom = 2.0
 color = Color(1, 1, 0, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
