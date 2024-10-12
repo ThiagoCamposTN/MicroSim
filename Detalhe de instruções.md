@@ -254,3 +254,57 @@ No micro3 padrão (sem modificações na  memória) existe um `LDA 0955` no ende
 |   15  | Em curso: Pondo no lugardos flags Zero e se Negativo                  |
 |   *   | (Z=0; N=0; R=0; D=0)                                                  |
 |   -   | Fim da execução gráfica, retorne ao menu                              |
+
+### LDA [03F5]
+
+No micro3 padrão não existe um LDA indireto válido sem modificação na memória. Então é necessário escrever na memória um.
+No exemplo, é presumido que foi escrito um `LDA [03F5]` no endereço `200`.
+
+```
+0200 : 90 03 F5 LDA [03F5]
+```
+
+|   #   | Passo a passo                                                         |
+|:-----:| --------------------------------------------------------------------- |
+|   *   | (Z=0; N=0; R=0; D=0)                                                  |
+|   -   | Fase de acesso a instrução                                            |
+|   1   | Em curso: Transferência em seguidaContador CO vers RAD                |
+|   2   | Em curso: Transferência em seguidaRAD vers Endereço de Memória        |
+|   3   | Em curso: Endereçamento de memoria                                    |
+|   4   | Em curso: Leitura do conteudo do endereço de                          |
+|   5   | Em curso: Transferência em seguidaDado de Memoria vers DON            |
+|   6   | Em curso: Transferência em seguidaDON vers DCOD                       |
+|   7   | Em curso: Incrementação Contador Ordinal CO                           |
+|   -   | Fase de pesquisa e endereço operando                                  |
+|   8   | Em curso: Transferência em seguidaContador Ordinal CO vers RAD        |
+|   9   | Em curso: Transferência em seguidaRAD vers Endereço de Memória        |
+|   10  | Em curso: Endereçamento de memoria                                    |
+|   11  | Em curso: Leitura do conteudo do endereço de                          |
+|   12  | Em curso: Transferência em seguidaDado de Memoria vers AUX            |
+|   13  | Em curso: Incrementação RAD                                           |
+|   14  | Em curso: Transferência em seguidaRAD vers Endereço de Memória        |
+|   15  | Em curso: Endereçamento de memoria                                    |
+|   16  | Em curso: Leitura do conteudo do endereço de                          |
+|   17  | Em curso: Transferência em seguidaDado de Memoria vers DON            |
+|   18  | Em curso: Transferência em seguidaregistrador 16 bits DON até AUX ver RAD |
+|   19  | Em curso: Transferência em seguidaRAD vers Endereço de Memória        |
+|   20  | Em curso: Endereçamento de memoria                                    |
+|   21  | Em curso: Leitura do conteudo do endereço de                          |
+|   22  | Em curso: Transferência em seguidaDado de Memoria vers AUX            |
+|   23  | Em curso: Incrementação RAD                                           |
+|   24  | Em curso: Transferência em seguidaRAD vers Endereço de Memória        |
+|   25  | Em curso: Endereçamento de memoria                                    |
+|   26  | Em curso: Leitura do conteudo do endereço de                          |
+|   27  | Em curso: Transferência em seguidaDado de Memoria vers DON            |
+|   28  | Em curso: Transferência em seguidaregistrador 16 bits DON até AUX ver RAD |
+|   29  | Em curso: Incrementação Contador Ordinal CO                           |
+|   30  | Em curso: Incrementação Contador Ordinal CO                           |
+|   -   | Fase de execução LDA                                                  |
+|   31  | Em curso: Transferência em seguidaRAD vers Endereço de Memória        |
+|   32  | Em curso: Endereçamento de memoria                                    |
+|   33  | Em curso: Leitura do conteudo do endereço de                          |
+|   34  | Em curso: Transferência em seguidaDado de Memoria vers DON            |
+|   35  | Em curso: Transferência em seguidaDON vers A                          |
+|   36  | Em curso: Pondo no lugardos flags Zero e se Negativo                  |
+|   *   | (Z=0; N=1; R=0; D=0)                                                  |
+|   -   | Fim da execução gráfica, retorne ao menu                              |

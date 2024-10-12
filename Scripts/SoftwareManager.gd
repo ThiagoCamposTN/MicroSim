@@ -101,6 +101,17 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
 					for valor in valor_dividido:
 						parte_memoria.push_back(valor)
+				Instrucao.Enderecamentos.INDIRETO:
+					var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
+					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
+					for valor in valor_dividido:
+						parte_memoria.push_back(valor)
+				Instrucao.Enderecamentos.POS_INDEXADO:
+					# TODO
+					pass
+				Instrucao.Enderecamentos.PRE_INDEXADO:
+					# TODO
+					pass
 			
 
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, endereco_inicial)
@@ -147,7 +158,48 @@ func adicionar_instrucao():
 		Instrucao.Enderecamentos.PRE_INDEXADO:
 			pass
 		Instrucao.Enderecamentos.INDIRETO:
-			pass
+			# Transferência de PC para MAR
+			fila_instrucoes.push_back("mover_pc_para_mar")
+			
+			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+			fila_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
+			
+			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
+			fila_instrucoes.push_back("mover_valor_da_memoria_ao_aux")
+			
+			# O MAR é incrementado em 1
+			fila_instrucoes.push_back("incrementar_registrador_mar")
+			
+			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+			fila_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
+			
+			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
+			fila_instrucoes.push_back("mover_valor_da_memoria_ao_mbr")
+			
+			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
+			fila_instrucoes.push_back("unir_mbr_ao_aux_e_mover_para_mar")
+			
+			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+			fila_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
+			
+			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
+			fila_instrucoes.push_back("mover_valor_da_memoria_ao_aux")
+			
+			# O MAR é incrementado em 1
+			fila_instrucoes.push_back("incrementar_registrador_mar")
+			
+			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
+			fila_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
+			
+			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
+			fila_instrucoes.push_back("mover_valor_da_memoria_ao_mbr")
+			
+			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
+			fila_instrucoes.push_back("unir_mbr_ao_aux_e_mover_para_mar")
+			
+			# O PC é incrementado em 2
+			fila_instrucoes.push_back("incrementar_registrador_pc")
+			fila_instrucoes.push_back("incrementar_registrador_pc")
 		Instrucao.Enderecamentos.IMEDIATO:
 			# Transferência de PC para MAR
 			fila_instrucoes.push_back("mover_pc_para_mar")

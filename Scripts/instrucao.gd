@@ -37,7 +37,7 @@ func instrucao_em_string() -> String:
 		Enderecamentos.PRE_INDEXADO:
 			return ""
 		Enderecamentos.INDIRETO:
-			return ""
+			return self.mnemonico + " [" + "".join(self.parametros) + "]"
 		Enderecamentos.IMEDIATO:
 			return self.mnemonico + " #" + "".join(self.parametros)
 		Enderecamentos.DIRETO:

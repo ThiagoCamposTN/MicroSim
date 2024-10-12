@@ -78,7 +78,8 @@ static func buscar_parametros_na_memoria(endereco : int, tipo_enderecamento : In
 		Instrucao.Enderecamentos.PRE_INDEXADO:
 			pass
 		Instrucao.Enderecamentos.INDIRETO:
-			pass
+			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
+			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 2))
 		Instrucao.Enderecamentos.IMEDIATO:
 			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
 		Instrucao.Enderecamentos.DIRETO:
