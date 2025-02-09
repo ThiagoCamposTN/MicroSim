@@ -68,50 +68,49 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 
 	for linha in linhas:
 		var instrucao : Instrucao = Compilador.compilar(linha)
-		var deve_pular_parametros = false
 		
 		# instrução inválida
 		if not instrucao:
-			return
+			return # finaliza a execução
 		
 		var byte = Operacoes.mnemonico_para_byte(instrucao.mnemonico, instrucao.enderecamento)
 		parte_memoria.push_back(Utils.de_hex_string_para_inteiro(byte))
 		
+		# instrução de saída
 		if instrucao.parametros and instrucao.parametros[0] == "EXIT":
 			parte_memoria.push_back(0x12)
 			parte_memoria.push_back(0x00)
-			deve_pular_parametros = true
+			break # salta os parâmetros
 		
 		# Resolução dos parâmetros da instrução na memória
-		if not deve_pular_parametros:
-			match instrucao.enderecamento:
-				Instrucao.Enderecamentos.IMEDIATO:
-					var valor = Utils.de_hex_string_para_inteiro(instrucao.parametros[0])
+		match instrucao.enderecamento:
+			Instrucao.Enderecamentos.IMEDIATO:
+				var valor = Utils.de_hex_string_para_inteiro(instrucao.parametros[0])
+				parte_memoria.push_back(valor)
+			Instrucao.Enderecamentos.DIRETO:
+				var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
+				var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
+				for valor in valor_dividido:
 					parte_memoria.push_back(valor)
-				Instrucao.Enderecamentos.DIRETO:
-					var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
-					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
-					for valor in valor_dividido:
-						parte_memoria.push_back(valor)
-				Instrucao.Enderecamentos.IMPLICITO:
-					# Não precisa tratar parâmetros
-					pass
-				Instrucao.Enderecamentos.INDEXADO:
-					var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
-					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
-					for valor in valor_dividido:
-						parte_memoria.push_back(valor)
-				Instrucao.Enderecamentos.INDIRETO:
-					var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
-					var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
-					for valor in valor_dividido:
-						parte_memoria.push_back(valor)
-				Instrucao.Enderecamentos.POS_INDEXADO:
-					# TODO
-					pass
-				Instrucao.Enderecamentos.PRE_INDEXADO:
-					# TODO
-					pass
+			Instrucao.Enderecamentos.IMPLICITO:
+				# Não precisa tratar parâmetros
+				pass
+			Instrucao.Enderecamentos.INDEXADO:
+				var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
+				var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
+				for valor in valor_dividido:
+					parte_memoria.push_back(valor)
+			Instrucao.Enderecamentos.INDIRETO:
+				var valor_em_hex 	= Utils.formatar_hex_como_endereco(instrucao.parametros[0])
+				var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
+				for valor in valor_dividido:
+					parte_memoria.push_back(valor)
+			Instrucao.Enderecamentos.POS_INDEXADO:
+				# TODO
+				pass
+			Instrucao.Enderecamentos.PRE_INDEXADO:
+				# TODO
+				pass
 			
 
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, endereco_inicial)
