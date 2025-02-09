@@ -25,7 +25,7 @@ func atualizar_valor_no_endereco_selecionado(valor : int):
 	# acesse o `self.endereco_selecionado` por padrão
 	memoria_foi_atualizada.emit(self.endereco_selecionado)
 
-func sobrescrever_memoria(celulas : PackedByteArray):
+func sobrescrever_toda_a_memoria(celulas : PackedByteArray):
 	if celulas.size() != TAMANHO_MEMORIA:
 		push_error("A quantidade de dados a serem escritos na memória (", str(celulas.size()), ") é diferente de ", TAMANHO_MEMORIA , ".")
 	

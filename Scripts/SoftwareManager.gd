@@ -51,7 +51,7 @@ func _process(delta):
 func recarregar_memoria():
 	var file 	: FileAccess 		= FileAccess.open(self.memory_file_path, FileAccess.READ)
 	var dados 	: PackedByteArray 	= file.get_buffer(file.get_length())
-	Memoria.sobrescrever_memoria(dados)
+	Memoria.sobrescrever_toda_a_memoria(dados)
 	file.close()
 
 func alterar_caminho_memoria(caminho : String):
