@@ -1,7 +1,7 @@
 # MIPRO
 Baseado em Micro3
 
-![](image75.png "Endereçamento e Códigos")
+![](Referências/image75.png "Endereçamento e Códigos")
 
 ## Maneiras de se incrementar um valor a um comando
 
