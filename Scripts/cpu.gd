@@ -184,10 +184,10 @@ func calcular_n():
 	self.flag_n = _flag_n_buffer
 	flag_n_foi_atualizada.emit()
 
-func calcular_r():
+func calcular_c():
 	self.flag_c = _flag_c_buffer
 	flag_c_foi_atualizada.emit()
 
-func calcular_d():
+func calcular_o():
 	self.flag_o = _flag_o_buffer
 	flag_o_foi_atualizada.emit()
