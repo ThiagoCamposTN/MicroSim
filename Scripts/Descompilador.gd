@@ -52,9 +52,6 @@ func _process(delta):
 		if endereço_inicial >= Memoria.celulas.size():
 			iniciar_descompilação = false
 
-func _on_button_pressed():
-	SoftwareManager.alterar_caminho_memoria(%MemoriaLineEdit.text)
-
 func execucao_iniciada(endereco : int):
 	iniciar_descompilação = true
 	endereço_inicial = endereco

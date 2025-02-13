@@ -8,8 +8,9 @@ var elementos_viewer : Array = []
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	inicializar_hex_grid()
-	Memoria.memoria_foi_atualizada.connect(atualizar_celula)
+	Memoria.endereço_de_memoria_foi_atualizado.connect(atualizar_celula)
 	Memoria.grupo_da_memoria_foi_atualizado.connect(atualizar_grupo_de_celulas)
+	Memoria.memoria_foi_recarregada.connect(recarregar_todas_as_celulas)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -50,6 +51,12 @@ func atualizar_grupo_de_celulas(endereco, tamanho):
 	while (i < endereco + tamanho):
 		atualizar_celula(i)
 		i+=1
+
+func recarregar_todas_as_celulas():
+	for posicao in range(Memoria.TAMANHO_MEMORIA):
+		var celula: Button = %HexGrid.get_node(Utils.int_para_hex(posicao, 3))
+		celula.text = Memoria.ler_hex_no_endereco(posicao)
+		celula.add_theme_color_override("font_color", Color.WHITE)
 
 func ao_clicar_elemento(elemento: Button):
 	hex_foi_selecionado.emit(elemento)

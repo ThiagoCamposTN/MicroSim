@@ -48,15 +48,11 @@ func _process(delta):
 		microoperacao_executada.emit()
 		execucao_timer.start(time_delay)
 
-func recarregar_memoria():
-	var file 	: FileAccess 		= FileAccess.open(self.memory_file_path, FileAccess.READ)
+func recarregar_memoria(caminho: String="res://MEMORIA.MEM"):
+	var file 	: FileAccess 		= FileAccess.open(caminho, FileAccess.READ)
 	var dados 	: PackedByteArray 	= file.get_buffer(file.get_length())
 	Memoria.sobrescrever_toda_a_memoria(dados)
 	file.close()
-
-func alterar_caminho_memoria(caminho : String):
-	self.memory_file_path = caminho
-	self.recarregar_memoria()
 
 func executar_programa(endereco_inicial : int):
 	CPU.iniciar_registrador_pc(endereco_inicial)

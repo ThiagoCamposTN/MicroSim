@@ -6,7 +6,8 @@ const TAMANHO_MEMORIA 		: int = 0x1000 # 4096
 var celulas 				: PackedByteArray
 var endereco_selecionado 	: int
 
-signal memoria_foi_atualizada
+signal memoria_foi_recarregada
+signal endereço_de_memoria_foi_atualizado
 signal grupo_da_memoria_foi_atualizado
 
 # Called when the node enters the scene tree for the first time.
@@ -23,13 +24,13 @@ func atualizar_valor_no_endereco_selecionado(valor : int):
 
 	# TODO: talvez o emit não leve parâmetro e a memória 
 	# acesse o `self.endereco_selecionado` por padrão
-	memoria_foi_atualizada.emit(self.endereco_selecionado)
+	endereço_de_memoria_foi_atualizado.emit(self.endereco_selecionado)
 
 func sobrescrever_toda_a_memoria(celulas : PackedByteArray):
 	if celulas.size() != TAMANHO_MEMORIA:
 		push_error("A quantidade de dados a serem escritos na memória (", str(celulas.size()), ") é diferente de ", TAMANHO_MEMORIA , ".")
-	
 	self.celulas = celulas
+	memoria_foi_recarregada.emit()
 
 func sobrescrever_parte_da_memoria(novos_dados: PackedByteArray, endereco_inicial: int):
 	var dados_finais = PackedByteArray()
