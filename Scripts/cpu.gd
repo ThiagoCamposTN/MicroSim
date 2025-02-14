@@ -177,17 +177,29 @@ func atualizar_buffers(novo_valor: int) -> void:
 	_flag_n_buffer = (novo_valor >= 128)
 
 func calcular_z():
-	self.flag_z = _flag_z_buffer
-	flag_z_foi_atualizada.emit()
+	self.atualizar_flag_z(_flag_z_buffer)
 
 func calcular_n():
-	self.flag_n = _flag_n_buffer
-	flag_n_foi_atualizada.emit()
+	self.atualizar_flag_n(_flag_n_buffer)
 
 func calcular_c():
-	self.flag_c = _flag_c_buffer
-	flag_c_foi_atualizada.emit()
+	self.atualizar_flag_c(_flag_c_buffer)
 
 func calcular_o():
-	self.flag_o = _flag_o_buffer
+	self.atualizar_flag_o(_flag_o_buffer)
+
+func atualizar_flag_z(novo_valor: int) -> void:
+	self.flag_z = novo_valor
+	flag_z_foi_atualizada.emit()
+
+func atualizar_flag_n(novo_valor: int) -> void:
+	self.flag_n = novo_valor
+	flag_n_foi_atualizada.emit()
+
+func atualizar_flag_c(novo_valor: int) -> void:
+	self.flag_c = novo_valor
+	flag_c_foi_atualizada.emit()
+
+func atualizar_flag_o(novo_valor: int) -> void:
+	self.flag_o = novo_valor
 	flag_o_foi_atualizada.emit()

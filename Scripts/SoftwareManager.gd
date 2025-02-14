@@ -22,7 +22,7 @@ func _ready():
 	execucao_timer.one_shot = true
 	add_child(execucao_timer)
 
-	self.prepara_o_estado_inicial()
+	self.prepara_o_estado_inicial.call_deferred()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -290,10 +290,43 @@ func carregar_estado_inicial(caminho: String="res://inicio.estado"):
 		push_error("Erro na leitura do arquivo de estado \"" + caminho + "\"")
 		return
 	
+	# carrega a memória
 	var arquivo_memoria = config.get_value("estado", "memoria")
 
 	if not arquivo_memoria or (typeof(arquivo_memoria) != TYPE_STRING):
-		push_error("Valor \"memoria\" é inválido.")
+		push_error("Valor de \"memoria\" é inválido.")
 		return
 	
 	self.recarregar_memoria(arquivo_memoria)
+
+	# carrega os registradores
+	var registrador_a = config.get_value("estado", "registrador.a", "0")
+	var registrador_b = config.get_value("estado", "registrador.b", "0")
+	var registrador_pc = config.get_value("estado", "registrador.pc", "0")
+	var registrador_pp = config.get_value("estado", "registrador.pp", "0")
+	var registrador_aux = config.get_value("estado", "registrador.aux", "0")
+	var registrador_ir = config.get_value("estado", "registrador.ir", "0")
+	var registrador_ix = config.get_value("estado", "registrador.ix", "0")
+	var registrador_mbr = config.get_value("estado", "registrador.mbr", "0")
+	var registrador_mar = config.get_value("estado", "registrador.mar", "0")
+
+	CPU.atualizar_registrador_a(Utils.de_hex_string_para_inteiro(registrador_a))
+	CPU.atualizar_registrador_b(Utils.de_hex_string_para_inteiro(registrador_b))
+	CPU.atualizar_registrador_pc(Utils.de_hex_string_para_inteiro(registrador_pc))
+	CPU.atualizar_registrador_pp(Utils.de_hex_string_para_inteiro(registrador_pp))
+	CPU.atualizar_registrador_aux(Utils.de_hex_string_para_inteiro(registrador_aux))
+	CPU.atualizar_registrador_ir(Utils.de_hex_string_para_inteiro(registrador_ir))
+	CPU.atualizar_registrador_ix(Utils.de_hex_string_para_inteiro(registrador_ix))
+	CPU.atualizar_registrador_mbr(Utils.de_hex_string_para_inteiro(registrador_mbr))
+	CPU.atualizar_registrador_mar(Utils.de_hex_string_para_inteiro(registrador_mar))
+
+	# carrega as flags
+	var flag_z = config.get_value("estado", "flag.z", "0")
+	var flag_n = config.get_value("estado", "flag.n", "0")
+	var flag_c = config.get_value("estado", "flag.c", "0")
+	var flag_o = config.get_value("estado", "flag.o", "0")
+
+	CPU.atualizar_flag_z(Utils.de_hex_string_para_inteiro(flag_z))
+	CPU.atualizar_flag_n(Utils.de_hex_string_para_inteiro(flag_n))
+	CPU.atualizar_flag_c(Utils.de_hex_string_para_inteiro(flag_c))
+	CPU.atualizar_flag_o(Utils.de_hex_string_para_inteiro(flag_o))
