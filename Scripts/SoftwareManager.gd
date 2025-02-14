@@ -14,12 +14,15 @@ var ultima_operacao		: String		= ""
 @export var time_delay 	: float 		= 0.1
 var execucao_timer		: Timer
 
+var informacoes_carregadas: bool = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	execucao_timer = Timer.new()
 	execucao_timer.one_shot = true
 	add_child(execucao_timer)
-	pass
+
+	self.prepara_o_estado_inicial()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -49,10 +52,13 @@ func _process(delta):
 		execucao_timer.start(time_delay)
 
 func recarregar_memoria(caminho: String="res://MEMORIA.MEM"):
-	var file 	: FileAccess 		= FileAccess.open(caminho, FileAccess.READ)
-	var dados 	: PackedByteArray 	= file.get_buffer(file.get_length())
-	Memoria.sobrescrever_toda_a_memoria(dados)
-	file.close()
+	if FileAccess.file_exists(caminho):
+		var file 	: FileAccess 		= FileAccess.open(caminho, FileAccess.READ)
+		var dados 	: PackedByteArray 	= file.get_buffer(file.get_length())
+		Memoria.sobrescrever_toda_a_memoria(dados)
+		file.close()
+	else:
+		push_error("Arquivo de memoria \"" + caminho + "\" não existe")
 
 func executar_programa(endereco_inicial : int):
 	CPU.iniciar_registrador_pc(endereco_inicial)
@@ -269,3 +275,25 @@ func adicionar_instrucao():
 			fila_instrucoes.push_back(microcodigo)
 	else:
 		em_execução = false
+
+
+
+func prepara_o_estado_inicial():
+	self.carregar_estado_inicial()
+	self.informacoes_carregadas = true
+
+func carregar_estado_inicial(caminho: String="res://inicio.estado"):
+	var config = ConfigFile.new()
+	var err = config.load(caminho)
+
+	if err != OK:
+		push_error("Erro na leitura do arquivo de estado \"" + caminho + "\"")
+		return
+	
+	var arquivo_memoria = config.get_value("estado", "memoria")
+
+	if not arquivo_memoria or (typeof(arquivo_memoria) != TYPE_STRING):
+		push_error("Valor \"memoria\" é inválido.")
+		return
+	
+	self.recarregar_memoria(arquivo_memoria)

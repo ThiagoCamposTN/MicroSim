@@ -6,7 +6,7 @@ extends Control
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	CPU.registrador_pc_foi_atualizado.connect(atualizar_valor_PC)
-	SoftwareManager.recarregar_memoria()
+	# SoftwareManager.recarregar_memoria()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
