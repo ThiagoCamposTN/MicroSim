@@ -4,17 +4,20 @@ signal hex_foi_selecionado
 
 @export var hex_view_byte_scene : PackedScene
 var elementos_viewer : Array = []
+var hexgrid_inicializado: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	inicializar_hex_grid()
 	Memoria.endereço_de_memoria_foi_atualizado.connect(atualizar_celula)
 	Memoria.grupo_da_memoria_foi_atualizado.connect(atualizar_grupo_de_celulas)
-	Memoria.memoria_foi_recarregada.connect(recarregar_todas_as_celulas)
+	# Memoria.memoria_foi_recarregada.connect(recarregar_todas_as_celulas)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func _process(_delta):
+	if not hexgrid_inicializado and SoftwareManager.informacoes_carregadas:
+		self.hexgrid_inicializado = true
+		# hexgrid começa a ser montada após as informações serem carregadas
+		self.inicializar_hex_grid()
 
 func adicionar_label(texto: String, nome: String = ""):
 	var hex_view_byte : Button = hex_view_byte_scene.instantiate()
