@@ -61,4 +61,4 @@ func _on_dialogo_de_executar_dir_selected(dir):
 	match self.operacao_atual:
 		Executar.TODOS_OS_TESTES:
 			var pasta = DirAccess.open(dir)
-			Programa.preparar_multiplos_testes(pasta.get_files())
+			Programa.preparar_multiplos_testes(dir, pasta.get_files())

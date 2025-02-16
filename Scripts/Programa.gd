@@ -7,7 +7,6 @@ var teste_atual
 
 func _ready():
 	config = ConfigFile.new()
-
 	SoftwareManager.execucao_finalizada.connect(fim_da_execucao)
 
 func _physics_process(_delta):
@@ -20,6 +19,7 @@ func _physics_process(_delta):
 
 func executar_teste(arquivo_de_teste : String):
 	print("###### ", arquivo_de_teste, " ######")
+	self.teste_em_execucao = true
 	
 	self.config.load(arquivo_de_teste)
 
@@ -50,17 +50,15 @@ func executar_teste(arquivo_de_teste : String):
 	if programa_eh_valido:
 		print("----programa válido-----")
 		SoftwareManager.executar_programa(CPU.registrador_pc)
-		self.teste_em_execucao = true
-		
-	# validar resultado final dos registradores, flags e memória
-	
+	else:
+		self.teste_em_execucao = false
 
 func preparar_teste(nome : String):
 	self.lista_de_testes.append(nome)
 
-func preparar_multiplos_testes(arquivos: Array[String]):
+func preparar_multiplos_testes(pasta: String, arquivos: Array[String]):
 	for arquivo in arquivos:
-		self.preparar_teste(arquivo)
+		self.preparar_teste(pasta.path_join(arquivo))
 
 func fim_da_execucao():
 	if not self.teste_em_execucao:
