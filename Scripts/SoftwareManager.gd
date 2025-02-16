@@ -2,6 +2,7 @@ extends Node
 
 signal microoperacao_executada
 signal inicialização_finalizada
+signal execucao_finalizada
 
 var memory_file_path 	: String 		= ""
 var unico_microcodigo 	: bool 			= false
@@ -38,11 +39,11 @@ func _process(delta):
 				self.call(instrucao)
 			
 			if unico_microcodigo:
-				em_execução = false
+				finalizar_execucao()
 				unico_microcodigo = false
 		else:
 			if instrucao_executada and unica_instrucao:
-				em_execução = false
+				finalizar_execucao()
 				unica_instrucao = false
 				instrucao_executada = false
 			else:
@@ -243,9 +244,11 @@ func adicionar_instrucao():
 			# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
 			fila_instrucoes.push_back(microcodigo)
 	else:
-		em_execução = false
+		finalizar_execucao()
 
-
+func finalizar_execucao():
+	em_execução = false
+	execucao_finalizada.emit()
 
 func prepara_o_estado_inicial():
 	self.carregar_estado_inicial()

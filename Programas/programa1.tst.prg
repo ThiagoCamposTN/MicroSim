@@ -1,17 +1,17 @@
 [começo]
-registrador.a=1
-registrador.b=2
-registrador.pc=3
-registrador.pp=4
-registrador.aux=5
-registrador.ir=6
-registrador.ix=7
-registrador.mbr=8
-registrador.mar=9
-flags.z=1
-flags.n=2
-flags.c=3
-flags.o=4
+registrador.a="1"
+registrador.b="2"
+registrador.pc="3"
+registrador.pp="4"
+registrador.aux="5"
+registrador.ir="6"
+registrador.ix="7"
+registrador.mbr="8"
+registrador.mar="9"
+flags.z="1"
+flags.n="2"
+flags.c="3"
+flags.o="4"
 instrucoes=[
 	"LDA #10",
 	"LDB #9",
@@ -22,4 +22,16 @@ instrucoes=[
 memoria = {
     "0": "10",
     "1": "ff",
+}
+
+[fim]
+registrador.a="19"
+registrador.b="9"
+flags.z="0"
+flags.n="0"
+flags.c="0"
+flags.o="0"
+memoria = {
+    "0": "19",
+	"1": "ff",
 }
