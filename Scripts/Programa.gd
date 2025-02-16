@@ -3,20 +3,32 @@ extends Node
 var config: ConfigFile
 var teste_em_execucao: bool = false
 var lista_de_testes: Array[String] = []
+var teste_atual
 
 func _ready():
 	config = ConfigFile.new()
 
 	SoftwareManager.execucao_finalizada.connect(fim_da_execucao)
+	Memoria.memoria_foi_recarregada.connect(inicializar_teste)
 
 func _physics_process(_delta):
 	if (lista_de_testes.size() > 0) and (not teste_em_execucao):
-		iniciar_teste(lista_de_testes.pop_front())
+		teste_em_execucao = true
+		teste_atual = lista_de_testes.pop_front()
+		# reiniciar cena para limpar todas as modificações
+		if get_tree():
+			get_tree().reload_current_scene()
 
+func inicializar_teste():
+	# essa função só vai ser chamada se um teste já estiver
+	# em execução e após o sinal da memória recarregada
+	# for emitido, assim não começa antes dela finalizar
+	if teste_em_execucao:
+		self.executar_teste(self.teste_atual)
 
-func iniciar_teste(arquivo_de_teste : String):
+func executar_teste(arquivo_de_teste : String):
 	print("###### ", arquivo_de_teste, " ######")
-	#get_tree().reload_current_scene()
+	
 	self.config.load(arquivo_de_teste)
 
 	# inicializar registradores
@@ -47,7 +59,7 @@ func iniciar_teste(arquivo_de_teste : String):
 		print("----programa válido-----")
 		SoftwareManager.executar_programa(CPU.registrador_pc)
 		self.teste_em_execucao = true
-
+		
 	# validar resultado final dos registradores, flags e memória
 	
 
@@ -125,7 +137,6 @@ func atualizar_memoria() -> void:
 
 func atualizar_programa() -> bool:
 	var instrucoes = self.config.get_value("começo", "instrucoes", [])
-	
 	
 	if typeof(instrucoes) != TYPE_ARRAY:
 		push_error("\"instrucoes\" tem um tipo inválido")
