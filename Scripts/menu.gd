@@ -18,7 +18,7 @@ func _on_arquivo_id_pressed(id):
 			pass
 		1:
 			# abrir teste
-			Programa.abrir_programa("res://Programas/programa1.tst.prg")
+			Programa.abrir_teste("res://Programas/programa1.tst.prg")
 		2:
 			# abrir memória
 			pass

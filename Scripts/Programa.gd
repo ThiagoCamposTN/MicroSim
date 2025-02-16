@@ -5,7 +5,7 @@ var config: ConfigFile
 func _ready():
 	config = ConfigFile.new()
 
-func abrir_programa(nome : String):
+func abrir_teste(nome : String):
 	config.load(nome)
 	var conteudo_memoria = config.get_value("começo", "memoria")
 	for endereco : String in conteudo_memoria:
