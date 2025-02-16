@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://hd1ut3injnwy"]
+[gd_scene load_steps=2 format=3 uid="uid://uskbj7p2yvx8"]
 
 [ext_resource type="Script" path="res://Scripts/menu.gd" id="1_871ah"]
 
@@ -11,11 +11,50 @@ script = ExtResource("1_871ah")
 auto_translate_mode = 1
 title = "Arquivo"
 size = Vector2i(123, 100)
-item_count = 3
+item_count = 2
 item_0/text = "Abrir programa"
-item_1/text = "Abrir teste"
+item_1/text = "Abrir memória"
 item_1/id = 1
-item_2/text = "Abrir memória"
+
+[node name="Executar" type="PopupMenu" parent="."]
+auto_translate_mode = 1
+title = "Executar"
+size = Vector2i(123, 100)
+item_count = 3
+item_0/text = "Iniciar programa atual"
+item_1/text = "Executar um teste"
+item_1/id = 1
+item_2/text = "Executar todos os testes"
 item_2/id = 2
 
+[node name="DialogoDeArquivo" type="FileDialog" parent="."]
+unique_name_in_owner = true
+auto_translate_mode = 1
+title = "Open a File"
+initial_position = 4
+size = Vector2i(577, 400)
+ok_button_text = "Open"
+dialog_hide_on_ok = true
+cancel_button_text = "Cancelar"
+file_mode = 0
+access = 2
+use_native_dialog = true
+
+[node name="DialogoDeExecutar" type="FileDialog" parent="."]
+unique_name_in_owner = true
+auto_translate_mode = 1
+title = "Open a Directory"
+initial_position = 4
+size = Vector2i(577, 400)
+ok_button_text = "Select Current Folder"
+dialog_hide_on_ok = true
+cancel_button_text = "Cancelar"
+file_mode = 2
+access = 2
+use_native_dialog = true
+
 [connection signal="id_pressed" from="Arquivo" to="." method="_on_arquivo_id_pressed"]
+[connection signal="id_pressed" from="Executar" to="." method="_on_executar_id_pressed"]
+[connection signal="file_selected" from="DialogoDeArquivo" to="." method="_on_dialogo_abrir_arquivo_file_selected"]
+[connection signal="dir_selected" from="DialogoDeExecutar" to="." method="_on_dialogo_de_executar_dir_selected"]
+[connection signal="file_selected" from="DialogoDeExecutar" to="." method="_on_dialogo_de_executar_file_selected"]

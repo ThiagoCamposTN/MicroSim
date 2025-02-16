@@ -2,49 +2,61 @@ extends Node
 
 var config: ConfigFile
 var teste_em_execucao: bool = false
+var lista_de_testes: Array[String] = []
 
 func _ready():
 	config = ConfigFile.new()
 
 	SoftwareManager.execucao_finalizada.connect(fim_da_execucao)
 
-func abrir_teste(nome : String):
-	self.config.load(nome)
+func _physics_process(_delta):
+	if (lista_de_testes.size() > 0) and (not teste_em_execucao):
+		iniciar_teste(lista_de_testes.pop_front())
+
+
+func iniciar_teste(arquivo_de_teste : String):
+	print("###### ", arquivo_de_teste, " ######")
+	#get_tree().reload_current_scene()
+	self.config.load(arquivo_de_teste)
 
 	# inicializar registradores
-	CPU.atualizar_registrador_a(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "registrador.a")))
-	CPU.atualizar_registrador_b(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "registrador.b")))
-	CPU.atualizar_registrador_pc(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "registrador.pc")))
-	CPU.atualizar_registrador_pp(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "registrador.pp")))
-	CPU.atualizar_registrador_aux(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "registrador.aux")))
-	CPU.atualizar_registrador_ir(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "registrador.ir")))
-	CPU.atualizar_registrador_ix(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "registrador.ix")))
-	CPU.atualizar_registrador_mbr(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "registrador.mbr")))
-	CPU.atualizar_registrador_mar(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "registrador.mar")))
-
+	self.atualizar_registrador("começo", "registrador.a", CPU.atualizar_registrador_a)
+	self.atualizar_registrador("começo", "registrador.b", CPU.atualizar_registrador_b)
+	self.atualizar_registrador("começo", "registrador.pc", CPU.atualizar_registrador_pc)
+	self.atualizar_registrador("começo", "registrador.pp", CPU.atualizar_registrador_pp)
+	self.atualizar_registrador("começo", "registrador.aux", CPU.atualizar_registrador_aux)
+	self.atualizar_registrador("começo", "registrador.ir", CPU.atualizar_registrador_ir)
+	self.atualizar_registrador("começo", "registrador.ix", CPU.atualizar_registrador_ix)
+	self.atualizar_registrador("começo", "registrador.mbr", CPU.atualizar_registrador_mbr)
+	self.atualizar_registrador("começo", "registrador.mar", CPU.atualizar_registrador_mar)
+	
 	# inicializar flags
-	CPU.atualizar_flag_z(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "flags.z")))
-	CPU.atualizar_flag_n(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "flags.n")))
-	CPU.atualizar_flag_c(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "flags.c")))
-	CPU.atualizar_flag_o(Utils.de_hex_string_para_inteiro(self.config.get_value("começo", "flags.o")))
+	self.atualizar_flag("começo", "flags.z", CPU.atualizar_flag_z)
+	self.atualizar_flag("começo", "flags.n", CPU.atualizar_flag_n)
+	self.atualizar_flag("começo", "flags.c", CPU.atualizar_flag_c)
+	self.atualizar_flag("começo", "flags.o", CPU.atualizar_flag_o)
 	
 	# inicializar memória
-	var conteudo_memoria = self.config.get_value("começo", "memoria")
-	for endereco : String in conteudo_memoria:
-		var dado : String = conteudo_memoria[endereco]
-		var endereco_convertido = Utils.de_hex_string_para_inteiro(endereco)
-		var dado_convertido 	= Utils.de_hex_string_para_inteiro(dado)
-		Memoria.sobrescrever_uma_celula(dado_convertido, endereco_convertido)
+	self.atualizar_memoria()
 	
 	# carregar programa na memória
-	var instrucoes = self.config.get_value("começo", "instrucoes")
-	SoftwareManager.salvar_codigo_em_memoria(instrucoes, CPU.registrador_pc)
+	var programa_eh_valido : bool = self.atualizar_programa()
 
 	# executar programa
-	SoftwareManager.executar_programa(CPU.registrador_pc)
+	if programa_eh_valido:
+		print("----programa válido-----")
+		SoftwareManager.executar_programa(CPU.registrador_pc)
+		self.teste_em_execucao = true
 
 	# validar resultado final dos registradores, flags e memória
-	self.teste_em_execucao = true
+	
+
+func preparar_teste(nome : String):
+	self.lista_de_testes.append(nome)
+
+func preparar_multiplos_testes(arquivos: Array[String]):
+	for arquivo in arquivos:
+		self.preparar_teste(arquivo)
 
 func fim_da_execucao():
 	if not self.teste_em_execucao:
@@ -73,3 +85,54 @@ func fim_da_execucao():
 	#TODO: implementar verificação de memória
 
 	self.teste_em_execucao = false
+
+func atualizar_registrador(secao: String, registrador: String, funcao: Callable) -> void:
+	var valor_registrador = self.config.get_value(secao, registrador, "")
+	
+	if typeof(valor_registrador) != TYPE_STRING:
+		push_error("\"" + registrador + "\" tem um tipo inválido")
+		return
+	
+	if not valor_registrador:
+		return
+
+	funcao.call(Utils.de_hex_string_para_inteiro(valor_registrador))
+
+func atualizar_flag(secao: String, flag: String, funcao: Callable) -> void:
+	var valor_flag = self.config.get_value(secao, flag, "")
+
+	if typeof(valor_flag) != TYPE_STRING:
+		push_error("\"" + flag + "\" tem um tipo inválido")
+		return
+
+	if not valor_flag:
+		return
+	
+	funcao.call(Utils.de_hex_string_para_inteiro(valor_flag))
+
+func atualizar_memoria() -> void:
+	var conteudo_memoria = self.config.get_value("começo", "memoria", {})
+
+	if typeof(conteudo_memoria) != TYPE_DICTIONARY:
+		push_error("\"memoria\" tem um tipo inválido")
+		return
+
+	for endereco : String in conteudo_memoria:
+		var dado : String = conteudo_memoria[endereco]
+		var endereco_convertido = Utils.de_hex_string_para_inteiro(endereco)
+		var dado_convertido 	= Utils.de_hex_string_para_inteiro(dado)
+		Memoria.sobrescrever_uma_celula(dado_convertido, endereco_convertido)
+
+func atualizar_programa() -> bool:
+	var instrucoes = self.config.get_value("começo", "instrucoes", [])
+	
+	
+	if typeof(instrucoes) != TYPE_ARRAY:
+		push_error("\"instrucoes\" tem um tipo inválido")
+		return false
+	
+	if not instrucoes:
+		return false
+	
+	SoftwareManager.salvar_codigo_em_memoria(instrucoes, CPU.registrador_pc)
+	return true

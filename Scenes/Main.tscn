@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Scenes/aba_memoria.gd" id="1_k3qc3"]
 [ext_resource type="Script" path="res://Scripts/Descompilador.gd" id="1_p8pv5"]
 [ext_resource type="Script" path="res://Scenes/Aplicação.gd" id="1_xtbw1"]
-[ext_resource type="PackedScene" path="res://Scenes/Menu.tscn" id="2_2p4gg"]
+[ext_resource type="PackedScene" uid="uid://uskbj7p2yvx8" path="res://Scenes/Menu.tscn" id="2_2p4gg"]
 [ext_resource type="Theme" uid="uid://cue378diorxs8" path="res://Themes/default.tres" id="2_h2p1t"]
 [ext_resource type="PackedScene" uid="uid://b43gj8a6co0l6" path="res://Objects/registradores.tscn" id="2_pfwce"]
 [ext_resource type="PackedScene" uid="uid://bm0k2wmg5ydh1" path="res://Objects/carregador_de_memoria.tscn" id="2_rec7b"]
