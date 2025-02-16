@@ -1,13 +1,17 @@
 [começo]
-a=0
-b=8
-pc=0
-pp=4095
-aux=0
-ir=0
-ix=28213
-mbr=0
-mar=0
+registrador.a=1
+registrador.b=2
+registrador.pc=3
+registrador.pp=4
+registrador.aux=5
+registrador.ir=6
+registrador.ix=7
+registrador.mbr=8
+registrador.mar=9
+flags.z=1
+flags.n=2
+flags.c=3
+flags.o=4
 instrucoes=[
 	"LDA #10",
 	"LDB #9",
@@ -19,4 +23,3 @@ memoria = {
     "0": "10",
     "1": "ff",
 }
-
