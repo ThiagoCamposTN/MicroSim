@@ -36,15 +36,7 @@ func abrir_teste(nome : String):
 	# carregar programa
 	var parte_memoria = Array()
 	var instrucoes = config.get_value("começo", "instrucoes")
-	for linha in instrucoes:
-		var instrucao : Instrucao = Compilador.compilar(linha)
-
-		# instrução inválida
-		if not instrucao:
-			return # finaliza a execução
-		
-		var byte = Operacoes.mnemonico_para_byte(instrucao.mnemonico, instrucao.enderecamento)
-		parte_memoria.push_back(Utils.de_hex_string_para_inteiro(byte))
+	SoftwareManager.salvar_codigo_em_memoria(instrucoes, CPU.registrador_pc)
 
 	# executar programa
 
