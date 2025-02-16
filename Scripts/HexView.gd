@@ -58,6 +58,8 @@ func recarregar_todas_as_celulas():
 		var celula: Button = %HexGrid.get_node(Utils.int_para_hex(posicao, 3))
 		celula.text = Memoria.ler_hex_no_endereco(posicao)
 		celula.add_theme_color_override("font_color", Color.WHITE)
+	
+	Programa.hexview_recarregado()
 
 func ao_clicar_elemento(elemento: Button):
 	hex_foi_selecionado.emit(elemento)

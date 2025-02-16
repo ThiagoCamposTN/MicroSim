@@ -9,7 +9,6 @@ func _ready():
 	config = ConfigFile.new()
 
 	SoftwareManager.execucao_finalizada.connect(fim_da_execucao)
-	Memoria.memoria_foi_recarregada.connect(inicializar_teste)
 
 func _physics_process(_delta):
 	if (lista_de_testes.size() > 0) and (not teste_em_execucao):
@@ -18,13 +17,6 @@ func _physics_process(_delta):
 		# reiniciar cena para limpar todas as modificações
 		if get_tree():
 			get_tree().reload_current_scene()
-
-func inicializar_teste():
-	# essa função só vai ser chamada se um teste já estiver
-	# em execução e após o sinal da memória recarregada
-	# for emitido, assim não começa antes dela finalizar
-	if teste_em_execucao:
-		self.executar_teste(self.teste_atual)
 
 func executar_teste(arquivo_de_teste : String):
 	print("###### ", arquivo_de_teste, " ######")
@@ -147,3 +139,10 @@ func atualizar_programa() -> bool:
 	
 	SoftwareManager.salvar_codigo_em_memoria(instrucoes, CPU.registrador_pc)
 	return true
+
+func hexview_recarregado():
+	# essa função só vai ser chamada se um teste já estiver
+	# em execução e após o sinal da memória recarregada
+	# for emitido, assim não começa antes dela finalizar
+	if teste_em_execucao:
+		self.executar_teste(self.teste_atual)
