@@ -12,7 +12,7 @@ func abrir_programa(nome : String):
 		var dado : String = conteudo_memoria[endereco]
 		var endereco_convertido = Utils.de_hex_string_para_inteiro(endereco)
 		var dado_convertido 	= Utils.de_hex_string_para_inteiro(dado)
-		Memoria.sobrescrever_parte_da_memoria(PackedByteArray([dado_convertido]), endereco_convertido)
+		Memoria.sobrescrever_uma_celula(dado_convertido, endereco_convertido)
 
 func metodo2(parametro: int):
 	print("Método 2 chamado com parâmetro:", parametro)

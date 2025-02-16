@@ -40,6 +40,10 @@ func sobrescrever_parte_da_memoria(novos_dados: PackedByteArray, endereco_inicia
 	self.celulas = dados_finais
 	grupo_da_memoria_foi_atualizado.emit(endereco_inicial, novos_dados.size())
 
+func sobrescrever_uma_celula(novo_dado: int, endereco: int):
+	self.celulas.set(endereco, novo_dado)
+	grupo_da_memoria_foi_atualizado.emit(endereco, 1)
+
 func ler_conteudo_no_endereco_selecionado():
 	return self.celulas[self.endereco_selecionado]
 
