@@ -64,20 +64,28 @@ func executar_programa(endereco_inicial : int):
 	CPU.iniciar_registrador_pc(endereco_inicial)
 	em_execução = true
 
-func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
+func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: int):
 	var parte_memoria = Array()
-	var linhas = codigo.split("\n", false)
 
-	for linha in linhas:
-		var instrucao : Instrucao = Compilador.compilar(linha)
+	for linha in linhas_codigo:
+		var bytes: PackedByteArray = self.compilar_linha_em_bytes(linha)
 		
 		# instrução inválida
-		if not instrucao:
-			return # finaliza a execução
+		if not bytes:
+			return
 		
-		parte_memoria.append_array(instrucao.instrucao_em_bytes())
+		parte_memoria.append_array(bytes)
 	
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, endereco_inicial)
+
+func compilar_linha_em_bytes(linha: String) -> PackedByteArray:
+	var instrucao: Instrucao = Compilador.compilar(linha)
+		
+	# instrução inválida
+	if not instrucao:
+		return []
+	
+	return instrucao.instrucao_em_bytes()
 
 func adicionar_instrucao_na_fila():
 	# Coloca todos os microcódigos necessários para a execução de uma instrução na fila
