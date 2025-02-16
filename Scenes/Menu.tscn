@@ -11,10 +11,12 @@ script = ExtResource("1_871ah")
 auto_translate_mode = 1
 title = "Arquivo"
 size = Vector2i(123, 100)
-item_count = 2
+item_count = 3
 item_0/text = "Abrir programa"
 item_1/text = "Abrir memória"
 item_1/id = 1
+item_2/text = "Abrir teste"
+item_2/id = 2
 
 [node name="Executar" type="PopupMenu" parent="."]
 auto_translate_mode = 1
@@ -30,7 +32,7 @@ item_2/id = 2
 [node name="DialogoDeArquivo" type="FileDialog" parent="."]
 unique_name_in_owner = true
 auto_translate_mode = 1
-title = "Open a File"
+title = "Abrir um arquivo"
 initial_position = 4
 size = Vector2i(577, 400)
 ok_button_text = "Open"

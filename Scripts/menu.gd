@@ -1,6 +1,6 @@
 extends MenuBar
 
-enum Abrir { PROGRAMA, MEMORIA }
+enum Abrir { PROGRAMA, MEMORIA, TESTE }
 enum Executar { PROGRAMA, TESTE, TODOS_OS_TESTES }
 var operacao_atual : int = -1
 
@@ -18,9 +18,11 @@ func _on_arquivo_id_pressed(id):
 	self.operacao_atual = id
 	match id:
 		Abrir.PROGRAMA:
-			pass
+			%DialogoDeArquivo.add_filter("*.prg")
 		Abrir.MEMORIA:
-			pass
+			%DialogoDeArquivo.add_filter("*.MEM")
+		Abrir.TESTE:
+			%DialogoDeArquivo.add_filter("*.tst.prg")
 	
 	%DialogoDeArquivo.current_dir = "res://"
 	%DialogoDeArquivo.file_mode = FileDialog.FILE_MODE_OPEN_FILE
@@ -31,9 +33,12 @@ func _on_executar_id_pressed(id):
 	match self.operacao_atual:
 		Executar.PROGRAMA:
 			%DialogoDeExecutar.current_dir = "res://"
+			%DialogoDeArquivo.add_filter("*.prg")
+
 		Executar.TESTE:
 			%DialogoDeExecutar.current_dir = "res://Testes/"
 			%DialogoDeExecutar.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+			%DialogoDeExecutar.add_filter("*.tst.prg")
 		Executar.TODOS_OS_TESTES:
 			%DialogoDeExecutar.current_dir = "res://"
 			%DialogoDeExecutar.file_mode = FileDialog.FILE_MODE_OPEN_DIR
@@ -46,13 +51,16 @@ func _on_dialogo_abrir_arquivo_file_selected(path):
 			pass
 		Abrir.MEMORIA:
 			pass
+		Abrir.TESTE:
+			Programa.adicionar_teste_a_fila(path)
 
 
 func _on_dialogo_de_executar_file_selected(path):
 	%DialogoDeExecutar.visible = false
 	match self.operacao_atual:
 		Executar.TESTE:
-			Programa.preparar_teste(path)
+			# Programa.preparar_teste(path)
+			pass
 
 
 func _on_dialogo_de_executar_dir_selected(dir):
@@ -61,4 +69,4 @@ func _on_dialogo_de_executar_dir_selected(dir):
 	match self.operacao_atual:
 		Executar.TODOS_OS_TESTES:
 			var pasta = DirAccess.open(dir)
-			Programa.preparar_multiplos_testes(dir, pasta.get_files())
+			Programa.adicionar_multiplos_testes_a_fila(dir, pasta.get_files())

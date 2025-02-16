@@ -17,7 +17,7 @@ func _physics_process(_delta):
 		if get_tree():
 			get_tree().reload_current_scene()
 
-func executar_teste(arquivo_de_teste : String):
+func preparar_teste(arquivo_de_teste : String):
 	print("###### ", arquivo_de_teste, " ######")
 	self.teste_em_execucao = true
 	
@@ -42,7 +42,11 @@ func executar_teste(arquivo_de_teste : String):
 	
 	# inicializar memória
 	self.atualizar_memoria()
+
+	# iniciar o teste
+	self.iniciar_teste_atual()
 	
+func iniciar_teste_atual():
 	# carregar programa na memória
 	var programa_eh_valido : bool = self.atualizar_programa()
 
@@ -53,12 +57,12 @@ func executar_teste(arquivo_de_teste : String):
 	else:
 		self.teste_em_execucao = false
 
-func preparar_teste(nome : String):
+func adicionar_teste_a_fila(nome : String):
 	self.lista_de_testes.append(nome)
 
-func preparar_multiplos_testes(pasta: String, arquivos: Array[String]):
+func adicionar_multiplos_testes_a_fila(pasta: String, arquivos: Array[String]):
 	for arquivo in arquivos:
-		self.preparar_teste(pasta.path_join(arquivo))
+		self.adicionar_teste_a_fila(pasta.path_join(arquivo))
 
 func fim_da_execucao():
 	if not self.teste_em_execucao:
@@ -143,4 +147,4 @@ func hexview_recarregado():
 	# em execução e após o sinal da memória recarregada
 	# for emitido, assim não começa antes dela finalizar
 	if teste_em_execucao:
-		self.executar_teste(self.teste_atual)
+		self.iniciar_teste_atual()
