@@ -11,13 +11,11 @@ func _ready():
 	Memoria.endereço_de_memoria_foi_atualizado.connect(atualizar_celula)
 	Memoria.grupo_da_memoria_foi_atualizado.connect(atualizar_grupo_de_celulas)
 	# Memoria.memoria_foi_recarregada.connect(recarregar_todas_as_celulas)
+	SoftwareManager.inicialização_finalizada.connect(inicializar_hex_grid)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if not hexgrid_inicializado and SoftwareManager.informacoes_carregadas:
-		self.hexgrid_inicializado = true
-		# hexgrid começa a ser montada após as informações serem carregadas
-		self.inicializar_hex_grid()
+	pass
 
 func adicionar_label(texto: String, nome: String = ""):
 	var hex_view_byte : Button = hex_view_byte_scene.instantiate()

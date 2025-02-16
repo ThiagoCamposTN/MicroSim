@@ -1,6 +1,7 @@
 extends Node
 
 signal microoperacao_executada
+signal inicialização_finalizada
 
 var memory_file_path 	: String 		= ""
 var unico_microcodigo 	: bool 			= false
@@ -14,7 +15,6 @@ var ultima_operacao		: String		= ""
 @export var time_delay 	: float 		= 0.1
 var execucao_timer		: Timer
 
-var informacoes_carregadas: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -280,7 +280,7 @@ func adicionar_instrucao():
 
 func prepara_o_estado_inicial():
 	self.carregar_estado_inicial()
-	self.informacoes_carregadas = true
+	inicialização_finalizada.emit()
 
 func carregar_estado_inicial(caminho: String="res://inicio.estado"):
 	var config = ConfigFile.new()
