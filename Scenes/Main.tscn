@@ -31,6 +31,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="MenuBar" parent="VBoxContainer" instance=ExtResource("2_2p4gg")]
+layout_mode = 2
+size_flags_vertical = 1
+
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3

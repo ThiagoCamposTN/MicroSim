@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmy1hhlt4y0dl"]
+
+[ext_resource type="Script" path="res://Scripts/menu.gd" id="1_871ah"]
+
+[node name="Menu" type="MenuBar"]
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.08
+script = ExtResource("1_871ah")
+
+[node name="Arquivo" type="PopupMenu" parent="."]
+auto_translate_mode = 1
+title = "Arquivo"
+size = Vector2i(123, 100)
+item_count = 3
+item_0/text = "Abrir programa"
+item_1/text = "Abrir teste"
+item_1/id = 1
+item_2/text = "Abrir memória"
+item_2/id = 2
+
+[connection signal="id_pressed" from="Arquivo" to="." method="_on_arquivo_id_pressed"]
