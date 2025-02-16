@@ -75,14 +75,9 @@ func salvar_codigo_em_memoria(codigo: String, endereco_inicial: int):
 		if not instrucao:
 			return # finaliza a execução
 		
-		var byte = Operacoes.mnemonico_para_byte(instrucao.mnemonico, instrucao.enderecamento)
-		parte_memoria.push_back(Utils.de_hex_string_para_inteiro(byte))
-		
-		# Resolução dos parâmetros da instrução na memória
-		parte_memoria.append_array(instrucao.parametros_em_bytes())
+		parte_memoria.append_array(instrucao.instrucao_em_bytes())
 	
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, endereco_inicial)
-	#print("Depois: ", Memoria.celulas.slice(0,15))
 
 func adicionar_instrucao_na_fila():
 	# Coloca todos os microcódigos necessários para a execução de uma instrução na fila

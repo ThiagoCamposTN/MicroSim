@@ -89,6 +89,17 @@ func parametros_em_bytes() -> PackedByteArray:
 	
 	return bytes
 
+func instrucao_em_bytes() -> PackedByteArray:
+	var bytes: PackedByteArray
+	
+	var byte = Operacoes.mnemonico_para_byte(self.mnemonico, self.enderecamento)
+	bytes.push_back(Utils.de_hex_string_para_inteiro(byte))
+	
+	# Resolução dos parâmetros da instrução na memória
+	bytes.append_array(self.parametros_em_bytes())
+
+	return bytes
+
 static func instrucao_call_exit(instrucao : Instrucao):
 	if not instrucao:
 		return false
