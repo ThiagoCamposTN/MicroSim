@@ -43,10 +43,10 @@ func carrega_dados_de_teste():
 	self.atualizar_registrador("começo", "registrador.mar", CPU.atualizar_registrador_mar)
 	
 	# inicializar flags
-	self.atualizar_flag("começo", "flags.z", CPU.atualizar_flag_z)
-	self.atualizar_flag("começo", "flags.n", CPU.atualizar_flag_n)
-	self.atualizar_flag("começo", "flags.c", CPU.atualizar_flag_c)
-	self.atualizar_flag("começo", "flags.o", CPU.atualizar_flag_o)
+	self.atualizar_flag("começo", "flag.z", CPU.atualizar_flag_z)
+	self.atualizar_flag("começo", "flag.n", CPU.atualizar_flag_n)
+	self.atualizar_flag("começo", "flag.c", CPU.atualizar_flag_c)
+	self.atualizar_flag("começo", "flag.o", CPU.atualizar_flag_o)
 
 	SoftwareManager.inicialização_finalizada.emit()
 

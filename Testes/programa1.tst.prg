@@ -8,10 +8,10 @@ registrador.ir="6"
 registrador.ix="7"
 registrador.mbr="8"
 registrador.mar="9"
-flags.z="1"
-flags.n="2"
-flags.c="3"
-flags.o="4"
+flag.z="1"
+flag.n="2"
+flag.c="3"
+flag.o="4"
 instrucoes=[
 	"LDA #10",
 	"LDB #9",
@@ -27,10 +27,10 @@ memoria = {
 [fim]
 registrador.a="19"
 registrador.b="9"
-flags.z="0"
-flags.n="0"
-flags.c="0"
-flags.o="0"
+flag.z="0"
+flag.n="0"
+flag.c="0"
+flag.o="0"
 memoria = {
     "0": "19",
 	"1": "ff",
