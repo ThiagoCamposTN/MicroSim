@@ -26,10 +26,10 @@ func atualizar_valor_no_endereco_selecionado(valor : int):
 	# acesse o `self.endereco_selecionado` por padrão
 	endereço_de_memoria_foi_atualizado.emit(self.endereco_selecionado)
 
-func sobrescrever_toda_a_memoria(celulas : PackedByteArray):
-	if celulas.size() != TAMANHO_MEMORIA:
-		push_error("A quantidade de dados a serem escritos na memória (", str(celulas.size()), ") é diferente de ", TAMANHO_MEMORIA , ".")
-	self.celulas = celulas
+func sobrescrever_toda_a_memoria(novas_celulas : PackedByteArray):
+	if novas_celulas.size() != TAMANHO_MEMORIA:
+		push_error("A quantidade de dados a serem escritos na memória (", str(novas_celulas.size()), ") é diferente de ", TAMANHO_MEMORIA , ".")
+	self.celulas = novas_celulas
 	memoria_foi_recarregada.emit()
 
 func sobrescrever_parte_da_memoria(novos_dados: PackedByteArray, endereco_inicial: int):

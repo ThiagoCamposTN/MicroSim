@@ -21,55 +21,32 @@ func preparar_teste(arquivo_de_teste : String):
 	
 	self.config_teste.load(arquivo_de_teste)
 
-	self.carrega_dados_de_teste.call_deferred(arquivo_de_teste)
+	self.carrega_dados_de_teste.call_deferred()
 
-func carrega_dados_de_teste(arquivo_de_teste : String):
+func carrega_dados_de_teste():
 	self.teste_em_execucao = true
 
 	Estado.carregar_estado_inicial()
-
-	# obtém memória do estado inicial
-	var conteudo_memoria: PackedByteArray = Estado.obter_dados_memoria()
-
-	if not conteudo_memoria:
-		return
-
-	# obtém o novo conteúdo de memória
-	var novo_conteudo = self.config_teste.get_value("começo", "memoria", {})
-
-	if typeof(novo_conteudo) != TYPE_DICTIONARY:
-		push_error("\"memoria\" tem um tipo inválido")
-		return
-
-	# sobrescreve a memória inicial com os novos dados
-	for endereco : String in novo_conteudo:
-		var dado : String = novo_conteudo[endereco]
-		var endereco_convertido = Utils.de_hex_string_para_inteiro(endereco)
-		var dado_convertido 	= Utils.de_hex_string_para_inteiro(dado)
-		conteudo_memoria.set(endereco_convertido, dado_convertido)
-
-	# atualiza a memória da aplicação com o estado inicial do teste
-	Memoria.sobrescrever_toda_a_memoria(conteudo_memoria)
-
-	# # inicializar registradores
-	# self.atualizar_registrador("começo", "registrador.a", CPU.atualizar_registrador_a)
-	# self.atualizar_registrador("começo", "registrador.b", CPU.atualizar_registrador_b)
-	# self.atualizar_registrador("começo", "registrador.pc", CPU.atualizar_registrador_pc)
-	# self.atualizar_registrador("começo", "registrador.pp", CPU.atualizar_registrador_pp)
-	# self.atualizar_registrador("começo", "registrador.aux", CPU.atualizar_registrador_aux)
-	# self.atualizar_registrador("começo", "registrador.ir", CPU.atualizar_registrador_ir)
-	# self.atualizar_registrador("começo", "registrador.ix", CPU.atualizar_registrador_ix)
-	# self.atualizar_registrador("começo", "registrador.mbr", CPU.atualizar_registrador_mbr)
-	# self.atualizar_registrador("começo", "registrador.mar", CPU.atualizar_registrador_mar)
 	
-	# # inicializar flags
-	# self.atualizar_flag("começo", "flags.z", CPU.atualizar_flag_z)
-	# self.atualizar_flag("começo", "flags.n", CPU.atualizar_flag_n)
-	# self.atualizar_flag("começo", "flags.c", CPU.atualizar_flag_c)
-	# self.atualizar_flag("começo", "flags.o", CPU.atualizar_flag_o)
+	# inicializar memória
+	self.atualizar_memoria()
+
+	# inicializar registradores
+	self.atualizar_registrador("começo", "registrador.a", CPU.atualizar_registrador_a)
+	self.atualizar_registrador("começo", "registrador.b", CPU.atualizar_registrador_b)
+	self.atualizar_registrador("começo", "registrador.pc", CPU.atualizar_registrador_pc)
+	self.atualizar_registrador("começo", "registrador.pp", CPU.atualizar_registrador_pp)
+	self.atualizar_registrador("começo", "registrador.aux", CPU.atualizar_registrador_aux)
+	self.atualizar_registrador("começo", "registrador.ir", CPU.atualizar_registrador_ir)
+	self.atualizar_registrador("começo", "registrador.ix", CPU.atualizar_registrador_ix)
+	self.atualizar_registrador("começo", "registrador.mbr", CPU.atualizar_registrador_mbr)
+	self.atualizar_registrador("começo", "registrador.mar", CPU.atualizar_registrador_mar)
 	
-	# # inicializar memória
-	# self.atualizar_memoria()
+	# inicializar flags
+	self.atualizar_flag("começo", "flags.z", CPU.atualizar_flag_z)
+	self.atualizar_flag("começo", "flags.n", CPU.atualizar_flag_n)
+	self.atualizar_flag("começo", "flags.c", CPU.atualizar_flag_c)
+	self.atualizar_flag("começo", "flags.o", CPU.atualizar_flag_o)
 
 	SoftwareManager.inicialização_finalizada.emit()
 
@@ -99,8 +76,8 @@ func fim_da_execucao():
 		return
 	
 	# validando resultado final nos registradores
-	var registrador_a = Utils.de_hex_string_para_inteiro(self.config.get_value("fim", "registrador.a"))
-	var registrador_b = Utils.de_hex_string_para_inteiro(self.config.get_value("fim", "registrador.b"))
+	var registrador_a = Utils.de_hex_string_para_inteiro(self.config_teste.get_value("fim", "registrador.a"))
+	var registrador_b = Utils.de_hex_string_para_inteiro(self.config_teste.get_value("fim", "registrador.b"))
 
 	if (CPU.registrador_a == registrador_a):
 		print("Registrador A está correto")
@@ -123,44 +100,55 @@ func fim_da_execucao():
 	self.teste_em_execucao = false
 
 func atualizar_registrador(secao: String, registrador: String, funcao: Callable) -> void:
-	var valor_registrador = self.config.get_value(secao, registrador, "")
+	var valor_registrador = self.config_teste.get_value(secao, registrador, "")
 	
 	if typeof(valor_registrador) != TYPE_STRING:
 		push_error("\"" + registrador + "\" tem um tipo inválido")
 		return
 	
 	if not valor_registrador:
-		return
+		valor_registrador = Estado.config_padrao.get_value("estado", registrador, "0")
 
 	funcao.call(Utils.de_hex_string_para_inteiro(valor_registrador))
 
 func atualizar_flag(secao: String, flag: String, funcao: Callable) -> void:
-	var valor_flag = self.config.get_value(secao, flag, "")
+	var valor_flag = self.config_teste.get_value(secao, flag, "")
 
 	if typeof(valor_flag) != TYPE_STRING:
 		push_error("\"" + flag + "\" tem um tipo inválido")
 		return
 
 	if not valor_flag:
-		return
+		valor_flag = Estado.config_padrao.get_value("estado", flag, "0")
 	
 	funcao.call(Utils.de_hex_string_para_inteiro(valor_flag))
 
 func atualizar_memoria() -> void:
-	var conteudo_memoria = self.config.get_value("começo", "memoria", {})
+	# obtém memória do estado inicial
+	var conteudo_memoria: PackedByteArray = Estado.obter_dados_memoria()
 
-	if typeof(conteudo_memoria) != TYPE_DICTIONARY:
+	if not conteudo_memoria:
+		return
+
+	# obtém o novo conteúdo de memória
+	var novo_conteudo = self.config_teste.get_value("começo", "memoria", {})
+
+	if typeof(novo_conteudo) != TYPE_DICTIONARY:
 		push_error("\"memoria\" tem um tipo inválido")
 		return
 
-	for endereco : String in conteudo_memoria:
-		var dado : String = conteudo_memoria[endereco]
+	# sobrescreve a memória inicial com os novos dados
+	for endereco : String in novo_conteudo:
+		var dado : String = novo_conteudo[endereco]
 		var endereco_convertido = Utils.de_hex_string_para_inteiro(endereco)
 		var dado_convertido 	= Utils.de_hex_string_para_inteiro(dado)
-		Memoria.sobrescrever_uma_celula(dado_convertido, endereco_convertido)
+		conteudo_memoria.set(endereco_convertido, dado_convertido)
+
+	# atualiza a memória da aplicação com o estado inicial do teste
+	Memoria.sobrescrever_toda_a_memoria(conteudo_memoria)
 
 func atualizar_programa() -> bool:
-	var instrucoes = self.config.get_value("começo", "instrucoes", [])
+	var instrucoes = self.config_teste.get_value("começo", "instrucoes", [])
 	
 	if typeof(instrucoes) != TYPE_ARRAY:
 		push_error("\"instrucoes\" tem um tipo inválido")
@@ -171,10 +159,3 @@ func atualizar_programa() -> bool:
 	
 	SoftwareManager.salvar_codigo_em_memoria(instrucoes, CPU.registrador_pc)
 	return true
-
-func hexview_recarregado():
-	# essa função só vai ser chamada se um teste já estiver
-	# em execução e após o sinal da memória recarregada
-	# for emitido, assim não começa antes dela finalizar
-	if teste_em_execucao:
-		self.iniciar_teste_atual()
