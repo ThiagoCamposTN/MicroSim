@@ -52,14 +52,14 @@ func _on_dialogo_abrir_arquivo_file_selected(path):
 		Abrir.MEMORIA:
 			pass
 		Abrir.TESTE:
-			Programa.adicionar_teste_a_fila(path)
+			Teste.adicionar_teste_a_fila(path)
 
 
 func _on_dialogo_de_executar_file_selected(path):
 	%DialogoDeExecutar.visible = false
 	match self.operacao_atual:
 		Executar.TESTE:
-			Programa.preparar_teste(path)
+			Teste.preparar_teste(path)
 
 
 func _on_dialogo_de_executar_dir_selected(dir):
@@ -68,4 +68,4 @@ func _on_dialogo_de_executar_dir_selected(dir):
 	match self.operacao_atual:
 		Executar.TODOS_OS_TESTES:
 			var pasta = DirAccess.open(dir)
-			Programa.adicionar_multiplos_testes_a_fila(dir, pasta.get_files())
+			Teste.adicionar_multiplos_testes_a_fila(dir, pasta.get_files())
