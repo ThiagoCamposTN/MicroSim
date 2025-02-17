@@ -1,4 +1,4 @@
-[começo]
+[inicio]
 registrador.pc="1"
 instrucoes=[
 	"LDA #10",
@@ -7,6 +7,7 @@ instrucoes=[
 	"STA 0000",
 	"CAL EXIT"
 ]
+memoria.base="res://MEMORIA.MEM"
 
 [fim]
 registrador.a="19"

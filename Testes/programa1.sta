@@ -1,4 +1,4 @@
-[começo]
+[inicio]
 registrador.a="1"
 registrador.b="2"
 registrador.pc="3"
@@ -19,11 +19,11 @@ instrucoes=[
 	"STA 0000",
 	"CAL EXIT"
 ]
-memoria = {
-    "0": "10",
-    "1": "ff",
+memoria.substituicoes = {
+    "0": "01",
+    "1": "02",
 }
-
+memoria.base="res://MEMORIA.MEM"
 [fim]
 registrador.a="19"
 registrador.b="9"

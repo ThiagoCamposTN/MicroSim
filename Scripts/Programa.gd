@@ -11,7 +11,7 @@ func _process(delta):
 	pass
 
 static func obter_programa() -> PackedStringArray:
-	var programa: PackedStringArray = Estado.config_padrao.get_value("estado", "instrucoes", [])
+	var programa: PackedStringArray = Estado.config_padrao.get_value("inicio", "instrucoes", [])
 
 	if typeof(programa) != TYPE_PACKED_STRING_ARRAY:
 		push_error("\"instrucoes\" tem um tipo inválido")

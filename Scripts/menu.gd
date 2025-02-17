@@ -22,7 +22,7 @@ func _on_arquivo_id_pressed(id):
 		Abrir.MEMORIA:
 			%DialogoDeArquivo.add_filter("*.MEM")
 		Abrir.TESTE:
-			%DialogoDeArquivo.add_filter("*.tst.prg")
+			%DialogoDeArquivo.add_filter("*.sta")
 	
 	%DialogoDeArquivo.current_dir = "res://"
 	%DialogoDeArquivo.file_mode = FileDialog.FILE_MODE_OPEN_FILE
@@ -38,7 +38,7 @@ func _on_executar_id_pressed(id):
 		Executar.TESTE:
 			%DialogoDeExecutar.current_dir = "res://Testes/"
 			%DialogoDeExecutar.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-			%DialogoDeExecutar.add_filter("*.tst.prg")
+			%DialogoDeExecutar.add_filter("*.sta")
 		Executar.TODOS_OS_TESTES:
 			%DialogoDeExecutar.current_dir = "res://"
 			%DialogoDeExecutar.file_mode = FileDialog.FILE_MODE_OPEN_DIR

@@ -10,10 +10,13 @@ signal memoria_foi_recarregada
 signal endereço_de_memoria_foi_atualizado
 signal grupo_da_memoria_foi_atualizado
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# TODO: no futuro, permitir alterar o tamanho de memória
 	celulas.resize(TAMANHO_MEMORIA)
+
+	Estado.sobrecarregar_memoria.connect(sobrescrever_toda_a_memoria)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

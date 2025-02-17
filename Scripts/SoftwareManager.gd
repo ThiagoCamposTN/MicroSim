@@ -242,46 +242,7 @@ func finalizar_execucao():
 	em_execução = false
 	execucao_finalizada.emit()
 
-func prepara_o_estado_inicial():
-	Estado.carregar_estado_inicial()
-
-	var dados_memoria: PackedByteArray = Estado.obter_dados_memoria()
-
-	if not dados_memoria:
-		return
-
-	Memoria.sobrescrever_toda_a_memoria(dados_memoria)
-
-	# carrega os registradores
-	var registrador_a = Estado.config_padrao.get_value("estado", "registrador.a", "0")
-	var registrador_b = Estado.config_padrao.get_value("estado", "registrador.b", "0")
-	var registrador_pc = Estado.config_padrao.get_value("estado", "registrador.pc", "0")
-	var registrador_pp = Estado.config_padrao.get_value("estado", "registrador.pp", "0")
-	var registrador_aux = Estado.config_padrao.get_value("estado", "registrador.aux", "0")
-	var registrador_ir = Estado.config_padrao.get_value("estado", "registrador.ir", "0")
-	var registrador_ix = Estado.config_padrao.get_value("estado", "registrador.ix", "0")
-	var registrador_mbr = Estado.config_padrao.get_value("estado", "registrador.mbr", "0")
-	var registrador_mar = Estado.config_padrao.get_value("estado", "registrador.mar", "0")
-
-	CPU.atualizar_registrador_a(Utils.de_hex_string_para_inteiro(registrador_a))
-	CPU.atualizar_registrador_b(Utils.de_hex_string_para_inteiro(registrador_b))
-	CPU.atualizar_registrador_pc(Utils.de_hex_string_para_inteiro(registrador_pc))
-	CPU.atualizar_registrador_pp(Utils.de_hex_string_para_inteiro(registrador_pp))
-	CPU.atualizar_registrador_aux(Utils.de_hex_string_para_inteiro(registrador_aux))
-	CPU.atualizar_registrador_ir(Utils.de_hex_string_para_inteiro(registrador_ir))
-	CPU.atualizar_registrador_ix(Utils.de_hex_string_para_inteiro(registrador_ix))
-	CPU.atualizar_registrador_mbr(Utils.de_hex_string_para_inteiro(registrador_mbr))
-	CPU.atualizar_registrador_mar(Utils.de_hex_string_para_inteiro(registrador_mar))
-
-	# carrega as flags
-	var flag_z = Estado.config_padrao.get_value("estado", "flag.z", "0")
-	var flag_n = Estado.config_padrao.get_value("estado", "flag.n", "0")
-	var flag_c = Estado.config_padrao.get_value("estado", "flag.c", "0")
-	var flag_o = Estado.config_padrao.get_value("estado", "flag.o", "0")
-
-	CPU.atualizar_flag_z(Utils.de_hex_string_para_inteiro(flag_z))
-	CPU.atualizar_flag_n(Utils.de_hex_string_para_inteiro(flag_n))
-	CPU.atualizar_flag_c(Utils.de_hex_string_para_inteiro(flag_c))
-	CPU.atualizar_flag_o(Utils.de_hex_string_para_inteiro(flag_o))
-	
-	inicialização_finalizada.emit()
+func prepara_o_estado_inicial(emitir_sinal_de_finalização: bool = true):
+	Estado.carregar_estado()
+	# if emitir_sinal_de_finalização:
+	# 	self.inicialização_finalizada.emit()
