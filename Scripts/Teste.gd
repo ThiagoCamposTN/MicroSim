@@ -1,83 +1,80 @@
 extends Node
 
-var config: ConfigFile
+@onready var config_teste : ConfigFile = ConfigFile.new()
 var teste_em_execucao: bool = false
 var lista_de_testes: Array[String] = []
 var teste_atual
 
 func _ready():
-	config = ConfigFile.new()
 	SoftwareManager.execucao_finalizada.connect(fim_da_execucao)
 
-func _physics_process(_delta):
-	if (lista_de_testes.size() > 0) and (not teste_em_execucao):
-		teste_em_execucao = true
-		teste_atual = lista_de_testes.pop_front()
-		# reiniciar cena para limpar todas as modificações
-		if get_tree():
-			get_tree().reload_current_scene()
+# func _physics_process(_delta):
+# 	if (lista_de_testes.size() > 0) and (not teste_em_execucao):
+# 		teste_em_execucao = true
+# 		teste_atual = lista_de_testes.pop_front()
+# 		# reiniciar cena para limpar todas as modificações
+# 		if get_tree():
+# 			get_tree().reload_current_scene()
 
 func preparar_teste(arquivo_de_teste : String):
 	print("###### ", arquivo_de_teste, " ######")
-
-	if not get_tree():
-		return
 	
-	get_tree().reload_current_scene()
+	self.config_teste.load(arquivo_de_teste)
 
-	# self.carrega_dados_de_teste.call_deferred(arquivo_de_teste)
-	self.carrega_dados_de_teste(arquivo_de_teste)
+	self.carrega_dados_de_teste.call_deferred(arquivo_de_teste)
 
 func carrega_dados_de_teste(arquivo_de_teste : String):
 	self.teste_em_execucao = true
 
+	Estado.carregar_estado_inicial()
+
 	# obtém memória do estado inicial
-	var nome_arquivo_memoria 	: String 			= Estado.obter_nome_arquivo_memoria(SoftwareManager.config_inicial)
-	var dados_memoria 			: PackedByteArray 	= Estado.obter_dados_memoria(nome_arquivo_memoria)
+	var conteudo_memoria: PackedByteArray = Estado.obter_dados_memoria()
+
+	if not conteudo_memoria:
+		return
 
 	# obtém o novo conteúdo de memória
-	var conteudo_memoria = self.config.get_value("começo", "memoria", {})
+	var novo_conteudo = self.config_teste.get_value("começo", "memoria", {})
 
-	if typeof(conteudo_memoria) != TYPE_DICTIONARY:
+	if typeof(novo_conteudo) != TYPE_DICTIONARY:
 		push_error("\"memoria\" tem um tipo inválido")
 		return
 
 	# sobrescreve a memória inicial com os novos dados
-	for endereco : String in conteudo_memoria:
-		var dado : String = conteudo_memoria[endereco]
+	for endereco : String in novo_conteudo:
+		var dado : String = novo_conteudo[endereco]
 		var endereco_convertido = Utils.de_hex_string_para_inteiro(endereco)
 		var dado_convertido 	= Utils.de_hex_string_para_inteiro(dado)
 		conteudo_memoria.set(endereco_convertido, dado_convertido)
 
 	# atualiza a memória da aplicação com o estado inicial do teste
-	Memoria.sobrescrever_toda_a_memoria(dados_memoria)
+	Memoria.sobrescrever_toda_a_memoria(conteudo_memoria)
 
-	self.config.load(arquivo_de_teste)
-
-	# inicializar registradores
-	self.atualizar_registrador("começo", "registrador.a", CPU.atualizar_registrador_a)
-	self.atualizar_registrador("começo", "registrador.b", CPU.atualizar_registrador_b)
-	self.atualizar_registrador("começo", "registrador.pc", CPU.atualizar_registrador_pc)
-	self.atualizar_registrador("começo", "registrador.pp", CPU.atualizar_registrador_pp)
-	self.atualizar_registrador("começo", "registrador.aux", CPU.atualizar_registrador_aux)
-	self.atualizar_registrador("começo", "registrador.ir", CPU.atualizar_registrador_ir)
-	self.atualizar_registrador("começo", "registrador.ix", CPU.atualizar_registrador_ix)
-	self.atualizar_registrador("começo", "registrador.mbr", CPU.atualizar_registrador_mbr)
-	self.atualizar_registrador("começo", "registrador.mar", CPU.atualizar_registrador_mar)
+	# # inicializar registradores
+	# self.atualizar_registrador("começo", "registrador.a", CPU.atualizar_registrador_a)
+	# self.atualizar_registrador("começo", "registrador.b", CPU.atualizar_registrador_b)
+	# self.atualizar_registrador("começo", "registrador.pc", CPU.atualizar_registrador_pc)
+	# self.atualizar_registrador("começo", "registrador.pp", CPU.atualizar_registrador_pp)
+	# self.atualizar_registrador("começo", "registrador.aux", CPU.atualizar_registrador_aux)
+	# self.atualizar_registrador("começo", "registrador.ir", CPU.atualizar_registrador_ir)
+	# self.atualizar_registrador("começo", "registrador.ix", CPU.atualizar_registrador_ix)
+	# self.atualizar_registrador("começo", "registrador.mbr", CPU.atualizar_registrador_mbr)
+	# self.atualizar_registrador("começo", "registrador.mar", CPU.atualizar_registrador_mar)
 	
-	# inicializar flags
-	self.atualizar_flag("começo", "flags.z", CPU.atualizar_flag_z)
-	self.atualizar_flag("começo", "flags.n", CPU.atualizar_flag_n)
-	self.atualizar_flag("começo", "flags.c", CPU.atualizar_flag_c)
-	self.atualizar_flag("começo", "flags.o", CPU.atualizar_flag_o)
+	# # inicializar flags
+	# self.atualizar_flag("começo", "flags.z", CPU.atualizar_flag_z)
+	# self.atualizar_flag("começo", "flags.n", CPU.atualizar_flag_n)
+	# self.atualizar_flag("começo", "flags.c", CPU.atualizar_flag_c)
+	# self.atualizar_flag("começo", "flags.o", CPU.atualizar_flag_o)
 	
-	# inicializar memória
-	self.atualizar_memoria()
+	# # inicializar memória
+	# self.atualizar_memoria()
 
 	SoftwareManager.inicialização_finalizada.emit()
 
-	# iniciar o teste
-	self.iniciar_teste_atual()
+	# # iniciar o teste
+	# self.iniciar_teste_atual()
 	
 func iniciar_teste_atual():
 	# carregar programa na memória

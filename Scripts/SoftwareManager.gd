@@ -243,21 +243,9 @@ func finalizar_execucao():
 	execucao_finalizada.emit()
 
 func prepara_o_estado_inicial():
-	self.carregar_estado_inicial()
-	inicialização_finalizada.emit()
+	Estado.carregar_estado_inicial()
 
-func carregar_estado_inicial(caminho: String="res://padrão.estado"):
-	self.config_inicial = Estado.obter_arquivo_de_estado(caminho)
-	
-	if not self.config_inicial:
-		return
-
-	var nome_arquivo_memoria = Estado.obter_nome_arquivo_memoria(self.config_inicial)
-
-	if not nome_arquivo_memoria:
-		return
-
-	var dados_memoria = Estado.obter_dados_memoria(nome_arquivo_memoria)
+	var dados_memoria: PackedByteArray = Estado.obter_dados_memoria()
 
 	if not dados_memoria:
 		return
@@ -265,15 +253,15 @@ func carregar_estado_inicial(caminho: String="res://padrão.estado"):
 	Memoria.sobrescrever_toda_a_memoria(dados_memoria)
 
 	# carrega os registradores
-	var registrador_a = self.config_inicial.get_value("estado", "registrador.a", "0")
-	var registrador_b = self.config_inicial.get_value("estado", "registrador.b", "0")
-	var registrador_pc = self.config_inicial.get_value("estado", "registrador.pc", "0")
-	var registrador_pp = self.config_inicial.get_value("estado", "registrador.pp", "0")
-	var registrador_aux = self.config_inicial.get_value("estado", "registrador.aux", "0")
-	var registrador_ir = self.config_inicial.get_value("estado", "registrador.ir", "0")
-	var registrador_ix = self.config_inicial.get_value("estado", "registrador.ix", "0")
-	var registrador_mbr = self.config_inicial.get_value("estado", "registrador.mbr", "0")
-	var registrador_mar = self.config_inicial.get_value("estado", "registrador.mar", "0")
+	var registrador_a = Estado.config_padrao.get_value("estado", "registrador.a", "0")
+	var registrador_b = Estado.config_padrao.get_value("estado", "registrador.b", "0")
+	var registrador_pc = Estado.config_padrao.get_value("estado", "registrador.pc", "0")
+	var registrador_pp = Estado.config_padrao.get_value("estado", "registrador.pp", "0")
+	var registrador_aux = Estado.config_padrao.get_value("estado", "registrador.aux", "0")
+	var registrador_ir = Estado.config_padrao.get_value("estado", "registrador.ir", "0")
+	var registrador_ix = Estado.config_padrao.get_value("estado", "registrador.ix", "0")
+	var registrador_mbr = Estado.config_padrao.get_value("estado", "registrador.mbr", "0")
+	var registrador_mar = Estado.config_padrao.get_value("estado", "registrador.mar", "0")
 
 	CPU.atualizar_registrador_a(Utils.de_hex_string_para_inteiro(registrador_a))
 	CPU.atualizar_registrador_b(Utils.de_hex_string_para_inteiro(registrador_b))
@@ -286,12 +274,14 @@ func carregar_estado_inicial(caminho: String="res://padrão.estado"):
 	CPU.atualizar_registrador_mar(Utils.de_hex_string_para_inteiro(registrador_mar))
 
 	# carrega as flags
-	var flag_z = self.config_inicial.get_value("estado", "flag.z", "0")
-	var flag_n = self.config_inicial.get_value("estado", "flag.n", "0")
-	var flag_c = self.config_inicial.get_value("estado", "flag.c", "0")
-	var flag_o = self.config_inicial.get_value("estado", "flag.o", "0")
+	var flag_z = Estado.config_padrao.get_value("estado", "flag.z", "0")
+	var flag_n = Estado.config_padrao.get_value("estado", "flag.n", "0")
+	var flag_c = Estado.config_padrao.get_value("estado", "flag.c", "0")
+	var flag_o = Estado.config_padrao.get_value("estado", "flag.o", "0")
 
 	CPU.atualizar_flag_z(Utils.de_hex_string_para_inteiro(flag_z))
 	CPU.atualizar_flag_n(Utils.de_hex_string_para_inteiro(flag_n))
 	CPU.atualizar_flag_c(Utils.de_hex_string_para_inteiro(flag_c))
 	CPU.atualizar_flag_o(Utils.de_hex_string_para_inteiro(flag_o))
+	
+	inicialização_finalizada.emit()
