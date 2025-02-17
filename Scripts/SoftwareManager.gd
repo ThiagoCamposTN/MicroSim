@@ -15,6 +15,7 @@ var ultima_operacao		: String		= ""
 
 @export var time_delay 	: float 		= 0.1
 var execucao_timer		: Timer
+var config_inicial		: ConfigFile
 
 
 # Called when the node enters the scene tree for the first time.
@@ -51,15 +52,6 @@ func _process(delta):
 				instrucao_executada = true
 		microoperacao_executada.emit()
 		execucao_timer.start(time_delay)
-
-func recarregar_memoria(caminho: String="res://MEMORIA.MEM"):
-	if FileAccess.file_exists(caminho):
-		var file 	: FileAccess 		= FileAccess.open(caminho, FileAccess.READ)
-		var dados 	: PackedByteArray 	= file.get_buffer(file.get_length())
-		Memoria.sobrescrever_toda_a_memoria(dados)
-		file.close()
-	else:
-		push_error("Arquivo de memoria \"" + caminho + "\" não existe")
 
 func executar_programa(endereco_inicial : int):
 	CPU.iniciar_registrador_pc(endereco_inicial)
@@ -254,33 +246,34 @@ func prepara_o_estado_inicial():
 	self.carregar_estado_inicial()
 	inicialização_finalizada.emit()
 
-func carregar_estado_inicial(caminho: String="res://inicio.estado"):
-	var config = ConfigFile.new()
-	var err = config.load(caminho)
-
-	if err != OK:
-		push_error("Erro na leitura do arquivo de estado \"" + caminho + "\"")
-		return
+func carregar_estado_inicial(caminho: String="res://padrão.estado"):
+	self.config_inicial = Estado.obter_arquivo_de_estado(caminho)
 	
-	# carrega a memória
-	var arquivo_memoria = config.get_value("estado", "memoria")
-
-	if not arquivo_memoria or (typeof(arquivo_memoria) != TYPE_STRING):
-		push_error("Valor de \"memoria\" é inválido.")
+	if not self.config_inicial:
 		return
-	
-	self.recarregar_memoria(arquivo_memoria)
+
+	var nome_arquivo_memoria = Estado.obter_nome_arquivo_memoria(self.config_inicial)
+
+	if not nome_arquivo_memoria:
+		return
+
+	var dados_memoria = Estado.obter_dados_memoria(nome_arquivo_memoria)
+
+	if not dados_memoria:
+		return
+
+	Memoria.sobrescrever_toda_a_memoria(dados_memoria)
 
 	# carrega os registradores
-	var registrador_a = config.get_value("estado", "registrador.a", "0")
-	var registrador_b = config.get_value("estado", "registrador.b", "0")
-	var registrador_pc = config.get_value("estado", "registrador.pc", "0")
-	var registrador_pp = config.get_value("estado", "registrador.pp", "0")
-	var registrador_aux = config.get_value("estado", "registrador.aux", "0")
-	var registrador_ir = config.get_value("estado", "registrador.ir", "0")
-	var registrador_ix = config.get_value("estado", "registrador.ix", "0")
-	var registrador_mbr = config.get_value("estado", "registrador.mbr", "0")
-	var registrador_mar = config.get_value("estado", "registrador.mar", "0")
+	var registrador_a = self.config_inicial.get_value("estado", "registrador.a", "0")
+	var registrador_b = self.config_inicial.get_value("estado", "registrador.b", "0")
+	var registrador_pc = self.config_inicial.get_value("estado", "registrador.pc", "0")
+	var registrador_pp = self.config_inicial.get_value("estado", "registrador.pp", "0")
+	var registrador_aux = self.config_inicial.get_value("estado", "registrador.aux", "0")
+	var registrador_ir = self.config_inicial.get_value("estado", "registrador.ir", "0")
+	var registrador_ix = self.config_inicial.get_value("estado", "registrador.ix", "0")
+	var registrador_mbr = self.config_inicial.get_value("estado", "registrador.mbr", "0")
+	var registrador_mar = self.config_inicial.get_value("estado", "registrador.mar", "0")
 
 	CPU.atualizar_registrador_a(Utils.de_hex_string_para_inteiro(registrador_a))
 	CPU.atualizar_registrador_b(Utils.de_hex_string_para_inteiro(registrador_b))
@@ -293,10 +286,10 @@ func carregar_estado_inicial(caminho: String="res://inicio.estado"):
 	CPU.atualizar_registrador_mar(Utils.de_hex_string_para_inteiro(registrador_mar))
 
 	# carrega as flags
-	var flag_z = config.get_value("estado", "flag.z", "0")
-	var flag_n = config.get_value("estado", "flag.n", "0")
-	var flag_c = config.get_value("estado", "flag.c", "0")
-	var flag_o = config.get_value("estado", "flag.o", "0")
+	var flag_z = self.config_inicial.get_value("estado", "flag.z", "0")
+	var flag_n = self.config_inicial.get_value("estado", "flag.n", "0")
+	var flag_c = self.config_inicial.get_value("estado", "flag.c", "0")
+	var flag_o = self.config_inicial.get_value("estado", "flag.o", "0")
 
 	CPU.atualizar_flag_z(Utils.de_hex_string_para_inteiro(flag_z))
 	CPU.atualizar_flag_n(Utils.de_hex_string_para_inteiro(flag_n))

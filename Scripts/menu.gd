@@ -59,8 +59,7 @@ func _on_dialogo_de_executar_file_selected(path):
 	%DialogoDeExecutar.visible = false
 	match self.operacao_atual:
 		Executar.TESTE:
-			# Programa.preparar_teste(path)
-			pass
+			Programa.preparar_teste(path)
 
 
 func _on_dialogo_de_executar_dir_selected(dir):

@@ -19,8 +19,39 @@ func _physics_process(_delta):
 
 func preparar_teste(arquivo_de_teste : String):
 	print("###### ", arquivo_de_teste, " ######")
-	self.teste_em_execucao = true
+
+	if not get_tree():
+		return
 	
+	get_tree().reload_current_scene()
+
+	# self.carrega_dados_de_teste.call_deferred(arquivo_de_teste)
+	self.carrega_dados_de_teste(arquivo_de_teste)
+
+func carrega_dados_de_teste(arquivo_de_teste : String):
+	self.teste_em_execucao = true
+
+	# obtém memória do estado inicial
+	var nome_arquivo_memoria 	: String 			= Estado.obter_nome_arquivo_memoria(SoftwareManager.config_inicial)
+	var dados_memoria 			: PackedByteArray 	= Estado.obter_dados_memoria(nome_arquivo_memoria)
+
+	# obtém o novo conteúdo de memória
+	var conteudo_memoria = self.config.get_value("começo", "memoria", {})
+
+	if typeof(conteudo_memoria) != TYPE_DICTIONARY:
+		push_error("\"memoria\" tem um tipo inválido")
+		return
+
+	# sobrescreve a memória inicial com os novos dados
+	for endereco : String in conteudo_memoria:
+		var dado : String = conteudo_memoria[endereco]
+		var endereco_convertido = Utils.de_hex_string_para_inteiro(endereco)
+		var dado_convertido 	= Utils.de_hex_string_para_inteiro(dado)
+		conteudo_memoria.set(endereco_convertido, dado_convertido)
+
+	# atualiza a memória da aplicação com o estado inicial do teste
+	Memoria.sobrescrever_toda_a_memoria(dados_memoria)
+
 	self.config.load(arquivo_de_teste)
 
 	# inicializar registradores
@@ -42,6 +73,8 @@ func preparar_teste(arquivo_de_teste : String):
 	
 	# inicializar memória
 	self.atualizar_memoria()
+
+	SoftwareManager.inicialização_finalizada.emit()
 
 	# iniciar o teste
 	self.iniciar_teste_atual()
