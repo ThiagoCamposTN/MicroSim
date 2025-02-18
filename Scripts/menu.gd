@@ -1,6 +1,6 @@
 extends MenuBar
 
-enum Abrir { PROGRAMA, MEMORIA, TESTE }
+enum Abrir { PROGRAMA, MEMORIA, ESTADO }
 enum Executar { PROGRAMA, TESTE, TODOS_OS_TESTES }
 var operacao_atual : int = -1
 
@@ -21,7 +21,7 @@ func _on_arquivo_id_pressed(id):
 			%DialogoDeArquivo.add_filter("*.prg")
 		Abrir.MEMORIA:
 			%DialogoDeArquivo.add_filter("*.MEM")
-		Abrir.TESTE:
+		Abrir.ESTADO:
 			%DialogoDeArquivo.add_filter("*.sta")
 	
 	%DialogoDeArquivo.current_dir = "res://"
@@ -51,8 +51,8 @@ func _on_dialogo_abrir_arquivo_file_selected(path):
 			pass
 		Abrir.MEMORIA:
 			pass
-		Abrir.TESTE:
-			Teste.adicionar_teste_a_fila(path)
+		Abrir.ESTADO:
+			Estado.carregar_estado(path)
 
 
 func _on_dialogo_de_executar_file_selected(path):

@@ -13,9 +13,11 @@ title = "Arquivo"
 size = Vector2i(123, 100)
 item_count = 3
 item_0/text = "Abrir programa"
+item_0/disabled = true
 item_1/text = "Abrir memória"
 item_1/id = 1
-item_2/text = "Abrir teste"
+item_1/disabled = true
+item_2/text = "Abrir estado"
 item_2/id = 2
 
 [node name="Executar" type="PopupMenu" parent="."]
@@ -24,9 +26,10 @@ title = "Executar"
 size = Vector2i(123, 100)
 item_count = 3
 item_0/text = "Iniciar programa atual"
+item_0/disabled = true
 item_1/text = "Executar um teste"
 item_1/id = 1
-item_2/text = "Executar todos os testes"
+item_2/text = "Executar testes de pasta"
 item_2/id = 2
 
 [node name="DialogoDeArquivo" type="FileDialog" parent="."]
