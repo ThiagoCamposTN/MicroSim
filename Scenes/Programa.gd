@@ -16,7 +16,7 @@ func _process(delta):
 
 func _on_avancar_microcodigo_button_pressed():
 	SoftwareManager.unico_microcodigo = true
-	executar()	
+	executar()
 
 
 func _on_avancar_instrucao_button_pressed():

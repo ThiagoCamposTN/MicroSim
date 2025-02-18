@@ -7,6 +7,22 @@ var tweens						: Array[Tween]
 var fluxo_tween					: Tween
 @export var tempo_fluxo			: float = 1
 
+@onready var registradores_nos = {
+	"A": get_node("Registradores/RegistradorAButton"),
+	"B": get_node("Registradores/RegistradorBButton"),
+	"PC": get_node("Registradores/RegistradorPCButton"),
+	"IX": get_node("Registradores/RegistradorIXButton"),
+	"MAR": get_node("Registradores/RegistradorMARButton"),
+	"PP": get_node("Registradores/RegistradorPPButton"),
+	"MBR": get_node("Registradores/RegistradorMBRButton"),
+	"Z": get_node("Registradores/RegistradorZButton"),
+	"N": get_node("Registradores/RegistradorNButton"),
+	"C": get_node("Registradores/RegistradorCButton"),
+	"O": get_node("Registradores/RegistradorOButton"),
+	"IR": get_node("Registradores/RegistradorIRButton"),
+	"MemoriaEndereco": get_node("Registradores/MemoriaEnderecoButton"),
+	"MemoriaValor": get_node("Registradores/MemoriaValorButton")
+}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -35,30 +51,32 @@ func atualizar_linha():
 	
 	if SoftwareManager.fila_instrucoes.size() == 0:
 		return
-	if not SoftwareManager.ultima_operacao:
+	if not SoftwareManager.fila_instrucoes[0]:
 		return
 	
-	if not CPU.has_method(SoftwareManager.ultima_operacao):
+	if not CPU.has_method(SoftwareManager.fila_instrucoes[0]):
 		return
 	
-	match SoftwareManager.ultima_operacao:
+	match SoftwareManager.fila_instrucoes[0]:
 		"mover_pc_para_mar":
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorPCButton"))
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorMARButton"))
+			registradores_interagindo.append(registradores_nos["PC"])
+			registradores_interagindo.append(registradores_nos["MAR"])
 		"mover_mar_ao_endereco_de_memoria":
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorMARButton"))
+			registradores_interagindo.append(registradores_nos["MAR"])
+			registradores_interagindo.append(registradores_nos["MemoriaEndereco"])
 		"mover_valor_da_memoria_ao_mbr":
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorMBRButton"))
+			registradores_interagindo.append(registradores_nos["MemoriaValor"])
+			registradores_interagindo.append(registradores_nos["MBR"])
 		"transferir_mbr_para_ir":
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorMBRButton"))
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorIRButton"))
+			registradores_interagindo.append(registradores_nos["MBR"])
+			registradores_interagindo.append(registradores_nos["IR"])
 		"incrementar_registrador_pc":
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorPCButton"))
+			registradores_interagindo.append(registradores_nos["PC"])
 	
 	acender_registradores_interagindo()
 	
 	# Resolvendo linhas
-	var caminho_linha = "Linhas/" + SoftwareManager.ultima_operacao
+	var caminho_linha = "Linhas/" + SoftwareManager.fila_instrucoes[0]
 	
 	if not self.has_node(caminho_linha):
 		return
@@ -98,29 +116,29 @@ func resetar_linhas():
 func atualizar_registrador(registrador: String):
 	match registrador:
 		"A":
-			get_node("Registradores/RegistradorAButton").text = Utils.int_para_hex(CPU.registrador_a, 2)
+			registradores_nos["A"].text = Utils.int_para_hex(CPU.registrador_a, 2)
 		"B":
-			get_node("Registradores/RegistradorBButton").text = Utils.int_para_hex(CPU.registrador_b, 2)
+			registradores_nos["B"].text = Utils.int_para_hex(CPU.registrador_b, 2)
 		"PC":
-			get_node("Registradores/RegistradorPCButton").text = Utils.int_para_hex(CPU.registrador_pc, 4)
+			registradores_nos["PC"].text = Utils.int_para_hex(CPU.registrador_pc, 4)
 		"IX":
-			get_node("Registradores/RegistradorIXButton").text = Utils.int_para_hex(CPU.registrador_ix, 4)
+			registradores_nos["IX"].text = Utils.int_para_hex(CPU.registrador_ix, 4)
 		"MAR":
-			get_node("Registradores/RegistradorMARButton").text = Utils.int_para_hex(CPU.registrador_mar, 4)
+			registradores_nos["MAR"].text = Utils.int_para_hex(CPU.registrador_mar, 4)
 		"PP":
-			get_node("Registradores/RegistradorPPButton").text = Utils.int_para_hex(CPU.registrador_pp, 4)
+			registradores_nos["PP"].text = Utils.int_para_hex(CPU.registrador_pp, 4)
 		"MBR":
-			get_node("Registradores/RegistradorMBRButton").text = Utils.int_para_hex(CPU.registrador_mbr, 2)
+			registradores_nos["MBR"].text = Utils.int_para_hex(CPU.registrador_mbr, 2)
 		"Z":
-			get_node("Registradores/RegistradorZButton").text = Utils.int_para_hex(CPU.flag_z, 1)
+			registradores_nos["Z"].text = Utils.int_para_hex(CPU.flag_z, 1)
 		"N":
-			get_node("Registradores/RegistradorNButton").text = Utils.int_para_hex(CPU.flag_n, 1)
+			registradores_nos["N"].text = Utils.int_para_hex(CPU.flag_n, 1)
 		"C":
-			get_node("Registradores/RegistradorCButton").text = Utils.int_para_hex(CPU.flag_c, 1)
+			registradores_nos["C"].text = Utils.int_para_hex(CPU.flag_c, 1)
 		"O":
-			get_node("Registradores/RegistradorOButton").text = Utils.int_para_hex(CPU.flag_o, 1)
+			registradores_nos["O"].text = Utils.int_para_hex(CPU.flag_o, 1)
 		"IR":
-			get_node("Registradores/RegistradorIRButton").text = Utils.int_para_hex(CPU.registrador_ir, 2)
+			registradores_nos["IR"].text = Utils.int_para_hex(CPU.registrador_ir, 2)
 
 func caminhar_fluxo(caminho: Line2D):
 	fluxo.visible = true
