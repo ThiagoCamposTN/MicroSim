@@ -3,7 +3,8 @@
 [ext_resource type="Script" path="res://Scenes/Principal.gd" id="1_f7wj2"]
 [ext_resource type="Script" path="res://Scenes/aba_memoria.gd" id="1_k3qc3"]
 [ext_resource type="Script" path="res://Scripts/Descompilador.gd" id="1_p8pv5"]
-[ext_resource type="Script" path="res://Scenes/Programa.gd" id="1_xtbw1"]
+[ext_resource type="Script" path="res://Scenes/Aplicação.gd" id="1_xtbw1"]
+[ext_resource type="PackedScene" uid="uid://uskbj7p2yvx8" path="res://Scenes/Menu.tscn" id="2_2p4gg"]
 [ext_resource type="Theme" uid="uid://cue378diorxs8" path="res://Themes/default.tres" id="2_h2p1t"]
 [ext_resource type="PackedScene" uid="uid://b43gj8a6co0l6" path="res://Objects/registradores.tscn" id="2_pfwce"]
 [ext_resource type="PackedScene" uid="uid://bm0k2wmg5ydh1" path="res://Objects/carregador_de_memoria.tscn" id="2_rec7b"]
@@ -16,7 +17,7 @@
 [ext_resource type="Theme" uid="uid://bva6q61rv6cyc" path="res://Themes/registrador_label.tres" id="14_1an5g"]
 [ext_resource type="Theme" uid="uid://bobl004n5jsf" path="res://Themes/visual_interpreter.tres" id="15_qx21s"]
 
-[node name="Programa" type="Control"]
+[node name="Aplicação" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,6 +33,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MenuBar" parent="VBoxContainer" instance=ExtResource("2_2p4gg")]
+layout_mode = 2
+size_flags_vertical = 1
 
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2

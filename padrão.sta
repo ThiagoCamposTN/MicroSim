@@ -1,0 +1,22 @@
+[inicio]
+registrador.a="00"
+registrador.b="08"
+registrador.pc="0000"
+registrador.pp="0FFF"
+registrador.aux="00"
+registrador.ir="00"
+registrador.ix="6E35"
+registrador.mbr="00"
+registrador.mar="0000"
+flag.z="0"
+flag.n="0"
+flag.c="0"
+flag.o="0"
+memoria.base="res://MEMORIA.MEM"
+instrucoes=[
+	"LDA #10",
+	"LDB #9",
+	"ABA",
+	"STA 0000",
+	"CAL EXIT"
+]

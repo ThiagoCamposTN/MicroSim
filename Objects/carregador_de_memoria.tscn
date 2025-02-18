@@ -14,12 +14,10 @@ custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 text = "res://MEMORIA.MEM"
 placeholder_text = "Caminho para o arquivo de memória"
-editable = false
 caret_blink = true
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 2
-disabled = true
 text = "Carregar"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

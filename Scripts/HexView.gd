@@ -7,12 +7,12 @@ var elementos_viewer : Array = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	inicializar_hex_grid()
-	Memoria.memoria_foi_atualizada.connect(atualizar_celula)
+	Memoria.endereço_de_memoria_foi_atualizado.connect(atualizar_celula)
 	Memoria.grupo_da_memoria_foi_atualizado.connect(atualizar_grupo_de_celulas)
+	Memoria.memoria_foi_recarregada.connect(inicializar_hex_grid)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
 func adicionar_label(texto: String, nome: String = ""):
@@ -27,8 +27,13 @@ func adicionar_label(texto: String, nome: String = ""):
 	elementos_viewer.append(hex_view_byte)
 
 func inicializar_hex_grid():
-	var current_linha : int = 0
+	# esvazia o HexGrid
+	for i in %HexGrid.get_children():
+		%HexGrid.remove_child(i)
+	elementos_viewer = []
 	
+	var current_linha : int = 0
+		
 	for celula in Memoria.celulas:
 		var endereco_celula = Utils.int_para_hex(current_linha, 3)
 		if current_linha % 16 == 0:
