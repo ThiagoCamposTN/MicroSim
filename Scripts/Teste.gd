@@ -3,14 +3,19 @@ extends Node
 var arquivo_de_teste : String
 var teste_em_execucao: bool = false
 var lista_de_testes: Array[String] = []
-var teste_atual
+var teste_sem_erros: bool = true
 
 
 func _ready():
 	SoftwareManager.execucao_finalizada.connect(fim_da_execucao)
 	Estado.sobrecarregar_programa.connect(atualizar_programa)
 
-func inicializar_teste(arquivo : String):
+func _physics_process(_delta):
+	if (lista_de_testes.size() > 0) and (not teste_em_execucao):
+		var teste_atual = lista_de_testes.pop_front()
+		self.inicializar_teste(teste_atual)
+
+func inicializar_teste(arquivo : String) -> void:
 	print("###### ", arquivo, " ######")
 	self.arquivo_de_teste = arquivo
 	self.teste_em_execucao = true
@@ -25,10 +30,10 @@ func inicializar_teste(arquivo : String):
 	self.executar_teste()
 
 
-func executar_teste():
+func executar_teste() -> void:
 	SoftwareManager.executar_programa(CPU.registrador_pc)
 
-func fim_da_execucao():
+func fim_da_execucao() -> void:
 	# realiza a comparação do estado final com o esperado
 
 	if not self.teste_em_execucao:
@@ -60,13 +65,18 @@ func fim_da_execucao():
 	# validando resultado final na memória
 	self.validar_memoria(config)
 
+	if self.teste_sem_erros:
+		print("Teste concluído com sucesso.")
+	else:
+		print("Teste concluído com falhas.")
+	
 	self.teste_em_execucao = false
 
 func atualizar_programa(instrucoes: PackedStringArray):
 	if self.teste_em_execucao:
 		SoftwareManager.salvar_codigo_em_memoria(instrucoes, CPU.registrador_pc)
 
-func validar_valor(config: ConfigFile, chave: String, valor_atual : int):
+func validar_valor(config: ConfigFile, chave: String, valor_atual : int) -> void:
 	var valor_esperado = config.get_value("fim", chave, "")
 	
 	if not valor_esperado:
@@ -77,9 +87,10 @@ func validar_valor(config: ConfigFile, chave: String, valor_atual : int):
 		return
 
 	if not (Utils.de_hex_string_para_inteiro(valor_esperado) == valor_atual):
+		self.teste_sem_erros = false
 		print("Falha: \"" + chave + "\" deveria ser \"0x" + str(valor_esperado) + "\" mas resultou em \"0x" + Utils.int_para_hex(valor_atual, 1) + "\".")
 
-func validar_memoria(config: ConfigFile):
+func validar_memoria(config: ConfigFile) -> void:
 	var valores_memoria = config.get_value("fim", "memoria", {})
 
 	if typeof(valores_memoria) != TYPE_DICTIONARY:
@@ -102,4 +113,16 @@ func validar_memoria(config: ConfigFile):
 		var valor_atual_int = Memoria.celulas[endereco_convertido]
 		
 		if valor_esperado_int != valor_atual_int:
+			self.teste_sem_erros = false
 			print("Falha: O valor na memória no endereço \"" + Utils.int_para_hex(endereco_convertido, 1) + "\" deveria ser \"0x" + valor_esperado + "\" mas resultou em \"0x" + Utils.int_para_hex(valor_atual_int, 1) + "\".")
+
+func adicionar_teste_a_fila(nome : String) -> void:
+	self.lista_de_testes.append(nome)
+
+func adicionar_multiplos_testes_a_fila(pasta: String, arquivos: Array[String]) -> void:
+	for arquivo in arquivos:
+		self.adicionar_teste_a_fila(pasta.path_join(arquivo))
+
+func abortar_todos_os_testes() -> void:
+	self.teste_em_execucao = false
+	self.lista_de_testes.clear()
