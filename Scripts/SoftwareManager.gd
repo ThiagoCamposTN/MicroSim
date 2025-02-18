@@ -28,11 +28,13 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if em_execução and execucao_timer.is_stopped():
+	if em_execução and (execucao_timer.is_stopped() or Teste.teste_em_execucao):
 		if fila_instrucoes.size() > 0:
 			var instrucao = fila_instrucoes.pop_front()
 			ultima_operacao = instrucao
-			print("Executando: ", instrucao)
+			
+			if not Teste.teste_em_execucao:
+				print("Executando: ", instrucao)
 
 			if CPU.has_method(instrucao):
 				CPU.call(instrucao)

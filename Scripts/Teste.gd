@@ -41,31 +41,65 @@ func fim_da_execucao():
 		return
 	
 	# validando resultado final nos registradores
-	var registrador_a = Utils.de_hex_string_para_inteiro(config.get_value("fim", "registrador.a"))
-	var registrador_b = Utils.de_hex_string_para_inteiro(config.get_value("fim", "registrador.b"))
-
-	if (CPU.registrador_a == registrador_a):
-		print("Registrador A está correto")
-	else:
-		print("Registrador A está incorreto")
-
-	if (CPU.registrador_b == registrador_b):
-		print("Registrador B está correto")
-	else:
-		print("Registrador B está incorreto")
-
-	#TODO: finalizar verificação dos registradores
+	self.validar_valor(config, "registrador.a", CPU.registrador_a)
+	self.validar_valor(config, "registrador.b", CPU.registrador_b)
+	self.validar_valor(config, "registrador.pc", CPU.registrador_pc)
+	self.validar_valor(config, "registrador.pp", CPU.registrador_pp)
+	self.validar_valor(config, "registrador.aux", CPU.registrador_aux)
+	self.validar_valor(config, "registrador.ir", CPU.registrador_ir)
+	self.validar_valor(config, "registrador.ix", CPU.registrador_ix)
+	self.validar_valor(config, "registrador.mbr", CPU.registrador_mbr)
+	self.validar_valor(config, "registrador.mar", CPU.registrador_mar)
 	
-	# validando resultado final nas flags
-	#TODO: implementar verificação das flags
+		# validando resultado final nas flags
+	self.validar_valor(config, "flag.z", CPU.flag_z)
+	self.validar_valor(config, "flag.n", CPU.flag_n)
+	self.validar_valor(config, "flag.c", CPU.flag_c)
+	self.validar_valor(config, "flag.o", CPU.flag_o)
 
 	# validando resultado final na memória
-	#TODO: implementar verificação de memória
+	self.validar_memoria(config)
 
 	self.teste_em_execucao = false
-
-
 
 func atualizar_programa(instrucoes: PackedStringArray):
 	if self.teste_em_execucao:
 		SoftwareManager.salvar_codigo_em_memoria(instrucoes, CPU.registrador_pc)
+
+func validar_valor(config: ConfigFile, chave: String, valor_atual : int):
+	var valor_esperado = config.get_value("fim", chave, "")
+	
+	if not valor_esperado:
+		return
+	
+	if typeof(valor_esperado) != TYPE_STRING:
+		push_error("\"" + chave + "\" tem um tipo inválido.")
+		return
+
+	if not (Utils.de_hex_string_para_inteiro(valor_esperado) == valor_atual):
+		print("Falha: \"" + chave + "\" deveria ser \"0x" + str(valor_esperado) + "\" mas resultou em \"0x" + Utils.int_para_hex(valor_atual, 1) + "\".")
+
+func validar_memoria(config: ConfigFile):
+	var valores_memoria = config.get_value("fim", "memoria", {})
+
+	if typeof(valores_memoria) != TYPE_DICTIONARY:
+		push_error("\"memoria\" tem um tipo inválido. Abortando verificação.")
+		return
+
+	for endereco in valores_memoria:
+		if typeof(endereco) != TYPE_STRING:
+			push_error("\"memoria\" tem um valor inválido. Abortando verificação.")
+			return
+
+		var valor_esperado = valores_memoria[endereco]
+
+		if typeof(valor_esperado) != TYPE_STRING:
+			push_error("\"memoria\" tem um valor inválido. Abortando verificação.")
+			return
+
+		var endereco_convertido = Utils.de_hex_string_para_inteiro(endereco)
+		var valor_esperado_int = Utils.de_hex_string_para_inteiro(valor_esperado)
+		var valor_atual_int = Memoria.celulas[endereco_convertido]
+		
+		if valor_esperado_int != valor_atual_int:
+			print("Falha: O valor na memória no endereço \"" + Utils.int_para_hex(endereco_convertido, 1) + "\" deveria ser \"0x" + valor_esperado + "\" mas resultou em \"0x" + Utils.int_para_hex(valor_atual_int, 1) + "\".")
