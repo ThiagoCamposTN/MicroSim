@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dd4buxa54gig7"]
+[gd_scene load_steps=16 format=3 uid="uid://dd4buxa54gig7"]
 
 [ext_resource type="Script" path="res://Scenes/Principal.gd" id="1_f7wj2"]
 [ext_resource type="Script" path="res://Scenes/aba_memoria.gd" id="1_k3qc3"]
@@ -13,6 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://mit3rrgdrhcd" path="res://image75.png" id="13_16ics"]
 [ext_resource type="Texture2D" uid="uid://davnw4dx52nay" path="res://Imagens/Visualizador.svg" id="13_drmqw"]
 [ext_resource type="Script" path="res://Scenes/Execução Visual.gd" id="13_vadsj"]
+[ext_resource type="Theme" uid="uid://bva6q61rv6cyc" path="res://Themes/registrador_label.tres" id="14_1an5g"]
+[ext_resource type="Theme" uid="uid://bobl004n5jsf" path="res://Themes/visual_interpreter.tres" id="15_qx21s"]
 
 [node name="Aplicação" type="Control"]
 layout_mode = 3
@@ -38,9 +40,10 @@ size_flags_vertical = 1
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 0
+current_tab = 1
 
 [node name="Principal" type="TabBar" parent="VBoxContainer/TabContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("1_f7wj2")
 metadata/_tab_index = 0
@@ -154,26 +157,37 @@ layout_mode = 2
 text = "Descompilar"
 
 [node name="Execução Visual" type="TabBar" parent="VBoxContainer/TabContainer" node_paths=PackedStringArray("fluxo")]
-visible = false
 layout_mode = 2
 script = ExtResource("13_vadsj")
 fluxo = NodePath("Fluxo")
 metadata/_tab_index = 1
+fluxo = NodePath("Container/Fluxo")
 tempo_fluxo = 0.865
+metadata/_tab_index = 1
 
-[node name="Image75" type="TextureRect" parent="VBoxContainer/TabContainer/Execução Visual"]
+[node name="Container" type="Panel" parent="VBoxContainer/TabContainer/Execução Visual"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Image75" type="TextureRect" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
 visible = false
 self_modulate = Color(1, 0.152941, 1, 1)
-layout_mode = 0
+layout_mode = 2
 offset_left = 171.0
 offset_top = 16.0
 offset_right = 817.0
 offset_bottom = 432.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(1.29567, 1.29567)
 texture = ExtResource("13_16ics")
 
-[node name="Visualizador" type="TextureRect" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="Visualizador" type="TextureRect" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 176.0
 offset_top = 25.0
 offset_right = 822.0
@@ -181,18 +195,20 @@ offset_bottom = 441.0
 scale = Vector2(1.28846, 1.28846)
 texture = ExtResource("13_drmqw")
 
-[node name="ProcessadorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="ProcessadorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 200.0
 offset_top = 67.0
 offset_right = 680.0
 offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "PROCESSADOR"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MemoriaLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="MemoriaLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 840.0
 offset_top = 67.0
 offset_right = 992.0
@@ -201,8 +217,8 @@ text = "MEMÓRIA"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BusDadosLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="BusDadosLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 688.0
 offset_top = 129.0
 offset_right = 824.0
@@ -212,19 +228,19 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="BusEnderecoLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="BusEnderecoLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 680.0
-offset_top = 225.0
+offset_top = 219.0
 offset_right = 816.0
-offset_bottom = 274.0
+offset_bottom = 268.0
 text = "BARRAMENTO DE ENDEREÇO"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="OrgaoLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="OrgaoLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 552.0
 offset_top = 361.0
 offset_right = 672.0
@@ -234,8 +250,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="EndselecLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="EndselecLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 680.0
 offset_top = 361.0
 offset_right = 776.0
@@ -245,8 +261,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="LeimemLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="LeimemLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 680.0
 offset_top = 417.0
 offset_right = 776.0
@@ -256,8 +272,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="EcmemLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="EcmemLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 680.0
 offset_top = 465.0
 offset_right = 776.0
@@ -267,8 +283,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="BusControleLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="BusControleLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 680.0
 offset_top = 505.0
 offset_right = 840.0
@@ -278,19 +294,19 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="ULALabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
-offset_left = 192.0
-offset_top = 457.0
-offset_right = 224.0
-offset_bottom = 481.0
+[node name="ULALabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+offset_left = 208.0
+offset_top = 465.0
+offset_right = 240.0
+offset_bottom = 489.0
 text = "ULA"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="MemoriaEnderecoAnteriorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="MemoriaEnderecoAnteriorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 848.0
 offset_top = 185.0
 offset_right = 920.0
@@ -301,8 +317,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="MemoriaValorAnteriorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="MemoriaValorAnteriorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 920.0
 offset_top = 185.0
 offset_right = 992.0
@@ -313,8 +329,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="MemoriaEnderecoPosteriorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="MemoriaEnderecoPosteriorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 848.0
 offset_top = 297.0
 offset_right = 920.0
@@ -325,8 +341,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="MemoriaValorPosteriorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
+[node name="MemoriaValorPosteriorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = 920.0
 offset_top = 297.0
 offset_right = 992.0
@@ -337,9 +353,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="Registradores" type="Control" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 1
-anchors_preset = 15
+[node name="Registradores" type="Control" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 1.0
@@ -348,269 +364,318 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
-[node name="RegistradorALabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
-layout_mode = 0
-offset_left = 255.0
+[node name="RegistradorALabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
+layout_mode = 2
+offset_left = 248.0
+offset_top = 160.0
+offset_right = 280.0
+offset_bottom = 192.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("14_1an5g")
+disabled = true
+text = "B
+"
+
+[node name="RegistradorAButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorALabel"]
+layout_mode = 2
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
+text = "00"
+
+[node name="RegistradorBLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
+layout_mode = 2
+offset_left = 248.0
 offset_top = 112.0
-offset_right = 269.0
-offset_bottom = 135.0
+offset_right = 280.0
+offset_bottom = 144.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "A"
 
-[node name="RegistradorAButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorBButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorBLabel"]
 layout_mode = 2
-offset_left = 272.0
-offset_top = 101.0
-offset_right = 308.0
-offset_bottom = 143.0
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "00"
 
-[node name="RegistradorBLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorPCLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 255.0
-offset_top = 164.0
-offset_right = 269.0
-offset_bottom = 187.0
-text = "B"
-
-[node name="RegistradorBButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
-layout_mode = 2
-offset_left = 273.0
-offset_top = 153.0
-offset_right = 309.0
-offset_bottom = 195.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "00"
-
-[node name="RegistradorPCLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
-layout_mode = 0
-offset_left = 222.0
-offset_top = 216.0
-offset_right = 248.0
-offset_bottom = 239.0
+offset_left = 224.0
+offset_top = 208.0
+offset_right = 256.0
+offset_bottom = 240.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "PC"
 
-[node name="RegistradorPCButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorPCButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorPCLabel"]
 layout_mode = 2
-offset_left = 252.0
-offset_top = 205.0
-offset_right = 308.0
-offset_bottom = 247.0
+offset_left = 32.0
+offset_right = 88.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0000"
 
-[node name="RegistradorIXLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorIXLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 221.0
-offset_top = 268.0
-offset_right = 247.0
-offset_bottom = 291.0
+offset_left = 224.0
+offset_top = 256.0
+offset_right = 256.0
+offset_bottom = 288.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "IX"
 
-[node name="RegistradorIXButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorIXButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorIXLabel"]
 layout_mode = 2
-offset_left = 251.0
-offset_top = 257.0
-offset_right = 307.0
-offset_bottom = 299.0
+offset_left = 32.0
+offset_right = 88.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "6E35"
 
-[node name="RegistradorMARLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorMARButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
+layout_mode = 2
+offset_left = 432.0
+offset_top = 256.0
+offset_right = 488.0
+offset_bottom = 288.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
+text = "0000"
+
+[node name="RegistradorMARLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorMARButton"]
 layout_mode = 0
-offset_left = 495.0
-offset_top = 240.0
-offset_right = 531.0
-offset_bottom = 263.0
+offset_left = 56.0
+offset_right = 96.0
+offset_bottom = 32.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "MAR"
 
-[node name="RegistradorMARButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
-layout_mode = 2
-offset_left = 429.0
-offset_top = 256.0
-offset_right = 485.0
-offset_bottom = 298.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "0000"
-
-[node name="RegistradorPPLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorPPLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 222.0
-offset_top = 320.0
-offset_right = 248.0
-offset_bottom = 343.0
+offset_left = 224.0
+offset_top = 304.0
+offset_right = 256.0
+offset_bottom = 336.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "PP"
 
-[node name="RegistradorPPButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorPPButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorPPLabel"]
 layout_mode = 2
-offset_left = 252.0
-offset_top = 309.0
-offset_right = 308.0
-offset_bottom = 351.0
+offset_left = 32.0
+offset_right = 88.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0000"
 
-[node name="RegistradorMBRLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorMBRButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
+layout_mode = 2
+offset_left = 456.0
+offset_top = 112.0
+offset_right = 488.0
+offset_bottom = 144.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
+text = "00"
+
+[node name="RegistradorMBRLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorMBRButton"]
 layout_mode = 0
-offset_left = 494.0
-offset_top = 131.0
-offset_right = 526.0
-offset_bottom = 154.0
+offset_left = 32.0
+offset_right = 72.0
+offset_bottom = 32.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "MBR"
 
-[node name="RegistradorMBRButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorAUXButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 2
-offset_left = 449.0
-offset_top = 101.0
-offset_right = 486.0
-offset_bottom = 143.0
+offset_left = 456.0
+offset_top = 208.0
+offset_right = 488.0
+offset_bottom = 240.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "00"
 
-[node name="RegistradorAUXLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorAUXLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorAUXButton"]
 layout_mode = 0
-offset_left = 495.0
-offset_top = 175.0
-offset_right = 527.0
-offset_bottom = 198.0
+offset_left = 32.0
+offset_right = 72.0
+offset_bottom = 32.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "AUX"
 
-[node name="RegistradorAUXButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorZButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 2
-offset_left = 448.0
-offset_top = 192.0
-offset_right = 485.0
-offset_bottom = 234.0
+offset_left = 432.0
+offset_top = 336.0
+offset_right = 456.0
+offset_bottom = 376.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "00"
+theme = ExtResource("15_qx21s")
+disabled = true
+text = "0"
 
-[node name="RegistradorZLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorZLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorZButton"]
 layout_mode = 0
-offset_left = 430.0
-offset_top = 378.0
-offset_right = 442.0
-offset_bottom = 403.0
+offset_top = 40.0
+offset_right = 24.0
+offset_bottom = 72.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "Z"
 
-[node name="RegistradorZButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorNButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 2
-offset_left = 421.0
-offset_top = 328.0
-offset_right = 447.0
-offset_bottom = 370.0
+offset_left = 456.0
+offset_top = 336.0
+offset_right = 480.0
+offset_bottom = 376.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0"
 
-[node name="RegistradorNLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorNLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorNButton"]
 layout_mode = 0
-offset_left = 454.0
-offset_top = 378.0
-offset_right = 467.0
-offset_bottom = 403.0
+offset_top = 40.0
+offset_right = 24.0
+offset_bottom = 72.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "N"
 
-[node name="RegistradorNButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorCButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 2
-offset_left = 448.0
-offset_top = 328.0
-offset_right = 474.0
-offset_bottom = 370.0
+offset_left = 480.0
+offset_top = 336.0
+offset_right = 504.0
+offset_bottom = 376.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0"
 
-[node name="RegistradorCLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorCLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorCButton"]
 layout_mode = 0
-offset_left = 480.0
-offset_top = 378.0
-offset_right = 492.0
-offset_bottom = 403.0
+offset_top = 40.0
+offset_right = 24.0
+offset_bottom = 72.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "C"
 
-[node name="RegistradorCButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
-layout_mode = 2
-offset_left = 474.0
-offset_top = 328.0
-offset_right = 500.0
-offset_bottom = 370.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "0"
-
-[node name="RegistradorOLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorOLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 506.0
-offset_top = 378.0
-offset_right = 519.0
-offset_bottom = 403.0
+offset_left = 504.0
+offset_top = 376.0
+offset_right = 528.0
+offset_bottom = 408.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "O"
 
-[node name="RegistradorOButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorOButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorOLabel"]
 layout_mode = 2
-offset_left = 502.0
-offset_top = 328.0
-offset_right = 528.0
-offset_bottom = 370.0
+offset_top = -40.0
+offset_right = 24.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0"
 
-[node name="RegistradorIRLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorIRButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 492.0
-offset_top = 442.0
-offset_right = 508.0
-offset_bottom = 465.0
+offset_left = 456.0
+offset_top = 440.0
+offset_right = 488.0
+offset_bottom = 472.0
+theme = ExtResource("15_qx21s")
+disabled = true
+text = "00"
+
+[node name="RegistradorIRLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorIRButton"]
+layout_mode = 0
+offset_left = 32.0
+offset_right = 56.0
+offset_bottom = 32.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "IR"
 
-[node name="RegistradorIRButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
-layout_mode = 0
-offset_left = 444.0
-offset_top = 431.0
-offset_right = 483.0
-offset_bottom = 473.0
-text = "00"
-
-[node name="RegistradorULA1Button" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorULA1Button" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 2
-offset_left = 208.0
-offset_top = 384.0
+offset_left = 224.0
+offset_top = 392.0
 offset_right = 272.0
-offset_bottom = 426.0
+offset_bottom = 424.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "00"
 
-[node name="RegistradorULA2Button" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorULA2Button" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 2
-offset_left = 288.0
-offset_top = 384.0
-offset_right = 352.0
-offset_bottom = 426.0
+offset_left = 296.0
+offset_top = 392.0
+offset_right = 344.0
+offset_bottom = 424.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "00"
 
-[node name="RegistradorULASaidaButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorULASaidaButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 2
-offset_left = 256.0
+offset_left = 264.0
 offset_top = 480.0
 offset_right = 312.0
-offset_bottom = 522.0
+offset_bottom = 512.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "00"
 
-[node name="MemoriaEnderecoButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="MemoriaEnderecoButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 2
 offset_left = 856.0
 offset_top = 256.0
@@ -618,9 +683,11 @@ offset_right = 912.0
 offset_bottom = 298.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0000"
 
-[node name="MemoriaValorButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="MemoriaValorButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 2
 offset_left = 936.0
 offset_top = 256.0
@@ -628,95 +695,97 @@ offset_right = 976.0
 offset_bottom = 298.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "00"
 
-[node name="Linhas" type="Control" parent="VBoxContainer/TabContainer/Execução Visual"]
+[node name="Linhas" type="Control" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
 visible = false
-layout_mode = 1
-anchors_preset = 15
+layout_mode = 2
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
-[node name="mover_pc_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="mover_pc_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 points = PackedVector2Array(311, 225, 392, 225, 392, 281, 424, 281)
 width = 2.0
 
-[node name="mover_mar_ao_endereco_de_memoria" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="mover_mar_ao_endereco_de_memoria" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 points = PackedVector2Array(488, 281, 840, 281)
 width = 2.0
 
-[node name="mover_valor_da_memoria_ao_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="mover_valor_da_memoria_ao_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 points = PackedVector2Array(952, 153, 952, 121, 496, 121)
 width = 2.0
 
-[node name="transferir_mbr_para_ir" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="transferir_mbr_para_ir" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 points = PackedVector2Array(448, 121, 392, 121, 392, 449, 440, 449)
 width = 2.0
 
-[node name="mover_valor_da_memoria_ao_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="mover_valor_da_memoria_ao_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 points = PackedVector2Array(490, 212, 549, 212, 549, 122, 952, 121, 952, 153)
 width = 2.0
 
-[node name="transferir_mbr_para_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="transferir_mbr_para_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(0, 1)
 points = PackedVector2Array(448, 120, 312, 120)
 width = 2.0
 
-[node name="transferir_mbr_para_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="transferir_mbr_para_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 points = PackedVector2Array(448, 121, 392, 121, 392, 177, 312, 177)
 width = 2.0
 
-[node name="transferir_a_para_alu_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="transferir_a_para_alu_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 points = PackedVector2Array(312, 121, 392, 121, 392, 369, 240, 369, 240, 385)
 width = 2.0
 
-[node name="transferir_b_para_alu_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="transferir_b_para_alu_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 points = PackedVector2Array(311, 177, 392, 177, 392, 369, 320, 369, 320, 385)
 width = 2.0
 
-[node name="transferir_alu_saida_para_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="transferir_alu_saida_para_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 points = PackedVector2Array(312, 497, 392, 497, 392, 121, 312, 121)
 width = 2.0
 
-[node name="transferir_alu_saida_para_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="transferir_alu_saida_para_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 points = PackedVector2Array(312, 497, 392, 497, 392, 177, 312, 177)
 width = 2.0
 
-[node name="unir_mbr_ao_aux_e_mover_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="unir_mbr_ao_aux_e_mover_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(0, 1)
 points = PackedVector2Array(448, 209, 392, 209, 392, 281, 424, 281)
 width = 2.0
 
-[node name="transferir_a_para_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="transferir_a_para_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(0, 1)
 points = PackedVector2Array(312, 120, 448, 120)
 width = 2.0
 texture_mode = 1
 
-[node name="mover_mbr_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="mover_mbr_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 points = PackedVector2Array(496, 121, 952, 121, 952, 153)
 width = 2.0
 
-[node name="end_selec" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="end_selec" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(0, 1)
 points = PackedVector2Array(680, 400, 872, 400, 872, 384)
 width = 2.0
 
-[node name="leimem" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="leimem" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(0, 1)
 points = PackedVector2Array(680, 448, 880, 448, 880, 384)
 width = 2.0
 
-[node name="ecmem" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="ecmem" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(0, 1)
 points = PackedVector2Array(680, 496, 896, 496, 896, 392)
 width = 2.0
 
-[node name="Fluxo" type="ColorRect" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 1
+[node name="Fluxo" type="ColorRect" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
 offset_left = -40.0
 offset_top = -15.0
 offset_right = -24.0
@@ -745,7 +814,7 @@ text = "0000"
 [node name="AvancarMicrocodigoButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 tooltip_text = "Executa o próximo microcódigo localizado pelo Contador de Programa e interrompe a execução."
-text = "Avançar microcódigo"
+text = "Avançar microoperação"
 
 [node name="AvancarInstrucaoButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
