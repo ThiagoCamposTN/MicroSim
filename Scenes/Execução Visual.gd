@@ -8,20 +8,20 @@ var fluxo_tween					: Tween
 @export var tempo_fluxo			: float = 1
 
 @onready var registradores_nos = {
-	"A": get_node("Registradores/RegistradorAButton"),
-	"B": get_node("Registradores/RegistradorBButton"),
-	"PC": get_node("Registradores/RegistradorPCButton"),
-	"IX": get_node("Registradores/RegistradorIXButton"),
-	"MAR": get_node("Registradores/RegistradorMARButton"),
-	"PP": get_node("Registradores/RegistradorPPButton"),
-	"MBR": get_node("Registradores/RegistradorMBRButton"),
-	"Z": get_node("Registradores/RegistradorZButton"),
-	"N": get_node("Registradores/RegistradorNButton"),
-	"C": get_node("Registradores/RegistradorCButton"),
-	"O": get_node("Registradores/RegistradorOButton"),
-	"IR": get_node("Registradores/RegistradorIRButton"),
-	"MemoriaEndereco": get_node("Registradores/MemoriaEnderecoButton"),
-	"MemoriaValor": get_node("Registradores/MemoriaValorButton")
+	"A": %RegistradorAButton,
+	"B": %RegistradorBButton,
+	"PC": %RegistradorPCButton,
+	"IX": %RegistradorIXButton,
+	"MAR": %RegistradorMARButton,
+	"PP": %RegistradorPPButton,
+	"MBR": %RegistradorMBRButton,
+	"Z": %RegistradorZButton,
+	"N": %RegistradorNButton,
+	"C": %RegistradorCButton,
+	"O": %RegistradorOButton,
+	"IR": %RegistradorIRButton,
+	"MemoriaEndereco": %MemoriaEnderecoButton,
+	"MemoriaValor": %MemoriaValorButton
 }
 
 # Called when the node enters the scene tree for the first time.
