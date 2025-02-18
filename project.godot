@@ -21,6 +21,9 @@ SoftwareManager="*res://Scripts/SoftwareManager.gd"
 CPU="*res://Scripts/cpu.gd"
 Memoria="*res://Scripts/memoria.gd"
 Operacoes="*res://Scripts/Operacoes.gd"
+Teste="*res://Scripts/Teste.gd"
+Estado="*res://Scripts/Estado.gd"
+Programa="*res://Scripts/Programa.gd"
 
 [physics]
 

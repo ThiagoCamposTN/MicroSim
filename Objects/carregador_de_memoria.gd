@@ -13,4 +13,4 @@ func _process(delta):
 
 func _on_button_pressed():
 	var arquivo : String = $MemoriaLineEdit.text
-	SoftwareManager.recarregar_memoria(arquivo)
+	SoftwareManager.obter_memoria(arquivo)

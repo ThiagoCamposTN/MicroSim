@@ -1,0 +1,17 @@
+[inicio]
+registrador.pc="1"
+instrucoes=[
+	"LDA #10",
+	"LDB #9",
+	"ABA",
+	"STA 0000",
+	"CAL EXIT"
+]
+memoria.base="res://MEMORIA.MEM"
+
+[fim]
+registrador.a="19"
+registrador.b="9"
+memoria = {
+    "0": "19",
+}

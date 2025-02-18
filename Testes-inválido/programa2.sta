@@ -1,0 +1,12 @@
+[inicio]
+registrador.b="8"
+registrador.pp="4095"
+registrador.ix="28213"
+instrucoes=[
+	"Programa inválido de teste"
+]
+memoria.substituicoes = {
+    "0": "10",
+    "1": "ff",
+}
+memoria.base="res://MEMORIA.MEM"
