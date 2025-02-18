@@ -29,10 +29,7 @@ func _on_executar_tudo_button_pressed():
 
 func executar() -> void:
 	var valor_atual_PC : int = Utils.de_hex_string_para_inteiro(valor_PC.text)
-	CPU.iniciar_registrador_pc(valor_atual_PC)
-	
-	var numero_endereco : int = CPU.registrador_pc
-	SoftwareManager.executar_programa(numero_endereco)
+	SoftwareManager.executar_programa(valor_atual_PC)
 
 func atualizar_valor_PC():
 	var valor_hex = Utils.int_para_hex(CPU.registrador_pc, 4)

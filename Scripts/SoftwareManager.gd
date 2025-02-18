@@ -240,6 +240,7 @@ func adicionar_instrucao():
 
 func finalizar_execucao():
 	em_execução = false
+	self.fila_instrucoes.clear() # todo: verificar se a lista não esvaziar sozinha é bug ou não
 	execucao_finalizada.emit()
 
 func prepara_o_estado_inicial(emitir_sinal_de_finalização: bool = true):

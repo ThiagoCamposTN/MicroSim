@@ -68,12 +68,7 @@ func carregar_estado(caminho: String = "res://padrão.sta") -> void:
 	# carrega as substituições de células de memória se existirem
 	var novos_valores_memoria = config.get_value("inicio", "memoria.substituicoes", {})
 	memoria = self.realizar_substituicoes_memoria(memoria, novos_valores_memoria)
-
 	self.sobrecarregar_memoria.emit(memoria)
-
-	# carrega o programa
-	var programa = config.get_value("inicio", "instrucoes", [])
-	self.sobrecarregar_programa.emit(programa)
 	
 	# carrega os registradores
 	var registrador_a = config.get_value("inicio", "registrador.a", "0")
@@ -88,7 +83,7 @@ func carregar_estado(caminho: String = "res://padrão.sta") -> void:
 
 	CPU.atualizar_registrador_a(Utils.de_hex_string_para_inteiro(registrador_a))
 	CPU.atualizar_registrador_b(Utils.de_hex_string_para_inteiro(registrador_b))
-	CPU.atualizar_registrador_pc(Utils.de_hex_string_para_inteiro(registrador_pc))
+	CPU.iniciar_registrador_pc(Utils.de_hex_string_para_inteiro(registrador_pc))
 	CPU.atualizar_registrador_pp(Utils.de_hex_string_para_inteiro(registrador_pp))
 	CPU.atualizar_registrador_aux(Utils.de_hex_string_para_inteiro(registrador_aux))
 	CPU.atualizar_registrador_ir(Utils.de_hex_string_para_inteiro(registrador_ir))
@@ -106,3 +101,7 @@ func carregar_estado(caminho: String = "res://padrão.sta") -> void:
 	CPU.atualizar_flag_n(Utils.de_hex_string_para_inteiro(flag_n))
 	CPU.atualizar_flag_c(Utils.de_hex_string_para_inteiro(flag_c))
 	CPU.atualizar_flag_o(Utils.de_hex_string_para_inteiro(flag_o))
+
+	# carrega o programa
+	var programa = config.get_value("inicio", "instrucoes", [])
+	self.sobrecarregar_programa.emit(programa)

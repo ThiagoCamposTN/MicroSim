@@ -9,7 +9,6 @@ var elementos_viewer : Array = []
 func _ready():
 	Memoria.endereço_de_memoria_foi_atualizado.connect(atualizar_celula)
 	Memoria.grupo_da_memoria_foi_atualizado.connect(atualizar_grupo_de_celulas)
-	# SoftwareManager.inicialização_finalizada.connect(inicializar_hex_grid)
 	Memoria.memoria_foi_recarregada.connect(inicializar_hex_grid)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
