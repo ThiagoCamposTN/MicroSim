@@ -19,6 +19,7 @@ func inicializar_teste(arquivo : String) -> void:
 	print("###### ", arquivo, " ######")
 	self.arquivo_de_teste = arquivo
 	self.teste_em_execucao = true
+	self.teste_sem_erros = true
 
 	# limpar a fila de instruções (não é necessário aqui, mas é mais uma medida de segurança)
 	SoftwareManager.fila_instrucoes.clear()
