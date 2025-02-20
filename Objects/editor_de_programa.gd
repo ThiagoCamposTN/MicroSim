@@ -20,7 +20,7 @@ func _process(delta):
 
 
 func _on_button_pressed():
-	var numero_endereco	: int 				= $HBoxContainer/LineEdit2.obter_endereco()
+	var numero_endereco	: int 				= $HBoxContainer/LineEdit2.obter_endereco().como_int()
 	var linhas			: PackedStringArray	= self.obter_código()
 
 	SoftwareManager.salvar_codigo_em_memoria(linhas, numero_endereco)

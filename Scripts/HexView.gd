@@ -23,7 +23,7 @@ func adicionar_label(texto: String, nome: String = ""):
 	else:
 		hex_view_byte.disabled = true
 		hex_view_byte.focus_mode = FOCUS_NONE
-	hex_view_byte.text = texto
+	hex_view_byte.text = texto.to_upper()
 	elementos_viewer.append(hex_view_byte)
 
 func inicializar_hex_grid():
@@ -33,13 +33,13 @@ func inicializar_hex_grid():
 	elementos_viewer = []
 	
 	var current_linha : int = 0
-		
-	for celula in Memoria.celulas:
-		var endereco_celula = Utils.int_para_hex(current_linha, 3)
+	for celula: int in Memoria.celulas:
+		var endereco: Valor = Valor.new(current_linha)
+		var valor: Valor = Valor.new(celula)
 		if current_linha % 16 == 0:
-			adicionar_label(endereco_celula)
+			adicionar_label(endereco.como_hex(3))
 			elementos_viewer.append(VSeparator.new())
-		adicionar_label(Utils.int_para_hex(celula, 2), endereco_celula)
+		adicionar_label(valor.como_hex(2), endereco.como_hex(3))
 		current_linha += 1
 	
 	for label in elementos_viewer:

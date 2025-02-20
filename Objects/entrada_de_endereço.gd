@@ -12,13 +12,9 @@ func _process(delta):
 
 
 func _on_focus_exited():
-	self.reformatar_endereco()
+	self.obter_endereco()
 
-func obter_endereco():
-	self.reformatar_endereco()
-	var numero_endereco : int = Utils.de_hex_string_para_inteiro(self.text)
-	return numero_endereco
-
-func reformatar_endereco():
-	var endereço : String = Utils.formatar_hex_como_endereco(self.text)
-	self.text = endereço
+func obter_endereco() -> Valor:
+	var endereço: Valor = Valor.novo_de_hex(self.text)
+	self.text = endereço.como_hex(4, true)
+	return endereço
