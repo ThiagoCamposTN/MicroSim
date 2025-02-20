@@ -26,10 +26,10 @@ func como_bin() -> String:
 	return bin_str
 
 func como_byte_array(casas:int = 2) -> PackedByteArray:
-	var valor_em_hex = self.como_hex(casas)
+	var valor_em_hex: String = self.como_hex(casas)
 	var resultado : PackedByteArray
 	for i in range(0, valor_em_hex.length(), 2):
-		resultado.push_back(Utils.de_hex_string_para_inteiro(valor_em_hex.substr(i, 2)) )
+		resultado.push_back(Valor.hex_para_int(((valor_em_hex.substr(i, 2)))))
 	return resultado
 
 func somar_valor(outro: Valor) -> Valor:

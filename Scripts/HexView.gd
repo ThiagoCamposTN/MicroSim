@@ -18,7 +18,7 @@ func _process(_delta):
 func adicionar_label(texto: String, nome: String = ""):
 	var hex_view_byte : Button = hex_view_byte_scene.instantiate()
 	if nome:
-		hex_view_byte.name = nome
+		hex_view_byte.name = nome.to_upper()
 		hex_view_byte.focus_entered.connect(ao_clicar_elemento.bind(hex_view_byte))
 	else:
 		hex_view_byte.disabled = true
