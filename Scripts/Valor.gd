@@ -10,10 +10,10 @@ func _init(valor_inicial: int):
 func como_hex(casas: int = 2, prefixado: bool = false):
 	return Valor.int_para_hex(self._valor, casas, prefixado)
 
-func como_inteiro() -> int:
+func como_int() -> int:
 	return self._valor
 
-func como_binario() -> String:
+func como_bin() -> String:
 	# Baseado nessa função por Ryn
 	# https://forum.godotengine.org/t/convert-int-to-binary-string/63279/3
 	var valor = self._valor
@@ -31,6 +31,23 @@ func como_byte_array(casas:int = 2) -> PackedByteArray:
 	for i in range(0, valor_em_hex.length(), 2):
 		resultado.push_back(Utils.de_hex_string_para_inteiro(valor_em_hex.substr(i, 2)) )
 	return resultado
+
+func somar_valor(outro: Valor) -> Valor:
+	return self.somar_int(outro._valor)
+
+func somar_int(outro: int) -> Valor:
+	self._valor += outro
+	return self
+
+func igual(outro: Valor) -> bool:
+	return self._valor == outro._valor
+
+func limitar_entre(minimo: int, maximo: int) -> void:
+	self._valor = clampi(self._valor, minimo, maximo)
+
+
+# static func novo(valor_inicial: int) -> Valor:
+# 	return Valor.new(valor_inicial)
 
 static func novo_de_hex(valor_em_hex: String) -> Valor:
 	return Valor.new(Valor.hex_para_int(valor_em_hex))
