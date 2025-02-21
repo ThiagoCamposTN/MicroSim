@@ -1,5 +1,7 @@
 extends Node
 
+signal programa_carregado
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,3 +20,9 @@ static func obter_programa() -> PackedStringArray:
 		return []
 
 	return programa
+
+func carregar_programa(caminho):
+	var arquivo : FileAccess 		= FileAccess.open(caminho, FileAccess.READ)
+	var dados 	: PackedStringArray	= arquivo.get_as_text().split('\n')
+	arquivo.close()
+	self.programa_carregado.emit(dados)

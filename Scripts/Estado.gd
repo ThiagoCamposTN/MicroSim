@@ -1,7 +1,6 @@
 extends Node
 
 
-signal sobrecarregar_programa
 signal sobrecarregar_memoria
 
 
@@ -104,4 +103,4 @@ func carregar_estado(caminho: String = "res://padrão.sta") -> void:
 
 	# carrega o programa
 	var programa = config.get_value("inicio", "instrucoes", [])
-	self.sobrecarregar_programa.emit(programa)
+	Programa.programa_carregado.emit(programa)

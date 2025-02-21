@@ -34,7 +34,6 @@ func _on_executar_id_pressed(id):
 		Executar.PROGRAMA:
 			%DialogoDeExecutar.current_dir = "res://"
 			%DialogoDeArquivo.add_filter("*.prg")
-
 		Executar.TESTE:
 			%DialogoDeExecutar.current_dir = "res://Testes/"
 			%DialogoDeExecutar.file_mode = FileDialog.FILE_MODE_OPEN_FILE
@@ -44,15 +43,15 @@ func _on_executar_id_pressed(id):
 			%DialogoDeExecutar.file_mode = FileDialog.FILE_MODE_OPEN_DIR
 	%DialogoDeExecutar.visible = true
 
-func _on_dialogo_abrir_arquivo_file_selected(path):
+func _on_dialogo_abrir_arquivo_file_selected(caminho):
 	%DialogoDeArquivo.visible = false
 	match self.operacao_atual:
 		Abrir.PROGRAMA:
-			pass
+			Programa.carregar_programa(caminho)
 		Abrir.MEMORIA:
 			pass
 		Abrir.ESTADO:
-			Estado.carregar_estado(path)
+			Estado.carregar_estado(caminho)
 
 
 func _on_dialogo_de_executar_file_selected(path):

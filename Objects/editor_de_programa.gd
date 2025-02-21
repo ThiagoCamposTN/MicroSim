@@ -11,7 +11,7 @@ func _ready():
 	ch.symbol_color = Color.WHITE_SMOKE
 	#$CodeEdit.syntax_highlighter = ch
 	
-	Estado.sobrecarregar_programa.connect(atualizar_codigo)
+	Programa.programa_carregado.connect(atualizar_codigo)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

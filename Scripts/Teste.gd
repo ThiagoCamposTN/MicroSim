@@ -8,7 +8,7 @@ var teste_sem_erros: bool = true
 
 func _ready():
 	SoftwareManager.execucao_finalizada.connect(fim_da_execucao)
-	Estado.sobrecarregar_programa.connect(atualizar_programa)
+	Programa.programa_carregado.connect(atualizar_programa)
 
 func _physics_process(_delta):
 	if (lista_de_testes.size() > 0) and (not teste_em_execucao):
