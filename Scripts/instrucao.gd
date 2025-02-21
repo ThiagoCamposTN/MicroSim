@@ -84,8 +84,10 @@ func parametros_em_bytes() -> PackedByteArray:
 			# TODO
 			pass
 		Instrucao.Enderecamentos.PRE_INDEXADO:
-			# TODO
-			pass
+			var valor_em_hex 	= Utils.formatar_hex_como_endereco(self.parametros[0])
+			var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
+			for valor in valor_dividido:
+				bytes.push_back(valor)
 	
 	return bytes
 
