@@ -1,0 +1,24 @@
+[inicio]
+registrador.pc="0"
+registrador.ix="33"
+memoria.base="res://MEMORIA.MEM"
+memoria.substituicoes = {
+    "133": "BA"
+}
+instrucoes=[
+	"LDA 100,X",
+	"CAL EXIT"
+]
+
+[fim]
+registrador.a="BA"
+memoria = {
+    "000": "30",
+    "001": "01",
+    "002": "00",
+    "003": "58",
+    "004": "12",
+    "005": "00",
+
+    "133": "BA",
+}
