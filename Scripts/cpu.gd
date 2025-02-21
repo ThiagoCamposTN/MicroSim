@@ -105,6 +105,12 @@ func atualizar_alu_saida(novo_valor : int) -> void:
 func incrementar_registrador_pc() -> void:
 	atualizar_registrador_pc(self.registrador_pc + 1)
 
+func incrementar_registrador_mar() -> void:
+	atualizar_registrador_mar(self.registrador_mar + 1)
+
+func decrementar_registrador_pp() -> void:
+	atualizar_registrador_pp(self.registrador_pp - 1)
+
 func mover_pc_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_pc)
 
@@ -119,9 +125,6 @@ func transferir_mbr_para_b() -> void:
 
 func iniciar_registrador_pc(endereco : int) -> void:
 	atualizar_registrador_pc(endereco)
-
-func incrementar_registrador_mar() -> void:
-	atualizar_registrador_mar(self.registrador_mar + 1)
 
 func unir_mbr_ao_aux_e_mover_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_mbr + (self.registrador_aux << 8))
@@ -155,6 +158,9 @@ func transferir_alu_saida_para_a() -> void:
 
 func transferir_alu_saida_para_mar() -> void:
 	atualizar_registrador_mar(self.alu_saida)
+
+func transferir_pp_para_mar() -> void:
+	atualizar_registrador_mar(self.registrador_pp)
 
 func mover_mar_ao_endereco_de_memoria() -> void:
 	Memoria.endereco_selecionado = CPU.registrador_mar
