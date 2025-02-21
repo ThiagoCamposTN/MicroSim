@@ -1,0 +1,17 @@
+[inicio]
+registrador.pc="0"
+memoria.base="res://MEMORIA.MEM"
+instrucoes=[
+	"LDB #06",
+	"CAL EXIT"
+]
+
+[fim]
+registrador.b="6"
+memoria = {
+    "000": "60",
+    "001": "06",
+    "002": "58",
+    "003": "12",
+    "004": "00",
+}
