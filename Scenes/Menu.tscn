@@ -15,7 +15,6 @@ item_count = 3
 item_0/text = "Abrir programa"
 item_1/text = "Abrir memória"
 item_1/id = 1
-item_1/disabled = true
 item_2/text = "Abrir estado"
 item_2/id = 2
 

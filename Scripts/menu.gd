@@ -16,6 +16,8 @@ func _process(_delta):
 
 func _on_arquivo_id_pressed(id):
 	self.operacao_atual = id
+	%DialogoDeArquivo.clear_filters()
+
 	match id:
 		Abrir.PROGRAMA:
 			%DialogoDeArquivo.add_filter("*.prg")
@@ -30,10 +32,12 @@ func _on_arquivo_id_pressed(id):
 
 func _on_executar_id_pressed(id):
 	self.operacao_atual = id
+	%DialogoDeExecutar.clear_filters()
+
 	match self.operacao_atual:
 		Executar.PROGRAMA:
 			%DialogoDeExecutar.current_dir = "res://"
-			%DialogoDeArquivo.add_filter("*.prg")
+			%DialogoDeExecutar.add_filter("*.prg")
 		Executar.TESTE:
 			%DialogoDeExecutar.current_dir = "res://Testes/"
 			%DialogoDeExecutar.file_mode = FileDialog.FILE_MODE_OPEN_FILE
@@ -49,7 +53,7 @@ func _on_dialogo_abrir_arquivo_file_selected(caminho):
 		Abrir.PROGRAMA:
 			Programa.carregar_programa(caminho)
 		Abrir.MEMORIA:
-			pass
+			Memoria.carregar_arquivo_de_memoria(caminho)
 		Abrir.ESTADO:
 			Estado.carregar_estado(caminho)
 
