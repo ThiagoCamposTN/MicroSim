@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://m5t00uq7t0ir"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_5m3cs"]
+
+[resource]
+script = ExtResource("1_5m3cs")
+nome = "Push B"
+"mnemônico" = "PHB"
+"descrição" = "Armazena o conteúdo do registrador B no endereço de pilha PP."
+microcodigos = Array[String](["transferir_pp_para_mar", "mover_mar_ao_endereco_de_memoria", "transferir_b_para_mbr", "mover_mbr_para_endereco_selecionado", "decrementar_registrador_pp"])
+direto = ""
+imediato = ""
+indexado = ""
+indireto = ""
+pos_indexado = ""
+pre_indexado = ""
+implicito = "43"
