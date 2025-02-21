@@ -1,0 +1,30 @@
+[inicio]
+registrador.ix="0046"
+registrador.pc="0100"
+memoria.base="res://MEMORIA.MEM"
+memoria.substituicoes = {
+    "0146": "26",
+    "0150": "01",
+    "0151": "00"
+}
+instrucoes=[
+	"LDA [0150],X",
+	"CAL EXIT"
+]
+
+[fim]
+registrador.ix="46"
+registrador.a="26"
+memoria = {
+    "0100": "B0",
+    "0101": "01",
+    "0102": "50",
+    "0103": "58",
+    "0104": "12",
+    "0105": "00",
+
+    "0146": "26",
+
+    "0150": "01",
+    "0151": "00",
+}
