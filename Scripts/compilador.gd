@@ -9,14 +9,14 @@ static func compilar(linha : String) -> Instrucao:
 		return Instrucao.new(Instrucao.Enderecamentos.IMPLICITO, mnemonico)
 	
 	# Endereçamento pré-indexado
-	var enderecamento_pre_indexado = detectar_parametros(restante, r'\[(.+?),X\]')
+	var enderecamento_pre_indexado = detectar_parametros(restante, r'\[(.+?),\s*?X\s*?\]')
 	if enderecamento_pre_indexado:
 		var instrucao := Instrucao.new(Instrucao.Enderecamentos.PRE_INDEXADO, mnemonico)
 		instrucao.parametros = extrair_parametros(enderecamento_pre_indexado)
 		return instrucao
 	
 	# Endereçamento pós-indexado
-	var enderecamento_pos_indexado = detectar_parametros(restante, r'\[(.+?)\],X')
+	var enderecamento_pos_indexado = detectar_parametros(restante, r'\[(.+?)\]\s*,\s*X')
 	if enderecamento_pos_indexado:
 		var instrucao := Instrucao.new(Instrucao.Enderecamentos.POS_INDEXADO, mnemonico)
 		instrucao.parametros = extrair_parametros(enderecamento_pos_indexado)

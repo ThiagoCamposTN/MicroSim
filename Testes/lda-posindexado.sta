@@ -8,7 +8,7 @@ memoria.substituicoes = {
     "0151": "00"
 }
 instrucoes=[
-	"LDA [0150],X",
+	"LDA [0150], X",
 	"CAL EXIT"
 ]
 
