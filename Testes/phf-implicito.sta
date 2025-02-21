@@ -1,0 +1,23 @@
+[inicio]
+registrador.pc="0"
+registrador.pp="0E00"
+flag.z="0"
+flag.n="1"
+flag.c="0"
+flag.o="1"
+memoria.base="res://MEMORIA.MEM"
+instrucoes=[
+	"PHF",
+	"CAL EXIT"
+]
+
+[fim]
+memoria = {
+    "000": "4E",
+    "001": "58",
+    "002": "12",
+    "003": "00",
+
+    "0E00": "28",
+}
+registrador.pp="0DFF"

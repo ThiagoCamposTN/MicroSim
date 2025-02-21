@@ -1,0 +1,22 @@
+[inicio]
+registrador.pc="0"
+registrador.ix="012C"
+registrador.pp="0AF1"
+memoria.base="res://MEMORIA.MEM"
+instrucoes=[
+	"PHX",
+	"CAL EXIT"
+]
+
+[fim]
+memoria = {
+    "000": "83",
+    "001": "58",
+    "002": "12",
+    "003": "00",
+
+    "0AF0": "01",
+    "0AF1": "2C",
+}
+registrador.pp="0AEF"
+registrador.aux="01"
