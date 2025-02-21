@@ -1,7 +1,7 @@
 extends MenuBar
 
 enum Abrir { PROGRAMA, MEMORIA, ESTADO }
-enum Executar { PROGRAMA, TESTE, TODOS_OS_TESTES }
+enum Executar { TESTE, TODOS_OS_TESTES }
 var operacao_atual : int = -1
 
 # Called when the node enters the scene tree for the first time.
@@ -35,9 +35,6 @@ func _on_executar_id_pressed(id):
 	%DialogoDeExecutar.clear_filters()
 
 	match self.operacao_atual:
-		Executar.PROGRAMA:
-			%DialogoDeExecutar.current_dir = "res://"
-			%DialogoDeExecutar.add_filter("*.prg")
 		Executar.TESTE:
 			%DialogoDeExecutar.current_dir = "res://Testes/"
 			%DialogoDeExecutar.file_mode = FileDialog.FILE_MODE_OPEN_FILE
