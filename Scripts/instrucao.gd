@@ -62,30 +62,16 @@ func parametros_em_bytes() -> PackedByteArray:
 		Instrucao.Enderecamentos.IMEDIATO:
 			var valor = Utils.de_hex_string_para_inteiro(self.parametros[0])
 			bytes.push_back(valor)
-		Instrucao.Enderecamentos.DIRETO:
-			var valor_em_hex 	= Utils.formatar_hex_como_endereco(self.parametros[0])
-			var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
-			for valor in valor_dividido:
-				bytes.push_back(valor)
 		Instrucao.Enderecamentos.IMPLICITO:
 			# Não precisa tratar parâmetros
 			pass
-		Instrucao.Enderecamentos.INDEXADO:
-			var valor_em_hex 	= Utils.formatar_hex_como_endereco(self.parametros[0])
-			var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
-			for valor in valor_dividido:
-				bytes.push_back(valor)
-		Instrucao.Enderecamentos.INDIRETO:
-			var valor_em_hex 	= Utils.formatar_hex_como_endereco(self.parametros[0])
-			var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
-			for valor in valor_dividido:
-				bytes.push_back(valor)
-		Instrucao.Enderecamentos.POS_INDEXADO:
-			# TODO
-			pass
+		Instrucao.Enderecamentos.DIRETO, Instrucao.Enderecamentos.INDEXADO, \
+		Instrucao.Enderecamentos.INDIRETO, Instrucao.Enderecamentos.POS_INDEXADO, \
 		Instrucao.Enderecamentos.PRE_INDEXADO:
-			# TODO
-			pass
+			var valor_em_hex 	= Utils.formatar_hex_como_endereco(self.parametros[0])
+			var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
+			for valor in valor_dividido:
+				bytes.push_back(valor)
 	
 	return bytes
 

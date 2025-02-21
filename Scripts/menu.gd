@@ -1,7 +1,7 @@
 extends MenuBar
 
 enum Abrir { PROGRAMA, MEMORIA, ESTADO }
-enum Executar { PROGRAMA, TESTE, TODOS_OS_TESTES }
+enum Executar { TESTE, TODOS_OS_TESTES }
 var operacao_atual : int = -1
 
 # Called when the node enters the scene tree for the first time.
@@ -16,6 +16,8 @@ func _process(_delta):
 
 func _on_arquivo_id_pressed(id):
 	self.operacao_atual = id
+	%DialogoDeArquivo.clear_filters()
+
 	match id:
 		Abrir.PROGRAMA:
 			%DialogoDeArquivo.add_filter("*.prg")
@@ -30,11 +32,9 @@ func _on_arquivo_id_pressed(id):
 
 func _on_executar_id_pressed(id):
 	self.operacao_atual = id
-	match self.operacao_atual:
-		Executar.PROGRAMA:
-			%DialogoDeExecutar.current_dir = "res://"
-			%DialogoDeArquivo.add_filter("*.prg")
+	%DialogoDeExecutar.clear_filters()
 
+	match self.operacao_atual:
 		Executar.TESTE:
 			%DialogoDeExecutar.current_dir = "res://Testes/"
 			%DialogoDeExecutar.file_mode = FileDialog.FILE_MODE_OPEN_FILE
@@ -44,15 +44,15 @@ func _on_executar_id_pressed(id):
 			%DialogoDeExecutar.file_mode = FileDialog.FILE_MODE_OPEN_DIR
 	%DialogoDeExecutar.visible = true
 
-func _on_dialogo_abrir_arquivo_file_selected(path):
+func _on_dialogo_abrir_arquivo_file_selected(caminho):
 	%DialogoDeArquivo.visible = false
 	match self.operacao_atual:
 		Abrir.PROGRAMA:
-			pass
+			Programa.carregar_programa(caminho)
 		Abrir.MEMORIA:
-			pass
+			Memoria.carregar_arquivo_de_memoria(caminho)
 		Abrir.ESTADO:
-			Estado.carregar_estado(path)
+			Estado.carregar_estado(caminho)
 
 
 func _on_dialogo_de_executar_file_selected(path):
