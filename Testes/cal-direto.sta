@@ -2,6 +2,7 @@
 registrador.pc="0"
 registrador.a="4"
 registrador.b="5"
+registrador.pp="0FFF"
 memoria.base="res://MEMORIA.MEM"
 memoria.substituicoes = {
     "100": "48",
