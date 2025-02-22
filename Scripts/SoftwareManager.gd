@@ -326,6 +326,9 @@ func adicionar_instrucao():
 			fila_instrucoes.push_back("incrementar_registrador_pc")
 		_:
 			pass
+
+	# checando se houve o término do programa
+	fila_instrucoes.push_back("validar_fim_de_execucao")
 	
 	# Fase de execução
 	# Busca a lista de microcodigos enumeradas no recurso do Operador
