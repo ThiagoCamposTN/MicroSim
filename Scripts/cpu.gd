@@ -108,6 +108,9 @@ func incrementar_registrador_pc() -> void:
 func incrementar_registrador_mar() -> void:
 	atualizar_registrador_mar(self.registrador_mar + 1)
 
+func incrementar_registrador_pp() -> void:
+	atualizar_registrador_pp(self.registrador_pp + 1)
+
 func decrementar_registrador_pp() -> void:
 	atualizar_registrador_pp(self.registrador_pp - 1)
 
@@ -128,6 +131,9 @@ func iniciar_registrador_pc(endereco : int) -> void:
 
 func unir_mbr_ao_aux_e_mover_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_mbr + (self.registrador_aux << 8))
+
+func unir_mbr_ao_aux_e_mover_para_pc() -> void:
+	atualizar_registrador_pc(self.registrador_aux + (self.registrador_mbr << 8))
 
 func dividir_ix_e_mover_para_mbr_e_aux() -> void:
 	var registrador_em_hex	: String 			= Utils.int_para_hex(self.registrador_ix, 4)
