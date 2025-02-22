@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://x78u1ifv1363"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_y05ov"]
+
+[resource]
+script = ExtResource("1_y05ov")
+nome = "Push Flags"
+"mnemônico" = "PHF"
+"descrição" = "Armazena o conteúdo do registrador de flag na pilha."
+microcodigos = Array[String](["transferir_pp_para_mar", "mover_mar_ao_endereco_de_memoria", "transferir_flags_para_mbr", "mover_mbr_para_endereco_selecionado", "decrementar_registrador_pp"])
+direto = ""
+imediato = ""
+indexado = ""
+indireto = ""
+pos_indexado = ""
+pre_indexado = ""
+implicito = "4E"

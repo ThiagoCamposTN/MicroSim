@@ -30,7 +30,7 @@ static func compilar(linha : String) -> Instrucao:
 		return instrucao
 	
 	# Endereçamento indexado
-	var enderecamento_indexado = detectar_parametros(restante, r'(.+?),.+')
+	var enderecamento_indexado = detectar_parametros(restante, r'(.+?)\s*,\s*X')
 	if enderecamento_indexado:
 		var instrucao := Instrucao.new(Instrucao.Enderecamentos.INDEXADO, mnemonico)
 		instrucao.parametros = extrair_parametros(enderecamento_indexado)

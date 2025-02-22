@@ -105,6 +105,12 @@ func atualizar_alu_saida(novo_valor : int) -> void:
 func incrementar_registrador_pc() -> void:
 	atualizar_registrador_pc(self.registrador_pc + 1)
 
+func incrementar_registrador_mar() -> void:
+	atualizar_registrador_mar(self.registrador_mar + 1)
+
+func decrementar_registrador_pp() -> void:
+	atualizar_registrador_pp(self.registrador_pp - 1)
+
 func mover_pc_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_pc)
 
@@ -120,11 +126,14 @@ func transferir_mbr_para_b() -> void:
 func iniciar_registrador_pc(endereco : int) -> void:
 	atualizar_registrador_pc(endereco)
 
-func incrementar_registrador_mar() -> void:
-	atualizar_registrador_mar(self.registrador_mar + 1)
-
 func unir_mbr_ao_aux_e_mover_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_mbr + (self.registrador_aux << 8))
+
+func dividir_ix_e_mover_para_mbr_e_aux() -> void:
+	var registrador_em_hex	: String 			= Utils.int_para_hex(self.registrador_ix, 4)
+	var registrador_em_bytes: PackedByteArray 	= Utils.de_endereco_hex_para_bytes(registrador_em_hex)
+	atualizar_registrador_aux(registrador_em_bytes[0])
+	atualizar_registrador_mbr(registrador_em_bytes[1])
 
 func transferir_a_para_mbr() -> void:
 	atualizar_registrador_mbr(self.registrador_a)
@@ -141,7 +150,6 @@ func transferir_b_para_alu_b() -> void:
 func transferir_mar_para_alu_a() -> void:
 	atualizar_alu_entrada_a(self.registrador_mar)
 
-	
 func transferir_ix_para_alu_b() -> void:
 	atualizar_alu_entrada_b(self.registrador_ix)
 
@@ -155,6 +163,14 @@ func transferir_alu_saida_para_a() -> void:
 
 func transferir_alu_saida_para_mar() -> void:
 	atualizar_registrador_mar(self.alu_saida)
+
+func transferir_pp_para_mar() -> void:
+	atualizar_registrador_mar(self.registrador_pp)
+
+func transferir_flags_para_mbr() -> void:
+	var registrador_flag 	: PackedStringArray = ['0', '0', str(self.flag_o), str(self.flag_c), str(self.flag_n), str(self.flag_z), '0', '0']
+	var flag_como_hex 		: int = "".join(registrador_flag).bin_to_int()
+	atualizar_registrador_mbr(flag_como_hex)
 
 func mover_mar_ao_endereco_de_memoria() -> void:
 	Memoria.endereco_selecionado = CPU.registrador_mar
@@ -170,6 +186,10 @@ func mover_valor_da_memoria_ao_mbr() -> void:
 
 func mover_mbr_para_endereco_selecionado() -> void:
 	Memoria.atualizar_valor_no_endereco_selecionado(CPU.registrador_mbr)
+	endereco_selecionado_foi_alterado.emit()
+
+func mover_aux_para_endereco_selecionado() -> void:
+	Memoria.atualizar_valor_no_endereco_selecionado(CPU.registrador_aux)
 	endereco_selecionado_foi_alterado.emit()
 
 func atualizar_buffers(novo_valor: int) -> void:

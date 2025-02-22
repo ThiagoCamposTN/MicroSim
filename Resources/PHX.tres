@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://dv2ix3lkxkrf"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_7qjwb"]
+
+[resource]
+script = ExtResource("1_7qjwb")
+nome = "Push IX"
+"mnemônico" = "PHX"
+"descrição" = "Armazena o conteúdo do registrador IX (2 bytes) em um endereço de pilha PP (1 byte) e no seu sucessor (1 byte)."
+microcodigos = Array[String](["decrementar_registrador_pp", "transferir_pp_para_mar", "mover_mar_ao_endereco_de_memoria", "dividir_ix_e_mover_para_mbr_e_aux", "mover_aux_para_endereco_selecionado", "incrementar_registrador_mar", "mover_mar_ao_endereco_de_memoria", "mover_mbr_para_endereco_selecionado", "decrementar_registrador_pp"])
+direto = ""
+imediato = ""
+indexado = ""
+indireto = ""
+pos_indexado = ""
+pre_indexado = ""
+implicito = "83"
