@@ -42,11 +42,11 @@ func _process(delta):
 				self.call(instrucao)
 			
 			if unico_microcodigo:
-				finalizar_execucao()
+				pausar_execução()
 				unico_microcodigo = false
 		else:
 			if instrucao_executada and unica_instrucao:
-				finalizar_execucao()
+				pausar_execução()
 				unica_instrucao = false
 				instrucao_executada = false
 			else:
@@ -339,7 +339,7 @@ func adicionar_instrucao():
 		finalizar_execucao()
 
 func finalizar_execucao():
-	em_execução = false
+	self.pausar_execução()
 	self.fila_instrucoes.clear() # todo: verificar se a lista não esvaziar sozinha é bug ou não
 	execucao_finalizada.emit()
 
@@ -347,3 +347,6 @@ func prepara_o_estado_inicial(emitir_sinal_de_finalização: bool = true):
 	Estado.carregar_estado()
 	# if emitir_sinal_de_finalização:
 	# 	self.inicialização_finalizada.emit()
+
+func pausar_execução():
+	em_execução = false
