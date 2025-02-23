@@ -167,8 +167,6 @@ func adicionar_instrucao():
 			fila_instrucoes.push_back("incrementar_registrador_pc")
 			fila_instrucoes.push_back("incrementar_registrador_pc")
 		Instrucao.Enderecamentos.PRE_INDEXADO:
-			# TODO: Esse começo é idêntico ao INDEXADO
-
 			# Transferência de PC para MAR
 			fila_instrucoes.push_back("mover_pc_para_mar")
 			
@@ -194,10 +192,6 @@ func adicionar_instrucao():
 			fila_instrucoes.push_back("transferir_ix_para_alu_b")
 			fila_instrucoes.push_back("adicao_alu_a_alu_b")
 			fila_instrucoes.push_back("transferir_alu_saida_para_mar")
-			fila_instrucoes.push_back("incrementar_registrador_pc")
-			fila_instrucoes.push_back("incrementar_registrador_pc")
-
-			# TODO: Essa parte é nova
 
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			fila_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
