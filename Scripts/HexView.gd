@@ -18,12 +18,12 @@ func _process(_delta):
 func adicionar_label(texto: String, nome: String = ""):
 	var hex_view_byte : Button = hex_view_byte_scene.instantiate()
 	if nome:
-		hex_view_byte.name = nome.to_upper()
+		hex_view_byte.name = nome
 		hex_view_byte.focus_entered.connect(ao_clicar_elemento.bind(hex_view_byte))
 	else:
 		hex_view_byte.disabled = true
 		hex_view_byte.focus_mode = FOCUS_NONE
-	hex_view_byte.text = texto.to_upper()
+	hex_view_byte.text = texto
 	elementos_viewer.append(hex_view_byte)
 
 func inicializar_hex_grid():
@@ -46,7 +46,7 @@ func inicializar_hex_grid():
 		%HexGrid.add_child(label)
 	
 func atualizar_celula(posicao : int):
-	var celula : Button = %HexGrid.get_node(Valor.new(posicao).como_hex(3).to_upper())
+	var celula : Button = %HexGrid.get_node(Valor.new(posicao).como_hex(3))
 	celula.text = Memoria.ler_hex_no_endereco(posicao)
 	celula.add_theme_color_override("font_color", Color.CYAN)
 

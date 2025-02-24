@@ -37,7 +37,7 @@ func _ready():
 		
 		var text := Button.new()
 		text.disabled = true
-		text.text = valor_convertido.to_upper()
+		text.text = valor_convertido
 		
 		grid_container.add_child(label)
 		grid_container.add_child(text)
@@ -56,4 +56,4 @@ func _process(delta):
 
 func atualizar_registrador(node: Button, propriedade: String, digitos: int) -> void:
 	var novo_valor: Valor = Valor.new(CPU.get(propriedade))
-	node.text = novo_valor.como_hex(digitos).to_upper()
+	node.text = novo_valor.como_hex(digitos)

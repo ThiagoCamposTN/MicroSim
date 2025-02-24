@@ -45,7 +45,6 @@ func igual(outro: Valor) -> bool:
 func limitar_entre(minimo: int, maximo: int) -> void:
 	self._valor = clampi(self._valor, minimo, maximo)
 
-
 # static func novo(valor_inicial: int) -> Valor:
 # 	return Valor.new(valor_inicial)
 
@@ -56,7 +55,7 @@ static func hex_para_int(numero: String) -> int:
 	return numero.hex_to_int()
 
 static func int_para_hex(valor_em_int: int, casas: int, prefixado: bool = false) -> String:
-	var resultado = (("%0" + str(casas) + "x") % valor_em_int)
+	var resultado = (("%0" + str(casas) + "x") % valor_em_int).to_upper()
 	if prefixado:
 		resultado = "0x" + resultado
 	return resultado
