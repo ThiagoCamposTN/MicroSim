@@ -55,11 +55,11 @@ func _process(delta):
 		microoperacao_executada.emit()
 		execucao_timer.start(time_delay)
 
-func executar_programa(endereco_inicial : int):
+func executar_programa(endereco_inicial: Valor):
 	CPU.iniciar_registrador_pc(endereco_inicial)
 	em_execução = true
 
-func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: int):
+func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: Valor):
 	var parte_memoria = Array()
 
 	for linha in linhas_codigo:
@@ -109,7 +109,7 @@ func adicionar_instrucao_na_fila():
 
 func adicionar_instrucao():
 	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
-	var instrucao_em_hex 		: String 	= Valor.new(CPU.registrador_ir).como_hex(2)
+	var instrucao_em_hex 		: String 	= CPU.registrador_ir.como_hex(2)
 	var instrucao_descompilada 	: Instrucao = Compilador.descompilar(instrucao_em_hex)
 	
 	# se não a instrução não existe

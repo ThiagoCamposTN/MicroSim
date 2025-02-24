@@ -69,27 +69,27 @@ static func extrair_parametros(parametros_detectados : RegExMatch):
 static func descompilar(opcode_hex : String) -> Instrucao:
 	return Operacoes.byte_para_mnemonico(opcode_hex)
 
-static func buscar_parametros_na_memoria(endereco : int, tipo_enderecamento : Instrucao.Enderecamentos) -> PackedStringArray:
+static func buscar_parametros_na_memoria(endereco: Valor, tipo_enderecamento : Instrucao.Enderecamentos) -> PackedStringArray:
 	var parametros : PackedStringArray
-	
+	# TODO: talvez mudar o somar int, ele pode causar problemas
 	match tipo_enderecamento:
 		Instrucao.Enderecamentos.POS_INDEXADO:
 			pass
 		Instrucao.Enderecamentos.PRE_INDEXADO:
 			pass
 		Instrucao.Enderecamentos.INDIRETO:
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 2))
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco.somar_int(1)).como_hex(2))
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco.somar_int(2)).como_hex(2))
 		Instrucao.Enderecamentos.IMEDIATO:
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco.somar_int(1)).como_hex(2))
 		Instrucao.Enderecamentos.DIRETO:
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 2))
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco.somar_int(1)).como_hex(2))
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco.somar_int(2)).como_hex(2))
 		Instrucao.Enderecamentos.IMPLICITO:
 			pass
 		Instrucao.Enderecamentos.INDEXADO:
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 2))
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco.somar_int(1)).como_hex(2))
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco.somar_int(2)).como_hex(2))
 		_:
 			pass
 	

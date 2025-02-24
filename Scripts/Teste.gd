@@ -77,22 +77,21 @@ func atualizar_programa(instrucoes: PackedStringArray):
 	if self.teste_em_execucao:
 		SoftwareManager.salvar_codigo_em_memoria(instrucoes, CPU.registrador_pc)
 
-func validar_valor(config: ConfigFile, chave: String, valor_atual : int) -> void:
-	var valor_esperado = config.get_value("fim", chave, "")
+func validar_valor(config: ConfigFile, chave: String, valor_atual: Valor) -> void:
+	var _valor_esperado = config.get_value("fim", chave, "")
 	
-	if not valor_esperado:
+	if not _valor_esperado:
 		return
 	
-	if typeof(valor_esperado) != TYPE_STRING:
+	if typeof(_valor_esperado) != TYPE_STRING:
 		push_error("\"" + chave + "\" tem um tipo inválido.")
 		return
 
-	var _valor_esperado	: Valor = Valor.novo_de_hex(valor_esperado)
-	var _valor_atual	: Valor = Valor.new(valor_atual)
+	var valor_esperado: Valor = Valor.novo_de_hex(_valor_esperado)
 
-	if not _valor_esperado.igual(_valor_atual):
+	if not valor_esperado.igual(valor_atual):
 		self.teste_sem_erros = false
-		print("Falha: \"" + chave + "\" deveria ser \"" + _valor_esperado.como_hex(1, true) + "\" mas resultou em \"" + _valor_atual.como_hex(1, true) + "\".")
+		print("Falha: \"" + chave + "\" deveria ser \"" + valor_esperado.como_hex(1, true) + "\" mas resultou em \"" + valor_atual.como_hex(1, true) + "\".")
 
 func validar_memoria(config: ConfigFile) -> void:
 	var valores_memoria = config.get_value("fim", "memoria", {})

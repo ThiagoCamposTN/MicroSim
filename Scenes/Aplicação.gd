@@ -29,12 +29,10 @@ func _on_executar_tudo_button_pressed():
 
 func executar() -> void:
 	var valor_atual_PC: Valor = Valor.novo_de_hex(valor_PC.text)
-	SoftwareManager.executar_programa(valor_atual_PC.como_int())
+	SoftwareManager.executar_programa(valor_atual_PC)
 
 func atualizar_valor_PC():
-	var valor: Valor = Valor.new(CPU.registrador_pc)
-	var endereco: String = valor.como_hex(4)
-	valor_PC.text = endereco
+	valor_PC.text = CPU.registrador_pc.como_hex(4)
 
 func _on_pc_line_edit_text_changed(new_text):
 	pass
@@ -43,4 +41,4 @@ func _on_pc_line_edit_focus_exited():
 	SoftwareManager.fila_instrucoes.clear()
 	var valor_atual_PC: Valor = Valor.novo_de_hex(valor_PC.text)
 	valor_atual_PC.limitar_entre(0, Memoria.TAMANHO_MEMORIA - 1)
-	CPU.iniciar_registrador_pc(valor_atual_PC.como_int())
+	CPU.iniciar_registrador_pc(valor_atual_PC)

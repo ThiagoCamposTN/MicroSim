@@ -51,6 +51,9 @@ func limitar_entre(minimo: int, maximo: int) -> void:
 static func novo_de_hex(valor_em_hex: String) -> Valor:
 	return Valor.new(Valor.hex_para_int(valor_em_hex))
 
+static func novo_de_valor(valor: Valor) -> Valor:
+	return Valor.new(valor.como_int())
+
 static func hex_para_int(numero: String) -> int:
 	return numero.hex_to_int()
 

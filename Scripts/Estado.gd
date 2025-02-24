@@ -80,15 +80,15 @@ func carregar_estado(caminho: String = "res://padrão.sta") -> void:
 	var registrador_mbr = config.get_value("inicio", "registrador.mbr", "0")
 	var registrador_mar = config.get_value("inicio", "registrador.mar", "0")
 
-	CPU.atualizar_registrador_a(Valor.novo_de_hex(registrador_a).como_int())
-	CPU.atualizar_registrador_b(Valor.novo_de_hex(registrador_b).como_int())
-	CPU.iniciar_registrador_pc(Valor.novo_de_hex(registrador_pc).como_int())
-	CPU.atualizar_registrador_pp(Valor.novo_de_hex(registrador_pp).como_int())
-	CPU.atualizar_registrador_aux(Valor.novo_de_hex(registrador_aux).como_int())
-	CPU.atualizar_registrador_ir(Valor.novo_de_hex(registrador_ir).como_int())
-	CPU.atualizar_registrador_ix(Valor.novo_de_hex(registrador_ix).como_int())
-	CPU.atualizar_registrador_mbr(Valor.novo_de_hex(registrador_mbr).como_int())
-	CPU.atualizar_registrador_mar(Valor.novo_de_hex(registrador_mar).como_int())
+	CPU.atualizar_registrador_a(Valor.novo_de_hex(registrador_a))
+	CPU.atualizar_registrador_b(Valor.novo_de_hex(registrador_b))
+	CPU.iniciar_registrador_pc(Valor.novo_de_hex(registrador_pc))
+	CPU.atualizar_registrador_pp(Valor.novo_de_hex(registrador_pp))
+	CPU.atualizar_registrador_aux(Valor.novo_de_hex(registrador_aux))
+	CPU.atualizar_registrador_ir(Valor.novo_de_hex(registrador_ir))
+	CPU.atualizar_registrador_ix(Valor.novo_de_hex(registrador_ix))
+	CPU.atualizar_registrador_mbr(Valor.novo_de_hex(registrador_mbr))
+	CPU.atualizar_registrador_mar(Valor.novo_de_hex(registrador_mar))
 
 	# carrega as flags
 	var flag_z = config.get_value("inicio", "flag.z", "0")
@@ -96,10 +96,10 @@ func carregar_estado(caminho: String = "res://padrão.sta") -> void:
 	var flag_c = config.get_value("inicio", "flag.c", "0")
 	var flag_o = config.get_value("inicio", "flag.o", "0")
 
-	CPU.atualizar_flag_z(Valor.novo_de_hex(flag_z).como_int())
-	CPU.atualizar_flag_n(Valor.novo_de_hex(flag_n).como_int())
-	CPU.atualizar_flag_c(Valor.novo_de_hex(flag_c).como_int())
-	CPU.atualizar_flag_o(Valor.novo_de_hex(flag_o).como_int())
+	CPU.atualizar_flag_z(Valor.novo_de_hex(flag_z))
+	CPU.atualizar_flag_n(Valor.novo_de_hex(flag_n))
+	CPU.atualizar_flag_c(Valor.novo_de_hex(flag_c))
+	CPU.atualizar_flag_o(Valor.novo_de_hex(flag_o))
 
 	# carrega o programa
 	var programa = config.get_value("inicio", "instrucoes", [])
