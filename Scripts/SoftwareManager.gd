@@ -17,8 +17,8 @@ var execucao_timer		: Timer
 var config_inicial		: ConfigFile
 
 
-enum Estado {BUSCANDO, EXECUTANDO, PARADO}
-var estado_atual : Estado = Estado.PARADO
+enum EstadoCPU {BUSCANDO, EXECUTANDO, PARADO}
+var estado_atual : EstadoCPU = EstadoCPU.PARADO
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,21 +31,22 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if execucao_timer.is_stopped() or Teste.teste_em_execucao:
+		
 		match estado_atual:
-			Estado.PARADO:
+			EstadoCPU.PARADO:
 				return
-			Estado.BUSCANDO:
+			EstadoCPU.BUSCANDO:
 				if fila_instrucoes.size() == 0:
 					adicionar_instrucao_na_fila()
-					estado_atual = Estado.EXECUTANDO
+					estado_atual = EstadoCPU.EXECUTANDO
 					return
-			Estado.EXECUTANDO:
+			EstadoCPU.EXECUTANDO:
 				if fila_instrucoes.size() == 0:
-					estado_atual = Estado.BUSCANDO
+					estado_atual = EstadoCPU.BUSCANDO
 					adicionar_instrucao()
 					
 					if unica_instrucao:
-						estado_atual = Estado.PARADO
+						estado_atual = EstadoCPU.PARADO
 					return
 					
 		var instrucao = fila_instrucoes.pop_front()
@@ -72,7 +73,7 @@ func _process(delta):
 
 func executar_programa(endereco_inicial : int):
 	CPU.iniciar_registrador_pc(endereco_inicial)
-	estado_atual = Estado.BUSCANDO
+	estado_atual = EstadoCPU.BUSCANDO
 
 func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: int):
 	var parte_memoria = Array()
@@ -362,4 +363,4 @@ func prepara_o_estado_inicial(emitir_sinal_de_finalização: bool = true):
 	# 	self.inicialização_finalizada.emit()
 
 func pausar_execução():
-	em_execução = false
+	estado_atual = EstadoCPU.PARADO
