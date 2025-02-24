@@ -26,7 +26,7 @@ func _process(delta):
 			instrucao_atual.parametros 	= Compilador.buscar_parametros_na_memoria(endereço_inicial, instrucao_atual.enderecamento)
 		
 		# Parte do endereço
-		var valor_endereco = Utils.int_para_hex(endereço_inicial, 3)
+		var valor_endereco: Valor = Valor.new(endereço_inicial)
 		
 		# Parte dos bytes
 		var valor_bytes = valor
@@ -44,7 +44,7 @@ func _process(delta):
 			valor_instrucao = "??"
 		
 		
-		adicionar_instrucao(valor_endereco, valor_bytes, valor_instrucao)
+		adicionar_instrucao(valor_endereco.como_hex(3), valor_bytes, valor_instrucao)
 
 		if SoftwareManager.unica_instrucao:
 			iniciar_descompilação = false

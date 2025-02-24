@@ -7,7 +7,7 @@ var _valor: int = 0
 func _init(valor_inicial: int):
 	self._valor = valor_inicial
 
-func como_hex(casas: int = 2, prefixado: bool = false):
+func como_hex(casas: int = 2, prefixado: bool = false) -> String:
 	return Valor.int_para_hex(self._valor, casas, prefixado)
 
 func como_int() -> int:
