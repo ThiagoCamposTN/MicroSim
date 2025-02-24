@@ -155,26 +155,37 @@ func transferir_b_para_mbr() -> void:
 
 func transferir_a_para_alu_a() -> void:
 	atualizar_alu_entrada_a(self.registrador_a)
-	
+
 func transferir_b_para_alu_b() -> void:
 	atualizar_alu_entrada_b(self.registrador_b)
+	
+func transferir_b_para_alu_a() -> void:
+	atualizar_alu_entrada_a(self.registrador_b)
 
 func transferir_mar_para_alu_a() -> void:
 	atualizar_alu_entrada_a(self.registrador_mar)
 
 func transferir_ix_para_alu_b() -> void:
 	atualizar_alu_entrada_b(self.registrador_ix)
+	
+func transferir_mbr_para_alu_b() -> void:
+	atualizar_alu_entrada_b(self.registrador_mbr)
 
 func transferir_mar_para_pc() -> void:
 	atualizar_registrador_pc(self.registrador_mar)
 
 func adicao_alu_a_alu_b() -> void:
 	# TODO: Lidar com flags e overflow
-	atualizar_alu_saida(self.alu_entrada_a + self.alu_entrada_b)
-	
+	var resultado = self.alu_entrada_a + self.alu_entrada_b
+	atualizar_alu_saida(resultado & 0xFFFF)
+
 func transferir_alu_saida_para_a() -> void:
 	# TODO: Garantir que a saída é 8 bits
-	atualizar_registrador_a(self.alu_saida)
+	atualizar_registrador_a(self.alu_saida & 0xFF)
+
+func transferir_alu_saida_para_b() -> void:
+	# TODO: Garantir que a saída é 8 bits
+	atualizar_registrador_b(self.alu_saida & 0xFF)
 
 func transferir_alu_saida_para_mar() -> void:
 	atualizar_registrador_mar(self.alu_saida)
@@ -183,8 +194,8 @@ func transferir_pp_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_pp)
 
 func transferir_flags_para_mbr() -> void:
-	var registrador_flag 	: PackedStringArray = ['0', '0', str(self.flag_o), str(self.flag_c), str(self.flag_n), str(self.flag_z), '0', '0']
-	var flag_como_hex 		: int = "".join(registrador_flag).bin_to_int()
+	var registrador_flag: PackedStringArray = ['0', '0', str(self.flag_o), str(self.flag_c), str(self.flag_n), str(self.flag_z), '0', '0']
+	var flag_como_hex 	: int 				= "".join(registrador_flag).bin_to_int()
 	atualizar_registrador_mbr(flag_como_hex)
 
 func mover_mar_ao_endereco_de_memoria() -> void:
