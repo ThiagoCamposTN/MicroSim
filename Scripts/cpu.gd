@@ -170,6 +170,9 @@ func transferir_ix_para_alu_b() -> void:
 	
 func transferir_mbr_para_alu_b() -> void:
 	atualizar_alu_entrada_b(self.registrador_mbr)
+	
+func transferir_mbr_para_alu_a() -> void:
+	atualizar_alu_entrada_a(self.registrador_mbr)
 
 func transferir_mar_para_pc() -> void:
 	atualizar_registrador_pc(self.registrador_mar)
@@ -189,6 +192,9 @@ func transferir_alu_saida_para_b() -> void:
 
 func transferir_alu_saida_para_mar() -> void:
 	atualizar_registrador_mar(self.alu_saida)
+
+func transferir_alu_saida_para_mbr() -> void:
+	atualizar_registrador_mbr(self.alu_saida)
 
 func transferir_pp_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_pp)
@@ -254,3 +260,7 @@ func validar_fim_de_execucao() -> void:
 	# Se a instrução atual for CAL EXIT, finalizar a execução
 	if (self.registrador_ir == 0x58) and (self.registrador_mar == 0x1200):
 		SoftwareManager.finalizar_execucao()
+
+func realizar_complemento_a_dois_na_alu() -> void:
+	var resultado = (~self.alu_entrada_a + 1)
+	atualizar_alu_saida(resultado & 0xFF)
