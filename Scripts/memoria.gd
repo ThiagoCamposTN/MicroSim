@@ -51,7 +51,7 @@ func ler_conteudo_no_endereco_selecionado():
 	return self.celulas[self.endereco_selecionado]
 
 func ler_hex_no_endereco(endereco : int):
-	return Valor.new(self.celulas[endereco]).como_hex(2)
+	return Valor.new(self.celulas[endereco]).como_hex(2).to_upper()
 
 func carregar_arquivo_de_memoria(caminho: String):
 	var arquivo : FileAccess 		= FileAccess.open(caminho, FileAccess.READ)

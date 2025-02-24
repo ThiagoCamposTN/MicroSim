@@ -46,7 +46,7 @@ func inicializar_hex_grid():
 		%HexGrid.add_child(label)
 	
 func atualizar_celula(posicao : int):
-	var celula : Button = %HexGrid.get_node(Utils.int_para_hex(posicao, 3))
+	var celula : Button = %HexGrid.get_node(Valor.new(posicao).como_hex(3).to_upper())
 	celula.text = Memoria.ler_hex_no_endereco(posicao)
 	celula.add_theme_color_override("font_color", Color.CYAN)
 

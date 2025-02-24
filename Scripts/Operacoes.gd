@@ -55,7 +55,7 @@ func mnemonico_para_byte(mnemonico: String, endereçamento: Instrucao.Enderecame
 
 func byte_para_mnemonico(byte: String) -> Instrucao:
 	for operacao in operacoes:
-		match byte:
+		match byte.to_upper():
 			operacao.pos_indexado:
 				return Instrucao.new(Instrucao.Enderecamentos.POS_INDEXADO, operacao.mnemônico)
 			operacao.pre_indexado:

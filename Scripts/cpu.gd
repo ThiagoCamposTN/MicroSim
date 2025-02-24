@@ -136,10 +136,9 @@ func unir_mbr_ao_aux_e_mover_para_pc() -> void:
 	atualizar_registrador_pc(self.registrador_aux + (self.registrador_mbr << 8))
 
 func dividir_ix_e_mover_para_mbr_e_aux() -> void:
-	var registrador_em_hex	: String 			= Utils.int_para_hex(self.registrador_ix, 4)
-	var registrador_em_bytes: PackedByteArray 	= Utils.de_endereco_hex_para_bytes(registrador_em_hex)
-	atualizar_registrador_aux(registrador_em_bytes[0])
-	atualizar_registrador_mbr(registrador_em_bytes[1])
+	var registrador	: PackedByteArray = Valor.new(self.registrador_ix).como_byte_array(4)
+	atualizar_registrador_aux(registrador[0])
+	atualizar_registrador_mbr(registrador[1])
 
 func dividir_pc_e_mover_para_mbr_e_aux() -> void:
 	var registrador_em_hex	: String 			= Utils.int_para_hex(self.registrador_pc, 4)

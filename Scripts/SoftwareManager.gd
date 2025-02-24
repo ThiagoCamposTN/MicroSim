@@ -109,7 +109,7 @@ func adicionar_instrucao_na_fila():
 
 func adicionar_instrucao():
 	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
-	var instrucao_em_hex 		: String 	= Utils.int_para_hex(CPU.registrador_ir, 2)
+	var instrucao_em_hex 		: String 	= Valor.new(CPU.registrador_ir).como_hex(2)
 	var instrucao_descompilada 	: Instrucao = Compilador.descompilar(instrucao_em_hex)
 	
 	# se não a instrução não existe
