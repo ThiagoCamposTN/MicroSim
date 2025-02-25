@@ -77,19 +77,21 @@ func atualizar_programa(instrucoes: PackedStringArray):
 	if self.teste_em_execucao:
 		SoftwareManager.salvar_codigo_em_memoria(instrucoes, CPU.registrador_pc)
 
-func validar_valor(config: ConfigFile, chave: String, valor_atual : int) -> void:
-	var valor_esperado = config.get_value("fim", chave, "")
+func validar_valor(config: ConfigFile, chave: String, valor_atual: Valor) -> void:
+	var _valor_esperado = config.get_value("fim", chave, "")
 	
-	if not valor_esperado:
+	if not _valor_esperado:
 		return
 	
-	if typeof(valor_esperado) != TYPE_STRING:
+	if typeof(_valor_esperado) != TYPE_STRING:
 		push_error("\"" + chave + "\" tem um tipo inválido.")
 		return
 
-	if not (Utils.de_hex_string_para_inteiro(valor_esperado) == valor_atual):
+	var valor_esperado: Valor = Valor.novo_de_hex(_valor_esperado)
+
+	if not valor_esperado.igual(valor_atual):
 		self.teste_sem_erros = false
-		print("Falha: \"" + chave + "\" deveria ser \"0x" + str(valor_esperado) + "\" mas resultou em \"0x" + Utils.int_para_hex(valor_atual, 1) + "\".")
+		print("Falha: \"" + chave + "\" deveria ser \"" + valor_esperado.como_hex(1, true) + "\" mas resultou em \"" + valor_atual.como_hex(1, true) + "\".")
 
 func validar_memoria(config: ConfigFile) -> void:
 	var valores_memoria = config.get_value("fim", "memoria", {})
@@ -98,24 +100,25 @@ func validar_memoria(config: ConfigFile) -> void:
 		push_error("\"memoria\" tem um tipo inválido. Abortando verificação.")
 		return
 
-	for endereco in valores_memoria:
-		if typeof(endereco) != TYPE_STRING:
+	for _endereco in valores_memoria:
+		if typeof(_endereco) != TYPE_STRING:
 			push_error("\"memoria\" tem um valor inválido. Abortando verificação.")
 			return
 
-		var valor_esperado = valores_memoria[endereco]
+		var valor_esperado = valores_memoria[_endereco]
 
 		if typeof(valor_esperado) != TYPE_STRING:
 			push_error("\"memoria\" tem um valor inválido. Abortando verificação.")
 			return
 
-		var endereco_convertido = Utils.de_hex_string_para_inteiro(endereco)
-		var valor_esperado_int = Utils.de_hex_string_para_inteiro(valor_esperado)
-		var valor_atual_int = Memoria.celulas[endereco_convertido]
+		var endereco		: Valor = Valor.novo_de_hex(_endereco)
+		var _valor_esperado	: Valor = Valor.novo_de_hex(valor_esperado)
+		var valor_atual		: int 	= Memoria.celulas[endereco.como_int()]
+		var _valor_atual	: Valor = Valor.new(valor_atual)
 		
-		if valor_esperado_int != valor_atual_int:
+		if not _valor_esperado.igual(_valor_atual):
 			self.teste_sem_erros = false
-			print("Falha: O valor na memória no endereço \"" + Utils.int_para_hex(endereco_convertido, 1) + "\" deveria ser \"0x" + valor_esperado + "\" mas resultou em \"0x" + Utils.int_para_hex(valor_atual_int, 1) + "\".")
+			print("Falha: O valor na memória no endereço \"" + endereco.como_hex(4,true) + "\" deveria ser \"" + _valor_esperado.como_hex(1,true) + "\" mas resultou em \"" + _valor_atual.como_hex(1,true) + "\".")
 
 func adicionar_teste_a_fila(nome : String) -> void:
 	self.lista_de_testes.append(nome)

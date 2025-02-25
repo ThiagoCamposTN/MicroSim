@@ -47,9 +47,9 @@ func obter_configuração_de_estado(caminho) -> ConfigFile:
 func realizar_substituicoes_memoria(memoria: PackedByteArray, substituicoes: Dictionary) -> PackedByteArray:
 	for endereco in substituicoes:
 		var valor = substituicoes[endereco]
-		var endereco_convertido = Utils.de_hex_string_para_inteiro(endereco)
-		var dado_convertido = Utils.de_hex_string_para_inteiro(valor)
-		memoria.set(endereco_convertido, dado_convertido)
+		var endereco_convertido = Valor.novo_de_hex(endereco)
+		var dado_convertido = Valor.novo_de_hex(valor)
+		memoria.set(endereco_convertido.como_int(), dado_convertido.como_int())
 	return memoria
 
 
@@ -80,15 +80,15 @@ func carregar_estado(caminho: String = "res://padrão.sta") -> void:
 	var registrador_mbr = config.get_value("inicio", "registrador.mbr", "0")
 	var registrador_mar = config.get_value("inicio", "registrador.mar", "0")
 
-	CPU.atualizar_registrador_a(Utils.de_hex_string_para_inteiro(registrador_a))
-	CPU.atualizar_registrador_b(Utils.de_hex_string_para_inteiro(registrador_b))
-	CPU.iniciar_registrador_pc(Utils.de_hex_string_para_inteiro(registrador_pc))
-	CPU.atualizar_registrador_pp(Utils.de_hex_string_para_inteiro(registrador_pp))
-	CPU.atualizar_registrador_aux(Utils.de_hex_string_para_inteiro(registrador_aux))
-	CPU.atualizar_registrador_ir(Utils.de_hex_string_para_inteiro(registrador_ir))
-	CPU.atualizar_registrador_ix(Utils.de_hex_string_para_inteiro(registrador_ix))
-	CPU.atualizar_registrador_mbr(Utils.de_hex_string_para_inteiro(registrador_mbr))
-	CPU.atualizar_registrador_mar(Utils.de_hex_string_para_inteiro(registrador_mar))
+	CPU.atualizar_registrador_a(Valor.novo_de_hex(registrador_a))
+	CPU.atualizar_registrador_b(Valor.novo_de_hex(registrador_b))
+	CPU.iniciar_registrador_pc(Valor.novo_de_hex(registrador_pc))
+	CPU.atualizar_registrador_pp(Valor.novo_de_hex(registrador_pp))
+	CPU.atualizar_registrador_aux(Valor.novo_de_hex(registrador_aux))
+	CPU.atualizar_registrador_ir(Valor.novo_de_hex(registrador_ir))
+	CPU.atualizar_registrador_ix(Valor.novo_de_hex(registrador_ix))
+	CPU.atualizar_registrador_mbr(Valor.novo_de_hex(registrador_mbr))
+	CPU.atualizar_registrador_mar(Valor.novo_de_hex(registrador_mar))
 
 	# carrega as flags
 	var flag_z = config.get_value("inicio", "flag.z", "0")
@@ -96,10 +96,10 @@ func carregar_estado(caminho: String = "res://padrão.sta") -> void:
 	var flag_c = config.get_value("inicio", "flag.c", "0")
 	var flag_o = config.get_value("inicio", "flag.o", "0")
 
-	CPU.atualizar_flag_z(Utils.de_hex_string_para_inteiro(flag_z))
-	CPU.atualizar_flag_n(Utils.de_hex_string_para_inteiro(flag_n))
-	CPU.atualizar_flag_c(Utils.de_hex_string_para_inteiro(flag_c))
-	CPU.atualizar_flag_o(Utils.de_hex_string_para_inteiro(flag_o))
+	CPU.atualizar_flag_z(Valor.novo_de_hex(flag_z))
+	CPU.atualizar_flag_n(Valor.novo_de_hex(flag_n))
+	CPU.atualizar_flag_c(Valor.novo_de_hex(flag_c))
+	CPU.atualizar_flag_o(Valor.novo_de_hex(flag_o))
 
 	# carrega o programa
 	var programa = config.get_value("inicio", "instrucoes", [])

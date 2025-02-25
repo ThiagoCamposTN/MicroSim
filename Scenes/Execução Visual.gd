@@ -90,29 +90,29 @@ func resetar_linhas():
 func atualizar_registrador(registrador: String):
 	match registrador:
 		"A":
-			get_node("Registradores/RegistradorAButton").text = Utils.int_para_hex(CPU.registrador_a, 2)
+			get_node("Registradores/RegistradorAButton").text = CPU.registrador_a.como_hex(2)
 		"B":
-			get_node("Registradores/RegistradorBButton").text = Utils.int_para_hex(CPU.registrador_b, 2)
+			get_node("Registradores/RegistradorBButton").text = CPU.registrador_b.como_hex(2)
 		"PC":
-			get_node("Registradores/RegistradorPCButton").text = Utils.int_para_hex(CPU.registrador_pc, 4)
+			get_node("Registradores/RegistradorPCButton").text = CPU.registrador_pc.como_hex(4)
 		"IX":
-			get_node("Registradores/RegistradorIXButton").text = Utils.int_para_hex(CPU.registrador_ix, 4)
+			get_node("Registradores/RegistradorIXButton").text = CPU.registrador_ix.como_hex(4)
 		"MAR":
-			get_node("Registradores/RegistradorMARButton").text = Utils.int_para_hex(CPU.registrador_mar, 4)
+			get_node("Registradores/RegistradorMARButton").text = CPU.registrador_mar.como_hex(4)
 		"PP":
-			get_node("Registradores/RegistradorPPButton").text = Utils.int_para_hex(CPU.registrador_pp, 4)
+			get_node("Registradores/RegistradorPPButton").text = CPU.registrador_pp.como_hex(4)
 		"MBR":
-			get_node("Registradores/RegistradorMBRButton").text = Utils.int_para_hex(CPU.registrador_mbr, 2)
+			get_node("Registradores/RegistradorMBRButton").text = CPU.registrador_mbr.como_hex(2)
 		"Z":
-			get_node("Registradores/RegistradorZButton").text = Utils.int_para_hex(CPU.flag_z, 1)
+			get_node("Registradores/RegistradorZButton").text = CPU.flag_z.como_hex(1)
 		"N":
-			get_node("Registradores/RegistradorNButton").text = Utils.int_para_hex(CPU.flag_n, 1)
+			get_node("Registradores/RegistradorNButton").text = CPU.flag_n.como_hex(1)
 		"C":
-			get_node("Registradores/RegistradorCButton").text = Utils.int_para_hex(CPU.flag_c, 1)
+			get_node("Registradores/RegistradorCButton").text = CPU.flag_c.como_hex(1)
 		"O":
-			get_node("Registradores/RegistradorOButton").text = Utils.int_para_hex(CPU.flag_o, 1)
+			get_node("Registradores/RegistradorOButton").text = CPU.flag_o.como_hex(1)
 		"IR":
-			get_node("Registradores/RegistradorIRButton").text = Utils.int_para_hex(CPU.registrador_ir, 2)
+			get_node("Registradores/RegistradorIRButton").text = CPU.registrador_ir.como_hex(2)
 
 func caminhar_fluxo(caminho: Line2D):
 	var tempo_caminho = 1 # segundos

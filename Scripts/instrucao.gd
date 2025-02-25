@@ -60,26 +60,25 @@ func parametros_em_bytes() -> PackedByteArray:
 	# Resolução dos parâmetros da instrução na memória
 	match self.enderecamento:
 		Instrucao.Enderecamentos.IMEDIATO:
-			var valor = Utils.de_hex_string_para_inteiro(self.parametros[0])
-			bytes.push_back(valor)
+			var valor: Valor = Valor.novo_de_hex(self.parametros[0])
+			bytes.push_back(valor.como_int())
 		Instrucao.Enderecamentos.IMPLICITO:
 			# Não precisa tratar parâmetros
 			pass
 		Instrucao.Enderecamentos.DIRETO, Instrucao.Enderecamentos.INDEXADO, \
 		Instrucao.Enderecamentos.INDIRETO, Instrucao.Enderecamentos.POS_INDEXADO, \
 		Instrucao.Enderecamentos.PRE_INDEXADO:
-			var valor_em_hex 	= Utils.formatar_hex_como_endereco(self.parametros[0])
-			var valor_dividido 	= Utils.de_endereco_hex_para_bytes(valor_em_hex)
-			for valor in valor_dividido:
-				bytes.push_back(valor)
+			var valor: Valor = Valor.novo_de_hex(self.parametros[0])
+			for _valor: int in valor.como_byte_array(4):
+				bytes.push_back(_valor)
 	
 	return bytes
 
 func instrucao_em_bytes() -> PackedByteArray:
 	var bytes: PackedByteArray
 	
-	var byte = Operacoes.mnemonico_para_byte(self.mnemonico, self.enderecamento)
-	bytes.push_back(Utils.de_hex_string_para_inteiro(byte))
+	var byte: String = Operacoes.mnemonico_para_byte(self.mnemonico, self.enderecamento)
+	bytes.push_back(Valor.hex_para_int(byte))
 	
 	# Resolução dos parâmetros da instrução na memória
 	bytes.append_array(self.parametros_em_bytes())
