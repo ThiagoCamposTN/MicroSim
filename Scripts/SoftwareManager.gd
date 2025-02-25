@@ -1,7 +1,6 @@
 extends Node
 
 signal microoperacao_executada
-signal inicialização_finalizada
 signal execucao_finalizada
 
 var memory_file_path 	: String 		= ""
@@ -27,7 +26,7 @@ func _ready():
 	self.prepara_o_estado_inicial.call_deferred()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if em_execução and (execucao_timer.is_stopped() or Teste.teste_em_execucao):
 		if fila_instrucoes.size() > 0:
 			var instrucao = fila_instrucoes.pop_front()

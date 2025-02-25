@@ -7,6 +7,8 @@ var tweens						: Array[Tween]
 var fluxo_tween					: Tween
 @export var tempo_fluxo			: float = 1
 
+var fluxo_ligado : Node2D
+
 @onready var registradores_nos = {
 	"A": %RegistradorAButton,
 	"B": %RegistradorBButton,
@@ -72,19 +74,17 @@ func atualizar_linha():
 			registradores_interagindo.append(registradores_nos["IR"])
 		"incrementar_registrador_pc":
 			registradores_interagindo.append(registradores_nos["PC"])
-	
+
 	acender_registradores_interagindo()
 	
 	# Resolvendo linhas
-	var caminho_linha = "Linhas/" + SoftwareManager.fila_instrucoes[0]
+	var caminho_linha = %Linhas.get_node(SoftwareManager.fila_instrucoes[0])
+	var caminho_fluxo_linha = %Linhas.get_node("fluxo_" + SoftwareManager.fila_instrucoes[0])
 	
-	if not self.has_node(caminho_linha):
+	if not caminho_linha:
 		return
 	
-	resetar_linhas()
-	#var no : Line2D = self.get_node(caminho_linha)
-	#no.default_color = Color.CYAN
-	caminhar_fluxo(get_node(caminho_linha))
+	caminhar_fluxo(caminho_linha, caminho_fluxo_linha)
 
 func acender_registradores_interagindo() -> void:
 	for reg in registradores_interagindo:
@@ -106,12 +106,6 @@ func apagar_tweens():
 	if fluxo_tween:
 		fluxo_tween.kill()
 		fluxo.visible = false
-		
-
-func resetar_linhas():
-	for no : Line2D in self.get_node("Linhas").get_children():
-		no.default_color = Color.WHITE
-		no.default_color.a = 0.5
 
 func atualizar_registrador(registrador: String):
 	match registrador:
@@ -140,23 +134,12 @@ func atualizar_registrador(registrador: String):
 		"IR":
 			registradores_nos["IR"].text = Utils.int_para_hex(CPU.registrador_ir, 2)
 
-func caminhar_fluxo(caminho: Line2D):
-	fluxo.visible = true
-	var distancia_total = 0
-	for i in range(0, caminho.points.size()):
-		if i == 0:
-			continue
-		else:
-			distancia_total += caminho.points[i].distance_to(caminho.points[i-1])
+func caminhar_fluxo(linha: Line2D, linha_fluxo: Line2D):
+	if fluxo_ligado:
+		fluxo_ligado.visible = false
+
+	if not linha_fluxo:
+		return
 	
-	var tempo_por_distancia = tempo_fluxo/distancia_total
-	
-	fluxo_tween = create_tween()
-	for i in range(0, caminho.points.size()):
-		if i == 0:
-			fluxo_tween.tween_property(fluxo, "position", caminho.points[i], 0.5).set_trans(Tween.TRANS_LINEAR).from(caminho.points[0])
-		else:
-			var distancia = caminho.points[i].distance_to(caminho.points[i-1])
-			fluxo_tween.tween_property(fluxo, "position", caminho.points[i], distancia*tempo_por_distancia).set_trans(Tween.TRANS_LINEAR)
-	fluxo_tween.tween_interval(0.3)
-	fluxo_tween.set_loops()
+	linha_fluxo.visible = true
+	fluxo_ligado = linha_fluxo
