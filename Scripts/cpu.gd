@@ -108,6 +108,9 @@ func incrementar_registrador_pc() -> void:
 func incrementar_registrador_mar() -> void:
 	atualizar_registrador_mar(self.registrador_mar + 1)
 
+func incrementar_registrador_pp() -> void:
+	atualizar_registrador_pp(self.registrador_pp + 1)
+
 func decrementar_registrador_pp() -> void:
 	atualizar_registrador_pp(self.registrador_pp - 1)
 
@@ -129,11 +132,20 @@ func iniciar_registrador_pc(endereco : int) -> void:
 func unir_mbr_ao_aux_e_mover_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_mbr + (self.registrador_aux << 8))
 
+func unir_mbr_ao_aux_e_mover_para_pc() -> void:
+	atualizar_registrador_pc(self.registrador_aux + (self.registrador_mbr << 8))
+
 func dividir_ix_e_mover_para_mbr_e_aux() -> void:
 	var registrador_em_hex	: String 			= Utils.int_para_hex(self.registrador_ix, 4)
 	var registrador_em_bytes: PackedByteArray 	= Utils.de_endereco_hex_para_bytes(registrador_em_hex)
 	atualizar_registrador_aux(registrador_em_bytes[0])
 	atualizar_registrador_mbr(registrador_em_bytes[1])
+
+func dividir_pc_e_mover_para_mbr_e_aux() -> void:
+	var registrador_em_hex	: String 			= Utils.int_para_hex(self.registrador_pc, 4)
+	var registrador_em_bytes: PackedByteArray 	= Utils.de_endereco_hex_para_bytes(registrador_em_hex)
+	atualizar_registrador_mbr(registrador_em_bytes[0])
+	atualizar_registrador_aux(registrador_em_bytes[1])
 
 func transferir_a_para_mbr() -> void:
 	atualizar_registrador_mbr(self.registrador_a)
@@ -143,33 +155,53 @@ func transferir_b_para_mbr() -> void:
 
 func transferir_a_para_alu_a() -> void:
 	atualizar_alu_entrada_a(self.registrador_a)
-	
+
 func transferir_b_para_alu_b() -> void:
 	atualizar_alu_entrada_b(self.registrador_b)
+	
+func transferir_b_para_alu_a() -> void:
+	atualizar_alu_entrada_a(self.registrador_b)
 
 func transferir_mar_para_alu_a() -> void:
 	atualizar_alu_entrada_a(self.registrador_mar)
 
 func transferir_ix_para_alu_b() -> void:
 	atualizar_alu_entrada_b(self.registrador_ix)
+	
+func transferir_mbr_para_alu_b() -> void:
+	atualizar_alu_entrada_b(self.registrador_mbr)
+	
+func transferir_mbr_para_alu_a() -> void:
+	atualizar_alu_entrada_a(self.registrador_mbr)
+
+func transferir_mar_para_pc() -> void:
+	atualizar_registrador_pc(self.registrador_mar)
 
 func adicao_alu_a_alu_b() -> void:
 	# TODO: Lidar com flags e overflow
-	atualizar_alu_saida(self.alu_entrada_a + self.alu_entrada_b)
-	
+	var resultado = self.alu_entrada_a + self.alu_entrada_b
+	atualizar_alu_saida(resultado & 0xFFFF)
+
 func transferir_alu_saida_para_a() -> void:
 	# TODO: Garantir que a saída é 8 bits
-	atualizar_registrador_a(self.alu_saida)
+	atualizar_registrador_a(self.alu_saida & 0xFF)
+
+func transferir_alu_saida_para_b() -> void:
+	# TODO: Garantir que a saída é 8 bits
+	atualizar_registrador_b(self.alu_saida & 0xFF)
 
 func transferir_alu_saida_para_mar() -> void:
 	atualizar_registrador_mar(self.alu_saida)
+
+func transferir_alu_saida_para_mbr() -> void:
+	atualizar_registrador_mbr(self.alu_saida)
 
 func transferir_pp_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_pp)
 
 func transferir_flags_para_mbr() -> void:
-	var registrador_flag 	: PackedStringArray = ['0', '0', str(self.flag_o), str(self.flag_c), str(self.flag_n), str(self.flag_z), '0', '0']
-	var flag_como_hex 		: int = "".join(registrador_flag).bin_to_int()
+	var registrador_flag: PackedStringArray = ['0', '0', str(self.flag_o), str(self.flag_c), str(self.flag_n), str(self.flag_z), '0', '0']
+	var flag_como_hex 	: int 				= "".join(registrador_flag).bin_to_int()
 	atualizar_registrador_mbr(flag_como_hex)
 
 func mover_mar_ao_endereco_de_memoria() -> void:
@@ -223,3 +255,12 @@ func atualizar_flag_c(novo_valor: int) -> void:
 func atualizar_flag_o(novo_valor: int) -> void:
 	self.flag_o = novo_valor
 	flag_o_foi_atualizada.emit()
+
+func validar_fim_de_execucao() -> void:
+	# Se a instrução atual for CAL EXIT, finalizar a execução
+	if (self.registrador_ir == 0x58) and (self.registrador_mar == 0x1200):
+		SoftwareManager.finalizar_execucao()
+
+func realizar_complemento_a_dois_na_alu() -> void:
+	var resultado = (~self.alu_entrada_a + 1)
+	atualizar_alu_saida(resultado & 0xFF)

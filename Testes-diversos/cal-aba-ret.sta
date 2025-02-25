@@ -1,0 +1,30 @@
+[inicio]
+registrador.pc="0"
+registrador.a="8"
+registrador.b="6"
+registrador.pp="0FFF"
+memoria.base="res://MEMORIA.MEM"
+memoria.substituicoes = {
+    "500": "48",
+    "501": "05",
+}
+instrucoes=[
+	"CAL 500",
+	"CAL EXIT"
+]
+
+[fim]
+registrador.a="E"
+registrador.pc="006"
+registrador.pp="0FFF"
+memoria = {
+    "000": "58",
+    "001": "05",
+    "002": "00",
+    "003": "58",
+    "004": "12",
+    "005": "00",
+    
+    "500": "48",
+    "501": "05",
+}

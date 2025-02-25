@@ -1,0 +1,27 @@
+[inicio]
+registrador.pc="0"
+registrador.pp="0FFF"
+memoria.base="res://MEMORIA.MEM"
+memoria.substituicoes = {
+    "100": "58",
+    "101": "12",
+    "102": "00",
+}
+instrucoes=[
+	"CAL 100",
+]
+
+[fim]
+memoria = {
+    "000": "58",
+    "001": "01",
+    "002": "00",
+    
+    "100": "58",
+    "101": "12",
+    "102": "00",
+
+    "FFE": "03",
+    "FFF": "00",
+}
+registrador.pp="FFD"

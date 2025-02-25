@@ -34,3 +34,6 @@ static func limitar_para_endereco(valor : int) -> int:
 	if valor >= Memoria.TAMANHO_MEMORIA:
 		return Memoria.TAMANHO_MEMORIA - 1
 	return valor
+
+static func transformar_int_para_n_bytes(valor: int, bytes: int) -> int:
+	return valor & ((1 << (bytes * 8)) - 1)

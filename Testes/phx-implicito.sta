@@ -1,7 +1,7 @@
 [inicio]
 registrador.pc="0"
-registrador.ix="012C"
-registrador.pp="0AF1"
+registrador.ix="6E35"
+registrador.pp="FFF"
 memoria.base="res://MEMORIA.MEM"
 instrucoes=[
 	"PHX",
@@ -15,8 +15,7 @@ memoria = {
     "002": "12",
     "003": "00",
 
-    "0AF0": "01",
-    "0AF1": "2C",
+    "FFE": "6E",
+    "FFF": "35",
 }
-registrador.pp="0AEF"
-registrador.aux="01"
+registrador.pp="0FFD"
