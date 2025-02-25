@@ -51,8 +51,7 @@ func ler_conteudo_no_endereco_selecionado() -> Valor:
 	return self.ler_conteudo_no_endereco(self.endereco_selecionado)
 
 func ler_conteudo_no_endereco(endereco: Valor) -> Valor:
-	var _endereco_int = endereco.como_int()
-	var celula = self.celulas[_endereco_int]
+	var celula = self.celulas[endereco.como_int()]
 	var novo_valor = Valor.new(celula)
 	return novo_valor
 

@@ -32,15 +32,14 @@ func como_byte_array(casas:int = 2) -> PackedByteArray:
 		resultado.push_back(Valor.hex_para_int(((valor_em_hex.substr(i, 2)))))
 	return resultado
 
-func somar_valor(outro: Valor) -> Valor:
-	return self.somar_int(outro._valor)
+func somar_valor(outro: Valor) -> void:
+	self.somar_int(outro._valor)
 
-func somar_int(outro: int) -> Valor:
+func somar_int(outro: int) -> void:
 	self._valor += outro
-	return self
 
 func igual(outro: Valor) -> bool:
-	return self._valor == outro._valor
+	return (self._valor == outro._valor)
 
 func limitar_entre(minimo: int, maximo: int) -> void:
 	self._valor = clampi(self._valor, minimo, maximo)
