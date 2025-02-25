@@ -1392,7 +1392,7 @@ Todos os 72 comandos existentes.
 * BRR
 * CAL
 * CLD
-* CLR
+* CRL
 * CPB
 * CPA
 * CPX
