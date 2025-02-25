@@ -160,7 +160,8 @@ text = "Descompilar"
 [node name="Execução Visual" type="TabBar" parent="VBoxContainer/TabContainer" node_paths=PackedStringArray("fluxo")]
 layout_mode = 2
 script = ExtResource("13_vadsj")
-fluxo = NodePath("Fluxo")
+fluxo = NodePath("Container/Fluxo")
+tempo_fluxo = 0.865
 metadata/_tab_index = 1
 fluxo = NodePath("Container/Fluxo")
 tempo_fluxo = 0.865
