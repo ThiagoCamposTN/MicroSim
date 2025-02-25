@@ -45,11 +45,11 @@ func igual(outro: Valor) -> bool:
 func limitar_entre(minimo: int, maximo: int) -> void:
 	self._valor = clampi(self._valor, minimo, maximo)
 
-# static func novo(valor_inicial: int) -> Valor:
-# 	return Valor.new(valor_inicial)
+static func novo_de_int(valor_int: int) -> Valor:
+	return Valor.new(valor_int)
 
-static func novo_de_hex(valor_em_hex: String) -> Valor:
-	return Valor.new(Valor.hex_para_int(valor_em_hex))
+static func novo_de_hex(valor_hex: String) -> Valor:
+	return Valor.new(Valor.hex_para_int(valor_hex))
 
 static func novo_de_valor(valor: Valor) -> Valor:
 	return Valor.new(valor.como_int())

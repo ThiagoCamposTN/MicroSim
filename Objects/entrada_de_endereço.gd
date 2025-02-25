@@ -16,5 +16,5 @@ func _on_focus_exited():
 
 func obter_endereco() -> Valor:
 	var endereço: Valor = Valor.novo_de_hex(self.text)
-	self.text = endereço.como_hex(4, true)
+	self.text = endereço.como_hex(4)
 	return endereço

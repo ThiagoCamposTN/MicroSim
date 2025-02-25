@@ -5,7 +5,7 @@ extends TabBar
 var painel_root
 
 var iniciar_descompilação : bool = false
-var endereço_inicial: Valor
+@onready var endereço_inicial: Valor = Valor.new(0)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

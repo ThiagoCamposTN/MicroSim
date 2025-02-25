@@ -50,10 +50,9 @@ func atualizar_celula(endereço: Valor):
 	celula.add_theme_color_override("font_color", Color.CYAN)
 
 func atualizar_grupo_de_celulas(endereco: Valor, tamanho: int):
-	var i = endereco
-	while (i.como_int() < endereco.como_int() + tamanho):
-		atualizar_celula(i)
-		i.somar_int(1)
+	var endereco_int = endereco.como_int()
+	for i: int in range(endereco_int, endereco_int + tamanho):
+		atualizar_celula(Valor.new(i))
 
 func ao_clicar_elemento(elemento: Button):
 	hex_foi_selecionado.emit(elemento)

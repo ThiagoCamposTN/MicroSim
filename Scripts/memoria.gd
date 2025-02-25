@@ -4,7 +4,7 @@ extends Node
 # mas na prática a memória possui 4096 Kib
 const TAMANHO_MEMORIA 		: int = 0x1000 # 4096
 var celulas 				: PackedByteArray
-var endereco_selecionado 	: Valor
+@onready var endereco_selecionado: Valor = Valor.new(0)
 
 signal memoria_foi_recarregada
 signal endereço_de_memoria_foi_atualizado
@@ -47,11 +47,14 @@ func sobrescrever_uma_celula(novo_dado: int, endereco: int):
 	self.celulas.set(endereco, novo_dado)
 	self.grupo_da_memoria_foi_atualizado.emit(endereco, 1)
 
-func ler_conteudo_no_endereco_selecionado():
+func ler_conteudo_no_endereco_selecionado() -> Valor:
 	return self.ler_conteudo_no_endereco(self.endereco_selecionado)
 
-func ler_conteudo_no_endereco(endereco: Valor):
-	return Valor.new(self.celulas[endereco.como_int()])
+func ler_conteudo_no_endereco(endereco: Valor) -> Valor:
+	var _endereco_int = endereco.como_int()
+	var celula = self.celulas[_endereco_int]
+	var novo_valor = Valor.new(celula)
+	return novo_valor
 
 func carregar_arquivo_de_memoria(caminho: String):
 	var arquivo : FileAccess 		= FileAccess.open(caminho, FileAccess.READ)
