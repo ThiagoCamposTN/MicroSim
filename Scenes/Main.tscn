@@ -163,9 +163,6 @@ script = ExtResource("13_vadsj")
 fluxo = NodePath("Container/Fluxo")
 tempo_fluxo = 0.865
 metadata/_tab_index = 1
-fluxo = NodePath("Container/Fluxo")
-tempo_fluxo = 0.865
-metadata/_tab_index = 1
 
 [node name="Container" type="Panel" parent="VBoxContainer/TabContainer/Execução Visual"]
 layout_mode = 1
