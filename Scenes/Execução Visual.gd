@@ -171,30 +171,30 @@ func remover_fluxos():
 		fluxo_ligado.visible = false
 
 func obter_info_memorias():
-	var valor = Utils.int_para_hex(Memoria.endereco_selecionado, 4)
-	var valor_conteudo = Utils.int_para_hex(Memoria.ler_conteudo_no_endereco_selecionado(), 2)
+	var valor = Memoria.endereco_selecionado.como_hex(4)
+	var valor_conteudo = Memoria.ler_conteudo_no_endereco_selecionado().como_hex(2)
 	
-	var dois_antes: int
-	var um_antes: int
-	var um_depois: int
-	var dois_depois: int
+	var dois_antes: Valor = Valor.new(0)
+	var um_antes: Valor = Valor.new(0)
+	var um_depois: Valor = Valor.new(0)
+	var dois_depois: Valor = Valor.new(0)
 	
-	if Memoria.endereco_selecionado - 1 >= 0:
-		um_antes = Memoria.endereco_selecionado - 1
+	if Memoria.endereco_selecionado.como_int() - 1 >= 0:
+		um_antes = Valor.novo_de_int(Memoria.endereco_selecionado.como_int() - 1)
 	
-	if Memoria.endereco_selecionado - 2 >= 0:
-		dois_antes = Memoria.endereco_selecionado - 2
+	if Memoria.endereco_selecionado.como_int() - 2 >= 0:
+		dois_antes = Valor.novo_de_int(Memoria.endereco_selecionado.como_int() - 2)
 	
-	if Memoria.endereco_selecionado + 1 <= Memoria.TAMANHO_MEMORIA - 1:
-		um_depois = Memoria.endereco_selecionado + 1
+	if Memoria.endereco_selecionado.como_int() + 1 <= Memoria.TAMANHO_MEMORIA - 1:
+		um_depois = Valor.novo_de_int(Memoria.endereco_selecionado.como_int() + 1)
 	
-	if Memoria.endereco_selecionado + 2 <= Memoria.TAMANHO_MEMORIA - 1:
-		dois_depois = Memoria.endereco_selecionado + 2
+	if Memoria.endereco_selecionado.como_int() + 2 <= Memoria.TAMANHO_MEMORIA - 1:
+		dois_depois = Valor.novo_de_int(Memoria.endereco_selecionado.como_int() + 2)
 	
-	var texto_antes = Utils.int_para_hex(dois_antes, 4) + "\n" + Utils.int_para_hex(um_antes, 4)
-	var texto_depois = Utils.int_para_hex(um_depois, 4) + "\n" + Utils.int_para_hex(dois_depois, 4)
+	var texto_antes = dois_antes.como_hex(4) + "\n" + um_antes.como_hex(4)
+	var texto_depois = um_depois.como_hex(4) + "\n" + dois_depois.como_hex(4)
 	
-	var texto_conteudo_antes = Memoria.ler_hex_no_endereco(dois_antes) + "\n" + Memoria.ler_hex_no_endereco(um_antes)
-	var texto_conteudo_depois = Memoria.ler_hex_no_endereco(um_depois) + "\n" + Memoria.ler_hex_no_endereco(dois_depois)
+	var texto_conteudo_antes = Memoria.ler_conteudo_no_endereco(dois_antes).como_hex() + "\n" + Memoria.ler_conteudo_no_endereco(um_antes).como_hex()
+	var texto_conteudo_depois = Memoria.ler_conteudo_no_endereco(um_depois).como_hex() + "\n" + Memoria.ler_conteudo_no_endereco(dois_depois).como_hex()
 	
 	return [texto_antes, valor, texto_depois, texto_conteudo_antes, valor_conteudo, texto_conteudo_depois]
