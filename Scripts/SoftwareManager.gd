@@ -27,7 +27,7 @@ func _ready():
 	self.prepara_o_estado_inicial.call_deferred()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if em_execução and (execucao_timer.is_stopped() or Teste.teste_em_execucao):
 		if fila_instrucoes.size() > 0:
 			var instrucao = fila_instrucoes.pop_front()
@@ -113,7 +113,9 @@ func adicionar_instrucao():
 	
 	# se não a instrução não existe
 	if not instrucao_descompilada:
-		return false
+		print("Instrução inválida. Encerrando execução.")
+		finalizar_execucao()
+		return
 	
 	# Fase de pesquisa e endereço do operando
 	match instrucao_descompilada.enderecamento:
@@ -326,13 +328,11 @@ func adicionar_instrucao():
 	# Fase de execução
 	# Busca a lista de microcodigos enumeradas no recurso do Operador
 	var microcodigos = Operacoes.get_microcodigos(instrucao_descompilada.mnemonico)
-	if microcodigos:
-		for microcodigo in microcodigos:
-			# Chama a função declarada em CPU que tem nome equivalente ao especificado nos microcodigos do operador
-			# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
-			fila_instrucoes.push_back(microcodigo)
-	else:
-		finalizar_execucao()
+
+	for microcodigo in microcodigos:
+		# Chama a função declarada em CPU que tem nome equivalente ao especificado nos microcodigos do operador
+		# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
+		fila_instrucoes.push_back(microcodigo)
 
 func finalizar_execucao():
 	self.pausar_execução()
