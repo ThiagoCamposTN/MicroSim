@@ -59,6 +59,9 @@ func atualizar_linha():
 	if not CPU.has_method(SoftwareManager.fila_instrucoes[0]):
 		return
 	
+	if fluxo_ligado:
+		fluxo_ligado.visible = false
+	
 	match SoftwareManager.fila_instrucoes[0]:
 		"mover_pc_para_mar":
 			registradores_interagindo.append(registradores_nos["PC"])
@@ -145,9 +148,6 @@ func atualizar_registrador(registrador: String):
 			registradores_nos["IR"].text = Utils.int_para_hex(CPU.registrador_ir, 2)
 
 func caminhar_fluxo(linha_fluxo: Line2D):
-	if fluxo_ligado:
-		fluxo_ligado.visible = false
-
 	if not linha_fluxo:
 		return
 	
@@ -169,10 +169,10 @@ func obter_info_memorias():
 	if Memoria.endereco_selecionado - 2 >= 0:
 		dois_antes = Memoria.endereco_selecionado - 2
 	
-	if Memoria.endereco_selecionado + 1 <= 4095:
+	if Memoria.endereco_selecionado + 1 <= Memoria.TAMANHO_MEMORIA - 1:
 		um_depois = Memoria.endereco_selecionado + 1
 	
-	if Memoria.endereco_selecionado + 2 <= 4095:
+	if Memoria.endereco_selecionado + 2 <= Memoria.TAMANHO_MEMORIA - 1:
 		dois_depois = Memoria.endereco_selecionado + 2
 	
 	var texto_antes = Utils.int_para_hex(dois_antes, 4) + "\n" + Utils.int_para_hex(um_antes, 4)
