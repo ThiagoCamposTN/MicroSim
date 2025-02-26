@@ -187,6 +187,9 @@ func transferir_mbr_para_alu_a() -> void:
 func transferir_mar_para_pc() -> void:
 	atualizar_registrador_pc(self.registrador_mar)
 
+func transferir_b_para_a() -> void:
+	atualizar_registrador_a(self.registrador_b)
+
 func adicao_alu_a_alu_b() -> void:
 	# TODO: Lidar com flags e overflow
 	var resultado: Valor = Valor.novo_de_valor(self.alu_entrada_a)

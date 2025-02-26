@@ -1374,9 +1374,9 @@ Permuta os conteúdos dos registradores A e B.
 
 Todos os 72 comandos existentes.
 
-* ABA   
-* ADA
-* ADB
+* ~~ABA~~
+* ~~ADA~~
+* ~~ADB~~
 * ANA
 * ANB
 * ARA
@@ -1390,7 +1390,7 @@ Todos os 72 comandos existentes.
 * BRG
 * BRL
 * BRR
-* CAL
+* ~~CAL~~
 * CLD
 * CRL
 * CPB
@@ -1405,8 +1405,8 @@ Todos os 72 comandos existentes.
 * INP
 * INA
 * INX
-* LDA
-* LDB
+* ~~LDA~~
+* ~~LDB~~
 * LDP
 * LDX
 * NOA
@@ -1415,30 +1415,30 @@ Todos os 72 comandos existentes.
 * ORA
 * ORB
 * TPX
-* PHB
-* PHF
+* ~~PHB~~
+* ~~PHF~~
 * PPA
 * PPB
 * PPF
-* PHA
-* RET
+* ~~PHA~~
+* ~~RET~~
 * SBA
 * SRD
-* SUA
+* ~~SUA~~
 * SUB
 * SLD
 * SLA
 * SRA
 * SAD
 * SAA
-* STA
-* STB
+* ~~STA~~
+* ~~STB~~
 * STP
 * STX
 * TAB
 * TBA
-* XAB
-* PHX
+* ~~XAB~~
+* ~~PHX~~
 * PPX
 * MUL
 * DIV
