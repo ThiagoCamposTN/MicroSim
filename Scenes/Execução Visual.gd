@@ -59,9 +59,7 @@ func atualizar_linha():
 	if not CPU.has_method(SoftwareManager.fila_instrucoes[0]):
 		return
 	
-	if fluxo_ligado:
-		fluxo_ligado.visible = false
-	
+	remover_fluxos()
 	match SoftwareManager.fila_instrucoes[0]:
 		"mover_pc_para_mar":
 			registradores_interagindo.append(registradores_nos["PC"])
@@ -71,14 +69,27 @@ func atualizar_linha():
 			registradores_interagindo.append(registradores_nos["MemoriaEndereco"])
 		"mover_valor_da_memoria_ao_mbr":
 			var valores = obter_info_memorias()
-
+			remover_fluxos()
+			# Resolvendo animação de leitura da memória
+			var caminho_fluxo_linha = %Linhas.get_node("fluxo_end_selec")
+			caminho_fluxo_linha.visible = true
+			await get_tree().create_timer(1).timeout
+			caminho_fluxo_linha.visible = false
+			
 			%MemoriaEnderecoAnteriorLabel.text = valores[0]
 			%MemoriaEnderecoButton.text = valores[1]
 			%MemoriaEnderecoPosteriorLabel.text = valores[2]
 			
+			caminho_fluxo_linha = %Linhas.get_node("fluxo_leimem")
+			caminho_fluxo_linha.visible = true
+			await get_tree().create_timer(1).timeout
+			caminho_fluxo_linha.visible = false
+			
 			%MemoriaValorAnteriorLabel.text = valores[3]
 			%MemoriaValorButton.text = valores[4]
 			%MemoriaValorPosteriorLabel.text = valores[5]
+			
+			await get_tree().create_timer(1).timeout
 			
 			registradores_interagindo.append(registradores_nos["MemoriaValor"])
 			registradores_interagindo.append(registradores_nos["MBR"])
@@ -91,18 +102,19 @@ func atualizar_linha():
 	acender_registradores_interagindo()
 	
 	# Resolvendo linhas
-	var caminho_linha = %Linhas.get_node(SoftwareManager.fila_instrucoes[0])
-	var caminho_fluxo_linha = %Linhas.get_node("fluxo_" + SoftwareManager.fila_instrucoes[0])
+	if SoftwareManager.fila_instrucoes.size() > 0:
+		var caminho_linha = %Linhas.get_node(SoftwareManager.fila_instrucoes[0])
+		var caminho_fluxo_linha = %Linhas.get_node("fluxo_" + SoftwareManager.fila_instrucoes[0])
+		
+		if not caminho_linha:
+			return
 	
-	if not caminho_linha:
-		return
-	
-	caminhar_fluxo(caminho_fluxo_linha)
+		caminhar_fluxo(caminho_fluxo_linha)
 
 func acender_registradores_interagindo() -> void:
 	for reg in registradores_interagindo:
 		var tw = create_tween()
-		tw.tween_property(reg, "modulate", Color.RED, 0.5).set_trans(Tween.TRANS_LINEAR)
+		tw.tween_property(reg, "modulate", Color.DARK_RED, 0.5).set_trans(Tween.TRANS_LINEAR)
 		tw.tween_property(reg, "modulate", Color.WHITE, 0.5).set_trans(Tween.TRANS_LINEAR)
 		tw.set_loops()
 		tweens.append(tw)
@@ -153,6 +165,10 @@ func caminhar_fluxo(linha_fluxo: Line2D):
 	
 	linha_fluxo.visible = true
 	fluxo_ligado = linha_fluxo
+
+func remover_fluxos():
+	if fluxo_ligado:
+		fluxo_ligado.visible = false
 
 func obter_info_memorias():
 	var valor = Utils.int_para_hex(Memoria.endereco_selecionado, 4)
