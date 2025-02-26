@@ -27,8 +27,8 @@ var registradores = [
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	for registrador in registradores:
-		var valor_registrador = CPU.get(registrador["propriedade"])
-		var valor_convertido = str(Utils.int_para_hex(valor_registrador, registrador["bytes"] * 2))
+		var valor_registrador: Valor = CPU.get(registrador["propriedade"])
+		var valor_convertido: String = valor_registrador.como_hex(registrador["bytes"] * 2)
 
 		var label := Label.new()
 		label.text = registrador["nome"]
@@ -55,5 +55,5 @@ func _process(delta):
 	pass
 
 func atualizar_registrador(node: Button, propriedade: String, digitos: int) -> void:
-	var novo_valor = CPU.get(propriedade)
-	node.text = str(Utils.int_para_hex(novo_valor, digitos))
+	var novo_valor: Valor = CPU.get(propriedade)
+	node.text = novo_valor.como_hex(digitos)

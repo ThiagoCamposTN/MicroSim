@@ -135,29 +135,29 @@ func apagar_tweens():
 func atualizar_registrador(registrador: String):
 	match registrador:
 		"A":
-			registradores_nos["A"].text = Utils.int_para_hex(CPU.registrador_a, 2)
+			registradores_nos["A"].text = CPU.registrador_a.como_hex(2)
 		"B":
-			registradores_nos["B"].text = Utils.int_para_hex(CPU.registrador_b, 2)
+			registradores_nos["B"].text = CPU.registrador_b.como_hex(2)
 		"PC":
-			registradores_nos["PC"].text = Utils.int_para_hex(CPU.registrador_pc, 4)
+			registradores_nos["PC"].text = CPU.registrador_pc.como_hex(4)
 		"IX":
-			registradores_nos["IX"].text = Utils.int_para_hex(CPU.registrador_ix, 4)
+			registradores_nos["IX"].text = CPU.registrador_ix.como_hex(4)
 		"MAR":
-			registradores_nos["MAR"].text = Utils.int_para_hex(CPU.registrador_mar, 4)
+			registradores_nos["MAR"].text = CPU.registrador_mar.como_hex(4)
 		"PP":
-			registradores_nos["PP"].text = Utils.int_para_hex(CPU.registrador_pp, 4)
+			registradores_nos["PP"].text = CPU.registrador_pp.como_hex(4)
 		"MBR":
-			registradores_nos["MBR"].text = Utils.int_para_hex(CPU.registrador_mbr, 2)
+			registradores_nos["MBR"].text = CPU.registrador_mbr.como_hex(2)
 		"Z":
-			registradores_nos["Z"].text = Utils.int_para_hex(CPU.flag_z, 1)
+			registradores_nos["Z"].text = CPU.flag_z.como_hex(1)
 		"N":
-			registradores_nos["N"].text = Utils.int_para_hex(CPU.flag_n, 1)
+			registradores_nos["N"].text = CPU.flag_n.como_hex(1)
 		"C":
-			registradores_nos["C"].text = Utils.int_para_hex(CPU.flag_c, 1)
+			registradores_nos["C"].text = CPU.flag_c.como_hex(1)
 		"O":
-			registradores_nos["O"].text = Utils.int_para_hex(CPU.flag_o, 1)
+			registradores_nos["O"].text = CPU.flag_o.como_hex(1)
 		"IR":
-			registradores_nos["IR"].text = Utils.int_para_hex(CPU.registrador_ir, 2)
+			registradores_nos["IR"].text = CPU.registrador_ir.como_hex(2)
 
 func caminhar_fluxo(linha_fluxo: Line2D):
 	if not linha_fluxo:

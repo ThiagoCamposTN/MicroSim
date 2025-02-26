@@ -32,29 +32,27 @@ func inicializar_hex_grid():
 		%HexGrid.remove_child(i)
 	elementos_viewer = []
 	
-	var current_linha : int = 0
-		
-	for celula in Memoria.celulas:
-		var endereco_celula = Utils.int_para_hex(current_linha, 3)
-		if current_linha % 16 == 0:
-			adicionar_label(endereco_celula)
+	var current_linha: Valor = Valor.new(0)
+	for celula: int in Memoria.celulas:
+		var valor: Valor = Valor.new(celula)
+		if current_linha.como_int() % 16 == 0:
+			adicionar_label(current_linha.como_hex(3))
 			elementos_viewer.append(VSeparator.new())
-		adicionar_label(Utils.int_para_hex(celula, 2), endereco_celula)
-		current_linha += 1
+		adicionar_label(valor.como_hex(2), current_linha.como_hex(3))
+		current_linha.somar_int(1)
 	
 	for label in elementos_viewer:
 		%HexGrid.add_child(label)
 	
-func atualizar_celula(posicao : int):
-	var celula : Button = %HexGrid.get_node(Utils.int_para_hex(posicao, 3))
-	celula.text = Memoria.ler_hex_no_endereco(posicao)
+func atualizar_celula(endereço: Valor):
+	var celula : Button = %HexGrid.get_node(endereço.como_hex(3))
+	celula.text = Memoria.ler_conteudo_no_endereco(endereço).como_hex(2)
 	celula.add_theme_color_override("font_color", Color.CYAN)
 
-func atualizar_grupo_de_celulas(endereco, tamanho):
-	var i = endereco
-	while (i < endereco + tamanho):
-		atualizar_celula(i)
-		i+=1
+func atualizar_grupo_de_celulas(endereco: Valor, tamanho: int):
+	var endereco_int = endereco.como_int()
+	for i: int in range(endereco_int, endereco_int + tamanho):
+		atualizar_celula(Valor.new(i))
 
 func ao_clicar_elemento(elemento: Button):
 	hex_foi_selecionado.emit(elemento)

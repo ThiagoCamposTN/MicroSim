@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://blaesvk87y63y"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_i7gff"]
+
+[resource]
+script = ExtResource("1_i7gff")
+nome = "Add in A"
+"mnemônico" = "ADA"
+"descrição" = "Adiciona ao registrador A o valor de um operando, e armazena o resultado nele mesmo (A)."
+microcodigos = Array[String](["mover_mar_ao_endereco_de_memoria", "mover_valor_da_memoria_ao_mbr", "transferir_a_para_alu_a", "transferir_mbr_para_alu_b", "adicao_alu_a_alu_b", "transferir_alu_saida_para_a"])
+direto = "14"
+imediato = "24"
+indexado = "34"
+indireto = "94"
+pos_indexado = "B4"
+pre_indexado = "C4"
+implicito = ""

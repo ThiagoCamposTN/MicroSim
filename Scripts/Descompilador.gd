@@ -5,7 +5,7 @@ extends TabBar
 var painel_root
 
 var iniciar_descompilação : bool = false
-var endereço_inicial
+@onready var endereço_inicial: Valor = Valor.new(0)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -15,26 +15,26 @@ func _ready():
 	painel_root = painel_instrucoes.create_item()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if iniciar_descompilação:
-		
-		var valor 			: String	= Memoria.ler_hex_no_endereco(endereço_inicial)
+		var valor 			: Valor		= Memoria.ler_conteudo_no_endereco(endereço_inicial)
 		var instrucao_atual : Instrucao = Compilador.descompilar(valor)
+		var valor_em_hex 	: String 	= valor.como_hex(2)
 		
 		if instrucao_atual:
-			instrucao_atual.opcode 		= valor
+			instrucao_atual.opcode 		= valor_em_hex
 			instrucao_atual.parametros 	= Compilador.buscar_parametros_na_memoria(endereço_inicial, instrucao_atual.enderecamento)
 		
 		# Parte do endereço
-		var valor_endereco = Utils.int_para_hex(endereço_inicial, 3)
+		var valor_endereco: Valor = endereço_inicial
 		
 		# Parte dos bytes
-		var valor_bytes = valor
-		endereço_inicial += 1
+		var valor_bytes = valor_em_hex
+		endereço_inicial.somar_int(1)
 		
 		if instrucao_atual and instrucao_atual.parametros.size():
 			valor_bytes += " " + " ".join(instrucao_atual.parametros)
-			endereço_inicial += instrucao_atual.parametros.size()
+			endereço_inicial.somar_int(instrucao_atual.parametros.size())
 		
 		# Parte da instrução
 		var valor_instrucao
@@ -44,15 +44,15 @@ func _process(delta):
 			valor_instrucao = "??"
 		
 		
-		adicionar_instrucao(valor_endereco, valor_bytes, valor_instrucao)
+		adicionar_instrucao(valor_endereco.como_hex(3), valor_bytes, valor_instrucao)
 
 		if SoftwareManager.unica_instrucao:
 			iniciar_descompilação = false
 		
-		if endereço_inicial >= Memoria.celulas.size():
+		if endereço_inicial.como_int() >= Memoria.celulas.size():
 			iniciar_descompilação = false
 
-func execucao_iniciada(endereco : int):
+func execucao_iniciada(endereco: Valor):
 	iniciar_descompilação = true
 	endereço_inicial = endereco
 

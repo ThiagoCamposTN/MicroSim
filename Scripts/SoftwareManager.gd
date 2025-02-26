@@ -57,11 +57,11 @@ func _process(_delta):
 		microoperacao_executada.emit()
 		execucao_timer.start(time_delay)
 
-func executar_programa(endereco_inicial : int):
+func executar_programa(endereco_inicial: Valor):
 	CPU.iniciar_registrador_pc(endereco_inicial)
 	em_execução = true
 
-func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: int):
+func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: Valor):
 	var parte_memoria = Array()
 
 	for linha in linhas_codigo:
@@ -114,12 +114,13 @@ func adicionar_instrucao_na_fila():
 
 func adicionar_instrucao():
 	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
-	var instrucao_em_hex 		: String 	= Utils.int_para_hex(CPU.registrador_ir, 2)
-	var instrucao_descompilada 	: Instrucao = Compilador.descompilar(instrucao_em_hex)
+	var instrucao_descompilada: Instrucao = Compilador.descompilar(CPU.registrador_ir)
 	
 	# se não a instrução não existe
 	if not instrucao_descompilada:
-		return false
+		print("Instrução inválida. Encerrando execução.")
+		finalizar_execucao()
+		return
 	
 	# Fase de pesquisa e endereço do operando
 	match instrucao_descompilada.enderecamento:
@@ -172,8 +173,6 @@ func adicionar_instrucao():
 			fila_instrucoes.push_back("incrementar_registrador_pc")
 			fila_instrucoes.push_back("incrementar_registrador_pc")
 		Instrucao.Enderecamentos.PRE_INDEXADO:
-			# TODO: Esse começo é idêntico ao INDEXADO
-
 			# Transferência de PC para MAR
 			fila_instrucoes.push_back("mover_pc_para_mar")
 			
@@ -199,10 +198,6 @@ func adicionar_instrucao():
 			fila_instrucoes.push_back("transferir_ix_para_alu_b")
 			fila_instrucoes.push_back("adicao_alu_a_alu_b")
 			fila_instrucoes.push_back("transferir_alu_saida_para_mar")
-			fila_instrucoes.push_back("incrementar_registrador_pc")
-			fila_instrucoes.push_back("incrementar_registrador_pc")
-
-			# TODO: Essa parte é nova
 
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			fila_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
@@ -331,17 +326,18 @@ func adicionar_instrucao():
 			fila_instrucoes.push_back("incrementar_registrador_pc")
 		_:
 			pass
+
+	# checando se houve o término do programa
+	fila_instrucoes.push_back("validar_fim_de_execucao")
 	
 	# Fase de execução
 	# Busca a lista de microcodigos enumeradas no recurso do Operador
 	var microcodigos = Operacoes.get_microcodigos(instrucao_descompilada.mnemonico)
-	if microcodigos:
-		for microcodigo in microcodigos:
-			# Chama a função declarada em CPU que tem nome equivalente ao especificado nos microcodigos do operador
-			# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
-			fila_instrucoes.push_back(microcodigo)
-	else:
-		finalizar_execucao()
+
+	for microcodigo in microcodigos:
+		# Chama a função declarada em CPU que tem nome equivalente ao especificado nos microcodigos do operador
+		# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
+		fila_instrucoes.push_back(microcodigo)
 
 func finalizar_execucao():
 	self.pausar_execução()
