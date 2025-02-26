@@ -285,3 +285,8 @@ func realizar_complemento_a_dois_na_alu() -> void:
 	var resultado = ~self.alu_entrada_a.como_int() + 1
 	var valor = Valor.new(resultado & 0xFF)
 	atualizar_alu_saida(valor)
+
+func realizar_complemento_a_um_na_alu_a() -> void:
+	var resultado = ~self.alu_entrada_a.como_int()
+	var valor = Valor.new(resultado & 0xFF)
+	atualizar_alu_saida(valor)

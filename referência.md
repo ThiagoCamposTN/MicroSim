@@ -1409,7 +1409,7 @@ Todos os 72 comandos existentes.
 * ~~LDB~~
 * LDP
 * LDX
-* NOA
+* ~~NOA~~
 * NOB
 * ~~NOP~~
 * ORA
