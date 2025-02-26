@@ -67,6 +67,16 @@ func atualizar_linha():
 			registradores_interagindo.append(registradores_nos["MAR"])
 			registradores_interagindo.append(registradores_nos["MemoriaEndereco"])
 		"mover_valor_da_memoria_ao_mbr":
+			var valores = obter_info_memorias()
+
+			%MemoriaEnderecoAnteriorLabel.text = valores[0]
+			%MemoriaEnderecoButton.text = valores[1]
+			%MemoriaEnderecoPosteriorLabel.text = valores[2]
+			
+			%MemoriaValorAnteriorLabel.text = valores[3]
+			%MemoriaValorButton.text = valores[4]
+			%MemoriaValorPosteriorLabel.text = valores[5]
+			
 			registradores_interagindo.append(registradores_nos["MemoriaValor"])
 			registradores_interagindo.append(registradores_nos["MBR"])
 		"transferir_mbr_para_ir":
@@ -84,7 +94,7 @@ func atualizar_linha():
 	if not caminho_linha:
 		return
 	
-	caminhar_fluxo(caminho_linha, caminho_fluxo_linha)
+	caminhar_fluxo(caminho_fluxo_linha)
 
 func acender_registradores_interagindo() -> void:
 	for reg in registradores_interagindo:
@@ -134,7 +144,7 @@ func atualizar_registrador(registrador: String):
 		"IR":
 			registradores_nos["IR"].text = Utils.int_para_hex(CPU.registrador_ir, 2)
 
-func caminhar_fluxo(linha: Line2D, linha_fluxo: Line2D):
+func caminhar_fluxo(linha_fluxo: Line2D):
 	if fluxo_ligado:
 		fluxo_ligado.visible = false
 
@@ -143,3 +153,32 @@ func caminhar_fluxo(linha: Line2D, linha_fluxo: Line2D):
 	
 	linha_fluxo.visible = true
 	fluxo_ligado = linha_fluxo
+
+func obter_info_memorias():
+	var valor = Utils.int_para_hex(Memoria.endereco_selecionado, 4)
+	var valor_conteudo = Utils.int_para_hex(Memoria.ler_conteudo_no_endereco_selecionado(), 2)
+	
+	var dois_antes: int
+	var um_antes: int
+	var um_depois: int
+	var dois_depois: int
+	
+	if Memoria.endereco_selecionado - 1 >= 0:
+		um_antes = Memoria.endereco_selecionado - 1
+	
+	if Memoria.endereco_selecionado - 2 >= 0:
+		dois_antes = Memoria.endereco_selecionado - 2
+	
+	if Memoria.endereco_selecionado + 1 <= 4095:
+		um_depois = Memoria.endereco_selecionado + 1
+	
+	if Memoria.endereco_selecionado + 2 <= 4095:
+		dois_depois = Memoria.endereco_selecionado + 2
+	
+	var texto_antes = Utils.int_para_hex(dois_antes, 4) + "\n" + Utils.int_para_hex(um_antes, 4)
+	var texto_depois = Utils.int_para_hex(um_depois, 4) + "\n" + Utils.int_para_hex(dois_depois, 4)
+	
+	var texto_conteudo_antes = Memoria.ler_hex_no_endereco(dois_antes) + "\n" + Memoria.ler_hex_no_endereco(um_antes)
+	var texto_conteudo_depois = Memoria.ler_hex_no_endereco(um_depois) + "\n" + Memoria.ler_hex_no_endereco(dois_depois)
+	
+	return [texto_antes, valor, texto_depois, texto_conteudo_antes, valor_conteudo, texto_conteudo_depois]
