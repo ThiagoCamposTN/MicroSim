@@ -1411,7 +1411,7 @@ Todos os 72 comandos existentes.
 * LDX
 * NOA
 * NOB
-* NOP
+* ~~NOP~~
 * ORA
 * ORB
 * TPX
