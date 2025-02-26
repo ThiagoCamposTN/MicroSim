@@ -15,21 +15,21 @@ func _ready():
 	painel_root = painel_instrucoes.create_item()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if iniciar_descompilação:
-		
-		var valor 			: String	= Memoria.ler_conteudo_no_endereco(endereço_inicial).como_hex(2)
+		var valor 			: Valor		= Memoria.ler_conteudo_no_endereco(endereço_inicial)
 		var instrucao_atual : Instrucao = Compilador.descompilar(valor)
+		var valor_em_hex 	: String 	= valor.como_hex(2)
 		
 		if instrucao_atual:
-			instrucao_atual.opcode 		= valor
+			instrucao_atual.opcode 		= valor_em_hex
 			instrucao_atual.parametros 	= Compilador.buscar_parametros_na_memoria(endereço_inicial, instrucao_atual.enderecamento)
 		
 		# Parte do endereço
 		var valor_endereco: Valor = endereço_inicial
 		
 		# Parte dos bytes
-		var valor_bytes = valor
+		var valor_bytes = valor_em_hex
 		endereço_inicial.somar_int(1)
 		
 		if instrucao_atual and instrucao_atual.parametros.size():
