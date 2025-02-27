@@ -66,30 +66,28 @@ static func extrair_parametros(parametros_detectados : RegExMatch):
 		parametros.push_back(i.strip_edges())
 	return parametros
 
-static func descompilar(opcode_hex : String) -> Instrucao:
-	return Operacoes.byte_para_mnemonico(opcode_hex)
+static func descompilar(opcode: Valor) -> Instrucao:
+	var instrucao_em_hex: String = opcode.como_hex(2)
+	return Operacoes.byte_para_mnemonico(instrucao_em_hex)
 
-static func buscar_parametros_na_memoria(endereco : int, tipo_enderecamento : Instrucao.Enderecamentos) -> PackedStringArray:
+static func buscar_parametros_na_memoria(endereco: Valor, tipo_enderecamento : Instrucao.Enderecamentos) -> PackedStringArray:
 	var parametros : PackedStringArray
-	
+	# TODO: talvez mudar o somar int, ele pode causar problemas
 	match tipo_enderecamento:
-		Instrucao.Enderecamentos.POS_INDEXADO:
-			pass
-		Instrucao.Enderecamentos.PRE_INDEXADO:
-			pass
-		Instrucao.Enderecamentos.INDIRETO:
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 2))
+		Instrucao.Enderecamentos.INDIRETO or \
+		Instrucao.Enderecamentos.DIRETO or \
+		Instrucao.Enderecamentos.INDEXADO:
+			endereco.somar_int(1)
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco).como_hex(2))
+			endereco.somar_int(2)
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco).como_hex(2))
 		Instrucao.Enderecamentos.IMEDIATO:
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
-		Instrucao.Enderecamentos.DIRETO:
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 2))
+			endereco.somar_int(1)
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco).como_hex(2))
+		Instrucao.Enderecamentos.POS_INDEXADO or \
+		Instrucao.Enderecamentos.PRE_INDEXADO or \
 		Instrucao.Enderecamentos.IMPLICITO:
 			pass
-		Instrucao.Enderecamentos.INDEXADO:
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 1))
-			parametros.push_back(Memoria.ler_hex_no_endereco(endereco + 2))
 		_:
 			pass
 	

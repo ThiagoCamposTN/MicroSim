@@ -16,8 +16,16 @@ Após executar o comando `c:`, é possível pressionar apenas `tab` que o execut
 
 Ou pode rodar o seguinte comando no cmd (presumindo que está no diretório do executável):
 
+No Linux:
+
 ```bash
 dosbox -c "mount c ./" -c "c:" -c "MICRO3~1.EXE"
+```
+
+No Windows (após colocar DOSBox nas variáveis de ambiente)
+
+```bash
+dosbox -c "mount C: '%cd%'" -c "C:" -c "MICRO3~1.EXE"
 ```
 
 ## Execução de alguns comandos

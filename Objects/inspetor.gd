@@ -12,9 +12,9 @@ func _process(delta):
 
 func atualizar_tela(elemento: Button):
 	var opcode = "???"
-	var instrucao 		= Compilador.descompilar(elemento.text)
-	var valor_em_int 	= Utils.de_hex_string_para_inteiro(elemento.text)
-	var endereco_em_int = Utils.de_hex_string_para_inteiro(elemento.name)
+	var valor 		: Valor 	= Valor.novo_de_hex(elemento.text)
+	var instrucao 	: Instrucao = Compilador.descompilar(valor)
+	var endereco 	: Valor 	= Valor.novo_de_hex(elemento.name)
 	
 	if instrucao:
 		opcode = "{mnemonico} (endereçamento {enderecamento})".format({
@@ -31,7 +31,7 @@ func atualizar_tela(elemento: Button):
 		* Hex: [b]{valor}[/b]
 		* Bin: [b]{binario}[/b]
 		* Como mnemônico: [b]{opcode}[/b]
-	""".format({"end_hex": elemento.name, "end_bin": Utils.int_para_bin(endereco_em_int) , "valor": elemento.text,
-		"binario": Utils.int_para_bin(valor_em_int), "opcode": opcode})
+	""".format({"end_hex": elemento.name, "end_bin": endereco.como_bin() , "valor": elemento.text,
+		"binario": valor.como_bin(), "opcode": opcode})
 	
 	$Label.text = text

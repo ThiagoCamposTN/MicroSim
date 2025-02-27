@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dd4buxa54gig7"]
+[gd_scene load_steps=17 format=3 uid="uid://dd4buxa54gig7"]
 
 [ext_resource type="Script" path="res://Scenes/Principal.gd" id="1_f7wj2"]
 [ext_resource type="Script" path="res://Scenes/aba_memoria.gd" id="1_k3qc3"]
@@ -11,7 +11,11 @@
 [ext_resource type="PackedScene" uid="uid://bfad576lrds1f" path="res://Objects/inspetor.tscn" id="4_6wfq0"]
 [ext_resource type="PackedScene" uid="uid://cirseeqq4hnvy" path="res://Scenes/HexView.tscn" id="5_rebeb"]
 [ext_resource type="Texture2D" uid="uid://mit3rrgdrhcd" path="res://Referências/image75.png" id="13_16ics"]
+[ext_resource type="Texture2D" uid="uid://davnw4dx52nay" path="res://Imagens/Visualizador.svg" id="13_drmqw"]
 [ext_resource type="Script" path="res://Scenes/Execução Visual.gd" id="13_vadsj"]
+[ext_resource type="Theme" uid="uid://hlg41xdamtvq" path="res://Themes/registrador_label.tres" id="14_1an5g"]
+[ext_resource type="Theme" uid="uid://co6m50csib0ee" path="res://Themes/visual_interpreter.tres" id="15_qx21s"]
+[ext_resource type="Texture2D" uid="uid://bs736r8h6l41v" path="res://Imagens/triangulo.tres" id="16_hf3vw"]
 
 [node name="Aplicação" type="Control"]
 layout_mode = 3
@@ -37,9 +41,10 @@ size_flags_vertical = 1
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 0
+current_tab = 1
 
 [node name="Principal" type="TabBar" parent="VBoxContainer/TabContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("1_f7wj2")
 metadata/_tab_index = 0
@@ -152,26 +157,207 @@ alignment = 2
 layout_mode = 2
 text = "Descompilar"
 
-[node name="Execução Visual" type="TabBar" parent="VBoxContainer/TabContainer" node_paths=PackedStringArray("fluxo")]
-visible = false
+[node name="Execução Visual" type="TabBar" parent="VBoxContainer/TabContainer"]
 layout_mode = 2
 script = ExtResource("13_vadsj")
-fluxo = NodePath("Fluxo")
+tempo_fluxo = 0.865
 metadata/_tab_index = 1
 
-[node name="Image75" type="TextureRect" parent="VBoxContainer/TabContainer/Execução Visual"]
+[node name="Container" type="Panel" parent="VBoxContainer/TabContainer/Execução Visual"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Image75" type="TextureRect" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+visible = false
 self_modulate = Color(1, 0.152941, 1, 1)
-layout_mode = 0
+layout_mode = 2
 offset_left = 171.0
 offset_top = 16.0
 offset_right = 817.0
 offset_bottom = 432.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(1.29567, 1.29567)
 texture = ExtResource("13_16ics")
 
-[node name="Registradores" type="Control" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 1
-anchors_preset = 15
+[node name="Visualizador" type="TextureRect" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+offset_left = 176.0
+offset_top = -3.0
+offset_right = 822.0
+offset_bottom = 413.0
+scale = Vector2(1.28846, 1.28846)
+texture = ExtResource("13_drmqw")
+
+[node name="ProcessadorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+offset_left = 200.0
+offset_top = 39.0
+offset_right = 680.0
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PROCESSADOR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MemoriaLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+offset_left = 840.0
+offset_top = 39.0
+offset_right = 992.0
+offset_bottom = 62.0
+text = "MEMÓRIA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BusDadosLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+offset_left = 672.0
+offset_top = 108.0
+offset_right = 808.0
+offset_bottom = 157.0
+text = "BARRAMENTO DE DADOS"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="BusEnderecoLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+offset_left = 670.0
+offset_top = 179.0
+offset_right = 806.0
+offset_bottom = 228.0
+text = "BARRAMENTO DE ENDEREÇO"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="OrgaoLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+offset_left = 552.0
+offset_top = 333.0
+offset_right = 672.0
+offset_bottom = 485.0
+text = "ÓRGÃO DE COMANDO"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="EndselecLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+offset_left = 685.0
+offset_top = 341.0
+offset_right = 771.0
+offset_bottom = 364.0
+text = "End selec"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="LeimemLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+offset_left = 684.0
+offset_top = 389.0
+offset_right = 772.0
+offset_bottom = 412.0
+text = "Leimem"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="EcmemLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+offset_left = 684.0
+offset_top = 437.0
+offset_right = 772.0
+offset_bottom = 460.0
+text = "Ecmem"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="BusControleLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+offset_left = 685.0
+offset_top = 479.0
+offset_right = 845.0
+offset_bottom = 503.0
+text = "BUS DE CONTROLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ULALabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+offset_left = 208.0
+offset_top = 437.0
+offset_right = 240.0
+offset_bottom = 461.0
+text = "ULA"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="MemoriaEnderecoAnteriorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 848.0
+offset_top = 158.0
+offset_right = 920.0
+offset_bottom = 233.0
+text = "⋮
+⋮"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="MemoriaValorAnteriorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 920.0
+offset_top = 158.0
+offset_right = 992.0
+offset_bottom = 233.0
+text = "⋮
+⋮"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="MemoriaEnderecoPosteriorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 848.0
+offset_top = 258.0
+offset_right = 920.0
+offset_bottom = 333.0
+text = "⋮
+⋮"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="MemoriaValorPosteriorLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 920.0
+offset_top = 258.0
+offset_right = 992.0
+offset_bottom = 333.0
+text = "⋮
+⋮"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Registradores" type="Control" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 2
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 1.0
@@ -180,311 +366,607 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
-[node name="RegistradorALabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
-layout_mode = 0
-offset_left = 255.0
-offset_top = 112.0
-offset_right = 269.0
-offset_bottom = 135.0
+[node name="RegistradorALabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
+layout_mode = 2
+offset_left = 248.0
+offset_top = 132.0
+offset_right = 280.0
+offset_bottom = 164.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("14_1an5g")
+disabled = true
+text = "B
+"
+
+[node name="RegistradorAButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorALabel"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
+text = "00"
+
+[node name="RegistradorBLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
+layout_mode = 2
+offset_left = 248.0
+offset_top = 84.0
+offset_right = 280.0
+offset_bottom = 116.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "A"
 
-[node name="RegistradorAButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorBButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorBLabel"]
+unique_name_in_owner = true
 layout_mode = 2
-offset_left = 272.0
-offset_top = 101.0
-offset_right = 308.0
-offset_bottom = 143.0
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "00"
 
-[node name="RegistradorBLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorPCLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 255.0
-offset_top = 164.0
-offset_right = 269.0
-offset_bottom = 187.0
-text = "B"
-
-[node name="RegistradorBButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
-layout_mode = 2
-offset_left = 273.0
-offset_top = 153.0
-offset_right = 309.0
-offset_bottom = 195.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "00"
-
-[node name="RegistradorPCLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
-layout_mode = 0
-offset_left = 222.0
-offset_top = 216.0
-offset_right = 248.0
-offset_bottom = 239.0
+offset_left = 224.0
+offset_top = 180.0
+offset_right = 256.0
+offset_bottom = 212.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "PC"
 
-[node name="RegistradorPCButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorPCButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorPCLabel"]
+unique_name_in_owner = true
 layout_mode = 2
-offset_left = 252.0
-offset_top = 205.0
-offset_right = 308.0
-offset_bottom = 247.0
+offset_left = 32.0
+offset_right = 88.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0000"
 
-[node name="RegistradorIXLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorIXLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 221.0
-offset_top = 268.0
-offset_right = 247.0
-offset_bottom = 291.0
+offset_left = 224.0
+offset_top = 227.0
+offset_right = 256.0
+offset_bottom = 259.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "IX"
 
-[node name="RegistradorIXButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorIXButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorIXLabel"]
+unique_name_in_owner = true
 layout_mode = 2
-offset_left = 251.0
-offset_top = 257.0
-offset_right = 307.0
-offset_bottom = 299.0
+offset_left = 32.0
+offset_right = 88.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "6E35"
 
-[node name="RegistradorMARLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorMARLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 495.0
-offset_top = 240.0
-offset_right = 531.0
-offset_bottom = 263.0
+offset_left = 488.0
+offset_top = 228.0
+offset_right = 528.0
+offset_bottom = 260.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "MAR"
 
-[node name="RegistradorMARButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorMARButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorMARLabel"]
+unique_name_in_owner = true
 layout_mode = 2
-offset_left = 429.0
-offset_top = 256.0
-offset_right = 485.0
-offset_bottom = 298.0
+offset_left = -56.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0000"
 
-[node name="RegistradorPPLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorPPLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 222.0
-offset_top = 320.0
-offset_right = 248.0
-offset_bottom = 343.0
+offset_left = 224.0
+offset_top = 276.0
+offset_right = 256.0
+offset_bottom = 308.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "PP"
 
-[node name="RegistradorPPButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorPPButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorPPLabel"]
+unique_name_in_owner = true
 layout_mode = 2
-offset_left = 252.0
-offset_top = 309.0
-offset_right = 308.0
-offset_bottom = 351.0
+offset_left = 32.0
+offset_right = 88.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0000"
 
-[node name="RegistradorMBRLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorMBRLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 494.0
-offset_top = 131.0
-offset_right = 526.0
-offset_bottom = 154.0
+offset_left = 488.0
+offset_top = 84.0
+offset_right = 528.0
+offset_bottom = 116.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "MBR"
 
-[node name="RegistradorMBRButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorMBRButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorMBRLabel"]
+unique_name_in_owner = true
 layout_mode = 2
-offset_left = 449.0
-offset_top = 101.0
-offset_right = 486.0
-offset_bottom = 143.0
+offset_left = -32.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "00"
 
-[node name="RegistradorAUXLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorAUXLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 495.0
-offset_top = 175.0
-offset_right = 527.0
-offset_bottom = 198.0
+offset_left = 488.0
+offset_top = 180.0
+offset_right = 528.0
+offset_bottom = 212.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "AUX"
 
-[node name="RegistradorAUXButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorAUXButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorAUXLabel"]
+unique_name_in_owner = true
 layout_mode = 2
-offset_left = 448.0
-offset_top = 192.0
-offset_right = 485.0
-offset_bottom = 234.0
+offset_left = -32.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "00"
 
-[node name="RegistradorZLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorZLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 430.0
-offset_top = 378.0
-offset_right = 442.0
-offset_bottom = 403.0
+offset_left = 432.0
+offset_top = 348.0
+offset_right = 456.0
+offset_bottom = 380.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "Z"
 
-[node name="RegistradorZButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorZButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorZLabel"]
+unique_name_in_owner = true
 layout_mode = 2
-offset_left = 421.0
-offset_top = 328.0
-offset_right = 447.0
-offset_bottom = 370.0
+offset_top = -40.0
+offset_right = 24.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0"
 
-[node name="RegistradorNLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorNLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 454.0
-offset_top = 378.0
-offset_right = 467.0
-offset_bottom = 403.0
+offset_left = 456.0
+offset_top = 348.0
+offset_right = 480.0
+offset_bottom = 380.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "N"
 
-[node name="RegistradorNButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorNButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorNLabel"]
+unique_name_in_owner = true
 layout_mode = 2
-offset_left = 448.0
-offset_top = 328.0
-offset_right = 474.0
-offset_bottom = 370.0
+offset_top = -40.0
+offset_right = 24.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0"
 
-[node name="RegistradorCLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorCLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
 offset_left = 480.0
-offset_top = 378.0
-offset_right = 492.0
-offset_bottom = 403.0
+offset_top = 348.0
+offset_right = 504.0
+offset_bottom = 380.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "C"
 
-[node name="RegistradorCButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorCButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorCLabel"]
+unique_name_in_owner = true
 layout_mode = 2
-offset_left = 474.0
-offset_top = 328.0
-offset_right = 500.0
-offset_bottom = 370.0
+offset_top = -40.0
+offset_right = 24.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0"
 
-[node name="RegistradorOLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorOLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 506.0
-offset_top = 378.0
-offset_right = 519.0
-offset_bottom = 403.0
+offset_left = 504.0
+offset_top = 348.0
+offset_right = 528.0
+offset_bottom = 380.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "O"
 
-[node name="RegistradorOButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorOButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorOLabel"]
+unique_name_in_owner = true
 layout_mode = 2
-offset_left = 502.0
-offset_top = 328.0
-offset_right = 528.0
-offset_bottom = 370.0
+offset_top = -40.0
+offset_right = 24.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "0"
 
-[node name="RegistradorIRLabel" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorIRLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 0
-offset_left = 492.0
-offset_top = 442.0
-offset_right = 508.0
-offset_bottom = 465.0
+offset_left = 488.0
+offset_top = 412.0
+offset_right = 512.0
+offset_bottom = 444.0
+theme = ExtResource("14_1an5g")
+disabled = true
 text = "IR"
 
-[node name="RegistradorIRButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Registradores"]
+[node name="RegistradorIRButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorIRLabel"]
+unique_name_in_owner = true
 layout_mode = 0
-offset_left = 444.0
-offset_top = 431.0
-offset_right = 483.0
-offset_bottom = 473.0
+offset_left = -32.0
+offset_bottom = 32.0
+theme = ExtResource("15_qx21s")
+disabled = true
 text = "00"
 
-[node name="Linhas" type="Control" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 1
-anchors_preset = 15
+[node name="RegistradorULA1Button" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 224.0
+offset_top = 364.0
+offset_right = 272.0
+offset_bottom = 396.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
+text = "00"
+
+[node name="RegistradorULA2Button" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 296.0
+offset_top = 364.0
+offset_right = 344.0
+offset_bottom = 396.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
+text = "00"
+
+[node name="RegistradorULASaidaButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 264.0
+offset_top = 452.0
+offset_right = 312.0
+offset_bottom = 484.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
+text = "00"
+
+[node name="MemoriaEnderecoButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 856.0
+offset_top = 223.0
+offset_right = 912.0
+offset_bottom = 265.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
+text = "0000"
+
+[node name="MemoriaValorButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 936.0
+offset_top = 224.0
+offset_right = 976.0
+offset_bottom = 266.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("15_qx21s")
+disabled = true
+text = "00"
+
+[node name="Linhas" type="Control" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+unique_name_in_owner = true
+layout_mode = 2
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
-[node name="mover_pc_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(311, 225, 392, 225, 392, 281, 424, 281)
-width = 2.0
+[node name="mover_pc_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -28)
+points = PackedVector2Array(311, 225, 392, 225, 392, 270, 432, 270)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
+texture_mode = 1
 
-[node name="mover_mar_ao_endereco_de_memoria" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(488, 281, 840, 281)
-width = 2.0
+[node name="mover_mar_ao_endereco_de_memoria" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(16, -35)
+points = PackedVector2Array(512, 281, 840, 281)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="mover_valor_da_memoria_ao_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(952, 153, 952, 121, 496, 121)
-width = 2.0
+[node name="mover_valor_da_memoria_ao_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -20)
+points = PackedVector2Array(952, 149, 952, 121, 528, 121)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="transferir_mbr_para_ir" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(447, 122, 390, 122, 391, 454, 440, 454)
-width = 2.0
+[node name="transferir_mbr_para_ir" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -18)
+points = PackedVector2Array(456, 119, 392, 119, 392, 449, 456, 449)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="mover_valor_da_memoria_ao_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(490, 212, 549, 212, 549, 122, 952, 121, 952, 153)
-width = 2.0
+[node name="mover_valor_da_memoria_ao_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -28)
+points = PackedVector2Array(528, 227, 564, 227, 564, 129, 952, 129, 952, 157)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="transferir_mbr_para_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(442, 124, 313, 124)
-width = 2.0
+[node name="transferir_mbr_para_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -19)
+points = PackedVector2Array(456, 120, 312, 120)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="transferir_mbr_para_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(448, 121, 392, 121, 392, 177, 312, 177)
-width = 2.0
+[node name="transferir_mbr_para_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -28)
+points = PackedVector2Array(456, 129, 392, 129, 392, 177, 312, 177)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="transferir_a_para_alu_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(312, 121, 392, 121, 392, 369, 240, 369, 240, 385)
-width = 2.0
+[node name="transferir_a_para_alu_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -28)
+points = PackedVector2Array(312, 129, 392, 129, 392, 369, 248, 369, 248, 393)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="transferir_b_para_alu_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(311, 177, 392, 177, 392, 369, 320, 369, 320, 385)
-width = 2.0
+[node name="transferir_b_para_alu_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -28)
+points = PackedVector2Array(311, 177, 392, 177, 392, 369, 320, 369, 320, 393)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="transferir_alu_saida_para_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(312, 497, 392, 497, 392, 121, 312, 121)
-width = 2.0
+[node name="transferir_alu_saida_para_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -28)
+points = PackedVector2Array(312, 497, 392, 497, 392, 129, 312, 129)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="transferir_alu_saida_para_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
+[node name="transferir_alu_saida_para_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -28)
 points = PackedVector2Array(312, 497, 392, 497, 392, 177, 312, 177)
-width = 2.0
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="unir_mbr_ao_aux_e_mover_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-position = Vector2(0, 1)
-points = PackedVector2Array(448, 209, 392, 209, 392, 281, 424, 281)
-width = 2.0
+[node name="unir_mbr_ao_aux_e_mover_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -27)
+points = PackedVector2Array(456, 224, 392, 224, 392, 271, 432, 271)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="transferir_a_para_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(312, 121, 440, 121)
-width = 2.0
+[node name="transferir_a_para_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -19)
+points = PackedVector2Array(312, 120, 457, 120)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
+texture_mode = 1
 
-[node name="mover_mbr_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Linhas"]
-points = PackedVector2Array(496, 121, 952, 121, 952, 153)
-width = 2.0
+[node name="mover_mbr_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -20)
+points = PackedVector2Array(528, 121, 952, 121, 952, 149)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="Fluxo" type="ColorRect" parent="VBoxContainer/TabContainer/Execução Visual"]
-layout_mode = 0
-offset_left = -32.0
-offset_top = 1.0
-offset_right = -16.0
-offset_bottom = 18.0
-color = Color(1, 1, 0, 1)
+[node name="end_selec" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -27)
+points = PackedVector2Array(680, 400, 864, 400, 864, 378)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
+
+[node name="leimem" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -27)
+points = PackedVector2Array(680, 448, 880, 448, 880, 384)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
+
+[node name="ecmem" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+position = Vector2(0, -27)
+points = PackedVector2Array(680, 496, 896, 496, 896, 392)
+width = 15.0
+default_color = Color(0.384314, 0.384314, 0.384314, 1)
+
+[node name="fluxo_mover_pc_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(0, -28)
+points = PackedVector2Array(311, 225, 392, 225, 392, 225, 392, 270, 392, 270, 432, 270)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_mover_mar_ao_endereco_de_memoria" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(220, 22)
+points = PackedVector2Array(311, 224, 635, 224)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_mover_valor_da_memoria_ao_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(220, 22)
+points = PackedVector2Array(732, 107, 733, 78, 733, 78, 308, 79)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_transferir_mbr_para_ir" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(440, 72)
+points = PackedVector2Array(14, 29, -49, 29, -49, 29, -48, 360, -48, 360, 14, 359)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_mover_valor_da_memoria_ao_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(220, 22)
+points = PackedVector2Array(732, 106, 732, 78, 732, 78, 343, 80, 343, 80, 344, 176, 344, 176, 310, 176)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_transferir_mbr_para_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(220, 22)
+points = PackedVector2Array(236, 80, 93, 80)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_transferir_mbr_para_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(220, 22)
+points = PackedVector2Array(235, 79, 171, 79, 171, 79, 172, 127, 172, 127, 93, 127)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_transferir_alu_saida_para_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(220, 22)
+points = PackedVector2Array(95, 447, 172, 447, 172, 447, 172, 79, 172, 79, 94, 79)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_transferir_alu_saida_para_b" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(220, 22)
+points = PackedVector2Array(95, 447, 173, 447, 173, 447, 173, 127, 173, 127, 93, 127)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_unir_mbr_ao_aux_e_mover_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(220, 22)
+points = PackedVector2Array(234, 175, 172, 175, 172, 175, 172, 222, 172, 222, 211, 222)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_unir_mbr_ao_aux_e_mover_para_mar2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_unir_mbr_ao_aux_e_mover_para_mar"]
+points = PackedVector2Array(232, 79, 171, 78, 171, 78, 172, 176)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_transferir_a_para_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(220, 22)
+points = PackedVector2Array(95, 79, 236, 79)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_mover_mbr_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(220, 22)
+points = PackedVector2Array(312, 79, 732, 79, 732, 79, 732, 106)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_end_selec" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(220, 22)
+points = PackedVector2Array(461, 351, 644, 351, 644, 351, 644, 331)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_leimem" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(236, 70)
+points = PackedVector2Array(447, 352, 644, 351, 644, 351, 644, 289)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
+
+[node name="fluxo_ecmem" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+visible = false
+position = Vector2(253, 118)
+points = PackedVector2Array(428, 352, 644, 351, 644, 351, 644, 249)
+default_color = Color(0.94661, 0.865919, 0, 1)
+texture = ExtResource("16_hf3vw")
+texture_mode = 1
+joint_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -508,7 +990,7 @@ text = "0000"
 [node name="AvancarMicrocodigoButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 tooltip_text = "Executa o próximo microcódigo localizado pelo Contador de Programa e interrompe a execução."
-text = "Avançar microcódigo"
+text = "Avançar microoperação"
 
 [node name="AvancarInstrucaoButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2

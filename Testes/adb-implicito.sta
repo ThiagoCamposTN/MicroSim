@@ -1,0 +1,18 @@
+[inicio]
+registrador.b="8"
+registrador.pc="0"
+instrucoes=[
+	"ADB #FC",
+	"CAL EXIT"
+]
+memoria.base="res://MEMORIA.MEM"
+[fim]
+registrador.b="4"
+memoria = {
+    "000": "64",
+    "001": "FC",
+
+    "002": "58",
+    "003": "12",
+    "004": "00",
+}

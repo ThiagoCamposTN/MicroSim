@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://crnsucrjofr35"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_02vxr"]
+
+[resource]
+script = ExtResource("1_02vxr")
+nome = "Add in B"
+"mnemônico" = "ADB"
+"descrição" = "Adiciona ao registrador B o valor de um operando, e armazena o resultado nele mesmo (B)."
+microcodigos = Array[String](["mover_mar_ao_endereco_de_memoria", "mover_valor_da_memoria_ao_mbr", "transferir_b_para_alu_a", "transferir_mbr_para_alu_b", "adicao_alu_a_alu_b", "transferir_alu_saida_para_b"])
+direto = "54"
+imediato = "64"
+indexado = "74"
+indireto = "D4"
+pos_indexado = "E4"
+pre_indexado = "F4"
+implicito = ""

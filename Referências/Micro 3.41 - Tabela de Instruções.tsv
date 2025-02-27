@@ -1,6 +1,6 @@
 Nibble Superior	Nibble Inferior															
 	_0	_1	_2	_3	_4	_5	_6	_7	_8	_9	_A	_B	_C	_D	_E	_F
-0_	NOP			PHA	PPA	RET	INA	DEA	INX	DEX	SLA	SRA	SAA	CLD	CLR	NOA
+0_	NOP			PHA	PPA	RET	INA	DEA	INX	DEX	SLA	SRA	SAA	CLD	CRL	NOA
 1_	LDA 	STA 	ANA 	ORA 	ADA 	SUA 	ARA 	CPA 	LDX 	STX 	CPX #	LDP 	STP 			
 2_	LDA #		ANA #	ORA #	ADA #	SUA #	ARA #	CPA #	LDX #		CPX 	LDP #				
 3_	LDA , X	STA , X	ANA , X	ORA , X	ADA , X	SUA , X	ARA , X	CPA , X	LDX , X	STX , X	CPX , X	LDP , X	STP , X			
