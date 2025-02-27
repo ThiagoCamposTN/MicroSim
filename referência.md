@@ -1377,7 +1377,7 @@ Todos os 72 comandos existentes.
 * ~~ABA~~
 * ~~ADA~~
 * ~~ADB~~
-* ANA
+* ~~ANA~~
 * ANB
 * ARA
 * ARB

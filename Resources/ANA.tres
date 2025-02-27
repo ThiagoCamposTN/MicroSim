@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://c3cv3wc3wthbv"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_iujkq"]
+
+[resource]
+script = ExtResource("1_iujkq")
+nome = "And in A"
+"mnemônico" = "ANA"
+"descrição" = "Faz a função E lógico entre o registrador A e o operando, e armazena o resultado em A"
+microcodigos = Array[String](["mover_mar_ao_endereco_de_memoria", "mover_valor_da_memoria_ao_mbr", "transferir_a_para_alu_a", "transferir_mbr_para_alu_b", "realizar_e_logico_alu_a_alu_b", "transferir_alu_saida_para_a"])
+direto = "12"
+imediato = "22"
+indexado = "32"
+indireto = "92"
+pos_indexado = "B2"
+pre_indexado = "C2"
+implicito = ""
