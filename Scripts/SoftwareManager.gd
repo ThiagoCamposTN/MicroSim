@@ -32,41 +32,44 @@ func _process(_delta):
 			Fase.PARADO:
 				return
 			Fase.BUSCANDO:
-				pass
+				if instrucao_executada and unica_instrucao:
+					unica_instrucao 	= false
+					instrucao_executada = false
+					fase_atual 			= Fase.PARADO
+				else:
+					adicionar_instrucao_na_fila()
+					instrucao_executada = true
+					fase_atual 			= Fase.EXECUTANDO
 			Fase.EXECUTANDO:
 				if fila_instrucoes.size() == 0:
-					if instrucao_executada and unica_instrucao:
-						unica_instrucao 	= false
-						instrucao_executada = false
-						fase_atual = Fase.PARADO
-					else:
-						adicionar_instrucao_na_fila()
-						instrucao_executada = true
-				else:
-					var instrucao = fila_instrucoes.pop_front()
-					
-					if not Teste.teste_em_execucao:
-						print("Executando: ", instrucao)
+					fase_atual = Fase.BUSCANDO
+					return
+				
+				var instrucao = fila_instrucoes.pop_front()
+				
+				if not Teste.teste_em_execucao:
+					print("Executando: ", instrucao)
 
-					if CPU.has_method(instrucao):
-						CPU.call(instrucao)
+				if CPU.has_method(instrucao):
+					CPU.call(instrucao)
+				else:
+					if instrucao == "---":
+						pass
 					else:
-						if instrucao == "---":
-							pass
-						else:
-							self.call(instrucao)
-					
-					if unico_microcodigo:
-						fase_atual = Fase.PARADO
-						unico_microcodigo = false
+						self.call(instrucao)
+				
+				if unico_microcodigo:
+					fase_atual = Fase.PARADO
+					unico_microcodigo = false
+
+				microoperacao_executada.emit()
+				execucao_timer.start(time_delay)
 			_:
 				pass
-		microoperacao_executada.emit()
-		execucao_timer.start(time_delay)
 
 func executar_programa(endereco_inicial: Valor):
 	CPU.iniciar_registrador_pc(endereco_inicial)
-	fase_atual = Fase.EXECUTANDO
+	fase_atual = Fase.BUSCANDO
 
 func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: Valor):
 	var parte_memoria = Array()
@@ -113,13 +116,13 @@ func adicionar_instrucao_na_fila():
 	# O CO é incrementado em 1;
 	fila_instrucoes.push_back("incrementar_registrador_pc")
 
-	fila_instrucoes.push_back("adicionar_instrucao")
+	fila_instrucoes.push_back("decodificar_instrucao")
 	# Fim da instrução.
 	
 	# Fim da execução
 
 
-func adicionar_instrucao():
+func decodificar_instrucao():
 	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
 	var instrucao_descompilada: Instrucao = Compilador.descompilar(CPU.registrador_ir)
 	
