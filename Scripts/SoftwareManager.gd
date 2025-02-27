@@ -9,15 +9,13 @@ var fila_instrucoes 	: Array[String] = []
 
 var unica_instrucao 	: bool 			= false
 var instrucao_executada : bool 			= false
-var ultima_operacao		: String		= ""
 
 @export var time_delay 	: float 		= 0.1
 var execucao_timer		: Timer
 var config_inicial		: ConfigFile
 
-
-enum EstadoCPU {BUSCANDO, EXECUTANDO, PARADO}
-var estado_atual : EstadoCPU = EstadoCPU.PARADO
+enum Fase {BUSCANDO, EXECUTANDO, PARADO}
+var fase_atual : Fase = Fase.PARADO
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -30,55 +28,45 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if execucao_timer.is_stopped() or Teste.teste_em_execucao:
-		match estado_atual:
-			EstadoCPU.PARADO:
+		match fase_atual:
+			Fase.PARADO:
 				return
-			EstadoCPU.BUSCANDO:
-				if fila_instrucoes.size() == 0:
-					adicionar_instrucao_na_fila()
-					estado_atual = EstadoCPU.EXECUTANDO
-					return
-			EstadoCPU.EXECUTANDO:
-				if fila_instrucoes.size() == 0:
-					estado_atual = EstadoCPU.BUSCANDO
-					adicionar_instrucao()
-					
-					if unica_instrucao:
-						estado_atual = EstadoCPU.PARADO
-					return
-					
-		var instrucao = fila_instrucoes.pop_front()
-		ultima_operacao = instrucao
-		
-		if not Teste.teste_em_execucao:
-			print("Executando: ", instrucao)
-
-		if CPU.has_method(instrucao):
-			CPU.call(instrucao)
-		else:
-			if instrucao == "---":
+			Fase.BUSCANDO:
 				pass
-			else:
-				self.call(instrucao)
-		
-		if unico_microcodigo:
-			pausar_execução()
-			unico_microcodigo = false
+			Fase.EXECUTANDO:
+				if fila_instrucoes.size() == 0:
+					if instrucao_executada and unica_instrucao:
+						unica_instrucao 	= false
+						instrucao_executada = false
+						fase_atual = Fase.PARADO
+					else:
+						adicionar_instrucao_na_fila()
+						instrucao_executada = true
+				else:
+					var instrucao = fila_instrucoes.pop_front()
+					
+					if not Teste.teste_em_execucao:
+						print("Executando: ", instrucao)
 
-		if instrucao_executada and unica_instrucao:
-			pausar_execução()
-			unica_instrucao = false
-			instrucao_executada = false
-		else:
-			adicionar_instrucao_na_fila()
-			instrucao_executada = true
-		
+					if CPU.has_method(instrucao):
+						CPU.call(instrucao)
+					else:
+						if instrucao == "---":
+							pass
+						else:
+							self.call(instrucao)
+					
+					if unico_microcodigo:
+						fase_atual = Fase.PARADO
+						unico_microcodigo = false
+			_:
+				pass
 		microoperacao_executada.emit()
 		execucao_timer.start(time_delay)
 
 func executar_programa(endereco_inicial: Valor):
 	CPU.iniciar_registrador_pc(endereco_inicial)
-	estado_atual = EstadoCPU.BUSCANDO
+	fase_atual = Fase.EXECUTANDO
 
 func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: Valor):
 	var parte_memoria = Array()
@@ -124,6 +112,8 @@ func adicionar_instrucao_na_fila():
 
 	# O CO é incrementado em 1;
 	fila_instrucoes.push_back("incrementar_registrador_pc")
+
+	fila_instrucoes.push_back("adicionar_instrucao")
 	# Fim da instrução.
 	
 	# Fim da execução
@@ -357,7 +347,7 @@ func adicionar_instrucao():
 		fila_instrucoes.push_back(microcodigo)
 
 func finalizar_execucao():
-	self.pausar_execução()
+	fase_atual = Fase.PARADO
 	self.fila_instrucoes.clear() # todo: verificar se a lista não esvaziar sozinha é bug ou não
 	execucao_finalizada.emit()
 
@@ -365,6 +355,3 @@ func prepara_o_estado_inicial(emitir_sinal_de_finalização: bool = true):
 	Estado.carregar_estado()
 	# if emitir_sinal_de_finalização:
 	# 	self.inicialização_finalizada.emit()
-
-func pausar_execução():
-	estado_atual = EstadoCPU.PARADO
