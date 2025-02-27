@@ -1,7 +1,6 @@
 extends Node
 
 signal microoperacao_executada
-signal inicialização_finalizada
 signal execucao_finalizada
 
 var memory_file_path 	: String 		= ""
@@ -39,7 +38,10 @@ func _process(_delta):
 			if CPU.has_method(instrucao):
 				CPU.call(instrucao)
 			else:
-				self.call(instrucao)
+				if instrucao == "---":
+					pass
+				else:
+					self.call(instrucao)
 			
 			if unico_microcodigo:
 				pausar_execução()
@@ -85,6 +87,9 @@ func compilar_linha_em_bytes(linha: String) -> PackedByteArray:
 func adicionar_instrucao_na_fila():
 	# Coloca todos os microcódigos necessários para a execução de uma instrução na fila
 	# Inicia-se a fase de acesso à instrução;
+
+	# Início da instrução
+	fila_instrucoes.push_back("---")
 
 	# Transferência do CO (Contador Ordinal) para o RAD (Registrador de Endereço);
 	fila_instrucoes.push_back("mover_pc_para_mar")

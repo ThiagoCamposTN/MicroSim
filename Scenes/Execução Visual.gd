@@ -1,9 +1,30 @@
 extends TabBar
 
-var registradores_interagindo : Array[Button] = []
-var tweens			: Array[Tween]
-@export var fluxo 	: ColorRect
-var fluxo_tween		: Tween
+var registradores_interagindo 	: Array[Button] = []
+var tweens						: Array[Tween]
+
+@export var fluxo 				: ColorRect
+var fluxo_tween					: Tween
+@export var tempo_fluxo			: float = 1
+
+var fluxo_ligado : Node2D
+
+@onready var registradores_nos = {
+	"A": %RegistradorAButton,
+	"B": %RegistradorBButton,
+	"PC": %RegistradorPCButton,
+	"IX": %RegistradorIXButton,
+	"MAR": %RegistradorMARButton,
+	"PP": %RegistradorPPButton,
+	"MBR": %RegistradorMBRButton,
+	"Z": %RegistradorZButton,
+	"N": %RegistradorNButton,
+	"C": %RegistradorCButton,
+	"O": %RegistradorOButton,
+	"IR": %RegistradorIRButton,
+	"MemoriaEndereco": %MemoriaEnderecoButton,
+	"MemoriaValor": %MemoriaValorButton
+}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,48 +48,73 @@ func _process(delta):
 	pass
 
 func atualizar_linha():
-	if SoftwareManager.fila_instrucoes.size() == 0:
-		return
-	if not SoftwareManager.ultima_operacao:
-		return
-	
 	# Resolvendo caixas
 	apagar_tweens()
 	
-	if not CPU.has_method(SoftwareManager.ultima_operacao):
+	if SoftwareManager.fila_instrucoes.size() == 0:
+		return
+	if not SoftwareManager.fila_instrucoes[0]:
 		return
 	
-	match SoftwareManager.ultima_operacao:
-		"mover_pc_para_mar":
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorPCButton"))
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorMARButton"))
-		"mover_mar_ao_endereco_de_memoria":
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorMARButton"))
-		"mover_valor_da_memoria_ao_mbr":
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorMBRButton"))
-		"transferir_mbr_para_ir":
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorMBRButton"))
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorIRButton"))
-		"incrementar_registrador_pc":
-			registradores_interagindo.append(self.get_node("Registradores/RegistradorPCButton"))
+	if not CPU.has_method(SoftwareManager.fila_instrucoes[0]):
+		return
 	
+	remover_fluxos()
+	match SoftwareManager.fila_instrucoes[0]:
+		"mover_pc_para_mar":
+			registradores_interagindo.append(registradores_nos["PC"])
+			registradores_interagindo.append(registradores_nos["MAR"])
+		"mover_mar_ao_endereco_de_memoria":
+			registradores_interagindo.append(registradores_nos["MAR"])
+			registradores_interagindo.append(registradores_nos["MemoriaEndereco"])
+		"mover_valor_da_memoria_ao_mbr":
+			var valores = obter_info_memorias()
+			remover_fluxos()
+			# Resolvendo animação de leitura da memória
+			var caminho_fluxo_linha = %Linhas.get_node("fluxo_end_selec")
+			caminho_fluxo_linha.visible = true
+			await get_tree().create_timer(1).timeout
+			caminho_fluxo_linha.visible = false
+			
+			%MemoriaEnderecoAnteriorLabel.text = valores[0]
+			%MemoriaEnderecoButton.text = valores[1]
+			%MemoriaEnderecoPosteriorLabel.text = valores[2]
+			
+			caminho_fluxo_linha = %Linhas.get_node("fluxo_leimem")
+			caminho_fluxo_linha.visible = true
+			await get_tree().create_timer(1).timeout
+			caminho_fluxo_linha.visible = false
+			
+			%MemoriaValorAnteriorLabel.text = valores[3]
+			%MemoriaValorButton.text = valores[4]
+			%MemoriaValorPosteriorLabel.text = valores[5]
+			
+			await get_tree().create_timer(1).timeout
+			
+			registradores_interagindo.append(registradores_nos["MemoriaValor"])
+			registradores_interagindo.append(registradores_nos["MBR"])
+		"transferir_mbr_para_ir":
+			registradores_interagindo.append(registradores_nos["MBR"])
+			registradores_interagindo.append(registradores_nos["IR"])
+		"incrementar_registrador_pc":
+			registradores_interagindo.append(registradores_nos["PC"])
+
 	acender_registradores_interagindo()
 	
 	# Resolvendo linhas
-	var caminho_linha = "Linhas/" + SoftwareManager.ultima_operacao
+	if SoftwareManager.fila_instrucoes.size() > 0:
+		var caminho_linha = %Linhas.get_node(SoftwareManager.fila_instrucoes[0])
+		var caminho_fluxo_linha = %Linhas.get_node("fluxo_" + SoftwareManager.fila_instrucoes[0])
+		
+		if not caminho_linha:
+			return
 	
-	if not self.has_node(caminho_linha):
-		return
-	
-	resetar_linhas()
-	#var no : Line2D = self.get_node(caminho_linha)
-	#no.default_color = Color.CYAN
-	caminhar_fluxo(get_node(caminho_linha))
+		caminhar_fluxo(caminho_fluxo_linha)
 
 func acender_registradores_interagindo() -> void:
 	for reg in registradores_interagindo:
 		var tw = create_tween()
-		tw.tween_property(reg, "modulate", Color.RED, 0.5).set_trans(Tween.TRANS_LINEAR)
+		tw.tween_property(reg, "modulate", Color.DARK_RED, 0.5).set_trans(Tween.TRANS_LINEAR)
 		tw.tween_property(reg, "modulate", Color.WHITE, 0.5).set_trans(Tween.TRANS_LINEAR)
 		tw.set_loops()
 		tweens.append(tw)
@@ -81,58 +127,74 @@ func apagar_tweens():
 		for reg in registradores_interagindo:
 			reg.modulate = Color.WHITE
 		registradores_interagindo.clear()
-
-func resetar_linhas():
-	for no : Line2D in self.get_node("Linhas").get_children():
-		no.default_color = Color.WHITE
-		no.default_color.a = 0.5
+	
+	if fluxo_tween:
+		fluxo_tween.kill()
+		fluxo.visible = false
 
 func atualizar_registrador(registrador: String):
 	match registrador:
 		"A":
-			get_node("Registradores/RegistradorAButton").text = CPU.registrador_a.como_hex(2)
+			registradores_nos["A"].text = CPU.registrador_a.como_hex(2)
 		"B":
-			get_node("Registradores/RegistradorBButton").text = CPU.registrador_b.como_hex(2)
+			registradores_nos["B"].text = CPU.registrador_b.como_hex(2)
 		"PC":
-			get_node("Registradores/RegistradorPCButton").text = CPU.registrador_pc.como_hex(4)
+			registradores_nos["PC"].text = CPU.registrador_pc.como_hex(4)
 		"IX":
-			get_node("Registradores/RegistradorIXButton").text = CPU.registrador_ix.como_hex(4)
+			registradores_nos["IX"].text = CPU.registrador_ix.como_hex(4)
 		"MAR":
-			get_node("Registradores/RegistradorMARButton").text = CPU.registrador_mar.como_hex(4)
+			registradores_nos["MAR"].text = CPU.registrador_mar.como_hex(4)
 		"PP":
-			get_node("Registradores/RegistradorPPButton").text = CPU.registrador_pp.como_hex(4)
+			registradores_nos["PP"].text = CPU.registrador_pp.como_hex(4)
 		"MBR":
-			get_node("Registradores/RegistradorMBRButton").text = CPU.registrador_mbr.como_hex(2)
+			registradores_nos["MBR"].text = CPU.registrador_mbr.como_hex(2)
 		"Z":
-			get_node("Registradores/RegistradorZButton").text = CPU.flag_z.como_hex(1)
+			registradores_nos["Z"].text = CPU.flag_z.como_hex(1)
 		"N":
-			get_node("Registradores/RegistradorNButton").text = CPU.flag_n.como_hex(1)
+			registradores_nos["N"].text = CPU.flag_n.como_hex(1)
 		"C":
-			get_node("Registradores/RegistradorCButton").text = CPU.flag_c.como_hex(1)
+			registradores_nos["C"].text = CPU.flag_c.como_hex(1)
 		"O":
-			get_node("Registradores/RegistradorOButton").text = CPU.flag_o.como_hex(1)
+			registradores_nos["O"].text = CPU.flag_o.como_hex(1)
 		"IR":
-			get_node("Registradores/RegistradorIRButton").text = CPU.registrador_ir.como_hex(2)
+			registradores_nos["IR"].text = CPU.registrador_ir.como_hex(2)
 
-func caminhar_fluxo(caminho: Line2D):
-	var tempo_caminho = 1 # segundos
-	if fluxo_tween:
-		fluxo_tween.kill()
+func caminhar_fluxo(linha_fluxo: Line2D):
+	if not linha_fluxo:
+		return
 	
-	var distancia_total = 0
-	for i in range(0, caminho.points.size()):
-		if i == 0:
-			continue
-		else:
-			distancia_total += caminho.points[i].distance_to(caminho.points[i-1])
+	linha_fluxo.visible = true
+	fluxo_ligado = linha_fluxo
+
+func remover_fluxos():
+	if fluxo_ligado:
+		fluxo_ligado.visible = false
+
+func obter_info_memorias():
+	var valor = Memoria.endereco_selecionado.como_hex(4)
+	var valor_conteudo = Memoria.ler_conteudo_no_endereco_selecionado().como_hex(2)
 	
-	var tempo_por_distancia = tempo_caminho/distancia_total
+	var dois_antes: Valor = Valor.new(0)
+	var um_antes: Valor = Valor.new(0)
+	var um_depois: Valor = Valor.new(0)
+	var dois_depois: Valor = Valor.new(0)
 	
-	fluxo_tween = create_tween()
-	for i in range(0, caminho.points.size()):
-		if i == 0:
-			fluxo_tween.tween_property(fluxo, "position", caminho.points[i], 0.5).set_trans(Tween.TRANS_LINEAR).from(caminho.points[0])
-		else:
-			var distancia = caminho.points[i].distance_to(caminho.points[i-1])
-			fluxo_tween.tween_property(fluxo, "position", caminho.points[i], distancia*tempo_por_distancia).set_trans(Tween.TRANS_LINEAR)
-	fluxo_tween.set_loops()
+	if Memoria.endereco_selecionado.como_int() - 1 >= 0:
+		um_antes = Valor.novo_de_int(Memoria.endereco_selecionado.como_int() - 1)
+	
+	if Memoria.endereco_selecionado.como_int() - 2 >= 0:
+		dois_antes = Valor.novo_de_int(Memoria.endereco_selecionado.como_int() - 2)
+	
+	if Memoria.endereco_selecionado.como_int() + 1 <= Memoria.TAMANHO_MEMORIA - 1:
+		um_depois = Valor.novo_de_int(Memoria.endereco_selecionado.como_int() + 1)
+	
+	if Memoria.endereco_selecionado.como_int() + 2 <= Memoria.TAMANHO_MEMORIA - 1:
+		dois_depois = Valor.novo_de_int(Memoria.endereco_selecionado.como_int() + 2)
+	
+	var texto_antes = dois_antes.como_hex(4) + "\n" + um_antes.como_hex(4)
+	var texto_depois = um_depois.como_hex(4) + "\n" + dois_depois.como_hex(4)
+	
+	var texto_conteudo_antes = Memoria.ler_conteudo_no_endereco(dois_antes).como_hex() + "\n" + Memoria.ler_conteudo_no_endereco(um_antes).como_hex()
+	var texto_conteudo_depois = Memoria.ler_conteudo_no_endereco(um_depois).como_hex() + "\n" + Memoria.ler_conteudo_no_endereco(dois_depois).como_hex()
+	
+	return [texto_antes, valor, texto_depois, texto_conteudo_antes, valor_conteudo, texto_conteudo_depois]
