@@ -7,15 +7,14 @@ var memory_file_path 	: String 		= ""
 var unico_microcodigo 	: bool 			= false
 var fila_instrucoes 	: Array[String] = []
 
-var unica_instrucao 	: bool 			= false
-var instrucao_executada : bool 			= false
-
 @export var time_delay 	: float 		= 0.1
 var execucao_timer		: Timer
 var config_inicial		: ConfigFile
 
-enum Fase {BUSCANDO, EXECUTANDO, PARADO}
-var fase_atual : Fase = Fase.PARADO
+enum Fase {BUSCA, EXECUCAO, TERMINO}
+enum ModoExecucao {UNICO_MICROCODIGO, UNICA_INSTRUCAO, TUDO}
+var fase_atual : Fase = Fase.TERMINO
+var modo_atual : ModoExecucao = ModoExecucao.TUDO
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,22 +28,20 @@ func _ready():
 func _process(_delta):
 	if execucao_timer.is_stopped() or Teste.teste_em_execucao:
 		match fase_atual:
-			Fase.PARADO:
+			Fase.TERMINO:
 				return
-			Fase.BUSCANDO:
-				if instrucao_executada and unica_instrucao:
-					unica_instrucao 	= false
-					instrucao_executada = false
-					fase_atual 			= Fase.PARADO
-				else:
-					adicionar_instrucao_na_fila()
-					instrucao_executada = true
-					fase_atual 			= Fase.EXECUTANDO
-			Fase.EXECUTANDO:
+			Fase.BUSCA:
 				if fila_instrucoes.size() == 0:
-					fase_atual = Fase.BUSCANDO
+					adicionar_instrucao_na_fila()
+				fase_atual 			= Fase.EXECUCAO
+			Fase.EXECUCAO:
+				if fila_instrucoes.size() == 0:
+					if self.modo_atual == ModoExecucao.UNICA_INSTRUCAO:
+						fase_atual = Fase.TERMINO
+					else:
+						fase_atual = Fase.BUSCA
 					return
-				
+
 				var instrucao = fila_instrucoes.pop_front()
 				
 				if not Teste.teste_em_execucao:
@@ -58,18 +55,18 @@ func _process(_delta):
 					else:
 						self.call(instrucao)
 				
-				if unico_microcodigo:
-					fase_atual = Fase.PARADO
-					unico_microcodigo = false
+				if self.modo_atual == ModoExecucao.UNICO_MICROCODIGO:
+					self.fase_atual = Fase.TERMINO
 
 				microoperacao_executada.emit()
 				execucao_timer.start(time_delay)
 			_:
 				pass
 
-func executar_programa(endereco_inicial: Valor):
+func executar_programa(endereco_inicial: Valor, modo: ModoExecucao = ModoExecucao.TUDO):
 	CPU.iniciar_registrador_pc(endereco_inicial)
-	fase_atual = Fase.BUSCANDO
+	self.fase_atual = Fase.BUSCA
+	self.modo_atual = modo
 
 func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: Valor):
 	var parte_memoria = Array()
@@ -350,7 +347,7 @@ func decodificar_instrucao():
 		fila_instrucoes.push_back(microcodigo)
 
 func finalizar_execucao():
-	fase_atual = Fase.PARADO
+	fase_atual = Fase.TERMINO
 	self.fila_instrucoes.clear() # todo: verificar se a lista não esvaziar sozinha é bug ou não
 	execucao_finalizada.emit()
 
