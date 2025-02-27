@@ -13,8 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://mit3rrgdrhcd" path="res://Referências/image75.png" id="13_16ics"]
 [ext_resource type="Texture2D" uid="uid://davnw4dx52nay" path="res://Imagens/Visualizador.svg" id="13_drmqw"]
 [ext_resource type="Script" path="res://Scenes/Execução Visual.gd" id="13_vadsj"]
-[ext_resource type="Theme" uid="uid://i8gb465gdjtb" path="res://Themes/registrador_label.tres" id="14_1an5g"]
-[ext_resource type="Theme" uid="uid://61k2envomkcs" path="res://Themes/visual_interpreter.tres" id="15_qx21s"]
+[ext_resource type="Theme" uid="uid://hlg41xdamtvq" path="res://Themes/registrador_label.tres" id="14_1an5g"]
+[ext_resource type="Theme" uid="uid://co6m50csib0ee" path="res://Themes/visual_interpreter.tres" id="15_qx21s"]
 [ext_resource type="Texture2D" uid="uid://bs736r8h6l41v" path="res://Imagens/triangulo.tres" id="16_hf3vw"]
 
 [node name="Aplicação" type="Control"]
