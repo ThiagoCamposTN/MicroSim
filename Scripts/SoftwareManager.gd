@@ -2,6 +2,7 @@ extends Node
 
 signal microoperacao_executada
 signal execucao_finalizada
+signal mudanca_de_fase
 
 var memory_file_path 	: String 		= ""
 var unico_microcodigo 	: bool 			= false
@@ -11,10 +12,11 @@ var fila_instrucoes 	: Array[String] = []
 var execucao_timer		: Timer
 var config_inicial		: ConfigFile
 
-enum Fase {BUSCA, EXECUCAO, TERMINO}
+enum Estagio {PREPARACAO, OPERACAO, TERMINO}
+enum Fase {BUSCA, DECODIFICACAO, EXECUCAO}
 enum ModoExecucao {UNICO_MICROCODIGO, UNICA_INSTRUCAO, TUDO}
-var fase_atual : Fase = Fase.TERMINO
-var modo_atual : ModoExecucao = ModoExecucao.TUDO
+var estagio_atual 	: Estagio		= Estagio.TERMINO
+var modo_atual 		: ModoExecucao	= ModoExecucao.TUDO
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,45 +29,48 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if execucao_timer.is_stopped() or Teste.teste_em_execucao:
-		match fase_atual:
-			Fase.TERMINO:
+		match estagio_atual:
+			Estagio.TERMINO:
 				return
-			Fase.BUSCA:
+			Estagio.PREPARACAO:
 				if fila_instrucoes.size() == 0:
-					adicionar_instrucao_na_fila()
-				fase_atual 			= Fase.EXECUCAO
-			Fase.EXECUCAO:
+					preparar_proxima_instrucao()
+				estagio_atual = Estagio.OPERACAO
+			Estagio.OPERACAO:
 				if fila_instrucoes.size() == 0:
 					if self.modo_atual == ModoExecucao.UNICA_INSTRUCAO:
-						fase_atual = Fase.TERMINO
+						estagio_atual = Estagio.TERMINO
 					else:
-						fase_atual = Fase.BUSCA
+						estagio_atual = Estagio.PREPARACAO
 					return
 
-				var instrucao = fila_instrucoes.pop_front()
-				
-				if not Teste.teste_em_execucao:
-					print("Executando: ", instrucao)
-
-				if CPU.has_method(instrucao):
-					CPU.call(instrucao)
-				else:
-					if instrucao == "---":
-						pass
-					else:
-						self.call(instrucao)
+				executar_proxima_microoperacao()
 				
 				if self.modo_atual == ModoExecucao.UNICO_MICROCODIGO:
-					self.fase_atual = Fase.TERMINO
+					self.estagio_atual = Estagio.TERMINO
 
 				microoperacao_executada.emit()
 				execucao_timer.start(time_delay)
 			_:
 				pass
 
+func executar_proxima_microoperacao():
+	var instrucao = fila_instrucoes.pop_front()
+				
+	if not Teste.teste_em_execucao:
+		print("Executando: ", instrucao)
+
+	if CPU.has_method(instrucao):
+		CPU.call(instrucao)
+	else:
+		if instrucao == "---":
+			self.mudanca_de_fase.emit(Fase.BUSCA)
+		else:
+			self.call(instrucao)
+
 func executar_programa(endereco_inicial: Valor, modo: ModoExecucao = ModoExecucao.TUDO):
 	CPU.iniciar_registrador_pc(endereco_inicial)
-	self.fase_atual = Fase.BUSCA
+	self.estagio_atual = Estagio.PREPARACAO
 	self.modo_atual = modo
 
 func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: Valor):
@@ -91,7 +96,7 @@ func compilar_linha_em_bytes(linha: String) -> PackedByteArray:
 	
 	return instrucao.instrucao_em_bytes()
 
-func adicionar_instrucao_na_fila():
+func preparar_proxima_instrucao():
 	# Coloca todos os microcódigos necessários para a execução de uma instrução na fila
 	# Inicia-se a fase de acesso à instrução;
 
@@ -114,10 +119,6 @@ func adicionar_instrucao_na_fila():
 	fila_instrucoes.push_back("incrementar_registrador_pc")
 
 	fila_instrucoes.push_back("decodificar_instrucao")
-	# Fim da instrução.
-	
-	# Fim da execução
-
 
 func decodificar_instrucao():
 	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
@@ -129,7 +130,7 @@ func decodificar_instrucao():
 		finalizar_execucao()
 		return
 	
-	# Fase de pesquisa e endereço do operando
+	# Estagio de pesquisa e endereço do operando
 	match instrucao_descompilada.enderecamento:
 		Instrucao.Enderecamentos.POS_INDEXADO:
 			# Transferência de PC para MAR
@@ -337,7 +338,7 @@ func decodificar_instrucao():
 	# checando se houve o término do programa
 	fila_instrucoes.push_back("validar_fim_de_execucao")
 	
-	# Fase de execução
+	# Estagio de execução
 	# Busca a lista de microcodigos enumeradas no recurso do Operador
 	var microcodigos = Operacoes.get_microcodigos(instrucao_descompilada.mnemonico)
 
@@ -345,13 +346,22 @@ func decodificar_instrucao():
 		# Chama a função declarada em CPU que tem nome equivalente ao especificado nos microcodigos do operador
 		# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
 		fila_instrucoes.push_back(microcodigo)
+	
+	self.mudanca_de_fase.emit(Fase.DECODIFICACAO)
 
 func finalizar_execucao():
-	fase_atual = Fase.TERMINO
+	estagio_atual = Estagio.TERMINO
 	self.fila_instrucoes.clear() # todo: verificar se a lista não esvaziar sozinha é bug ou não
 	execucao_finalizada.emit()
 
-func prepara_o_estado_inicial(emitir_sinal_de_finalização: bool = true):
+func prepara_o_estado_inicial(_emitir_sinal_de_finalização: bool = true):
 	Estado.carregar_estado()
 	# if emitir_sinal_de_finalização:
 	# 	self.inicialização_finalizada.emit()
+
+func validar_fim_de_execucao() -> void:
+	self.mudanca_de_fase.emit(Fase.EXECUCAO)
+
+	# Se a instrução atual for CAL EXIT, finalizar a execução
+	if CPU.eh_fim_de_execucao():
+		self.finalizar_execucao()

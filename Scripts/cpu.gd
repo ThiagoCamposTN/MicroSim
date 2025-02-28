@@ -273,12 +273,10 @@ func atualizar_flag_o(novo_valor: Valor) -> void:
 	self.flag_o = novo_valor
 	flag_o_foi_atualizada.emit()
 
-func validar_fim_de_execucao() -> void:
-	# Se a instrução atual for CAL EXIT, finalizar a execução
-	if (self.registrador_ir.como_int() == 0x58) and (self.registrador_mar.como_int() == 0x1200):
-		SoftwareManager.finalizar_execucao()
-
 func realizar_complemento_a_dois_na_alu() -> void:
 	var resultado = ~self.alu_entrada_a.como_int() + 1
 	var valor = Valor.new(resultado & 0xFF)
 	atualizar_alu_saida(valor)
+
+func eh_fim_de_execucao() -> bool:
+	return (CPU.registrador_ir.como_int() == 0x58) and (CPU.registrador_mar.como_int() == 0x1200)
