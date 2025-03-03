@@ -369,15 +369,14 @@ metadata/_edit_lock_ = true
 [node name="RegistradorALabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 2
 offset_left = 248.0
-offset_top = 132.0
+offset_top = 84.0
 offset_right = 280.0
-offset_bottom = 164.0
+offset_bottom = 116.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_1an5g")
 disabled = true
-text = "B
-"
+text = "A"
 
 [node name="RegistradorAButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorALabel"]
 unique_name_in_owner = true
@@ -391,19 +390,20 @@ theme = ExtResource("15_qx21s")
 disabled = true
 text = "00"
 
-[node name="RegistradorBLabel" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
+[node name="RegistradorBLabel2" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 layout_mode = 2
 offset_left = 248.0
-offset_top = 84.0
+offset_top = 132.0
 offset_right = 280.0
-offset_bottom = 116.0
+offset_bottom = 164.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_1an5g")
 disabled = true
-text = "A"
+text = "B
+"
 
-[node name="RegistradorBButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorBLabel"]
+[node name="RegistradorBButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores/RegistradorBLabel2"]
 unique_name_in_owner = true
 layout_mode = 2
 offset_left = 32.0
