@@ -199,6 +199,18 @@ func transferir_b_para_a() -> void:
 func transferir_mar_para_pp() -> void:
 	atualizar_registrador_pp(self.registrador_mar)
 
+func transferir_ix_para_a() -> void:
+	var resultado: PackedStringArray = self.registrador_ix.como_hex_array()
+	var nibble_inferior: String = resultado[-1]
+	var valor: Valor = Valor.novo_de_hex(nibble_inferior)
+	atualizar_registrador_a(valor)
+
+func transferir_ix_para_b() -> void:
+	var resultado: PackedStringArray = self.registrador_ix.como_hex_array()
+	var nibble_superior: String = resultado[0]
+	var valor: Valor = Valor.novo_de_hex(nibble_superior)
+	atualizar_registrador_b(valor)
+
 func adicao_alu_a_alu_b() -> void:
 	# TODO: Lidar com flags e overflow
 	var resultado: Valor = Valor.novo_de_valor(self.alu_entrada_a)

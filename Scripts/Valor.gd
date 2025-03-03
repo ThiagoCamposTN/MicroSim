@@ -26,10 +26,17 @@ func como_bin() -> String:
 	return bin_str
 
 func como_byte_array(casas:int = 2) -> PackedByteArray:
-	var valor_em_hex: String = self.como_hex(casas)
+	var hex_array = self.como_hex_array(casas)
 	var resultado : PackedByteArray
+	for i in hex_array:
+		resultado.push_back(Valor.hex_para_int(i))
+	return resultado
+
+func como_hex_array(casas:int = 2) -> PackedStringArray:
+	var valor_em_hex: String = self.como_hex(casas)
+	var resultado : PackedStringArray
 	for i in range(0, valor_em_hex.length(), 2):
-		resultado.push_back(Valor.hex_para_int(((valor_em_hex.substr(i, 2)))))
+		resultado.push_back(valor_em_hex.substr(i, 2))
 	return resultado
 
 func somar_valor(outro: Valor) -> void:
@@ -43,6 +50,9 @@ func igual(outro: Valor) -> bool:
 
 func limitar_entre(minimo: int, maximo: int) -> void:
 	self._valor = clampi(self._valor, minimo, maximo)
+
+func nibble_superior():
+	pass
 
 static func novo_de_int(valor_int: int) -> Valor:
 	return Valor.new(valor_int)
