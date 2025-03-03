@@ -1,0 +1,19 @@
+[inicio]
+registrador.pc="0"
+registrador.pp="0FFF"
+memoria.base="res://MEMORIA.MEM"
+instrucoes=[
+	"LDP EFF",
+	"CAL EXIT"
+]
+
+[fim]
+registrador.pp="0EFF"
+memoria = {
+    "000": "1B",
+    "001": "0E",
+    "002": "FF",
+    "003": "58",
+    "004": "12",
+    "005": "00",
+}

@@ -1407,7 +1407,7 @@ Todos os 72 comandos existentes.
 * INX
 * ~~LDA~~
 * ~~LDB~~
-* LDP
+* ~~LDP~~
 * LDX
 * ~~NOA~~
 * NOB
