@@ -153,6 +153,11 @@ func unir_mbr_ao_aux_e_mover_para_pc() -> void:
 	resultado.somar_int(self.registrador_mbr.como_int() << 8)
 	atualizar_registrador_pc(resultado)
 
+func unir_mbr_ao_aux_e_mover_para_ix() -> void:
+	var resultado: Valor = Valor.novo_de_valor(self.registrador_mbr)
+	resultado.somar_int(self.registrador_aux.como_int() << 8)
+	atualizar_registrador_ix(resultado)
+
 func dividir_ix_e_mover_para_mbr_e_aux() -> void:
 	var registrador: PackedByteArray = self.registrador_ix.como_byte_array(4)
 	atualizar_registrador_aux(Valor.new(registrador[0]))
@@ -210,6 +215,9 @@ func transferir_ix_para_b() -> void:
 	var nibble_superior: String = resultado[0]
 	var valor: Valor = Valor.novo_de_hex(nibble_superior)
 	atualizar_registrador_b(valor)
+
+func transferir_b_para_aux() -> void:
+	atualizar_registrador_aux(self.registrador_b)
 
 func adicao_alu_a_alu_b() -> void:
 	# TODO: Lidar com flags e overflow

@@ -1,0 +1,19 @@
+[inicio]
+registrador.pc="0"
+registrador.a="04"
+registrador.b="87"
+registrador.ix="6E35"
+memoria.base="res://MEMORIA.MEM"
+instrucoes=[
+	"TDX",
+	"CAL EXIT"
+]
+
+[fim]
+memoria = {
+    "000": "80",
+    "001": "58",
+    "002": "12",
+    "003": "00",
+}
+registrador.ix="8704"

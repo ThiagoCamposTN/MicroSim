@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://bvbay37hk03kh"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_jvkpp"]
+
+[resource]
+script = ExtResource("1_jvkpp")
+nome = "Transfer double to IX"
+"mnemônico" = "TDX"
+"descrição" = "Recopia o \"registrador duplo\" B:A e armazena no registrador IX."
+microcodigos = ["transferir_a_para_mbr", "transferir_b_para_aux", "unir_mbr_ao_aux_e_mover_para_ix"]
+direto = ""
+imediato = ""
+indexado = ""
+indireto = ""
+pos_indexado = ""
+pre_indexado = ""
+implicito = "80"

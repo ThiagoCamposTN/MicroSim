@@ -1444,7 +1444,7 @@ Todos os 72 comandos existentes.
 * DIV
 * SED
 * SER
-* TDX
+* ~~TDX~~
 * ~~TXD~~
 
 ## Operações Ilegais
