@@ -6,11 +6,10 @@ signal execucao_finalizada
 var memory_file_path 	: String 		= ""
 var unico_microcodigo 	: bool 			= false
 var em_execução 		: bool 			= false
-var fila_instrucoes 	: Array[String] = []
+var fila_instrucoes 	: Array 		= []
 
 var unica_instrucao 	: bool 			= false
 var instrucao_executada : bool 			= false
-var ultima_operacao		: String		= ""
 
 @export var time_delay 	: float 		= 0.1
 var execucao_timer		: Timer
@@ -29,9 +28,21 @@ func _ready():
 func _process(_delta):
 	if em_execução and (execucao_timer.is_stopped() or Teste.teste_em_execucao):
 		if fila_instrucoes.size() > 0:
-			var instrucao = fila_instrucoes.pop_front()
-			ultima_operacao = instrucao
-			
+			var _instrucao = fila_instrucoes.pop_front()
+			var instrucao: String
+
+			match typeof(_instrucao):
+				TYPE_STRING:
+					instrucao = _instrucao
+				TYPE_DICTIONARY:
+					for condicional in _instrucao:
+						if CPU.call(condicional):
+							for _microcodigo in _instrucao[condicional]:
+								fila_instrucoes.push_front(_microcodigo)
+					return
+				_:
+					push_error("Operador de instrução inválido")
+
 			if not Teste.teste_em_execucao:
 				print("Executando: ", instrucao)
 

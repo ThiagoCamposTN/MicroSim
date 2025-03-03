@@ -118,6 +118,11 @@ func decrementar_registrador_pp() -> void:
 	resultado.somar_int(-1)
 	atualizar_registrador_pp(resultado)
 
+func decrementar_registrador_ix() -> void:
+	var resultado = Valor.novo_de_valor(self.registrador_ix)
+	resultado.somar_int(-1)
+	atualizar_registrador_ix(resultado)
+
 func mover_pc_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_pc)
 
@@ -293,3 +298,6 @@ func atualizar_flags(valor: Valor, z: bool, n: bool, c: bool, o: bool):
 		self.flag_o_foi_atualizada.emit()
 	
 	SoftwareManager.realizar_calculo_de_flags()
+
+func se_ix_diferente_de_zero():
+	return not CPU.registrador_ix.igual(Valor.new(0))

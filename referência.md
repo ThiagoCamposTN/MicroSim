@@ -1399,7 +1399,7 @@ Todos os 72 comandos existentes.
 * DEB
 * DEA
 * DEX
-* DBN
+* ~~DBN~~
 * DEP
 * INB
 * INP
