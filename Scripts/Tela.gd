@@ -27,8 +27,8 @@ func atualizar_tela():
 
 	for valor: int in valores:
 		for i: int in range(8): # itera sobre os 8 bits do valor
-			# TODO: provavelmente os bits estão invertidos, talvez precise desinvertê-los
-			var bit = (valor >> i) & 1  # Extrai um bit for vez
+			# Extrai os bits do valor, lendo de trás para frente
+			var bit = (valor >> (7 - i)) & 1  # Extrai um bit for vez
 
 			# Converte o índice linear em coordenadas (x, y)
 			var x: int = indice % 64
