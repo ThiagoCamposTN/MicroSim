@@ -972,6 +972,7 @@ joint_mode = 1
 
 [node name="Tela" type="TabBar" parent="VBoxContainer/TabContainer"]
 layout_mode = 2
+script = ExtResource("17_ih7ly")
 metadata/_tab_index = 2
 
 [node name="Panel" type="Panel" parent="VBoxContainer/TabContainer/Tela"]
@@ -981,7 +982,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("17_ih7ly")
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/TabContainer/Tela/Panel"]
 layout_mode = 1
