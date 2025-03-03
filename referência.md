@@ -1397,7 +1397,7 @@ Todos os 72 comandos existentes.
 * CPA
 * CPX
 * DEB
-* DEA
+* ~~DEA~~
 * DEX
 * ~~DBN~~
 * DEP

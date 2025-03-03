@@ -123,6 +123,11 @@ func decrementar_registrador_ix() -> void:
 	resultado.somar_int(-1)
 	atualizar_registrador_ix(resultado)
 
+func decrementar_registrador_a() -> void:
+	var resultado = Valor.novo_de_valor(self.registrador_a)
+	resultado.somar_int(-1)
+	atualizar_registrador_a(resultado)
+
 func mover_pc_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_pc)
 
