@@ -30,5 +30,7 @@ Como mencionado anteriormente, arquivos de estado também são usados em testes,
 A flag de overflow (também conhecido como "transbordo" e "estouro") é chamada de `v` em algumas literaturas. Stallings chama de `OF`.
 Seria bom rever as menções nos recursos das instruções os nomes das flags e registradores. Também, os mnemônicos das instruções em si são referências aos nomes antigos das operações. Seria bom analisar se é necessário renomeá-los para nomes mais usados em literaturas ou se já estão a seguindo.
 
+* A descrição da instrução `DIV` não faz sentido, muito menos sua execução visual. É explicitado que os registradores `A` e `B` são concatenados e enviados à `ULA entrada A` para ser o dividendo. Logo, nela terá um número de 2 bytes composto pela concatenação dos dois registradores mencionados. O parâmetro da instrução é enviado à `ULA entrada B` como o divisor. E o resultado seria armazenado em `A` e o resto em `B`. Mas não é garantido que o resultado será um número de 1 byte e caberá no registrador `A`. Ao realizar a execução visual, ela pára antes da realização da divisão, não mostrando o que realmente ocorre. Assim como no caso de `CAL`, será necessário presumir baseado no resultado da execução direta sem usar a inspeção visual como ferramenta.
+
 ## Referências
 * [Documentação dos comandos do Micro3](referência.md), uma das maiores referências e inspirações pro projeto. As instruções desse simulador são baseadas nas existentes desse outro projeto.

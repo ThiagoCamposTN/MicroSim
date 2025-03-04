@@ -158,6 +158,16 @@ func unir_mbr_ao_aux_e_mover_para_ix() -> void:
 	resultado.somar_int(self.registrador_aux.como_int() << 8)
 	atualizar_registrador_ix(resultado)
 
+func unir_mbr_ao_aux_e_mover_para_alu_a() -> void:
+	var resultado: Valor = self.unir_mbr_ao_aux()
+	atualizar_alu_entrada_a(resultado)
+
+func unir_mbr_ao_aux():
+	#TODO: talvez usar isso sempre. verificar se sempre essas flags são verificadas
+	var resultado: Valor = Valor.novo_de_valor(self.registrador_mbr)
+	resultado.somar_int(self.registrador_aux.como_int() << 8)
+	return Valor.novo_de_int(resultado.como_int() >> 8)
+
 func dividir_ix_e_mover_para_mbr_e_aux() -> void:
 	var registrador: PackedByteArray = self.registrador_ix.como_byte_array(4)
 	atualizar_registrador_aux(Valor.new(registrador[0]))
@@ -167,6 +177,11 @@ func dividir_pc_e_mover_para_mbr_e_aux() -> void:
 	var registrador: PackedByteArray = self.registrador_pc.como_byte_array(4)
 	atualizar_registrador_mbr(Valor.new(registrador[0]))
 	atualizar_registrador_aux(Valor.new(registrador[1]))
+
+func dividir_alu_saida_e_mover_para_a_e_b() -> void:
+	var registrador: PackedByteArray = self.alu_saida.como_byte_array(4)
+	atualizar_registrador_a(Valor.new(registrador[0]))
+	atualizar_registrador_b(Valor.new(registrador[1]))
 
 func transferir_a_para_mbr() -> void:
 	atualizar_registrador_mbr(self.registrador_a)
@@ -240,10 +255,16 @@ func transferir_alu_saida_para_b() -> void:
 	atualizar_registrador_b(resultado)
 
 func transferir_alu_saida_para_mar() -> void:
-	atualizar_registrador_mar(self.alu_saida)
+	#TODO: analisar se precisa converter a saída de 2 bytes para 1
+	var resultado: int = self.alu_saida.como_int()
+	var valor: Valor = Valor.novo_de_int(resultado)
+	atualizar_registrador_mar(valor)
 
 func transferir_alu_saida_para_mbr() -> void:
-	atualizar_registrador_mbr(self.alu_saida)
+	#TODO: analisar se precisa converter a saída de 2 bytes para 1
+	var resultado: int = self.alu_saida.como_int()
+	var valor: Valor = Valor.novo_de_int(resultado)
+	atualizar_registrador_mbr(valor)
 
 func transferir_pp_para_mar() -> void:
 	atualizar_registrador_mar(self.registrador_pp)
@@ -311,18 +332,21 @@ func realizar_e_logico_alu_a_alu_b():
 	atualizar_alu_saida(valor)
 
 func atualizar_flags(valor: Valor, z: bool, n: bool, c: bool, o: bool):
+	#TODO: talvez precise verificar se a operação é sobre números de 1 byte ou 2 bytes
 	if z:
 		var _flag_z: Valor = Valor.new(valor.como_int() == 0)
 		self.atualizar_flag_z(_flag_z)
 	
 	if n:
-		var _flag_n: Valor = Valor.new(valor.como_int() >= 128)
+		var _flag_n: Valor = Valor.new(valor.como_int() > 127)
 		self.atualizar_flag_n(_flag_n)
 	
 	if c:
 		self.flag_c_foi_atualizada.emit()
 	
 	if o:
+		var _flag_o: Valor = Valor.new(valor.como_int() > 255)
+		self.atualizar_flag_o(_flag_o)
 		self.flag_o_foi_atualizada.emit()
 	
 	SoftwareManager.realizar_calculo_de_flags()
@@ -335,3 +359,17 @@ func atribuir_um_a_flag_c():
 
 func atribuir_um_a_flag_o():
 	self.atualizar_flag_o(Valor.new(1))
+
+func realizar_divisao_na_alu():
+	var dividendo	: int = self.alu_entrada_a.como_int()
+	var divisor		: int = self.alu_entrada_b.como_int()
+	var resto		: int = dividendo % divisor
+	var quociente	: int = dividendo - resto
+
+	var resultado: Valor = Valor.novo_de_valor(self.registrador_mbr)
+	resultado.somar_int(self.registrador_aux.como_int() << 8)
+
+	var valor = Valor.new(quociente + (resto << 8))
+	atualizar_alu_saida(valor)
+
+	# self.atualizar_flags(resultado, false, false, false, true)
