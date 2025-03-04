@@ -1443,7 +1443,7 @@ Todos os 72 comandos existentes.
 * MUL
 * DIV
 * SED
-* SER
+* ~~SER~~
 * ~~TDX~~
 * ~~TXD~~
 

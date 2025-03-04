@@ -312,12 +312,12 @@ func realizar_e_logico_alu_a_alu_b():
 
 func atualizar_flags(valor: Valor, z: bool, n: bool, c: bool, o: bool):
 	if z:
-		self.flag_z = Valor.new(valor.como_int() == 0)
-		self.flag_z_foi_atualizada.emit()
+		var _flag_z: Valor = Valor.new(valor.como_int() == 0)
+		self.atualizar_flag_z(_flag_z)
 	
 	if n:
-		self.flag_n = Valor.new(valor.como_int() >= 128)
-		self.flag_n_foi_atualizada.emit()
+		var _flag_n: Valor = Valor.new(valor.como_int() >= 128)
+		self.atualizar_flag_n(_flag_n)
 	
 	if c:
 		self.flag_c_foi_atualizada.emit()
@@ -329,3 +329,6 @@ func atualizar_flags(valor: Valor, z: bool, n: bool, c: bool, o: bool):
 
 func se_ix_diferente_de_zero():
 	return not CPU.registrador_ix.igual(Valor.new(0))
+
+func atribuir_um_a_flag_c():
+	self.atualizar_flag_c(Valor.new(1))
