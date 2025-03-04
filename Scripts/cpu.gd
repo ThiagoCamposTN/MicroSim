@@ -332,3 +332,6 @@ func se_ix_diferente_de_zero():
 
 func atribuir_um_a_flag_c():
 	self.atualizar_flag_c(Valor.new(1))
+
+func atribuir_um_a_flag_o():
+	self.atualizar_flag_o(Valor.new(1))

@@ -1442,7 +1442,7 @@ Todos os 72 comandos existentes.
 * PPX
 * MUL
 * DIV
-* SED
+* ~~SED~~
 * ~~SER~~
 * ~~TDX~~
 * ~~TXD~~
