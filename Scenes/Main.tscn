@@ -652,13 +652,13 @@ unique_name_in_owner = true
 layout_mode = 2
 offset_left = 224.0
 offset_top = 364.0
-offset_right = 272.0
+offset_right = 278.0
 offset_bottom = 396.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("15_qx21s")
 disabled = true
-text = "00"
+text = "0000"
 
 [node name="RegistradorULA2Button" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 unique_name_in_owner = true

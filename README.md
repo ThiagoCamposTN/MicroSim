@@ -31,6 +31,9 @@ A flag de overflow (também conhecido como "transbordo" e "estouro") é chamada 
 Seria bom rever as menções nos recursos das instruções os nomes das flags e registradores. Também, os mnemônicos das instruções em si são referências aos nomes antigos das operações. Seria bom analisar se é necessário renomeá-los para nomes mais usados em literaturas ou se já estão a seguindo.
 
 * Na instrução `DIV` é explicitado que os registradores `A` e `B` são concatenados e enviados à `ULA entrada A` para formar o dividendo (ou seja, um número de 2 bytes), o parâmetro da instrução é enviado à `ULA entrada B` como o divisor, e a divisão ocorre. Na saída, apenas o nibble superior da divisão é mantido, enquanto o inferior é substituído pelo valor do resto. Esse número é então dividido e enviado para eventualmente popular os registradores `A` e `B`.
+Ainda assim, não é totalmente compreendido como ela funciona, pois no caso em que existe resto ela parece fazer outra coisa. Talvez a operação esteja errada.
+
+Fazendo o passo a passo da execução: fixando `A` como 0xAC (ou 172) e `B` como 0xB4 (ou 180).
 
 ## Referências
 * [Documentação dos comandos do Micro3](referência.md), uma das maiores referências e inspirações pro projeto. As instruções desse simulador são baseadas nas existentes desse outro projeto.
