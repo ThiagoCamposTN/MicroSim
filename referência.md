@@ -1440,7 +1440,7 @@ Todos os 72 comandos existentes.
 * ~~XAB~~
 * ~~PHX~~
 * PPX
-* MUL
+* ~~MUL~~
 * ~~DIV~~
 * ~~SED~~
 * ~~SER~~

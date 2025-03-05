@@ -337,6 +337,23 @@ func realizar_e_logico_alu_a_alu_b():
 	var valor = Valor.new(resultado)
 	atualizar_alu_saida(valor)
 
+func realizar_divisao_na_alu():
+	var dividendo	: int = self.alu_entrada_a.como_int()
+	var divisor		: int = self.alu_entrada_b.como_int()
+	var resto		: int = dividendo % divisor
+	var quociente	: Valor = Valor.new(floori(dividendo / float(divisor)))
+	
+	var resultado: PackedByteArray = quociente.como_byte_array(2)
+	var valor: Valor = Valor.novo_de_byte_array([resultado[0], resto])
+	atualizar_alu_saida(valor)
+
+func realizar_multiplicacao_na_alu():
+	var fator_um	: int = self.alu_entrada_a.como_int()
+	var fator_dois	: int = self.alu_entrada_b.como_int()
+	var produto		: int = fator_um * fator_dois
+	var valor		: Valor = Valor.new(produto & 0xFFFF)
+	atualizar_alu_saida(valor)
+
 func atualizar_flags(valor: Valor, z: bool, n: bool, c: bool, o: bool):
 	#TODO: talvez precise verificar se a operação é sobre números de 1 byte ou 2 bytes
 	if z:
@@ -365,13 +382,3 @@ func atribuir_um_a_flag_c():
 
 func atribuir_um_a_flag_o():
 	self.atualizar_flag_o(Valor.new(1))
-
-func realizar_divisao_na_alu():
-	var dividendo	: int = self.alu_entrada_a.como_int()
-	var divisor		: int = self.alu_entrada_b.como_int()
-	var resto		: int = dividendo % divisor
-	var quociente	: Valor = Valor.new(floori(dividendo / float(divisor)))
-	
-	var resultado: PackedByteArray = quociente.como_byte_array(2)
-	var valor: Valor = Valor.novo_de_byte_array([resultado[0], resto])
-	atualizar_alu_saida(valor)

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://cx3uuktd7hn31"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_sqct3"]
+
+[resource]
+script = ExtResource("1_sqct3")
+nome = "Multiply"
+"mnemônico" = "MUL"
+"descrição" = "Multiplicação dos registradores B e A no modo de 16 bits (concatenação dos dois valores na base 2) pelo operando. A primeira metade do resultado (os primeiros 8 bits - peso fraco) é armazenado em A e a segunda metade (também 8 bits - peso forte) em B."
+microcodigos = ["mover_mar_ao_endereco_de_memoria", "mover_valor_da_memoria_ao_mbr", "transferir_mbr_para_alu_b", "transferir_a_para_mbr", "transferir_b_para_aux", "unir_mbr_ao_aux_e_mover_para_alu_a", "realizar_multiplicacao_na_alu", "dividir_alu_saida_e_mover_para_mbr_e_aux", "transferir_mbr_para_a", "transferir_aux_para_b"]
+direto = "5B"
+imediato = "6B"
+indexado = "7B"
+indireto = "DB"
+pos_indexado = "EB"
+pre_indexado = "FB"
+implicito = ""
