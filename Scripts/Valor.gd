@@ -51,9 +51,6 @@ func igual(outro: Valor) -> bool:
 func limitar_entre(minimo: int, maximo: int) -> void:
 	self._valor = clampi(self._valor, minimo, maximo)
 
-func nibble_superior():
-	pass
-
 static func novo_de_int(valor_int: int) -> Valor:
 	return Valor.new(valor_int)
 
@@ -62,6 +59,12 @@ static func novo_de_hex(valor_hex: String) -> Valor:
 
 static func novo_de_valor(valor: Valor) -> Valor:
 	return Valor.new(valor.como_int())
+
+static func novo_de_byte_array(valor_array: PackedByteArray) -> Valor:
+	var resultado: int
+	for byte: int in valor_array:
+		resultado = (resultado << 8) + byte
+	return Valor.new(resultado)
 
 static func hex_para_int(numero: String) -> int:
 	return numero.hex_to_int()

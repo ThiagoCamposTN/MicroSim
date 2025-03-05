@@ -140,6 +140,10 @@ func transferir_mbr_para_a() -> void:
 func transferir_mbr_para_b() -> void:
 	atualizar_registrador_b(registrador_mbr)
 
+func transferir_aux_para_b() -> void:
+	var valor: Valor = Valor.novo_de_valor(self.registrador_aux)
+	atualizar_registrador_b(valor)
+
 func iniciar_registrador_pc(endereco: Valor) -> void:
 	atualizar_registrador_pc(endereco)
 
@@ -149,11 +153,11 @@ func unir_mbr_ao_aux_e_mover_para_mar() -> void:
 	atualizar_registrador_mar(resultado)
 
 func unir_mbr_ao_aux_e_mover_para_pc() -> void:
-	var resultado: Valor = Valor.novo_de_valor(self.registrador_aux)
-	resultado.somar_int(self.registrador_mbr.como_int() << 8)
+	var resultado: Valor = self.unir_mbr_ao_aux()
 	atualizar_registrador_pc(resultado)
 
 func unir_mbr_ao_aux_e_mover_para_ix() -> void:
+	# TODO: nesse caso, mbr e aux são concatenados ao contrário por alguma razão
 	var resultado: Valor = Valor.novo_de_valor(self.registrador_mbr)
 	resultado.somar_int(self.registrador_aux.como_int() << 8)
 	atualizar_registrador_ix(resultado)
@@ -162,11 +166,13 @@ func unir_mbr_ao_aux_e_mover_para_alu_a() -> void:
 	var resultado: Valor = self.unir_mbr_ao_aux()
 	atualizar_alu_entrada_a(resultado)
 
-func unir_mbr_ao_aux():
-	#TODO: talvez usar isso sempre. verificar se sempre essas flags são verificadas
-	var resultado: Valor = Valor.novo_de_valor(self.registrador_mbr)
-	resultado.somar_int(self.registrador_aux.como_int() << 8)
-	return Valor.novo_de_int(resultado.como_int() >> 8)
+func unir_mbr_ao_aux() -> Valor:
+	var byte_array: PackedByteArray = [
+		self.registrador_mbr.como_int(),
+		self.registrador_aux.como_int()
+	]
+	var resultado: Valor = Valor.novo_de_byte_array(byte_array)
+	return resultado
 
 func dividir_ix_e_mover_para_mbr_e_aux() -> void:
 	var registrador: PackedByteArray = self.registrador_ix.como_byte_array(4)
@@ -178,10 +184,10 @@ func dividir_pc_e_mover_para_mbr_e_aux() -> void:
 	atualizar_registrador_mbr(Valor.new(registrador[0]))
 	atualizar_registrador_aux(Valor.new(registrador[1]))
 
-func dividir_alu_saida_e_mover_para_a_e_b() -> void:
+func dividir_alu_saida_e_mover_para_mbr_e_aux() -> void:
 	var registrador: PackedByteArray = self.alu_saida.como_byte_array(4)
-	atualizar_registrador_a(Valor.new(registrador[0]))
-	atualizar_registrador_b(Valor.new(registrador[1]))
+	atualizar_registrador_mbr(Valor.new(registrador[0]))
+	atualizar_registrador_aux(Valor.new(registrador[1]))
 
 func transferir_a_para_mbr() -> void:
 	atualizar_registrador_mbr(self.registrador_a)
@@ -364,12 +370,8 @@ func realizar_divisao_na_alu():
 	var dividendo	: int = self.alu_entrada_a.como_int()
 	var divisor		: int = self.alu_entrada_b.como_int()
 	var resto		: int = dividendo % divisor
-	var quociente	: int = dividendo - resto
-
-	var resultado: Valor = Valor.novo_de_valor(self.registrador_mbr)
-	resultado.somar_int(self.registrador_aux.como_int() << 8)
-
-	var valor = Valor.new(quociente + (resto << 8))
+	var quociente	: Valor = Valor.new(floori(dividendo / float(divisor)))
+	
+	var resultado: PackedByteArray = quociente.como_byte_array(2)
+	var valor: Valor = Valor.novo_de_byte_array([resultado[0], resto])
 	atualizar_alu_saida(valor)
-
-	# self.atualizar_flags(resultado, false, false, false, true)
