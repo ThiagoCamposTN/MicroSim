@@ -1,10 +1,10 @@
 [inicio]
 registrador.pc="0"
-registrador.a="AD"
+registrador.a="AC"
 registrador.b="B4"
 memoria.base="res://MEMORIA.MEM"
 instrucoes=[
-	"DIV #2",
+	"DIV #3",
 	"CAL EXIT"
 ]
 
@@ -16,5 +16,5 @@ memoria = {
     "003": "12",
     "004": "00",
 }
-registrador.a="E4"
-registrador.b="00"
+registrador.a="39"
+registrador.b="01"
