@@ -53,11 +53,11 @@ O processo de compilação ocorre da seguinte forma: cada comando é passado por
 | Mnemônico         | LDA       |
 | Parâmetros        | 03        |
 
-Esses dados são então convertidos para os bytes 
+Esses dados são então convertidos para bytes 
 
-### Descompilador
+### Descompilação
 
-O descompilador 
+Já a descompilação 
 
 ## Referências
 * [Documentação dos comandos do Micro3](referência.md), uma das maiores referências e inspirações pro projeto. As instruções desse simulador são baseadas nas existentes desse outro projeto.

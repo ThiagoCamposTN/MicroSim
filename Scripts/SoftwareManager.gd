@@ -107,7 +107,7 @@ func compilar_linha_em_bytes(linha: String) -> PackedByteArray:
 	if not instrucao:
 		return []
 	
-	return instrucao.instrucao_em_bytes()
+	return instrucao.instrucao_como_bytes()
 
 func preparar_proxima_instrucao():
 	# Coloca todos os microcódigos necessários para a execução de uma instrução na fila

@@ -26,13 +26,13 @@ func carregar_recursos() -> void:
 	else:
 		print("Ocorreu um erro ao tentar acessar o caminho.")
 
-func encontrar_operador(mnemonico: String) -> Operador:
+func obter_operador(mnemonico: String) -> Operador:
 	if not mnemonico in operacoes:
 		return null
 	return operacoes[mnemonico]
 
 func mnemonico_para_byte(mnemonico: String, endereçamento: Instrucao.Enderecamentos) -> String:
-	var operacao = encontrar_operador(mnemonico)
+	var operacao = obter_operador(mnemonico)
 	if operacao:
 		match endereçamento:
 			Instrucao.Enderecamentos.POS_INDEXADO:
@@ -57,23 +57,23 @@ func byte_para_mnemonico(byte: String) -> Instrucao:
 	for operacao: Operador in operacoes.values():
 		match byte:
 			operacao.pos_indexado:
-				return Instrucao.new(Instrucao.Enderecamentos.POS_INDEXADO, operacao.mnemônico)
+				return Instrucao.new(operacao.mnemônico, Instrucao.Enderecamentos.POS_INDEXADO)
 			operacao.pre_indexado:
-				return Instrucao.new(Instrucao.Enderecamentos.PRE_INDEXADO, operacao.mnemônico)
+				return Instrucao.new(operacao.mnemônico, Instrucao.Enderecamentos.PRE_INDEXADO)
 			operacao.indireto:
-				return Instrucao.new(Instrucao.Enderecamentos.INDIRETO, operacao.mnemônico)
+				return Instrucao.new(operacao.mnemônico, Instrucao.Enderecamentos.INDIRETO)
 			operacao.imediato:
-				return Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, operacao.mnemônico)
+				return Instrucao.new(operacao.mnemônico, Instrucao.Enderecamentos.IMEDIATO)
 			operacao.direto:
-				return Instrucao.new(Instrucao.Enderecamentos.DIRETO, operacao.mnemônico)
+				return Instrucao.new(operacao.mnemônico, Instrucao.Enderecamentos.DIRETO)
 			operacao.implicito:
-				return Instrucao.new(Instrucao.Enderecamentos.IMPLICITO, operacao.mnemônico)
+				return Instrucao.new(operacao.mnemônico, Instrucao.Enderecamentos.IMPLICITO)
 			operacao.indexado:
-				return Instrucao.new(Instrucao.Enderecamentos.INDEXADO, operacao.mnemônico)
+				return Instrucao.new(operacao.mnemônico, Instrucao.Enderecamentos.INDEXADO)
 	return null
 
 func get_microcodigos(mnemonico: String) -> Array:
-	var operacao: Operador = encontrar_operador(mnemonico)
+	var operacao: Operador = obter_operador(mnemonico)
 	if operacao != null:
 		return operacao.microcodigos
 	return []

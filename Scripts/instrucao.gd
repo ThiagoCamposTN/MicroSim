@@ -2,14 +2,18 @@ class_name Instrucao
 
 enum Enderecamentos { POS_INDEXADO, PRE_INDEXADO, INDIRETO, IMEDIATO, DIRETO, IMPLICITO, INDEXADO }
 
-var enderecamento 	: Enderecamentos
-var mnemonico		: String
-var parametros		: PackedStringArray
-var opcode			: String
+var enderecamento 		: Enderecamentos
+var mnemonico			: String
+var parametro			: Valor
+var opcode				: String
+var tamanho_parametro	: int
 	
-func _init(enderecamento : Enderecamentos, mnemonico : String):
-	self.enderecamento 	= enderecamento
-	self.mnemonico 		= mnemonico
+func _init(mnemônico: String, tipo_enderecamento: Enderecamentos):
+	var operador: Operador = Operacoes.obter_operador(mnemônico)
+	self.enderecamento 		= tipo_enderecamento
+	self.mnemonico 			= mnemônico
+	self.tamanho_parametro 	= operador.bytes
+	self.opcode 			= Operacoes.mnemonico_para_byte(mnemônico, tipo_enderecamento)
 
 func enderecamento_como_string() -> String:
 	match self.enderecamento:
@@ -33,59 +37,40 @@ func enderecamento_como_string() -> String:
 func instrucao_em_string() -> String:
 	match self.enderecamento:
 		Enderecamentos.POS_INDEXADO:
-			return ""
+			return "{0} [{1}], X".format([self.mnemonico, self.parametro_como_hex()])
 		Enderecamentos.PRE_INDEXADO:
-			return ""
+			return "{0} [{1}, X]".format([self.mnemonico, self.parametro_como_hex()])
 		Enderecamentos.INDIRETO:
-			return self.mnemonico + " [" + "".join(self.parametros) + "]"
+			return "{0} [{1}]".format([self.mnemonico, self.parametro_como_hex()])
 		Enderecamentos.IMEDIATO:
-			return self.mnemonico + " #" + "".join(self.parametros)
+			return "{0} #{1}".format([self.mnemonico, self.parametro_como_hex()])
 		Enderecamentos.DIRETO:
-			return self.mnemonico + " " + "".join(self.parametros)
+			return "{0} {1}".format([self.mnemonico, self.parametro_como_hex()])
 		Enderecamentos.IMPLICITO:
 			return self.mnemonico
 		Enderecamentos.INDEXADO:
-			return self.mnemonico + " " + "".join(self.parametros) + ", X"
+			return "{0} {1}, X".format([self.mnemonico, self.parametro_como_hex()])
 		_ :
 			return ""
 
-func parametros_em_bytes() -> PackedByteArray:
-	var bytes: PackedByteArray
+func parametro_como_hex() -> String:
+	return self.parametro.como_hex(self.tamanho_parametro)
 
-	if self.parametros and self.parametros[0] == "EXIT":
-		bytes.push_back(0x12)
-		bytes.push_back(0x00)
-		return bytes # salta os parâmetros
-
-	# Resolução dos parâmetros da instrução na memória
-	match self.enderecamento:
-		Instrucao.Enderecamentos.IMEDIATO:
-			var valor: Valor = Valor.novo_de_hex(self.parametros[0])
-			bytes.push_back(valor.como_int())
-		Instrucao.Enderecamentos.IMPLICITO:
-			# Não precisa tratar parâmetros
-			pass
-		Instrucao.Enderecamentos.DIRETO, Instrucao.Enderecamentos.INDEXADO, \
-		Instrucao.Enderecamentos.INDIRETO, Instrucao.Enderecamentos.POS_INDEXADO, \
-		Instrucao.Enderecamentos.PRE_INDEXADO:
-			var valor: Valor = Valor.novo_de_hex(self.parametros[0])
-			for _valor: int in valor.como_byte_array(4):
-				bytes.push_back(_valor)
-	
+func instrucao_como_bytes() -> PackedByteArray:
+	var bytes: Array = self.parametro.como_byte_array(self.tamanho_parametro)
+	var mnemonico_como_byte: String = Operacoes.mnemonico_para_byte(self.mnemonico, self.enderecamento)
+	bytes.push_front(Valor.hex_para_int(mnemonico_como_byte))
 	return bytes
 
-func instrucao_em_bytes() -> PackedByteArray:
-	var bytes: PackedByteArray
-	
-	var byte: String = Operacoes.mnemonico_para_byte(self.mnemonico, self.enderecamento)
-	bytes.push_back(Valor.hex_para_int(byte))
-	
-	# Resolução dos parâmetros da instrução na memória
-	bytes.append_array(self.parametros_em_bytes())
+func obter_mnemonico() -> String:
+	return self.operador.mnemonico
 
-	return bytes
+func atualizar_parametro(novo_parametro: String):
+	if novo_parametro == "EXIT":
+		self.parametro = Valor.novo_de_int(0x1200)
+	self.parametro = Valor.novo_de_hex(novo_parametro)
 
 static func instrucao_call_exit(instrucao : Instrucao):
 	if not instrucao:
 		return false
-	return (instrucao.mnemonico == "CAL") and (instrucao.parametros == PackedStringArray(["12", "00"]))
+	return (instrucao.mnemonico == "CAL") and (instrucao.parametro.como_int() == 0x1200)

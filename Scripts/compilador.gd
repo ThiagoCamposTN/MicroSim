@@ -6,47 +6,47 @@ static func compilar(linha : String) -> Instrucao:
 	
 	# Endereçamento implicito
 	if not restante:
-		return Instrucao.new(Instrucao.Enderecamentos.IMPLICITO, mnemonico)
+		return Instrucao.new(mnemonico, Instrucao.Enderecamentos.IMPLICITO)
 	
 	# Endereçamento pré-indexado
 	var enderecamento_pre_indexado = detectar_parametros(restante, r'\[(.+?),\s*?X\s*?\]')
 	if enderecamento_pre_indexado:
-		var instrucao := Instrucao.new(Instrucao.Enderecamentos.PRE_INDEXADO, mnemonico)
+		var instrucao := Instrucao.new(mnemonico, Instrucao.Enderecamentos.PRE_INDEXADO)
 		instrucao.parametros = extrair_parametros(enderecamento_pre_indexado)
 		return instrucao
 	
 	# Endereçamento pós-indexado
 	var enderecamento_pos_indexado = detectar_parametros(restante, r'\[(.+?)\]\s*,\s*X')
 	if enderecamento_pos_indexado:
-		var instrucao := Instrucao.new(Instrucao.Enderecamentos.POS_INDEXADO, mnemonico)
+		var instrucao := Instrucao.new(mnemonico, Instrucao.Enderecamentos.POS_INDEXADO)
 		instrucao.parametros = extrair_parametros(enderecamento_pos_indexado)
 		return instrucao
 	
 	# Endereçamento indireto
 	var enderecamento_indireto = detectar_parametros(restante, r'\[(.+?)\]')
 	if enderecamento_indireto:
-		var instrucao := Instrucao.new(Instrucao.Enderecamentos.INDIRETO, mnemonico)
+		var instrucao := Instrucao.new(mnemonico, Instrucao.Enderecamentos.INDIRETO)
 		instrucao.parametros = extrair_parametros(enderecamento_indireto)
 		return instrucao
 	
 	# Endereçamento indexado
 	var enderecamento_indexado = detectar_parametros(restante, r'(.+?)\s*,\s*X')
 	if enderecamento_indexado:
-		var instrucao := Instrucao.new(Instrucao.Enderecamentos.INDEXADO, mnemonico)
+		var instrucao := Instrucao.new(mnemonico, Instrucao.Enderecamentos.INDEXADO)
 		instrucao.parametros = extrair_parametros(enderecamento_indexado)
 		return instrucao
 	
 	# Endereçamento imediato
 	var enderecamento_imediato = detectar_parametros(restante, r'#(.+)')
 	if enderecamento_imediato:
-		var instrucao := Instrucao.new(Instrucao.Enderecamentos.IMEDIATO, mnemonico)
+		var instrucao := Instrucao.new(mnemonico, Instrucao.Enderecamentos.IMEDIATO)
 		instrucao.parametros = extrair_parametros(enderecamento_imediato)
 		return instrucao
 	
 	# Endereçamento direto
 	var enderecamento_direto = detectar_parametros(restante, r'(.+)')
 	if enderecamento_direto:
-		var instrucao := Instrucao.new(Instrucao.Enderecamentos.DIRETO, mnemonico)
+		var instrucao := Instrucao.new(mnemonico, Instrucao.Enderecamentos.DIRETO)
 		instrucao.parametros = extrair_parametros(enderecamento_direto)
 		return instrucao
 	
@@ -70,30 +70,10 @@ static func descompilar(opcode: Valor) -> Instrucao:
 	var instrucao_em_hex: String = opcode.como_hex(2)
 	return Operacoes.byte_para_mnemonico(instrucao_em_hex)
 
-static func buscar_parametros_na_memoria(endereco: Valor, tipo_enderecamento : Instrucao.Enderecamentos) -> PackedStringArray:
-	var parametros : PackedStringArray
-	var _endereco : Valor = Valor.novo_de_valor(endereco)
-	# TODO: talvez mudar o somar int, ele pode causar problemas
-	match tipo_enderecamento:
-		Instrucao.Enderecamentos.INDIRETO:
-			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
-			_endereco.somar_int(1)
-			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
-		Instrucao.Enderecamentos.DIRETO:
-			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
-			_endereco.somar_int(1)
-			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
-		Instrucao.Enderecamentos.INDEXADO:
-			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
-			_endereco.somar_int(1)
-			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
-		Instrucao.Enderecamentos.IMEDIATO:
-			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
-		Instrucao.Enderecamentos.POS_INDEXADO:
-			pass
-		Instrucao.Enderecamentos.PRE_INDEXADO:
-			pass
-		Instrucao.Enderecamentos.IMPLICITO:
-			pass
-	
-	return parametros
+static func buscar_parametros_na_memoria(endereco_inicial: Valor, tamanho: int) -> Valor:
+	var parametro_em_bytes: PackedByteArray
+	for endereco: int in range(endereco_inicial.como_int(), endereco_inicial.como_int() + tamanho):
+		var valor_endereco	: Valor = Valor.new(endereco)
+		var conteudo_memoria: Valor = Memoria.ler_conteudo_no_endereco(valor_endereco)
+		parametro_em_bytes.append(conteudo_memoria.como_int())
+	return Valor.novo_de_byte_array(parametro_em_bytes)
