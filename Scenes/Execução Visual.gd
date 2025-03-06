@@ -43,6 +43,8 @@ func _ready():
 	CPU.flag_o_foi_atualizada.connect(atualizar_registrador.bind("O"))
 	CPU.registrador_ir_foi_atualizado.connect(atualizar_registrador.bind("IR"))
 
+	SoftwareManager.mudanca_de_fase.connect(fase_foi_alterada)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
@@ -198,3 +200,12 @@ func obter_info_memorias():
 	var texto_conteudo_depois = Memoria.ler_conteudo_no_endereco(um_depois).como_hex() + "\n" + Memoria.ler_conteudo_no_endereco(dois_depois).como_hex()
 	
 	return [texto_antes, valor, texto_depois, texto_conteudo_antes, valor_conteudo, texto_conteudo_depois]
+
+func fase_foi_alterada(fase : SoftwareManager.Fase):
+	match fase:
+		SoftwareManager.Fase.BUSCA:
+			print("Fase atual: busca")
+		SoftwareManager.Fase.DECODIFICACAO:
+			print("Fase atual: decodificacao")
+		SoftwareManager.Fase.EXECUCAO:
+			print("Fase atual: execucao")	

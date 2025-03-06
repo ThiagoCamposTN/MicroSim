@@ -43,7 +43,6 @@ func _process(_delta):
 		else:
 			valor_instrucao = "??"
 		
-		
 		adicionar_instrucao(valor_endereco.como_hex(3), valor_bytes, valor_instrucao)
 
 		if SoftwareManager.unica_instrucao:
