@@ -202,6 +202,9 @@ func obter_info_memorias():
 	return [texto_antes, valor, texto_depois, texto_conteudo_antes, valor_conteudo, texto_conteudo_depois]
 
 func fase_foi_alterada(fase : SoftwareManager.Fase):
+	if Teste.teste_em_execucao:
+		return
+	
 	match fase:
 		SoftwareManager.Fase.BUSCA:
 			print("Fase atual: busca")

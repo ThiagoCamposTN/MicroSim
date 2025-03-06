@@ -4,17 +4,15 @@ signal microoperacao_executada
 signal execucao_finalizada
 signal mudanca_de_fase
 
-var memory_file_path 	: String 		= ""
-var unico_microcodigo 	: bool 			= false
 var fila_instrucoes 	: Array[String] = []
 
 @export var time_delay 	: float 		= 0.1
 var execucao_timer		: Timer
-var config_inicial		: ConfigFile
 
-enum Estagio {PREPARACAO, OPERACAO, TERMINO}
-enum Fase {BUSCA, DECODIFICACAO, EXECUCAO}
-enum ModoExecucao {UNICO_MICROCODIGO, UNICA_INSTRUCAO, TUDO}
+enum Estagio 		{ PREPARACAO, OPERACAO, TERMINO }
+enum Fase 			{ BUSCA, DECODIFICACAO, EXECUCAO }
+enum ModoExecucao 	{ UNICO_MICROCODIGO, UNICA_INSTRUCAO, TUDO }
+
 var estagio_atual 	: Estagio		= Estagio.TERMINO
 var modo_atual 		: ModoExecucao	= ModoExecucao.TUDO
 

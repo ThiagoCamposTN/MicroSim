@@ -72,18 +72,19 @@ static func descompilar(opcode: Valor) -> Instrucao:
 
 static func buscar_parametros_na_memoria(endereco: Valor, tipo_enderecamento : Instrucao.Enderecamentos) -> PackedStringArray:
 	var parametros : PackedStringArray
+	var _endereco : Valor = Valor.novo_de_valor(endereco)
 	# TODO: talvez mudar o somar int, ele pode causar problemas
 	match tipo_enderecamento:
 		Instrucao.Enderecamentos.INDIRETO or \
 		Instrucao.Enderecamentos.DIRETO or \
 		Instrucao.Enderecamentos.INDEXADO:
-			endereco.somar_int(1)
-			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco).como_hex(2))
-			endereco.somar_int(2)
-			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco).como_hex(2))
+			_endereco.somar_int(1)
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
+			_endereco.somar_int(2)
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
 		Instrucao.Enderecamentos.IMEDIATO:
-			endereco.somar_int(1)
-			parametros.push_back(Memoria.ler_conteudo_no_endereco(endereco).como_hex(2))
+			_endereco.somar_int(1)
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
 		Instrucao.Enderecamentos.POS_INDEXADO or \
 		Instrucao.Enderecamentos.PRE_INDEXADO or \
 		Instrucao.Enderecamentos.IMPLICITO:
