@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://c1nbfnlg6bpe7"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_62g0p"]
+
+[resource]
+script = ExtResource("1_62g0p")
+nome = "Transfer of IX to double"
+"mnemônico" = "TXD"
+"descrição" = "Recopia o registrador IX para o \"registrador duplo\" B:A."
+microcodigos = ["transferir_ix_para_a", "transferir_ix_para_b"]
+direto = ""
+imediato = ""
+indexado = ""
+indireto = ""
+pos_indexado = ""
+pre_indexado = ""
+implicito = "81"

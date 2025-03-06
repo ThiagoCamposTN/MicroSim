@@ -26,10 +26,17 @@ func como_bin() -> String:
 	return bin_str
 
 func como_byte_array(casas:int = 2) -> PackedByteArray:
-	var valor_em_hex: String = self.como_hex(casas)
+	var hex_array = self.como_hex_array(casas)
 	var resultado : PackedByteArray
+	for i in hex_array:
+		resultado.push_back(Valor.hex_para_int(i))
+	return resultado
+
+func como_hex_array(casas:int = 2) -> PackedStringArray:
+	var valor_em_hex: String = self.como_hex(casas)
+	var resultado : PackedStringArray
 	for i in range(0, valor_em_hex.length(), 2):
-		resultado.push_back(Valor.hex_para_int(((valor_em_hex.substr(i, 2)))))
+		resultado.push_back(valor_em_hex.substr(i, 2))
 	return resultado
 
 func somar_valor(outro: Valor) -> void:
@@ -52,6 +59,12 @@ static func novo_de_hex(valor_hex: String) -> Valor:
 
 static func novo_de_valor(valor: Valor) -> Valor:
 	return Valor.new(valor.como_int())
+
+static func novo_de_byte_array(valor_array: PackedByteArray) -> Valor:
+	var resultado: int
+	for byte: int in valor_array:
+		resultado = (resultado << 8) + byte
+	return Valor.new(resultado)
 
 static func hex_para_int(numero: String) -> int:
 	return numero.hex_to_int()

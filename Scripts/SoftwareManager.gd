@@ -4,7 +4,7 @@ signal microoperacao_executada
 signal execucao_finalizada
 signal mudanca_de_fase
 
-var fila_instrucoes 	: Array[String] = []
+var fila_instrucoes 	: Array 		= []
 
 @export var time_delay 	: float 		= 0.1
 var execucao_timer		: Timer
@@ -53,7 +53,20 @@ func _process(_delta):
 				pass
 
 func executar_proxima_microoperacao():
-	var instrucao = fila_instrucoes.pop_front()
+	var _instrucao = fila_instrucoes.pop_front()
+	var instrucao: String
+
+	match typeof(_instrucao):
+		TYPE_STRING:
+			instrucao = _instrucao
+		TYPE_DICTIONARY:
+			for condicional in _instrucao:
+				if CPU.call(condicional):
+					for _microcodigo in _instrucao[condicional]:
+						fila_instrucoes.push_front(_microcodigo)
+			return
+		_:
+			push_error("Operador de instrução inválido")
 				
 	if not Teste.teste_em_execucao:
 		print("Executando: ", instrucao)
@@ -363,3 +376,11 @@ func validar_fim_de_execucao() -> void:
 	# Se a instrução atual for CAL EXIT, finalizar a execução
 	if CPU.eh_fim_de_execucao():
 		self.finalizar_execucao()
+
+func realizar_calculo_de_flags():
+	# pode haver multiplos calcular flags empurrados pois pode haver
+	# multiplas operacoes que dão push da flag em seguida uma da outra
+	self.fila_instrucoes.push_front("calcular_flags")
+
+func calcular_flags():
+	pass

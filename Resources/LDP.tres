@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://bn3xjfgjsbspf"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_k0ukn"]
+
+[resource]
+script = ExtResource("1_k0ukn")
+nome = "Load PP"
+"mnemônico" = "LDP"
+"descrição" = "Armazena em PP o conteúdo do endereço de memória indicado."
+microcodigos = ["transferir_mar_para_pp"]
+direto = "1B"
+imediato = "2B"
+indexado = "3B"
+indireto = "9B"
+pos_indexado = "BB"
+pre_indexado = "CB"
+implicito = ""

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://mm03faskiulm"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_cyyjg"]
+
+[resource]
+script = ExtResource("1_cyyjg")
+nome = "Set overflow"
+"mnemônico" = "SED"
+"descrição" = "Atribui o valor 1 ao flag D (descontinuidade)."
+microcodigos = ["atribuir_um_a_flag_o"]
+direto = ""
+imediato = ""
+indexado = ""
+indireto = ""
+pos_indexado = ""
+pre_indexado = ""
+implicito = "8D"

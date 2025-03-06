@@ -1,0 +1,20 @@
+[inicio]
+registrador.pc="0"
+registrador.ix="01"
+memoria.base="res://MEMORIA.MEM"
+instrucoes=[
+	"DBN 100",
+	"CAL EXIT",
+]
+
+[fim]
+memoria = {
+    "000": "5A",
+    "001": "01",
+    "002": "00",
+    
+    "003": "58",
+    "004": "12",
+    "005": "00",
+}
+registrador.pc="006"

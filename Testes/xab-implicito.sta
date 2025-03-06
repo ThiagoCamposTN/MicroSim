@@ -1,0 +1,18 @@
+[inicio]
+registrador.a="65"
+registrador.b="8E"
+instrucoes=[
+	"XAB",
+	"CAL EXIT"
+]
+memoria.base="res://MEMORIA.MEM"
+
+[fim]
+registrador.a="8E"
+registrador.b="65"
+memoria = {
+    "000": "40",
+    "001": "58",
+    "002": "12",
+    "003": "00",
+}

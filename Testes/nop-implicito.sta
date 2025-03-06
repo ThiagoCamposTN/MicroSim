@@ -1,0 +1,20 @@
+[inicio]
+registrador.a="2"
+registrador.b="3"
+registrador.pc="99"
+instrucoes=[
+	"NOP",
+	"CAL EXIT"
+]
+memoria.base="res://MEMORIA.MEM"
+
+[fim]
+registrador.a="2"
+registrador.b="3"
+registrador.pc="9D"
+memoria = {
+    "099": "00",
+    "09A": "58",
+    "09B": "12",
+    "09C": "00",
+}

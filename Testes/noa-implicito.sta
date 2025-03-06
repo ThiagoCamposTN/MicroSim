@@ -1,0 +1,17 @@
+[inicio]
+registrador.a="3"
+registrador.pc="0"
+instrucoes=[
+	"NOA",
+	"CAL EXIT"
+]
+memoria.base="res://MEMORIA.MEM"
+
+[fim]
+registrador.a="FC"
+memoria = {
+    "000": "0F",
+    "001": "58",
+    "002": "12",
+    "003": "00",
+}

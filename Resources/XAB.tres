@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://jjuxuhbeugpo"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_ok4hi"]
+
+[resource]
+script = ExtResource("1_ok4hi")
+nome = "Exchange A and B"
+"mnemônico" = "XAB"
+"descrição" = "Permuta os conteúdos dos registradores A e B."
+microcodigos = ["transferir_a_para_mbr", "transferir_b_para_a", "transferir_mbr_para_b"]
+direto = ""
+imediato = ""
+indexado = ""
+indireto = ""
+pos_indexado = ""
+pre_indexado = ""
+implicito = "40"
