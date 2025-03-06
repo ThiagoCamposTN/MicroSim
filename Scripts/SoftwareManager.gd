@@ -4,17 +4,17 @@ signal microoperacao_executada
 signal execucao_finalizada
 signal mudanca_de_fase
 
-var memory_file_path 	: String 		= ""
+var fila_instrucoes 	: Array 		= []
 var unico_microcodigo 	: bool 			= false
-var fila_instrucoes 	: Array[String] = []
+var unica_instrucao 	: bool 			= false
 
 @export var time_delay 	: float 		= 0.1
 var execucao_timer		: Timer
-var config_inicial		: ConfigFile
 
-enum Estagio {PREPARACAO, OPERACAO, TERMINO}
-enum Fase {BUSCA, DECODIFICACAO, EXECUCAO}
-enum ModoExecucao {UNICO_MICROCODIGO, UNICA_INSTRUCAO, TUDO}
+enum Estagio 		{ PREPARACAO, OPERACAO, TERMINO }
+enum Fase 			{ BUSCA, DECODIFICACAO, EXECUCAO }
+enum ModoExecucao 	{ UNICO_MICROCODIGO, UNICA_INSTRUCAO, TUDO }
+
 var estagio_atual 	: Estagio		= Estagio.TERMINO
 var modo_atual 		: ModoExecucao	= ModoExecucao.TUDO
 
@@ -55,8 +55,21 @@ func _process(_delta):
 				pass
 
 func executar_proxima_microoperacao():
-	var instrucao = fila_instrucoes.pop_front()
-				
+	var _instrucao = fila_instrucoes.pop_front()
+	var instrucao: String
+
+	match typeof(_instrucao):
+		TYPE_STRING:
+			instrucao = _instrucao
+		TYPE_DICTIONARY:
+			for condicional in _instrucao:
+				if CPU.call(condicional):
+					for _microcodigo in _instrucao[condicional]:
+						fila_instrucoes.push_front(_microcodigo)
+			return
+		_:
+			push_error("Operador de instrução inválido")
+	
 	if not Teste.teste_em_execucao:
 		print("Executando: ", instrucao)
 
@@ -365,3 +378,11 @@ func validar_fim_de_execucao() -> void:
 	# Se a instrução atual for CAL EXIT, finalizar a execução
 	if CPU.eh_fim_de_execucao():
 		self.finalizar_execucao()
+
+func realizar_calculo_de_flags():
+	# pode haver multiplos calcular flags empurrados pois pode haver
+	# multiplas operacoes que dão push da flag em seguida uma da outra
+	self.fila_instrucoes.push_front("calcular_flags")
+
+func calcular_flags():
+	pass

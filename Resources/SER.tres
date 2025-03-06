@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://6ipk4wvghr1"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_nk5w3"]
+
+[resource]
+script = ExtResource("1_nk5w3")
+nome = "Set carry"
+"mnemônico" = "SER"
+"descrição" = "Atribui o valor 1 ao flag de carry."
+microcodigos = ["atribuir_um_a_flag_c"]
+direto = ""
+imediato = ""
+indexado = ""
+indireto = ""
+pos_indexado = ""
+pre_indexado = ""
+implicito = "8E"

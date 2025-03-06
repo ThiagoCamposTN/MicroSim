@@ -55,14 +55,17 @@ func atualizar_linha():
 	
 	if SoftwareManager.fila_instrucoes.size() == 0:
 		return
-	if not SoftwareManager.fila_instrucoes[0]:
+	
+	var instrucao = SoftwareManager.fila_instrucoes[0]
+	
+	if not instrucao or typeof(instrucao) != TYPE_STRING:
 		return
 	
-	if not CPU.has_method(SoftwareManager.fila_instrucoes[0]):
+	if not CPU.has_method(instrucao):
 		return
 	
 	remover_fluxos()
-	match SoftwareManager.fila_instrucoes[0]:
+	match instrucao:
 		"mover_pc_para_mar":
 			registradores_interagindo.append(registradores_nos["PC"])
 			registradores_interagindo.append(registradores_nos["MAR"])

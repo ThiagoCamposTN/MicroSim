@@ -1,0 +1,17 @@
+[inicio]
+registrador.pc="0"
+registrador.a="B"
+memoria.base="res://MEMORIA.MEM"
+instrucoes=[
+	"DEA",
+	"CAL EXIT"
+]
+
+[fim]
+memoria = {
+    "000": "07",
+    "001": "58",
+    "002": "12",
+    "003": "00",
+}
+registrador.a="A"

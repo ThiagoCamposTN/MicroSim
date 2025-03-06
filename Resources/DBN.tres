@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://2fctedcqe5xn"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_pxbrw"]
+
+[resource]
+script = ExtResource("1_pxbrw")
+nome = "Decrement and branch"
+"mnemônico" = "DBN"
+"descrição" = "Decrementa o registrador IX e se o resultado for diferente de zero, então ocorre um desvio para o endereço indicado."
+microcodigos = ["decrementar_registrador_ix", {
+"se_ix_diferente_de_zero": ["transferir_mar_para_pc"]
+}]
+direto = "5A"
+imediato = ""
+indexado = "7A"
+indireto = "DA"
+pos_indexado = "EA"
+pre_indexado = "FA"
+implicito = ""

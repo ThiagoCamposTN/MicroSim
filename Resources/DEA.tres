@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://dnv5bm4eedplm"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_i6j61"]
+
+[resource]
+script = ExtResource("1_i6j61")
+nome = "Decrement de A"
+"mnemônico" = "DEA"
+"descrição" = "Subtrai uma unidade do conteúdo do registrador A."
+microcodigos = ["decrementar_registrador_a"]
+direto = ""
+imediato = ""
+indexado = ""
+indireto = ""
+pos_indexado = ""
+pre_indexado = ""
+implicito = "07"
