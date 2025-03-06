@@ -16,7 +16,7 @@
 [ext_resource type="Theme" uid="uid://hlg41xdamtvq" path="res://Themes/registrador_label.tres" id="14_1an5g"]
 [ext_resource type="Theme" uid="uid://co6m50csib0ee" path="res://Themes/visual_interpreter.tres" id="15_qx21s"]
 [ext_resource type="Texture2D" uid="uid://bs736r8h6l41v" path="res://Imagens/triangulo.tres" id="16_hf3vw"]
-[ext_resource type="Script" path="res://Scripts/Tela.gd" id="17_ih7ly"]
+[ext_resource type="PackedScene" uid="uid://ba24ltelu57bm" path="res://Scenes/Tela.tscn" id="17_8ruui"]
 
 [node name="Aplicação" type="Control"]
 layout_mode = 3
@@ -972,24 +972,10 @@ joint_mode = 1
 
 [node name="Tela" type="TabBar" parent="VBoxContainer/TabContainer"]
 layout_mode = 2
-script = ExtResource("17_ih7ly")
 metadata/_tab_index = 2
 
-[node name="Panel" type="Panel" parent="VBoxContainer/TabContainer/Tela"]
+[node name="Panel" parent="VBoxContainer/TabContainer/Tela" instance=ExtResource("17_8ruui")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TabContainer/Tela/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
