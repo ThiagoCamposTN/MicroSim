@@ -1,70 +1,82 @@
 class_name Compilador
 
 static func compilar(linha : String) -> Instrucao:
-	var mnemonico 	= linha.substr(0, 3)
-	var restante 	= linha.substr(3, -1)
-	
-	# Endereçamento implicito
-	if not restante:
-		return Instrucao.new(mnemonico, Instrucao.Enderecamentos.IMPLICITO)
-	
+	var mnemonico	: String = linha.substr(0, 3)
+	var restante	: String = linha.substr(3, -1)
+
+	var enderecamento		: Instrucao.Enderecamentos 	= detectar_enderecamento(restante)
+	var parametro_detectado	: RegExMatch 				= detectar_parametro(restante, enderecamento)
+	var parametro			: Valor 					= extrair_parametro(parametro_detectado)
+	var instrucao			: Instrucao 				= Instrucao.new(mnemonico, enderecamento)
+	instrucao.parametro = parametro
+
+	return instrucao
+
+static func detectar_enderecamento(texto : String = "") -> Instrucao.Enderecamentos:
 	# Endereçamento pré-indexado
-	var enderecamento_pre_indexado = detectar_parametros(restante, r'\[(.+?),\s*?X\s*?\]')
+	var enderecamento_pre_indexado: RegExMatch = detectar_parametro(texto, Instrucao.Enderecamentos.PRE_INDEXADO)
 	if enderecamento_pre_indexado:
-		var instrucao := Instrucao.new(mnemonico, Instrucao.Enderecamentos.PRE_INDEXADO)
-		instrucao.parametros = extrair_parametros(enderecamento_pre_indexado)
-		return instrucao
-	
+		return Instrucao.Enderecamentos.PRE_INDEXADO
+
 	# Endereçamento pós-indexado
-	var enderecamento_pos_indexado = detectar_parametros(restante, r'\[(.+?)\]\s*,\s*X')
+	var enderecamento_pos_indexado: RegExMatch = detectar_parametro(texto, Instrucao.Enderecamentos.POS_INDEXADO)
 	if enderecamento_pos_indexado:
-		var instrucao := Instrucao.new(mnemonico, Instrucao.Enderecamentos.POS_INDEXADO)
-		instrucao.parametros = extrair_parametros(enderecamento_pos_indexado)
-		return instrucao
+		return Instrucao.Enderecamentos.POS_INDEXADO
 	
 	# Endereçamento indireto
-	var enderecamento_indireto = detectar_parametros(restante, r'\[(.+?)\]')
+	var enderecamento_indireto: RegExMatch = detectar_parametro(texto, Instrucao.Enderecamentos.INDIRETO)
 	if enderecamento_indireto:
-		var instrucao := Instrucao.new(mnemonico, Instrucao.Enderecamentos.INDIRETO)
-		instrucao.parametros = extrair_parametros(enderecamento_indireto)
-		return instrucao
+		return Instrucao.Enderecamentos.INDIRETO
 	
 	# Endereçamento indexado
-	var enderecamento_indexado = detectar_parametros(restante, r'(.+?)\s*,\s*X')
+	var enderecamento_indexado: RegExMatch = detectar_parametro(texto, Instrucao.Enderecamentos.INDEXADO)
 	if enderecamento_indexado:
-		var instrucao := Instrucao.new(mnemonico, Instrucao.Enderecamentos.INDEXADO)
-		instrucao.parametros = extrair_parametros(enderecamento_indexado)
-		return instrucao
-	
+		return Instrucao.Enderecamentos.INDEXADO
+
 	# Endereçamento imediato
-	var enderecamento_imediato = detectar_parametros(restante, r'#(.+)')
+	var enderecamento_imediato: RegExMatch = detectar_parametro(texto, Instrucao.Enderecamentos.IMEDIATO)
 	if enderecamento_imediato:
-		var instrucao := Instrucao.new(mnemonico, Instrucao.Enderecamentos.IMEDIATO)
-		instrucao.parametros = extrair_parametros(enderecamento_imediato)
-		return instrucao
+		return Instrucao.Enderecamentos.IMEDIATO
 	
 	# Endereçamento direto
-	var enderecamento_direto = detectar_parametros(restante, r'(.+)')
+	var enderecamento_direto: RegExMatch = detectar_parametro(texto, Instrucao.Enderecamentos.DIRETO)
 	if enderecamento_direto:
-		var instrucao := Instrucao.new(mnemonico, Instrucao.Enderecamentos.DIRETO)
-		instrucao.parametros = extrair_parametros(enderecamento_direto)
-		return instrucao
+		return Instrucao.Enderecamentos.DIRETO
 	
-	return null
+	# Endereçamento implicito
+	return Instrucao.Enderecamentos.IMPLICITO
 
-static func detectar_parametros(string_com_parametros : String, expressao_regex : String) -> RegExMatch:
+static func obter_regra_de_enderecamento(enderecamento: Instrucao.Enderecamentos) -> String:
+	match enderecamento:
+		Instrucao.Enderecamentos.PRE_INDEXADO:
+			return  r'\[(.+?),\s*?X\s*?\]'
+		Instrucao.Enderecamentos.POS_INDEXADO:
+			return r'\[(.+?)\]\s*,\s*X'
+		Instrucao.Enderecamentos.INDIRETO:
+			return r'\[(.+?)\]'
+		Instrucao.Enderecamentos.INDEXADO:
+			return r'(.+?)\s*,\s*X'
+		Instrucao.Enderecamentos.IMEDIATO:
+			return r'#(.+?)'
+		Instrucao.Enderecamentos.DIRETO:
+			return r'(.+?)'
+		_:
+			# Endereçamento implicito
+			return r''
+
+static func detectar_parametro(texto : String, enderecamento: Instrucao.Enderecamentos) -> RegExMatch:
 	var regex := RegEx.new()
-	regex.compile(expressao_regex)
-	var enderecamento = regex.search(string_com_parametros)
-	return enderecamento
+	regex.compile(obter_regra_de_enderecamento(enderecamento))
+	var resultado: RegExMatch = regex.search(texto)
+	return resultado
 
-static func extrair_parametros(parametros_detectados : RegExMatch):
-	var resultados : PackedStringArray = parametros_detectados.get_strings()
+static func extrair_parametro(parametro : RegExMatch) -> Valor:
+	var resultados : PackedStringArray = parametro.get_strings()
 	var parametros : PackedStringArray 
 	resultados.remove_at(0)
 	for i in resultados:
 		parametros.push_back(i.strip_edges())
-	return parametros
+	return Valor.novo_de_hex("".join(parametros))
 
 static func descompilar(opcode: Valor) -> Instrucao:
 	var instrucao_em_hex: String = opcode.como_hex(2)
