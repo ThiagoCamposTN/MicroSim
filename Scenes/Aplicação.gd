@@ -10,31 +10,29 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
 
 func _on_avancar_microcodigo_button_pressed():
-	SoftwareManager.unico_microcodigo = true
-	executar()
+	executar(SoftwareManager.ModoExecucao.UNICO_MICROCODIGO)
 
 
 func _on_avancar_instrucao_button_pressed():
-	SoftwareManager.unica_instrucao = true
-	executar()
+	executar(SoftwareManager.ModoExecucao.UNICA_INSTRUCAO)
 
 
 func _on_executar_tudo_button_pressed():
-	executar()
+	executar(SoftwareManager.ModoExecucao.TUDO)
 
-func executar() -> void:
+func executar(modo : SoftwareManager.ModoExecucao) -> void:
 	var valor_atual_PC: Valor = Valor.novo_de_hex(valor_PC.text)
-	SoftwareManager.executar_programa(valor_atual_PC)
+	SoftwareManager.executar_programa(valor_atual_PC, modo)
 
 func atualizar_valor_PC():
 	valor_PC.text = CPU.registrador_pc.como_hex(4)
 
-func _on_pc_line_edit_text_changed(new_text):
+func _on_pc_line_edit_text_changed(_new_text):
 	pass
 
 func _on_pc_line_edit_focus_exited():
