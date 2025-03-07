@@ -75,21 +75,25 @@ static func buscar_parametros_na_memoria(endereco: Valor, tipo_enderecamento : I
 	var _endereco : Valor = Valor.novo_de_valor(endereco)
 	# TODO: talvez mudar o somar int, ele pode causar problemas
 	match tipo_enderecamento:
-		Instrucao.Enderecamentos.INDIRETO or \
-		Instrucao.Enderecamentos.DIRETO or \
-		Instrucao.Enderecamentos.INDEXADO:
+		Instrucao.Enderecamentos.INDIRETO:
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
 			_endereco.somar_int(1)
 			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
-			_endereco.somar_int(2)
+		Instrucao.Enderecamentos.DIRETO:
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
+			_endereco.somar_int(1)
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
+		Instrucao.Enderecamentos.INDEXADO:
+			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
+			_endereco.somar_int(1)
 			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
 		Instrucao.Enderecamentos.IMEDIATO:
-			_endereco.somar_int(1)
 			parametros.push_back(Memoria.ler_conteudo_no_endereco(_endereco).como_hex(2))
-		Instrucao.Enderecamentos.POS_INDEXADO or \
-		Instrucao.Enderecamentos.PRE_INDEXADO or \
-		Instrucao.Enderecamentos.IMPLICITO:
+		Instrucao.Enderecamentos.POS_INDEXADO:
 			pass
-		_:
+		Instrucao.Enderecamentos.PRE_INDEXADO:
+			pass
+		Instrucao.Enderecamentos.IMPLICITO:
 			pass
 	
 	return parametros

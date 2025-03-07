@@ -34,7 +34,7 @@ func _process(_delta):
 		if not instrucao_atual:
 			adicionar_instrucao(endereco_em_hex, valor_em_hex, "??")
 			return
-		
+
 		instrucao_atual.opcode 		= valor_em_hex
 		instrucao_atual.parametros 	= Compilador.buscar_parametros_na_memoria(endereço_inicial, instrucao_atual.enderecamento)
 
@@ -44,8 +44,8 @@ func _process(_delta):
 
 func execucao_iniciada(endereco: Valor):
 	self.limpar_arvore()
-	iniciar_descompilação 	= true
-	endereço_inicial 		= Valor.novo_de_valor(endereco)
+	iniciar_descompilação = true
+	endereço_inicial = Valor.novo_de_valor(endereco)
 
 func _on_descompilar_button_pressed():
 	execucao_iniciada(CPU.registrador_pc)

@@ -100,6 +100,8 @@ func carregar_estado(caminho: String = "res://padrão.sta") -> void:
 	CPU.atualizar_flag_n(Valor.novo_de_hex(flag_n))
 	CPU.atualizar_flag_c(Valor.novo_de_hex(flag_c))
 	CPU.atualizar_flag_o(Valor.novo_de_hex(flag_o))
+	
+	SoftwareManager.fila_instrucoes.clear()
 
 	# carrega o programa
 	var programa = config.get_value("inicio", "instrucoes", [])
