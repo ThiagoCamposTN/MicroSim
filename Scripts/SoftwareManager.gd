@@ -67,7 +67,7 @@ func executar_proxima_microoperacao():
 			return
 		_:
 			push_error("Operador de instrução inválido")
-				
+	
 	if not Teste.teste_em_execucao:
 		print("Executando: ", instrucao)
 
