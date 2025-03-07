@@ -1,7 +1,9 @@
 extends MenuBar
 
-enum Abrir { PROGRAMA, MEMORIA, ESTADO }
-enum Executar { TESTE, TODOS_OS_TESTES }
+enum Abrir 			{ PROGRAMA, MEMORIA, ESTADO }
+enum Executar 		{ TESTE, TODOS_OS_TESTES }
+enum Configuracoes 	{ DESATIVAR_VISUAL }
+
 var operacao_atual : int = -1
 
 # Called when the node enters the scene tree for the first time.
@@ -59,7 +61,7 @@ func _on_dialogo_de_executar_file_selected(path):
 	%DialogoDeExecutar.visible = false
 	match self.operacao_atual:
 		Executar.TESTE:
-			Teste.adicionar_teste_a_fila(path)
+			Teste.realizar_um_teste(path)
 
 
 func _on_dialogo_de_executar_dir_selected(dir):
@@ -68,4 +70,11 @@ func _on_dialogo_de_executar_dir_selected(dir):
 	match self.operacao_atual:
 		Executar.TODOS_OS_TESTES:
 			var pasta = DirAccess.open(dir)
-			Teste.adicionar_multiplos_testes_a_fila(dir, pasta.get_files())
+			Teste.realizar_multiplos_testes(dir, pasta.get_files())
+
+
+func _on_configurações_id_pressed(id):
+	match id:
+		Configuracoes.DESATIVAR_VISUAL:
+			$Configurações.toggle_item_checked(id)
+			SoftwareManager.atualizacao_visual_ativa = not $Configurações.is_item_checked(id)

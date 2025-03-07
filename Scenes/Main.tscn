@@ -42,10 +42,9 @@ size_flags_vertical = 1
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 2
+current_tab = 0
 
 [node name="Principal" type="TabBar" parent="VBoxContainer/TabContainer"]
-visible = false
 layout_mode = 2
 script = ExtResource("1_f7wj2")
 metadata/_tab_index = 0
@@ -971,6 +970,7 @@ texture_mode = 1
 joint_mode = 1
 
 [node name="Tela" type="TabBar" parent="VBoxContainer/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 

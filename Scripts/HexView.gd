@@ -9,7 +9,9 @@ var elementos_viewer : Array = []
 func _ready():
 	Memoria.endereço_de_memoria_foi_atualizado.connect(atualizar_celula)
 	Memoria.grupo_da_memoria_foi_atualizado.connect(atualizar_grupo_de_celulas)
-	Memoria.memoria_foi_recarregada.connect(inicializar_hex_grid)
+	Memoria.memoria_foi_recarregada.connect(reinicializar_hex_grid)
+	
+	self.inicializar_hex_grid()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -26,6 +28,12 @@ func adicionar_label(texto: String, nome: String = ""):
 	hex_view_byte.text = texto
 	elementos_viewer.append(hex_view_byte)
 
+func reinicializar_hex_grid():
+	if not SoftwareManager.atualizacao_visual_ativa:
+		return
+	
+	self.inicializar_hex_grid()
+	
 func inicializar_hex_grid():
 	# esvazia o HexGrid
 	for i in %HexGrid.get_children():

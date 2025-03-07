@@ -16,6 +16,8 @@ enum ModoExecucao 	{ UNICO_MICROCODIGO, UNICA_INSTRUCAO, TUDO }
 var estagio_atual 	: Estagio		= Estagio.TERMINO
 var modo_atual 		: ModoExecucao	= ModoExecucao.TUDO
 
+var atualizacao_visual_ativa: bool = true
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	execucao_timer = Timer.new()
@@ -26,7 +28,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if execucao_timer.is_stopped() or Teste.teste_em_execucao:
+	if execucao_timer.is_stopped() or Teste.teste_em_execucao():
 		match estagio_atual:
 			Estagio.TERMINO:
 				return
@@ -68,7 +70,7 @@ func executar_proxima_microoperacao():
 		_:
 			push_error("Operador de instrução inválido")
 	
-	if not Teste.teste_em_execucao:
+	if not Teste.em_modo_multiplos_teste():
 		print("Executando: ", instrucao)
 
 	if CPU.has_method(instrucao):

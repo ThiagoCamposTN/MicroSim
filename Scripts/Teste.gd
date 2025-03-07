@@ -1,25 +1,44 @@
 extends Node
 
 var arquivo_de_teste : String
-var teste_em_execucao: bool = false
 var lista_de_testes: Array[String] = []
 var teste_sem_erros: bool = true
 
+var _tempo_inicial: float = 0
+
+enum Estagio		{ COMECO, EM_EXECUCAO, EM_ANALISE, FINALIZADO, PARADO }
+enum TipoExecucao 	{ UNICO_TESTE, MULTIPLOS_TESTES }
+
+var tipo_de_execucao	: TipoExecucao
+var operacao_atual		: Estagio = Estagio.PARADO
+
 
 func _ready():
-	SoftwareManager.execucao_finalizada.connect(fim_da_execucao)
+	SoftwareManager.execucao_finalizada.connect(teste_finalizado)
 	Programa.programa_carregado.connect(atualizar_programa)
 
 func _physics_process(_delta):
-	if (lista_de_testes.size() > 0) and (not teste_em_execucao):
-		var teste_atual = lista_de_testes.pop_front()
-		self.inicializar_teste(teste_atual)
+	match self.operacao_atual:
+		Estagio.COMECO:
+			self._tempo_inicial = Time.get_unix_time_from_system()
+			self.operacao_atual = Estagio.EM_EXECUCAO
+		Estagio.EM_EXECUCAO:
+			var teste_atual = lista_de_testes.pop_front()
+			print("###### ", teste_atual, " ######")
+			self.inicializar_teste(teste_atual)
+		Estagio.EM_ANALISE:
+			pass
+		Estagio.FINALIZADO:
+			var tempo_final = Time.get_unix_time_from_system()
+			var tempo_total = tempo_final - self._tempo_inicial
+			print("Tempo total: ", tempo_total, "ms")
+			self.operacao_atual = Estagio.PARADO
+		Estagio.PARADO:
+			pass
 
 func inicializar_teste(arquivo : String) -> void:
-	print("###### ", arquivo, " ######")
-	self.arquivo_de_teste = arquivo
-	self.teste_em_execucao = true
-	self.teste_sem_erros = true
+	self.arquivo_de_teste 	= arquivo
+	self.teste_sem_erros 	= true
 
 	# limpar a fila de instruções (não é necessário aqui, mas é mais uma medida de segurança)
 	SoftwareManager.limpar_fila_de_instrucoes()
@@ -30,14 +49,16 @@ func inicializar_teste(arquivo : String) -> void:
 	# inicia a execução do teste
 	self.executar_teste()
 
+	self.operacao_atual = Estagio.EM_ANALISE
+
 
 func executar_teste() -> void:
 	SoftwareManager.executar_programa(CPU.registrador_pc)
 
-func fim_da_execucao() -> void:
+func teste_finalizado() -> void:
 	# realiza a comparação do estado final com o esperado
 
-	if not self.teste_em_execucao:
+	if not self.teste_em_execucao():
 		return
 	
 	# carrega o arquivo de estado
@@ -71,10 +92,13 @@ func fim_da_execucao() -> void:
 	else:
 		print("Teste concluído com falhas.")
 	
-	self.teste_em_execucao = false
+	if self.lista_de_testes_vazia():
+		self.operacao_atual = Estagio.FINALIZADO
+	else:
+		self.operacao_atual = Estagio.EM_EXECUCAO
 
 func atualizar_programa(instrucoes: PackedStringArray):
-	if self.teste_em_execucao:
+	if self.teste_em_execucao():
 		SoftwareManager.salvar_codigo_em_memoria(instrucoes, CPU.registrador_pc)
 
 func validar_valor(config: ConfigFile, chave: String, valor_atual: Valor) -> void:
@@ -123,10 +147,26 @@ func validar_memoria(config: ConfigFile) -> void:
 func adicionar_teste_a_fila(nome : String) -> void:
 	self.lista_de_testes.append(nome)
 
-func adicionar_multiplos_testes_a_fila(pasta: String, arquivos: Array[String]) -> void:
+func realizar_multiplos_testes(pasta: String, arquivos: Array[String]) -> void:
 	for arquivo in arquivos:
 		self.adicionar_teste_a_fila(pasta.path_join(arquivo))
+	self.tipo_de_execucao 	= TipoExecucao.MULTIPLOS_TESTES
+	self.operacao_atual 	= Estagio.COMECO
 
 func abortar_todos_os_testes() -> void:
-	self.teste_em_execucao = false
 	self.lista_de_testes.clear()
+	self.operacao_atual		= Estagio.PARADO
+
+func realizar_um_teste(caminho : String) -> void:
+	self.adicionar_teste_a_fila(caminho)
+	self.tipo_de_execucao 	= TipoExecucao.UNICO_TESTE
+	self.operacao_atual		= Estagio.COMECO
+
+func teste_em_execucao() -> bool:
+	return (self.operacao_atual != Estagio.PARADO) and (self.operacao_atual != Estagio.FINALIZADO)
+
+func em_modo_multiplos_teste() -> bool:
+	return (self.tipo_de_execucao == TipoExecucao.MULTIPLOS_TESTES)
+
+func lista_de_testes_vazia() -> bool:
+	return (self.lista_de_testes.size() == 0)
