@@ -1,3 +1,5 @@
+versao="1.0"
+
 [inicio]
 registrador.b="8"
 registrador.pc="0"
@@ -5,7 +7,6 @@ instrucoes=[
 	"ADB #FC",
 	"CAL EXIT"
 ]
-memoria.base="res://MEMORIA.MEM"
 [fim]
 registrador.b="4"
 memoria = {

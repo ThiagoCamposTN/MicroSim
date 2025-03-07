@@ -22,7 +22,7 @@ func inicializar_teste(arquivo : String) -> void:
 	self.teste_sem_erros = true
 
 	# limpar a fila de instruções (não é necessário aqui, mas é mais uma medida de segurança)
-	SoftwareManager.fila_instrucoes.clear()
+	SoftwareManager.limpar_fila_de_instrucoes()
 
 	# carregar o estado antes de executar o teste
 	Estado.carregar_estado(arquivo)

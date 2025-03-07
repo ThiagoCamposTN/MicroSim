@@ -53,19 +53,19 @@ func atualizar_linha():
 	# Resolvendo caixas
 	apagar_tweens()
 	
-	if SoftwareManager.fila_instrucoes.size() == 0:
+	if SoftwareManager.fila_de_instrucoes_esta_vazia():
 		return
 	
-	var instrucao = SoftwareManager.fila_instrucoes[0]
+	var instrucao_atual = SoftwareManager.obter_instrucao_atual()
 	
-	if not instrucao or typeof(instrucao) != TYPE_STRING:
+	if not instrucao_atual or typeof(instrucao_atual) != TYPE_STRING:
 		return
 	
-	if not CPU.has_method(instrucao):
+	if not CPU.has_method(instrucao_atual):
 		return
 	
 	remover_fluxos()
-	match instrucao:
+	match instrucao_atual:
 		"mover_pc_para_mar":
 			registradores_interagindo.append(registradores_nos["PC"])
 			registradores_interagindo.append(registradores_nos["MAR"])
@@ -107,14 +107,13 @@ func atualizar_linha():
 	acender_registradores_interagindo()
 	
 	# Resolvendo linhas
-	if SoftwareManager.fila_instrucoes.size() > 0:
-		var caminho_linha = %Linhas.get_node(SoftwareManager.fila_instrucoes[0])
-		var caminho_fluxo_linha = %Linhas.get_node("fluxo_" + SoftwareManager.fila_instrucoes[0])
-		
-		if not caminho_linha:
-			return
+	var caminho_linha 		= %Linhas.get_node(instrucao_atual)
+	var caminho_fluxo_linha = %Linhas.get_node("fluxo_" + instrucao_atual)
 	
-		caminhar_fluxo(caminho_fluxo_linha)
+	if not caminho_linha:
+		return
+
+	caminhar_fluxo(caminho_fluxo_linha)
 
 func acender_registradores_interagindo() -> void:
 	for reg in registradores_interagindo:

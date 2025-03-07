@@ -1,3 +1,5 @@
+versao="1.0"
+
 [inicio]
 registrador.a="1"
 registrador.b="2"
@@ -23,7 +25,6 @@ memoria.substituicoes = {
     "0": "01",
     "1": "02",
 }
-memoria.base="res://MEMORIA.MEM"
 [fim]
 registrador.a="19"
 registrador.b="9"

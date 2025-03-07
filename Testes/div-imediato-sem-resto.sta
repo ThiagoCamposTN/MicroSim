@@ -1,8 +1,9 @@
+versao="1.0"
+
 [inicio]
 registrador.pc="0"
 registrador.a="AC"
 registrador.b="B4"
-memoria.base="res://MEMORIA.MEM"
 instrucoes=[
 	"DIV #2",
 	"CAL EXIT"

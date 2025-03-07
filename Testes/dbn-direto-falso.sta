@@ -1,7 +1,8 @@
+versao="1.0"
+
 [inicio]
 registrador.pc="0"
 registrador.ix="01"
-memoria.base="res://MEMORIA.MEM"
 instrucoes=[
 	"DBN 100",
 	"CAL EXIT",

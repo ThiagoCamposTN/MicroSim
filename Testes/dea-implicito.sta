@@ -1,7 +1,8 @@
+versao="1.0"
+
 [inicio]
 registrador.pc="0"
 registrador.a="B"
-memoria.base="res://MEMORIA.MEM"
 instrucoes=[
 	"DEA",
 	"CAL EXIT"

@@ -1,3 +1,5 @@
+versao="1.0"
+
 [inicio]
 registrador.pc="1"
 instrucoes=[
@@ -7,7 +9,6 @@ instrucoes=[
 	"STA 0000",
 	"CAL EXIT"
 ]
-memoria.base="res://MEMORIA.MEM"
 
 [fim]
 registrador.a="19"

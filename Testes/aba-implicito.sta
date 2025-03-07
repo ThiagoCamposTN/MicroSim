@@ -1,3 +1,7 @@
+versao="1.0"
+
+versao="1.0"
+
 [inicio]
 registrador.a="10"
 registrador.b="9"
@@ -5,7 +9,6 @@ instrucoes=[
 	"ABA",
 	"CAL EXIT"
 ]
-memoria.base="res://MEMORIA.MEM"
 
 [fim]
 registrador.a="19"

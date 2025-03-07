@@ -1,3 +1,5 @@
+versao="1.0"
+
 [inicio]
 registrador.a="65"
 registrador.b="8E"
@@ -5,7 +7,6 @@ instrucoes=[
 	"XAB",
 	"CAL EXIT"
 ]
-memoria.base="res://MEMORIA.MEM"
 
 [fim]
 registrador.a="8E"

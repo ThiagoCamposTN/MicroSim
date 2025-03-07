@@ -1,8 +1,9 @@
+versao="1.0"
+
 [inicio]
 registrador.pc="0"
 registrador.ix="6E35"
 registrador.pp="FFF"
-memoria.base="res://MEMORIA.MEM"
 instrucoes=[
 	"PHX",
 	"CAL EXIT"

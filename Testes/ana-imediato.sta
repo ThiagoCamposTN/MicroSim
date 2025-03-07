@@ -1,7 +1,8 @@
+versao="1.0"
+
 [inicio]
 registrador.pc="0"
 registrador.a="45"
-memoria.base="res://MEMORIA.MEM"
 instrucoes=[
 	"ANA #56",
 	"CAL EXIT"

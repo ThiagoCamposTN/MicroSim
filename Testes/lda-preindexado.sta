@@ -1,6 +1,7 @@
+versao="1.0"
+
 [inicio]
 registrador.ix="42"
-memoria.base="res://MEMORIA.MEM"
 memoria.substituicoes = {
     "142": "02",
     "143": "00",

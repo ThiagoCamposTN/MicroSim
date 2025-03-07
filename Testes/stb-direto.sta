@@ -1,7 +1,8 @@
+versao="1.0"
+
 [inicio]
 registrador.pc="0"
 registrador.b="56"
-memoria.base="res://MEMORIA.MEM"
 instrucoes=[
 	"STB 300",
 	"CAL EXIT"

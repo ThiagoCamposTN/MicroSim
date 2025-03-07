@@ -1,8 +1,9 @@
+versao="1.0"
+
 [inicio]
 registrador.pc="0"
 registrador.b="5"
 registrador.pp="0FF0"
-memoria.base="res://MEMORIA.MEM"
 instrucoes=[
 	"PHB",
 	"CAL EXIT"

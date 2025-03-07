@@ -4,20 +4,21 @@ extends Node
 signal sobrecarregar_memoria
 
 
-func obter_memoria_do_arquivo(arquivo: String) -> PackedByteArray:
-	if (not arquivo) or (typeof(arquivo) != TYPE_STRING):
-		push_error("Valor de \"memoria\" é inválido.")
-		return []
+func verificar_arquivo_de_memoria(arquivo: String) -> bool:
+	if not arquivo:
+		return false
 
-	var dados_memoria: PackedByteArray = self.obter_valores_memoria_base(arquivo)
+	if typeof(arquivo) != TYPE_STRING:
+		push_error("O valor para o arquivo de \"memoria\" é inválido.")
+		return false
 	
-	return dados_memoria
-
-func obter_valores_memoria_base(arquivo: String) -> PackedByteArray:
 	if not FileAccess.file_exists(arquivo):
 		push_error("Arquivo de memoria \"" + arquivo + "\" não existe")
-		return []
+		return false
 	
+	return true
+
+func obter_memoria_do_arquivo(arquivo: String) -> PackedByteArray:
 	var file 	: FileAccess 		= FileAccess.open(arquivo, FileAccess.READ)
 	var dados 	: PackedByteArray 	= file.get_buffer(file.get_length())
 	file.close()
@@ -58,11 +59,22 @@ func carregar_estado(caminho: String = "res://padrão.sta") -> void:
 	var config: ConfigFile = self.obter_configuração_de_estado(caminho)
 
 	if not config:
+		push_error("Não foi possível carregar o arquivo de estado.")
 		return
+
+	var _versao = config.get_value("", "versao", "1.0")
+	# print("Versão do arquivo de estado: ", _versao)
 	
 	# carrega a memória base
 	var nome_arquivo_memoria = config.get_value("inicio", "memoria.base", "")
-	var memoria = self.obter_memoria_do_arquivo(nome_arquivo_memoria)
+	var arquivo_de_memoria_valido: bool = self.verificar_arquivo_de_memoria(nome_arquivo_memoria)
+	var memoria: PackedByteArray
+
+	if arquivo_de_memoria_valido:
+		memoria = self.obter_memoria_do_arquivo(nome_arquivo_memoria)
+	else:
+		memoria = self.obter_memoria_aleatoria(Memoria.TAMANHO_MEMORIA)
+
 
 	# carrega as substituições de células de memória se existirem
 	var novos_valores_memoria = config.get_value("inicio", "memoria.substituicoes", {})
@@ -101,8 +113,15 @@ func carregar_estado(caminho: String = "res://padrão.sta") -> void:
 	CPU.atualizar_flag_c(Valor.novo_de_hex(flag_c))
 	CPU.atualizar_flag_o(Valor.novo_de_hex(flag_o))
 	
-	SoftwareManager.fila_instrucoes.clear()
+	SoftwareManager.limpar_fila_de_instrucoes()
 
 	# carrega o programa
 	var programa = config.get_value("inicio", "instrucoes", [])
 	Programa.programa_carregado.emit(programa)
+
+func obter_memoria_aleatoria(tamanho: int) -> PackedByteArray:
+	seed("VIRA".hash())
+	var memoria: PackedByteArray
+	for i in range(0, tamanho):
+		memoria.push_back(randi() % 0xFF)
+	return memoria

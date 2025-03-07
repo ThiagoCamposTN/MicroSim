@@ -1,7 +1,8 @@
+versao="1.0"
+
 [inicio]
 registrador.ix="0046"
 registrador.pc="0100"
-memoria.base="res://MEMORIA.MEM"
 memoria.substituicoes = {
     "0146": "26",
     "0150": "01",

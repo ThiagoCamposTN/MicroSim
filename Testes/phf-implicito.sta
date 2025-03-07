@@ -1,3 +1,5 @@
+versao="1.0"
+
 [inicio]
 registrador.pc="0"
 registrador.pp="0E00"
@@ -5,7 +7,6 @@ flag.z="0"
 flag.n="1"
 flag.c="0"
 flag.o="1"
-memoria.base="res://MEMORIA.MEM"
 instrucoes=[
 	"PHF",
 	"CAL EXIT"

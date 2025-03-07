@@ -1,3 +1,5 @@
+versao="1.0"
+
 [inicio]
 registrador.b="8"
 registrador.pp="4095"
