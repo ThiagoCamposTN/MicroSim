@@ -72,17 +72,17 @@ static func detectar_parametro(texto : String, enderecamento: Instrucao.Endereca
 
 static func extrair_parametro(parametro : RegExMatch) -> Valor:
 	var resultados : PackedStringArray = parametro.get_strings()
-	var parametros : PackedStringArray 
+	var _parametro : PackedStringArray 
 	resultados.remove_at(0)
 	for i in resultados:
-		parametros.push_back(i.strip_edges())
-	return Valor.novo_de_hex("".join(parametros))
+		_parametro.push_back(i.strip_edges())
+	return Valor.novo_de_hex("".join(_parametro))
 
 static func descompilar(opcode: Valor) -> Instrucao:
 	var instrucao_em_hex: String = opcode.como_hex(2)
 	return Operacoes.byte_para_mnemonico(instrucao_em_hex)
 
-static func buscar_parametros_na_memoria(endereco_inicial: Valor, tamanho: int) -> Valor:
+static func buscar_parametro_na_memoria(endereco_inicial: Valor, tamanho: int) -> Valor:
 	var parametro_em_bytes: PackedByteArray
 	for endereco: int in range(endereco_inicial.como_int(), endereco_inicial.como_int() + tamanho):
 		var valor_endereco	: Valor = Valor.new(endereco)

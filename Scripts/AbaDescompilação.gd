@@ -28,19 +28,18 @@ func _process(_delta):
 		var instrucao_atual : Instrucao = Compilador.descompilar(valor)
 		var valor_em_hex 	: String 	= valor.como_hex(2)
 		var endereco_em_hex	: String 	= endereço_inicial.como_hex(3)
-		
-		endereço_inicial.somar_int(1)
 
 		if not instrucao_atual:
 			adicionar_instrucao(endereco_em_hex, valor_em_hex, "??")
 			return
 
+		endereço_inicial.somar_int(1)
+		instrucao_atual.parametro 	= Compilador.buscar_parametro_na_memoria(endereço_inicial, instrucao_atual.tamanho_parametro)
 		instrucao_atual.opcode 		= valor_em_hex
-		instrucao_atual.parametros 	= Compilador.buscar_parametros_na_memoria(endereço_inicial, instrucao_atual.enderecamento)
 
 		adicionar_instrucao(endereco_em_hex, valor_em_hex, instrucao_atual.instrucao_em_string())
 
-		endereço_inicial.somar_int(instrucao_atual.parametros.size())
+		endereço_inicial.somar_int(instrucao_atual.tamanho_parametro)
 
 func execucao_iniciada(endereco: Valor):
 	self.limpar_arvore()
