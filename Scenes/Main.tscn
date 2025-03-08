@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scenes/Principal.gd" id="1_f7wj2"]
 [ext_resource type="Script" path="res://Scenes/aba_memoria.gd" id="1_k3qc3"]
-[ext_resource type="Script" path="res://Scripts/Descompilador.gd" id="1_p8pv5"]
+[ext_resource type="Script" path="res://Scripts/AbaDescompilação.gd" id="1_p8pv5"]
 [ext_resource type="Script" path="res://Scenes/Aplicação.gd" id="1_xtbw1"]
 [ext_resource type="PackedScene" uid="uid://uskbj7p2yvx8" path="res://Scenes/Menu.tscn" id="2_2p4gg"]
 [ext_resource type="Theme" uid="uid://cue378diorxs8" path="res://Themes/default.tres" id="2_h2p1t"]
@@ -114,13 +114,13 @@ theme = ExtResource("2_h2p1t")
 [node name="Editor" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Programação/MarginContainer" instance=ExtResource("3_0ofiw")]
 layout_mode = 2
 
-[node name="Descompilador" type="TabBar" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer"]
+[node name="Descompilação" type="TabBar" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer"]
 visible = false
 layout_mode = 2
 script = ExtResource("1_p8pv5")
 metadata/_tab_index = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilador"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilação"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -129,17 +129,17 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_h2p1t")
 
-[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilador/MarginContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilação/MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilador/MarginContainer/HSplitContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilação/MarginContainer/HSplitContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilador/MarginContainer/HSplitContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilação/MarginContainer/HSplitContainer/VBoxContainer2"]
 layout_mode = 2
 text = "Programa"
 
-[node name="PainelInstrucoes" type="Tree" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilador/MarginContainer/HSplitContainer/VBoxContainer2"]
+[node name="PainelInstrucoes" type="Tree" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilação/MarginContainer/HSplitContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -149,11 +149,11 @@ allow_search = false
 hide_root = true
 select_mode = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilador/MarginContainer/HSplitContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilação/MarginContainer/HSplitContainer/VBoxContainer2"]
 layout_mode = 2
 alignment = 2
 
-[node name="DescompilarButton" type="Button" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilador/MarginContainer/HSplitContainer/VBoxContainer2/HBoxContainer"]
+[node name="DescompilarButton" type="Button" parent="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilação/MarginContainer/HSplitContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
 text = "Descompilar"
 
@@ -1011,7 +1011,7 @@ layout_mode = 2
 tooltip_text = "Executa todas as instruções em sequência a partir do endereço pelo Contador de Programa até o próximo comando de parada ou instrução inválida."
 text = "Executar tudo"
 
-[connection signal="pressed" from="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilador/MarginContainer/HSplitContainer/VBoxContainer2/HBoxContainer/DescompilarButton" to="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilador" method="_on_descompilar_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilação/MarginContainer/HSplitContainer/VBoxContainer2/HBoxContainer/DescompilarButton" to="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilação" method="_on_descompilar_button_pressed"]
 [connection signal="focus_exited" from="VBoxContainer/MarginContainer/HBoxContainer/PCLineEdit" to="." method="_on_pc_line_edit_focus_exited"]
 [connection signal="text_changed" from="VBoxContainer/MarginContainer/HBoxContainer/PCLineEdit" to="." method="_on_pc_line_edit_text_changed"]
 [connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/AvancarMicrocodigoButton" to="." method="_on_avancar_microcodigo_button_pressed"]
