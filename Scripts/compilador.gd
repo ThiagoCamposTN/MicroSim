@@ -6,7 +6,7 @@ static func compilar(linha : String) -> Instrucao:
 
 	var enderecamento		: Instrucao.Enderecamentos 	= detectar_enderecamento(restante)
 	var parametro_detectado	: RegExMatch 				= detectar_parametro(restante, enderecamento)
-	var parametro			: Valor 					= extrair_parametro(parametro_detectado)
+	var parametro			: String 					= extrair_parametro(parametro_detectado)
 	var instrucao			: Instrucao 				= Instrucao.new(mnemonico, enderecamento)
 	instrucao.parametro = parametro
 
@@ -57,9 +57,9 @@ static func obter_regra_de_enderecamento(enderecamento: Instrucao.Enderecamentos
 		Instrucao.Enderecamentos.INDEXADO:
 			return r'(.+?)\s*,\s*X'
 		Instrucao.Enderecamentos.IMEDIATO:
-			return r'#(.+?)'
+			return r'#(.+)'
 		Instrucao.Enderecamentos.DIRETO:
-			return r'(.+?)'
+			return r'(.+)'
 		_:
 			# Endereçamento implicito
 			return r''
@@ -70,22 +70,21 @@ static func detectar_parametro(texto : String, enderecamento: Instrucao.Endereca
 	var resultado: RegExMatch = regex.search(texto)
 	return resultado
 
-static func extrair_parametro(parametro : RegExMatch) -> Valor:
-	var resultados : PackedStringArray = parametro.get_strings()
-	var _parametro : PackedStringArray 
-	resultados.remove_at(0)
-	for i in resultados:
-		_parametro.push_back(i.strip_edges())
-	return Valor.novo_de_hex("".join(_parametro))
+static func extrair_parametro(parametro : RegExMatch) -> String:
+	var resultados: PackedStringArray = parametro.get_strings()
+	if not resultados:
+		return ""
+	var _parametro: String = resultados[-1].strip_edges()
+	return _parametro
 
 static func descompilar(opcode: Valor) -> Instrucao:
 	var instrucao_em_hex: String = opcode.como_hex(2)
 	return Operacoes.byte_para_mnemonico(instrucao_em_hex)
 
-static func buscar_parametro_na_memoria(endereco_inicial: Valor, tamanho: int) -> Valor:
+static func buscar_parametro_na_memoria(endereco_inicial: Valor, tamanho: int) -> String:
 	var parametro_em_bytes: PackedByteArray
 	for endereco: int in range(endereco_inicial.como_int(), endereco_inicial.como_int() + tamanho):
 		var valor_endereco	: Valor = Valor.new(endereco)
 		var conteudo_memoria: Valor = Memoria.ler_conteudo_no_endereco(valor_endereco)
 		parametro_em_bytes.append(conteudo_memoria.como_int())
-	return Valor.novo_de_byte_array(parametro_em_bytes)
+	return Valor.novo_de_byte_array(parametro_em_bytes).como_hex(tamanho * 2)

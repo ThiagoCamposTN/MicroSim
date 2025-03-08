@@ -282,7 +282,7 @@ func transferir_flags_para_mbr() -> void:
 	atualizar_registrador_mbr(Valor.new(flag_como_int))
 
 func mover_mar_ao_endereco_de_memoria() -> void:
-	Memoria.endereco_selecionado = CPU.registrador_mar
+	Memoria.endereco_selecionado = Valor.novo_de_valor(CPU.registrador_mar)
 	endereco_selecionado_foi_alterado.emit()
 
 func mover_valor_da_memoria_ao_aux() -> void:

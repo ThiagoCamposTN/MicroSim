@@ -4,7 +4,7 @@ enum Enderecamentos { POS_INDEXADO, PRE_INDEXADO, INDIRETO, IMEDIATO, DIRETO, IM
 
 var enderecamento 		: Enderecamentos
 var mnemonico			: String
-var parametro			: Valor
+var parametro			: String
 var opcode				: String
 var tamanho_parametro	: int
 	
@@ -54,23 +54,32 @@ func instrucao_em_string() -> String:
 			return ""
 
 func parametro_como_hex() -> String:
-	return self.parametro.como_hex(self.tamanho_parametro)
+	var _parametro: Valor = self.parametro_como_valor()
+	if not _parametro:
+		return ""
+	else:
+		return _parametro.como_hex(self.tamanho_parametro * 2)
+
+func parametro_como_valor() -> Valor:
+	if not self.parametro:
+		return null
+	if self.parametro == "EXIT":
+		return Valor.novo_de_int(0x1200)
+	return Valor.novo_de_hex(self.parametro)
 
 func instrucao_como_bytes() -> PackedByteArray:
-	var bytes: Array = self.parametro.como_byte_array(self.tamanho_parametro)
 	var mnemonico_como_byte: String = Operacoes.mnemonico_para_byte(self.mnemonico, self.enderecamento)
-	bytes.push_front(Valor.hex_para_int(mnemonico_como_byte))
+	var bytes: PackedByteArray
+	bytes.push_back(Valor.hex_para_int(mnemonico_como_byte))
+	var _parametro: Valor = self.parametro_como_valor()
+	if _parametro:
+		bytes.append_array(_parametro.como_byte_array(self.tamanho_parametro * 2))
 	return bytes
 
 func obter_mnemonico() -> String:
 	return self.operador.mnemonico
 
-func atualizar_parametro(novo_parametro: String):
-	if novo_parametro == "EXIT":
-		self.parametro = Valor.novo_de_int(0x1200)
-	self.parametro = Valor.novo_de_hex(novo_parametro)
-
 static func instrucao_call_exit(instrucao : Instrucao):
 	if not instrucao:
 		return false
-	return (instrucao.mnemonico == "CAL") and (instrucao.parametro.como_int() == 0x1200)
+	return (instrucao.mnemonico == "CAL") and (instrucao.parametro == "EXIT")

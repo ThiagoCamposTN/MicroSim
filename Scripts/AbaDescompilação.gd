@@ -29,11 +29,12 @@ func _process(_delta):
 		var valor_em_hex 	: String 	= valor.como_hex(2)
 		var endereco_em_hex	: String 	= endereço_inicial.como_hex(3)
 
+		endereço_inicial.somar_int(1)
+
 		if not instrucao_atual:
 			adicionar_instrucao(endereco_em_hex, valor_em_hex, "??")
 			return
-
-		endereço_inicial.somar_int(1)
+		
 		instrucao_atual.parametro 	= Compilador.buscar_parametro_na_memoria(endereço_inicial, instrucao_atual.tamanho_parametro)
 		instrucao_atual.opcode 		= valor_em_hex
 
