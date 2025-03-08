@@ -78,8 +78,7 @@ static func extrair_parametro(parametro : RegExMatch) -> String:
 	return _parametro
 
 static func descompilar(opcode: Valor) -> Instrucao:
-	var instrucao_em_hex: String = opcode.como_hex(2)
-	return Operacoes.byte_para_mnemonico(instrucao_em_hex)
+	return Operacoes.opcode_para_instrucao(opcode)
 
 static func buscar_parametro_na_memoria(endereco_inicial: Valor, tamanho: int) -> String:
 	var parametro_em_bytes: PackedByteArray

@@ -7,6 +7,7 @@ script = ExtResource("1_i7gff")
 nome = "Add in A"
 "mnemônico" = "ADA"
 "descrição" = "Adiciona ao registrador A o valor de um operando, e armazena o resultado nele mesmo (A)."
+bytes = 1
 microcodigos = ["mover_mar_ao_endereco_de_memoria", "mover_valor_da_memoria_ao_mbr", "transferir_a_para_alu_a", "transferir_mbr_para_alu_b", "adicao_alu_a_alu_b", "transferir_alu_saida_para_a"]
 direto = "14"
 imediato = "24"

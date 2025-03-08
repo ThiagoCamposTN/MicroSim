@@ -87,7 +87,7 @@ func executar_programa(endereco_inicial: Valor, modo: ModoExecucao = ModoExecuca
 	self.modo_atual = modo
 
 func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: Valor):
-	var parte_memoria = Array()
+	var parte_memoria: PackedByteArray
 
 	for linha in linhas_codigo:
 		var bytes: PackedByteArray = self.compilar_linha_em_bytes(linha)

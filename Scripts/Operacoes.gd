@@ -53,9 +53,9 @@ func mnemonico_para_byte(mnemonico: String, endereçamento: Instrucao.Enderecame
 	print("Instrução não encontrada.")
 	return ""
 
-func byte_para_mnemonico(byte: String) -> Instrucao:
+func opcode_para_instrucao(opcode: Valor) -> Instrucao:
 	for operacao: Operador in operacoes.values():
-		match byte:
+		match opcode.como_hex(2):
 			operacao.pos_indexado:
 				return Instrucao.new(operacao.mnemônico, Instrucao.Enderecamentos.POS_INDEXADO)
 			operacao.pre_indexado:

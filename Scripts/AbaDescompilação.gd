@@ -30,8 +30,10 @@ func _process(_delta):
 		var endereco_em_hex	: String 	= endereço_inicial.como_hex(3)
 
 		endereço_inicial.somar_int(1)
-
-		if not instrucao_atual:
+		
+		# contemplando os casos em que a instrução não existe e se o parâmetro de uma instrução ultrapassar a área da memória
+		if not instrucao_atual or \
+		(endereço_inicial.como_int() + instrucao_atual.tamanho_parametro) >= Memoria.celulas.size():
 			adicionar_instrucao(endereco_em_hex, valor_em_hex, "??")
 			return
 		
