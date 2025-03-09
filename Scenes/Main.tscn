@@ -735,7 +735,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("15_qx21s")
 disabled = true
-text = "00"
+text = "0000"
 
 [node name="RegistradorULASaidaButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 unique_name_in_owner = true
@@ -748,7 +748,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("15_qx21s")
 disabled = true
-text = "00"
+text = "0000"
 
 [node name="MemoriaEnderecoButton" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container/Registradores"]
 unique_name_in_owner = true

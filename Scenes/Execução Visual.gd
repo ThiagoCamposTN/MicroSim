@@ -59,6 +59,10 @@ func _ready():
 	CPU.flag_c_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorCButton))
 	CPU.flag_o_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorOButton))
 
+	CPU.alu_entrada_a_foi_atualizado.connect(atualizar_registrador.bind("ULAA"))
+	CPU.alu_entrada_b_foi_atualizado.connect(atualizar_registrador.bind("ULAB"))
+	CPU.alu_saida_foi_atualizado.connect(atualizar_registrador.bind("ULASaida"))
+
 	SoftwareManager.mudanca_de_fase.connect(fase_foi_alterada)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -356,6 +360,12 @@ func atualizar_registrador(registrador: String):
 			registradores_nos["O"].text = CPU.flag_o.como_hex(1)
 		"IR":
 			registradores_nos["IR"].text = CPU.registrador_ir.como_hex(2)
+		"ULAA":
+			registradores_nos["ULAA"].text = CPU.alu_entrada_a.como_hex(4)
+		"ULAB":
+			registradores_nos["ULAB"].text = CPU.alu_entrada_b.como_hex(4)
+		"ULASaida":
+			registradores_nos["ULASaida"].text = CPU.alu_saida.como_hex(4)
 
 func caminhar_fluxo(linha_fluxo: Line2D):
 	if not linha_fluxo:
