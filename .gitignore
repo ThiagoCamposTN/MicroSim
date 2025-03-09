@@ -16,4 +16,4 @@ mono_crash.*.json
 
 # custom ignores
 .vscode/
-.tmp
+*.tmp
