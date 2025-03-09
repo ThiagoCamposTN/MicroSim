@@ -3,6 +3,7 @@ extends Node
 signal microoperacao_executada
 signal execucao_finalizada
 signal mudanca_de_fase
+signal programa_iniciado
 
 var fila_de_instrucoes 	: Array 		= []
 
@@ -85,6 +86,7 @@ func executar_programa(endereco_inicial: Valor, modo: ModoExecucao = ModoExecuca
 	CPU.iniciar_registrador_pc(endereco_inicial)
 	self.estagio_atual = Estagio.PREPARACAO
 	self.modo_atual = modo
+	programa_iniciado.emit()
 
 func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: Valor):
 	var parte_memoria = Array()
@@ -383,9 +385,6 @@ func realizar_calculo_de_flags():
 	# pode haver multiplos calcular flags empurrados pois pode haver
 	# multiplas operacoes que dão push da flag em seguida uma da outra
 	self.fila_de_instrucoes.push_front("calcular_flags")
-
-func calcular_flags():
-	pass
 
 func limpar_fila_de_instrucoes() -> void:
 	self.fila_de_instrucoes.clear()

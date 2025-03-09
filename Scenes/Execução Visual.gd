@@ -8,6 +8,7 @@ var fluxo_tween					: Tween
 @export var tempo_fluxo			: float = 1
 
 var fluxo_ligado : Node2D
+var flags_atualizadas: Array[Button] = []
 
 @onready var registradores_nos = {
 	"A": %RegistradorAButton,
@@ -43,6 +44,12 @@ func _ready():
 	CPU.flag_o_foi_atualizada.connect(atualizar_registrador.bind("O"))
 	CPU.registrador_ir_foi_atualizado.connect(atualizar_registrador.bind("IR"))
 
+	SoftwareManager.programa_iniciado.connect(limpar_flags)
+	CPU.flag_z_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorZButton))
+	CPU.flag_n_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorNButton))
+	CPU.flag_c_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorCButton))
+	CPU.flag_o_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorOButton))
+
 	SoftwareManager.mudanca_de_fase.connect(fase_foi_alterada)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -64,6 +71,7 @@ func atualizar_linha():
 	if not instrucao_atual or typeof(instrucao_atual) != TYPE_STRING:
 		return
 	
+	# Evita demonstrar instruções auxiliares que não estão na CPU
 	if not CPU.has_method(instrucao_atual):
 		return
 	
@@ -106,6 +114,10 @@ func atualizar_linha():
 			registradores_interagindo.append(registradores_nos["IR"])
 		"incrementar_registrador_pc":
 			registradores_interagindo.append(registradores_nos["PC"])
+		"calcular_flags":
+			for flag in flags_atualizadas:
+				registradores_interagindo.append(flag)
+			flags_atualizadas.clear()
 
 	acender_registradores_interagindo()
 	
@@ -219,4 +231,10 @@ func fase_foi_alterada(fase : SoftwareManager.Fase):
 		SoftwareManager.Fase.DECODIFICACAO:
 			print("Fase atual: decodificacao")
 		SoftwareManager.Fase.EXECUCAO:
-			print("Fase atual: execucao")	
+			print("Fase atual: execucao")
+
+func adicionar_flags_interagindo(registrador: Button):
+	flags_atualizadas.append(registrador)
+
+func limpar_flags():
+	flags_atualizadas.clear()

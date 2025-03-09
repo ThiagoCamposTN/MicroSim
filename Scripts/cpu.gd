@@ -380,3 +380,6 @@ func atribuir_um_a_flag_c():
 
 func atribuir_um_a_flag_o():
 	self.atualizar_flag_o(Valor.new(1))
+
+func calcular_flags():
+	pass
