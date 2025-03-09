@@ -12,7 +12,7 @@ func _init(mnemônico: String, tipo_enderecamento: Enderecamentos):
 	var operador: Operador 	= Operacoes.obter_operador(mnemônico)
 	self.enderecamento 		= tipo_enderecamento
 	self.mnemonico 			= mnemônico
-	self.tamanho_do_dado 	= operador.bytes
+	self.tamanho_do_dado 	= operador.tamanho_do_dado
 	self.opcode 			= Operacoes.mnemonico_para_byte(mnemônico, tipo_enderecamento)
 
 func enderecamento_como_string() -> String:

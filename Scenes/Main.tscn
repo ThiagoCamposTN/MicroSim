@@ -16,7 +16,7 @@
 [ext_resource type="Theme" uid="uid://hlg41xdamtvq" path="res://Themes/registrador_label.tres" id="14_1an5g"]
 [ext_resource type="Theme" uid="uid://co6m50csib0ee" path="res://Themes/visual_interpreter.tres" id="15_qx21s"]
 [ext_resource type="Texture2D" uid="uid://bs736r8h6l41v" path="res://Imagens/triangulo.tres" id="16_hf3vw"]
-[ext_resource type="PackedScene" path="res://Scenes/Tela.tscn" id="17_8ruui"]
+[ext_resource type="PackedScene" uid="uid://ba24ltelu57bm" path="res://Scenes/Tela.tscn" id="17_8ruui"]
 
 [node name="Aplicação" type="Control"]
 layout_mode = 3
