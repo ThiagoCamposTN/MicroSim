@@ -18,7 +18,7 @@
 [ext_resource type="Theme" uid="uid://co6m50csib0ee" path="res://Themes/visual_interpreter.tres" id="15_qx21s"]
 [ext_resource type="Texture2D" uid="uid://bxi8pn524w8ha" path="res://Imagens/visualizador/Memoria.svg" id="16_0dbly"]
 [ext_resource type="Texture2D" uid="uid://bs736r8h6l41v" path="res://Imagens/triangulo.tres" id="16_hf3vw"]
-[ext_resource type="PackedScene" uid="uid://ba24ltelu57bm" path="res://Scenes/Tela.tscn" id="17_8ruui"]
+[ext_resource type="PackedScene" path="res://Scenes/Tela.tscn" id="17_8ruui"]
 [ext_resource type="Texture2D" uid="uid://64w3ypp8gorj" path="res://Imagens/visualizador/ConexaoMBR-AUX.svg" id="17_c1jhb"]
 [ext_resource type="Texture2D" uid="uid://clqxflehlu8n1" path="res://Imagens/Caminho.png" id="18_uu7v4"]
 
@@ -409,6 +409,7 @@ vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="UnidadeDeControle" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+layout_mode = 0
 offset_left = 539.0
 offset_top = 329.0
 offset_right = 667.0

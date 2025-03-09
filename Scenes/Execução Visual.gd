@@ -43,9 +43,10 @@ func _ready():
 	CPU.registrador_b_foi_atualizado.connect(atualizar_registrador.bind("B"))
 	CPU.registrador_pc_foi_atualizado.connect(atualizar_registrador.bind("PC"))
 	CPU.registrador_ix_foi_atualizado.connect(atualizar_registrador.bind("IX"))
-	CPU.registrador_mar_foi_atualizado.connect(atualizar_registrador.bind("MAR"))
 	CPU.registrador_pp_foi_atualizado.connect(atualizar_registrador.bind("PP"))
 	CPU.registrador_mbr_foi_atualizado.connect(atualizar_registrador.bind("MBR"))
+	CPU.registrador_aux_foi_atualizado.connect(atualizar_registrador.bind("AUX"))
+	CPU.registrador_mar_foi_atualizado.connect(atualizar_registrador.bind("MAR"))
 	CPU.flag_z_foi_atualizada.connect(atualizar_registrador.bind("Z"))
 	CPU.flag_n_foi_atualizada.connect(atualizar_registrador.bind("N"))
 	CPU.flag_c_foi_atualizada.connect(atualizar_registrador.bind("C"))
@@ -337,12 +338,14 @@ func atualizar_registrador(registrador: String):
 			registradores_nos["PC"].text = CPU.registrador_pc.como_hex(4)
 		"IX":
 			registradores_nos["IX"].text = CPU.registrador_ix.como_hex(4)
-		"MAR":
-			registradores_nos["MAR"].text = CPU.registrador_mar.como_hex(4)
 		"PP":
 			registradores_nos["PP"].text = CPU.registrador_pp.como_hex(4)
 		"MBR":
 			registradores_nos["MBR"].text = CPU.registrador_mbr.como_hex(2)
+		"AUX":
+			registradores_nos["AUX"].text = CPU.registrador_aux.como_hex(2)
+		"MAR":
+			registradores_nos["MAR"].text = CPU.registrador_mar.como_hex(4)
 		"Z":
 			registradores_nos["Z"].text = CPU.flag_z.como_hex(1)
 		"N":
