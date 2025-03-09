@@ -362,10 +362,10 @@ func decodificar_instrucao():
 	
 	self.mudanca_de_fase.emit(Fase.DECODIFICACAO)
 
-func finalizar_execucao():
+func finalizar_execucao(sucesso: bool=true):
 	estagio_atual = Estagio.TERMINO
 	self.limpar_fila_de_instrucoes() # todo: verificar se a lista não esvaziar sozinha é bug ou não
-	execucao_finalizada.emit()
+	execucao_finalizada.emit(sucesso)
 
 func prepara_o_estado_inicial(_emitir_sinal_de_finalização: bool = true):
 	Estado.carregar_estado()

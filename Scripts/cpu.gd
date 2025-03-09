@@ -338,6 +338,12 @@ func realizar_e_logico_alu_a_alu_b():
 func realizar_divisao_na_alu():
 	var dividendo	: int = self.alu_entrada_a.como_int()
 	var divisor		: int = self.alu_entrada_b.como_int()
+
+	if divisor == 0:
+		print("Errro de divisão por zero")
+		SoftwareManager.finalizar_execucao(false)
+		return
+
 	var resto		: int = dividendo % divisor
 	var quociente	: Valor = Valor.new(floori(dividendo / float(divisor)))
 	
