@@ -39,5 +39,25 @@ Seria bom rever as menções nos recursos das instruções os nomes das flags e 
 * Na instrução `DIV` é explicitado que os registradores `A` e `B` são concatenados e enviados à `ULA entrada A` para formar o dividendo (ou seja, um número de 2 bytes), o parâmetro da instrução é enviado à `ULA entrada B` como o divisor, e a divisão ocorre. Na saída, apenas o nibble superior da divisão é mantido, enquanto o inferior é substituído pelo valor do resto. Esse número é então dividido e enviado para eventualmente popular os registradores `A` e `B`.
 Após realizar alguns testes manuais e consultas, parece que o cálculo de divisão do Micro3 está incorreto. Então o cálculo desenvolvido nessa aplicação vai ser utilizada em seu lugar, logo, os resultados entre os simuladores serão diferentes.
 
+## Fluxo de execução de um programa
+
+Para executar um progama, primeiro é necessário digitar o código na caixa de Programa, em seguida, deve-se clicar no botão para salvar o código na memória. Quando isso acontece, começa uma rotina de compilação do código que irá linha a linha transformando os comandos de mnemônicos em bytes que serão salvos na memória.
+
+### Compilação
+
+O processo de compilação ocorre da seguinte forma: cada comando é passado por um regex que irá extrair informações daquela linha de código para criar um objeto `Instrução`. Pegando, por exemplo, a instrução `LDA#03`: o regex captura o mnemônico `LDA` e usa a estrutura da linha para determinar que o tipo de endereçamento é `imediato` por conta da `#`, por exemplo, e também capturar o parâmetro `03`. O objeto instrução será então populado da seguinte forma:
+
+|                   |           |
+|:-----------------:|:----------|
+| Endereçamento     | imediato  |
+| Mnemônico         | LDA       |
+| Parâmetros        | 03        |
+
+Esses dados são então convertidos para bytes 
+
+### Descompilação
+
+Já a descompilação 
+
 ## Referências
 * [Documentação dos comandos do Micro3](referência.md), uma das maiores referências e inspirações pro projeto. As instruções desse simulador são baseadas nas existentes desse outro projeto.

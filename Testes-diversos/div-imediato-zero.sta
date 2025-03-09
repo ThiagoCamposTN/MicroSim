@@ -1,0 +1,19 @@
+versao="1.0"
+
+[inicio]
+registrador.pc="0"
+registrador.a="3"
+registrador.b="3"
+instrucoes=[
+	"DIV #0",
+	"CAL EXIT"
+]
+
+[fim]
+memoria = {
+    "000": "6C",
+    "001": "00",
+    "002": "58",
+    "003": "12",
+    "004": "00",
+}

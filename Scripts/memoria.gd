@@ -36,10 +36,14 @@ func sobrescrever_toda_a_memoria(novas_celulas : PackedByteArray):
 	self.memoria_foi_recarregada.emit()
 
 func sobrescrever_parte_da_memoria(novos_dados: PackedByteArray, endereco_inicial: Valor):
+	if endereco_inicial.como_int() + novos_dados.size() > TAMANHO_MEMORIA:
+		push_error("Os valores a serem escritos na memória ultrapassam o limite de ", TAMANHO_MEMORIA, " bytes.")
+		return
+
 	var dados_finais = PackedByteArray()
 	dados_finais.append_array(celulas.slice(0, endereco_inicial.como_int())) # Conteúdo antes dos dados sendo sobrescritos
 	dados_finais.append_array(novos_dados) # Dados que estão sobrescrevendo
-	dados_finais.append_array(celulas.slice(endereco_inicial.como_int() + novos_dados.size(), celulas.size())) # Conteúdo após os dados sendo sobrescritos
+	dados_finais.append_array(celulas.slice(endereco_inicial.como_int() + novos_dados.size(), self.obter_tamanho_atual_da_memoria())) # Conteúdo após os dados sendo sobrescritos
 	self.celulas = dados_finais
 	self.grupo_da_memoria_foi_atualizado.emit(endereco_inicial, novos_dados.size())
 
@@ -60,3 +64,6 @@ func carregar_arquivo_de_memoria(caminho: String):
 	var valores : PackedByteArray	= arquivo.get_buffer(arquivo.get_length())
 	arquivo.close()
 	self.sobrescrever_toda_a_memoria(valores)
+
+func obter_tamanho_atual_da_memoria() -> int:
+	return self.celulas.size()

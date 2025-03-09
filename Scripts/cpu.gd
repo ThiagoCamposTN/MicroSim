@@ -282,7 +282,7 @@ func transferir_flags_para_mbr() -> void:
 	atualizar_registrador_mbr(Valor.new(flag_como_int))
 
 func mover_mar_ao_endereco_de_memoria() -> void:
-	Memoria.endereco_selecionado = CPU.registrador_mar
+	Memoria.endereco_selecionado = Valor.novo_de_valor(CPU.registrador_mar)
 	endereco_selecionado_foi_alterado.emit()
 
 func mover_valor_da_memoria_ao_aux() -> void:
@@ -338,6 +338,12 @@ func realizar_e_logico_alu_a_alu_b():
 func realizar_divisao_na_alu():
 	var dividendo	: int = self.alu_entrada_a.como_int()
 	var divisor		: int = self.alu_entrada_b.como_int()
+
+	if divisor == 0:
+		print("Errro de divisão por zero")
+		SoftwareManager.finalizar_execucao(false)
+		return
+
 	var resto		: int = dividendo % divisor
 	var quociente	: Valor = Valor.new(floori(dividendo / float(divisor)))
 	

@@ -7,6 +7,7 @@ script = ExtResource("1_ptf8r")
 nome = "No Operation"
 "mnemônico" = "NOP"
 "descrição" = "Instrução sem efeito. Incrementa o valor do contador ordinal de 1 byte."
+tamanho_do_dado = 0
 microcodigos = []
 direto = ""
 imediato = ""

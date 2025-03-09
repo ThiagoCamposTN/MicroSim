@@ -87,7 +87,7 @@ func executar_programa(endereco_inicial: Valor, modo: ModoExecucao = ModoExecuca
 	self.modo_atual = modo
 
 func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: Valor):
-	var parte_memoria = Array()
+	var parte_memoria: PackedByteArray
 
 	for linha in linhas_codigo:
 		var bytes: PackedByteArray = self.compilar_linha_em_bytes(linha)
@@ -107,7 +107,7 @@ func compilar_linha_em_bytes(linha: String) -> PackedByteArray:
 	if not instrucao:
 		return []
 	
-	return instrucao.instrucao_em_bytes()
+	return instrucao.instrucao_como_bytes()
 
 func preparar_proxima_instrucao():
 	# Coloca todos os microcódigos necessários para a execução de uma instrução na fila
@@ -362,10 +362,10 @@ func decodificar_instrucao():
 	
 	self.mudanca_de_fase.emit(Fase.DECODIFICACAO)
 
-func finalizar_execucao():
+func finalizar_execucao(sucesso: bool=true):
 	estagio_atual = Estagio.TERMINO
 	self.limpar_fila_de_instrucoes() # todo: verificar se a lista não esvaziar sozinha é bug ou não
-	execucao_finalizada.emit()
+	execucao_finalizada.emit(sucesso)
 
 func prepara_o_estado_inicial(_emitir_sinal_de_finalização: bool = true):
 	Estado.carregar_estado()

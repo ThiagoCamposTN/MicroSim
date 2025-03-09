@@ -55,7 +55,7 @@ func inicializar_teste(arquivo : String) -> void:
 func executar_teste() -> void:
 	SoftwareManager.executar_programa(CPU.registrador_pc)
 
-func teste_finalizado() -> void:
+func teste_finalizado(sucesso:bool = true) -> void:
 	# realiza a comparação do estado final com o esperado
 
 	if not self.teste_em_execucao():
@@ -87,7 +87,7 @@ func teste_finalizado() -> void:
 	# validando resultado final na memória
 	self.validar_memoria(config)
 
-	if self.teste_sem_erros:
+	if self.teste_sem_erros and sucesso:
 		print("Teste concluído com sucesso.")
 	else:
 		print("Teste concluído com falhas.")

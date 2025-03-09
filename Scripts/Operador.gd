@@ -1,9 +1,10 @@
 extends Resource
 class_name Operador
 
-@export var nome 		: String
-@export var mnemônico 	: String
-@export var descrição 	: String
+@export var nome 		    : String
+@export var mnemônico 	    : String
+@export var descrição 	    : String
+@export var tamanho_do_dado : int = 2
 
 @export var microcodigos 	: Array
 
