@@ -72,8 +72,8 @@ func opcode_para_instrucao(opcode: Valor) -> Instrucao:
 				return Instrucao.new(operacao.mnemônico, Instrucao.Enderecamentos.INDEXADO)
 	return null
 
-func get_microcodigos(mnemonico: String) -> Array:
+func get_microoperacoes(mnemonico: String) -> Array:
 	var operacao: Operador = obter_operador(mnemonico)
 	if operacao != null:
-		return operacao.microcodigos
+		return operacao.microoperacoes
 	return []

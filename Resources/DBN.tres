@@ -7,7 +7,7 @@ script = ExtResource("1_pxbrw")
 nome = "Decrement and branch"
 "mnemônico" = "DBN"
 "descrição" = "Decrementa o registrador IX e se o resultado for diferente de zero, então ocorre um desvio para o endereço indicado."
-microcodigos = ["decrementar_registrador_ix", {
+microoperacoes = ["decrementar_registrador_ix", {
 "se_ix_diferente_de_zero": ["transferir_mar_para_pc"]
 }]
 direto = "5A"

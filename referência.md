@@ -1439,7 +1439,7 @@ Todos os 72 comandos existentes.
 * TBA
 * ~~XAB~~
 * ~~PHX~~
-* PPX
+* ~~PPX~~
 * ~~MUL~~
 * ~~DIV~~
 * ~~SED~~

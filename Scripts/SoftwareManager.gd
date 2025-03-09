@@ -352,11 +352,11 @@ func decodificar_instrucao():
 	fila_de_instrucoes.push_back("validar_fim_de_execucao")
 	
 	# Estagio de execução
-	# Busca a lista de microcodigos enumeradas no recurso do Operador
-	var microcodigos = Operacoes.get_microcodigos(instrucao_descompilada.mnemonico)
+	# Busca a lista de microoperacoes enumeradas no recurso do Operador
+	var microoperacoes = Operacoes.get_microoperacoes(instrucao_descompilada.mnemonico)
 
-	for microcodigo in microcodigos:
-		# Chama a função declarada em CPU que tem nome equivalente ao especificado nos microcodigos do operador
+	for microcodigo in microoperacoes:
+		# Chama a função declarada em CPU que tem nome equivalente ao especificado nos microoperacoes do operador
 		# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
 		fila_de_instrucoes.push_back(microcodigo)
 	

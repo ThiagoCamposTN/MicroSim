@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://dncwwdle4cvhi"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_hi416"]
+
+[resource]
+script = ExtResource("1_hi416")
+nome = "POP IX"
+"mnemônico" = "PPX"
+"descrição" = "Retira o conteúdo do registrador IX (2 bytes) contido na pilha e armazena no microprocessador."
+tamanho_do_dado = 0
+microoperacoes = ["incrementar_registrador_pp", "transferir_pp_para_mar", "mover_mar_ao_endereco_de_memoria", "mover_valor_da_memoria_ao_aux", "incrementar_registrador_mar", "mover_mar_ao_endereco_de_memoria", "mover_valor_da_memoria_ao_mbr", "unir_mbr_ao_aux_e_mover_para_ix", "incrementar_registrador_pp"]
+direto = ""
+imediato = ""
+indexado = ""
+indireto = ""
+pos_indexado = ""
+pre_indexado = ""
+implicito = "84"
