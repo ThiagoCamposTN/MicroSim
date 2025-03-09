@@ -7,6 +7,7 @@ script = ExtResource("1_i6j61")
 nome = "Decrement de A"
 "mnemônico" = "DEA"
 "descrição" = "Subtrai uma unidade do conteúdo do registrador A."
+tamanho_do_dado = 0
 microcodigos = ["decrementar_registrador_a"]
 direto = ""
 imediato = ""

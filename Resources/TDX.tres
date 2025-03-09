@@ -7,6 +7,7 @@ script = ExtResource("1_jvkpp")
 nome = "Transfer double to IX"
 "mnemônico" = "TDX"
 "descrição" = "Recopia o \"registrador duplo\" B:A e armazena no registrador IX."
+tamanho_do_dado = 0
 microcodigos = ["transferir_a_para_mbr", "transferir_b_para_aux", "unir_mbr_ao_aux_e_mover_para_ix"]
 direto = ""
 imediato = ""

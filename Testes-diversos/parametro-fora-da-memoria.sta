@@ -1,0 +1,8 @@
+versao="1.0"
+
+[inicio]
+registrador.a="0"
+registrador.pc="0xFFF"
+memoria.substituicoes = {
+	"0xFFF": "20",
+}

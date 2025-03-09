@@ -28,19 +28,21 @@ func _process(_delta):
 		var instrucao_atual : Instrucao = Compilador.descompilar(valor)
 		var valor_em_hex 	: String 	= valor.como_hex(2)
 		var endereco_em_hex	: String 	= endereço_inicial.como_hex(3)
-		
-		endereço_inicial.somar_int(1)
 
-		if not instrucao_atual:
+		endereço_inicial.somar_int(1)
+		
+		# contemplando os casos em que a instrução não existe e se o parâmetro de uma instrução ultrapassar a área da memória
+		if not instrucao_atual or \
+		(endereço_inicial.como_int() + instrucao_atual.tamanho_do_dado) >= Memoria.celulas.size():
 			adicionar_instrucao(endereco_em_hex, valor_em_hex, "??")
 			return
-
+		
+		instrucao_atual.parametro 	= Compilador.buscar_parametro_na_memoria(endereço_inicial, instrucao_atual.tamanho_do_dado)
 		instrucao_atual.opcode 		= valor_em_hex
-		instrucao_atual.parametros 	= Compilador.buscar_parametros_na_memoria(endereço_inicial, instrucao_atual.enderecamento)
 
 		adicionar_instrucao(endereco_em_hex, valor_em_hex, instrucao_atual.instrucao_em_string())
 
-		endereço_inicial.somar_int(instrucao_atual.parametros.size())
+		endereço_inicial.somar_int(instrucao_atual.tamanho_do_dado)
 
 func execucao_iniciada(endereco: Valor):
 	self.limpar_arvore()
