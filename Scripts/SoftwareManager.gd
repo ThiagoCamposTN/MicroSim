@@ -116,7 +116,7 @@ func preparar_proxima_instrucao():
 	# Início da instrução
 	fila_de_instrucoes.push_back("---")
 
-	# Transferência do CO (Contador Ordinal) para o RAD (Registrador de Endereço);
+	# Transferência do PC (Contador de Programa) para o MAR (Registrador de Endereço de Memória);
 	fila_de_instrucoes.push_back("mover_pc_para_mar")
 	
 	# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
@@ -125,12 +125,16 @@ func preparar_proxima_instrucao():
 	# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
 	fila_de_instrucoes.push_back("mover_valor_da_memoria_ao_mbr")
 	
-	# O valor de DON é transferido ao DCOD (Decodificador de instrução) via o BUS de Dados;
+	# O valor de MBR (Registrador de Buffer de Memória) é 
+	# transferido ao IR (Registrador de Instrução) via o BUS de Dados;
 	fila_de_instrucoes.push_back("transferir_mbr_para_ir")
 
-	# O CO é incrementado em 1;
-	fila_de_instrucoes.push_back("incrementar_registrador_pc")
+	# O PC é incrementado em 1;
+	fila_de_instrucoes.push_back("transferir_pc_para_alu_a")
+	fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+	fila_de_instrucoes.push_back("transferir_alu_saida_para_pc")
 
+	# A instrição é decodificada
 	fila_de_instrucoes.push_back("decodificar_instrucao")
 
 func decodificar_instrucao():
@@ -156,7 +160,10 @@ func decodificar_instrucao():
 			fila_de_instrucoes.push_back("mover_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			fila_de_instrucoes.push_back("incrementar_registrador_mar")
+			fila_de_instrucoes.push_back("transferir_mar_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_mar")
+
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			fila_de_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
@@ -174,7 +181,9 @@ func decodificar_instrucao():
 			fila_de_instrucoes.push_back("mover_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			fila_de_instrucoes.push_back("incrementar_registrador_mar")
+			fila_de_instrucoes.push_back("transferir_mar_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_mar")
 
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			fila_de_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
@@ -191,8 +200,14 @@ func decodificar_instrucao():
 			fila_de_instrucoes.push_back("transferir_alu_saida_para_mar")
 
 			# O PC é incrementado em 2
-			fila_de_instrucoes.push_back("incrementar_registrador_pc")
-			fila_de_instrucoes.push_back("incrementar_registrador_pc")
+			fila_de_instrucoes.push_back("transferir_pc_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_pc")
+			fila_de_instrucoes.push_back("transferir_pc_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_pc")
+
+
 		Instrucao.Enderecamentos.PRE_INDEXADO:
 			# Transferência de PC para MAR
 			fila_de_instrucoes.push_back("mover_pc_para_mar")
@@ -204,7 +219,9 @@ func decodificar_instrucao():
 			fila_de_instrucoes.push_back("mover_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			fila_de_instrucoes.push_back("incrementar_registrador_mar")
+			fila_de_instrucoes.push_back("transferir_mar_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			fila_de_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
@@ -227,7 +244,9 @@ func decodificar_instrucao():
 			fila_de_instrucoes.push_back("mover_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			fila_de_instrucoes.push_back("incrementar_registrador_mar")
+			fila_de_instrucoes.push_back("transferir_mar_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_mar")
 
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			fila_de_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
@@ -239,8 +258,12 @@ func decodificar_instrucao():
 			fila_de_instrucoes.push_back("unir_mbr_ao_aux_e_mover_para_mar")
 
 			# O PC é incrementado em 2
-			fila_de_instrucoes.push_back("incrementar_registrador_pc")
-			fila_de_instrucoes.push_back("incrementar_registrador_pc")
+			fila_de_instrucoes.push_back("transferir_pc_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_pc")
+			fila_de_instrucoes.push_back("transferir_pc_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_pc")
 		Instrucao.Enderecamentos.INDIRETO:
 			# Transferência de PC para MAR
 			fila_de_instrucoes.push_back("mover_pc_para_mar")
@@ -252,7 +275,9 @@ func decodificar_instrucao():
 			fila_de_instrucoes.push_back("mover_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			fila_de_instrucoes.push_back("incrementar_registrador_mar")
+			fila_de_instrucoes.push_back("transferir_mar_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			fila_de_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
@@ -270,7 +295,9 @@ func decodificar_instrucao():
 			fila_de_instrucoes.push_back("mover_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			fila_de_instrucoes.push_back("incrementar_registrador_mar")
+			fila_de_instrucoes.push_back("transferir_mar_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			fila_de_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
@@ -282,14 +309,20 @@ func decodificar_instrucao():
 			fila_de_instrucoes.push_back("unir_mbr_ao_aux_e_mover_para_mar")
 			
 			# O PC é incrementado em 2
-			fila_de_instrucoes.push_back("incrementar_registrador_pc")
-			fila_de_instrucoes.push_back("incrementar_registrador_pc")
+			fila_de_instrucoes.push_back("transferir_pc_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_pc")
+			fila_de_instrucoes.push_back("transferir_pc_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_pc")
 		Instrucao.Enderecamentos.IMEDIATO:
 			# Transferência de PC para MAR
 			fila_de_instrucoes.push_back("mover_pc_para_mar")
 
 			# PC é incrementado em 1
-			fila_de_instrucoes.push_back("incrementar_registrador_pc")
+			fila_de_instrucoes.push_back("transferir_pc_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_pc")
 		Instrucao.Enderecamentos.DIRETO:
 			# Transferência de PC para MAR
 			fila_de_instrucoes.push_back("mover_pc_para_mar")
@@ -301,7 +334,9 @@ func decodificar_instrucao():
 			fila_de_instrucoes.push_back("mover_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			fila_de_instrucoes.push_back("incrementar_registrador_mar")
+			fila_de_instrucoes.push_back("transferir_mar_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			fila_de_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
@@ -313,8 +348,12 @@ func decodificar_instrucao():
 			fila_de_instrucoes.push_back("unir_mbr_ao_aux_e_mover_para_mar")
 			
 			# O PC é incrementado em 2
-			fila_de_instrucoes.push_back("incrementar_registrador_pc")
-			fila_de_instrucoes.push_back("incrementar_registrador_pc")
+			fila_de_instrucoes.push_back("transferir_pc_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_pc")
+			fila_de_instrucoes.push_back("transferir_pc_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_pc")
 		Instrucao.Enderecamentos.IMPLICITO:
 			pass
 		Instrucao.Enderecamentos.INDEXADO:
@@ -328,7 +367,9 @@ func decodificar_instrucao():
 			fila_de_instrucoes.push_back("mover_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			fila_de_instrucoes.push_back("incrementar_registrador_mar")
+			fila_de_instrucoes.push_back("transferir_mar_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			fila_de_instrucoes.push_back("mover_mar_ao_endereco_de_memoria")
@@ -339,12 +380,19 @@ func decodificar_instrucao():
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
 			fila_de_instrucoes.push_back("unir_mbr_ao_aux_e_mover_para_mar")
 			
+			# Somar o valor de IX ao endereço calculado
 			fila_de_instrucoes.push_back("transferir_mar_para_alu_a")
 			fila_de_instrucoes.push_back("transferir_ix_para_alu_b")
 			fila_de_instrucoes.push_back("adicao_alu_a_alu_b")
 			fila_de_instrucoes.push_back("transferir_alu_saida_para_mar")
-			fila_de_instrucoes.push_back("incrementar_registrador_pc")
-			fila_de_instrucoes.push_back("incrementar_registrador_pc")
+			
+			# O PC é incrementado em 2
+			fila_de_instrucoes.push_back("transferir_pc_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_pc")
+			fila_de_instrucoes.push_back("transferir_pc_para_alu_a")
+			fila_de_instrucoes.push_back("incrementar_um_na_alu_a_16_bits")
+			fila_de_instrucoes.push_back("transferir_alu_saida_para_pc")
 		_:
 			pass
 

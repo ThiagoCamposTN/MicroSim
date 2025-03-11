@@ -26,6 +26,22 @@ Todos os campos **devem** ser preenchidos com algum valor válido para garantir 
 
 Como mencionado anteriormente, arquivos de estado também são usados em testes, que começa com o estado inicial definido pela seção "inicio", e o estado final do simulador é comparado com os valores da seção "fim".
 
+## Incrementação/Decrementação
+
+As operações de incremento e decremento foram modificadas e funcionam de forma diferente do que o MICRO3. Todas as operações relacionadas são sempre enviadas à `ULA`, ao contrário do que era feita anteriormente, que ocasionava incrementação diretamente no próprio registrador. Isso também causa mudança no cálculo de flags, que vai ser mais abordado na seção sobre `Flags`. Para que essa mudança funcione, todas as instruções devem ser alteradas para que não existam microoperações do tipo `incrementar_registrador_??` para se tornarem microoperações na `ULA`, por exemplo: `"transferir_??_para_alu_a", "incrementar_um_na_alu_a_16_bits", "transferir_alu_saida_para_??"`. A mesma coisa ocorre na operação de decrementação.
+
+## Flags
+
+O comportamento de quando as flags são atualizadas foi alterado: as flags só são atualizadas quando uma operação na `ULA` é performada. A operação em si dita quais flags são atualizadas. No trabalho de Kleber e Lucas ele dizem que:
+
+```
+Um diferencial da arquitetura MICRO3 é que as instruções de carregamento também atualizam as flags. Essa funcionalidade foi implementada em VHDL ao direcionar
+a instrução de carregamento para passar pela ULA, a qual é responsável por modificar as flags. Para garantir que o operando permaneça inalterado, realiza-se uma operação de soma com zero.
+```
+
+Atualmente, foi decidido por remover as atualizações de flags após carregamento. Uma das razões é que ainda não foi determinado se isso sempre é verdade, pois na instrução `XAB` não há atualização das flags; então teria que ser explorado se isso só ocorre especificamente durante o carregamento vindo da memória ou algo assim.
+Outra razão da remoção foi por conta da decisão que apenas a `ULA` pode provocar a verificação das flags. Mas se for desejável manter o mesmo comportamento (após entendê-lo melhor), então seria possível usar a mesma abordagem do trabalho mencionado: adicionar microoperações nas intruções que provoque uma soma com zero na `ULA`, causando atualização nas flags que não cause nenhuma perturbação na execução.
+
 ## Notas
 
 * No MICRO3, apesar da execução da instrução `CAL` produzir o resultado correto, a seção de que realiza a demonstração da simulação da execução da instrução não está correta. A implementação dos passos da simulação não levou ao mesmo resultado da execução. Logo, foi necessário o desenvolvimento do zero dos microcódigos referentes à essa instrução em particular.

@@ -8,8 +8,10 @@ nome = "Return"
 "mnemônico" = "RET"
 "descrição" = "Retira o endereço contido na pilha e o atribui ao código de operação atual."
 tamanho_do_dado = 0
-microcodigos = ["incrementar_registrador_pp", "transferir_pp_para_mar", "mover_mar_ao_endereco_de_memoria", "mover_valor_da_memoria_ao_aux",
-"incrementar_registrador_mar", "mover_mar_ao_endereco_de_memoria", "mover_valor_da_memoria_ao_mbr", "unir_mbr_ao_aux_e_mover_para_pc", "incrementar_registrador_pp"]
+microcodigos = ["transferir_pp_para_alu_a", "incrementar_um_na_alu_a_16_bits", "transferir_alu_saida_para_pp", "transferir_pp_para_mar", 
+"mover_mar_ao_endereco_de_memoria", "mover_valor_da_memoria_ao_aux", "transferir_mar_para_alu_a", "incrementar_um_na_alu_a_16_bits", 
+"transferir_alu_saida_para_mar", "mover_mar_ao_endereco_de_memoria", "mover_valor_da_memoria_ao_mbr", "unir_mbr_ao_aux_e_mover_para_pc", 
+"transferir_pp_para_alu_a", "incrementar_um_na_alu_a_16_bits", "transferir_alu_saida_para_pp"]
 direto = ""
 imediato = ""
 indexado = ""
