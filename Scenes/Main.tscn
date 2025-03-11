@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dd4buxa54gig7"]
+[gd_scene load_steps=23 format=3 uid="uid://dd4buxa54gig7"]
 
 [ext_resource type="Script" path="res://Scenes/Principal.gd" id="1_f7wj2"]
 [ext_resource type="Script" path="res://Scenes/aba_memoria.gd" id="1_k3qc3"]
@@ -21,6 +21,9 @@
 [ext_resource type="PackedScene" path="res://Scenes/Tela.tscn" id="17_8ruui"]
 [ext_resource type="Texture2D" uid="uid://64w3ypp8gorj" path="res://Imagens/visualizador/ConexaoMBR-AUX.svg" id="17_c1jhb"]
 [ext_resource type="Texture2D" uid="uid://clqxflehlu8n1" path="res://Imagens/Caminho.png" id="18_uu7v4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rjw13"]
+bg_color = Color(0.233926, 0.233925, 0.233925, 1)
 
 [node name="Aplicação" type="Control"]
 layout_mode = 3
@@ -408,15 +411,24 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="UnidadeDeControle" type="Button" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
+[node name="UnidadeDeControle" type="Panel" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
 layout_mode = 0
 offset_left = 539.0
 offset_top = 329.0
 offset_right = 667.0
 offset_bottom = 487.0
-theme = ExtResource("14_1an5g")
-disabled = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_rjw13")
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Execução Visual/Container/UnidadeDeControle"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "UNIDADE DE CONTROLE"
+horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Registradores" type="Control" parent="VBoxContainer/TabContainer/Execução Visual/Container"]
