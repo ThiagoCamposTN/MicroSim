@@ -117,10 +117,6 @@ func atualizar_visualizacao():
 			adicionar_fila_registrador_interagindo(["PC", "MAR"])
 		"transferir_mbr_para_ir":
 			adicionar_fila_registrador_interagindo(["MBR", "IR"])
-		"transferir_mbr_para_a":
-			adicionar_fila_registrador_interagindo(["MBR", "A"])
-		"transferir_mbr_para_b":
-			adicionar_fila_registrador_interagindo(["MBR", "B"])
 		"transferir_aux_para_b":
 			adicionar_fila_registrador_interagindo(["AUX", "B"])
 		"unir_mbr_ao_aux_e_mover_para_mar":
@@ -137,10 +133,6 @@ func atualizar_visualizacao():
 			adicionar_fila_registrador_interagindo(["PC", "MBR", "AUX"])
 		"dividir_alu_saida_e_mover_para_mbr_e_aux":
 			adicionar_fila_registrador_interagindo(["ULASaida", "MBR", "AUX"])
-		"transferir_a_para_mbr":
-			adicionar_fila_registrador_interagindo(["A", "MBR"])
-		"transferir_b_para_mbr":
-			adicionar_fila_registrador_interagindo(["B", "MBR"])
 		"transferir_a_para_alu_a":
 			adicionar_fila_registrador_interagindo(["A", "ULAA"])
 		"transferir_b_para_alu_b":
@@ -185,10 +177,9 @@ func atualizar_visualizacao():
 			adicionar_fila_registrador_interagindo(["MemoriaValor", "AUX"])
 		"mover_valor_da_memoria_ao_mbr":
 			var valores = obter_info_memorias()
-			remover_fluxos()
 			# Resolvendo animação de leitura da memória
 			
-			var tween_memoria = create_tween()
+			tween_memoria = create_tween()
 
 			var caminho_fluxo_linha = %Linhas.get_node("fluxo_end_selec")
 			tween_memoria.tween_property(caminho_fluxo_linha, "visible", true, WAIT_TIME)
@@ -226,16 +217,18 @@ func atualizar_visualizacao():
 				registradores_interagindo.append(flag)
 			flags_atualizadas.clear()
 	
-	acender_registradores_interagindo()
-	
-	# Resolvendo linhas
-	# var caminho_linha 		= %Linhas.find_child(instrucao_atual)
-	var caminho_fluxo_linha = %Linhas.find_child("fluxo_" + instrucao_atual)
-	
-	if not caminho_fluxo_linha:
-		return
-
-	caminhar_fluxo(caminho_fluxo_linha)
+	# Demonstração do fluxo
+	if instrucao_atual == SoftwareManager.obter_instrucao_atual():
+		acender_registradores_interagindo()
+		
+		var fluxo_instrucao = %Linhas.find_child("fluxo_" + instrucao_atual)
+		if fluxo_instrucao:
+			fluxo_ligado = fluxo_instrucao
+			caminhar_fluxo(fluxo_instrucao)
+	else:
+		# Se instrucao_atual não combina mais com a instrução atual,
+		# então significa que a instrução foi saltada e não deve criar um novo fluxo
+		pass
 
 func acender_registradores_interagindo() -> void:
 	for reg in registradores_interagindo:
@@ -305,6 +298,9 @@ func caminhar_fluxo(linha_fluxo: Line2D):
 func remover_fluxos():
 	if fluxo_ligado:
 		fluxo_ligado.visible = false
+	
+	if tween_memoria:
+		tween_memoria.set_speed_scale(10)
 
 func obter_info_memorias():
 	var valor = Memoria.endereco_selecionado.como_hex(4)
