@@ -1,13 +1,17 @@
 extends TabBar
 
 var registradores_interagindo 	: Array[Button] = []
-var tweens						: Array[Tween]
+var tweens_piscar_registradores	: Array[Tween]
 
-@export var fluxo 				: ColorRect
 var fluxo_tween					: Tween
 @export var tempo_fluxo			: float = 1
 
 var fluxo_ligado : Node2D
+
+var tween_memoria: Tween
+var WAIT_TIME = 0.5
+
+var flags_atualizadas: Array[Button] = []
 
 @onready var registradores_nos = {
 	"A": %RegistradorAButton,
@@ -17,31 +21,46 @@ var fluxo_ligado : Node2D
 	"MAR": %RegistradorMARButton,
 	"PP": %RegistradorPPButton,
 	"MBR": %RegistradorMBRButton,
+	"AUX": %RegistradorAUXButton,
 	"Z": %RegistradorZButton,
 	"N": %RegistradorNButton,
 	"C": %RegistradorCButton,
 	"O": %RegistradorOButton,
 	"IR": %RegistradorIRButton,
 	"MemoriaEndereco": %MemoriaEnderecoButton,
-	"MemoriaValor": %MemoriaValorButton
+	"MemoriaValor": %MemoriaValorButton,
+	"ULAA": %RegistradorULAAButton,
+	"ULAB": %RegistradorULABButton,
+	"ULASaida": %RegistradorULASaidaButton
 }
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	SoftwareManager.microoperacao_executada.connect(atualizar_linha)
+	SoftwareManager.microoperacao_executada.connect(atualizar_visualizacao)
 	
 	CPU.registrador_a_foi_atualizado.connect(atualizar_registrador.bind("A"))
 	CPU.registrador_b_foi_atualizado.connect(atualizar_registrador.bind("B"))
 	CPU.registrador_pc_foi_atualizado.connect(atualizar_registrador.bind("PC"))
 	CPU.registrador_ix_foi_atualizado.connect(atualizar_registrador.bind("IX"))
-	CPU.registrador_mar_foi_atualizado.connect(atualizar_registrador.bind("MAR"))
 	CPU.registrador_pp_foi_atualizado.connect(atualizar_registrador.bind("PP"))
 	CPU.registrador_mbr_foi_atualizado.connect(atualizar_registrador.bind("MBR"))
+	CPU.registrador_aux_foi_atualizado.connect(atualizar_registrador.bind("AUX"))
+	CPU.registrador_mar_foi_atualizado.connect(atualizar_registrador.bind("MAR"))
 	CPU.flag_z_foi_atualizada.connect(atualizar_registrador.bind("Z"))
 	CPU.flag_n_foi_atualizada.connect(atualizar_registrador.bind("N"))
 	CPU.flag_c_foi_atualizada.connect(atualizar_registrador.bind("C"))
 	CPU.flag_o_foi_atualizada.connect(atualizar_registrador.bind("O"))
 	CPU.registrador_ir_foi_atualizado.connect(atualizar_registrador.bind("IR"))
+
+	SoftwareManager.programa_iniciado.connect(limpar_flags)
+	CPU.flag_z_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorZButton))
+	CPU.flag_n_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorNButton))
+	CPU.flag_c_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorCButton))
+	CPU.flag_o_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorOButton))
+
+	CPU.alu_entrada_a_foi_atualizado.connect(atualizar_registrador.bind("ULAA"))
+	CPU.alu_entrada_b_foi_atualizado.connect(atualizar_registrador.bind("ULAB"))
+	CPU.alu_saida_foi_atualizado.connect(atualizar_registrador.bind("ULASaida"))
 
 	SoftwareManager.mudanca_de_fase.connect(fase_foi_alterada)
 
@@ -49,7 +68,7 @@ func _ready():
 func _process(delta):
 	pass
 
-func atualizar_linha():
+func atualizar_visualizacao():
 	# Resolvendo caixas
 	apagar_tweens()
 
@@ -64,59 +83,152 @@ func atualizar_linha():
 	if not instrucao_atual or typeof(instrucao_atual) != TYPE_STRING:
 		return
 	
+	# Evita demonstrar instruções auxiliares que não estão na CPU
 	if not CPU.has_method(instrucao_atual):
 		return
 	
 	remover_fluxos()
 	match instrucao_atual:
 		"mover_pc_para_mar":
-			registradores_interagindo.append(registradores_nos["PC"])
-			registradores_interagindo.append(registradores_nos["MAR"])
+			adicionar_fila_registrador_interagindo(["PC", "MAR"])
+		"transferir_mbr_para_ir":
+			adicionar_fila_registrador_interagindo(["MBR", "IR"])
+		"transferir_mbr_para_a", "transferir_a_para_mbr":
+			adicionar_fila_registrador_interagindo(["MBR", "A"])
+		"transferir_mbr_para_b", "transferir_b_para_mbr":
+			adicionar_fila_registrador_interagindo(["MBR", "B"])
+		"transferir_aux_para_b":
+			adicionar_fila_registrador_interagindo(["AUX", "B"])
+		"unir_mbr_ao_aux_e_mover_para_mar":
+			adicionar_fila_registrador_interagindo(["MBR", "AUX", "MAR"])
+		"unir_mbr_ao_aux_e_mover_para_pc":
+			adicionar_fila_registrador_interagindo(["MBR", "AUX", "PC"])
+		"unir_mbr_ao_aux_e_mover_para_ix":
+			adicionar_fila_registrador_interagindo(["MBR", "AUX", "IX"])
+		"unir_mbr_ao_aux_e_mover_para_alu_a":
+			adicionar_fila_registrador_interagindo(["AUX", "ULAA"])
+		"dividir_ix_e_mover_para_mbr_e_aux":
+			adicionar_fila_registrador_interagindo(["IX", "MBR", "AUX"])
+		"dividir_pc_e_mover_para_mbr_e_aux":
+			adicionar_fila_registrador_interagindo(["PC", "MBR", "AUX"])
+		"dividir_alu_saida_e_mover_para_mbr_e_aux":
+			adicionar_fila_registrador_interagindo(["ULASaida", "MBR", "AUX"])
+		"mover_pc_para_mar":
+			adicionar_fila_registrador_interagindo(["PC", "MAR"])
+		"transferir_mbr_para_ir":
+			adicionar_fila_registrador_interagindo(["MBR", "IR"])
+		"transferir_aux_para_b":
+			adicionar_fila_registrador_interagindo(["AUX", "B"])
+		"unir_mbr_ao_aux_e_mover_para_mar":
+			adicionar_fila_registrador_interagindo(["MBR", "AUX", "MAR"])
+		"unir_mbr_ao_aux_e_mover_para_pc":
+			adicionar_fila_registrador_interagindo(["MBR", "AUX", "PC"])
+		"unir_mbr_ao_aux_e_mover_para_ix":
+			adicionar_fila_registrador_interagindo(["MBR", "AUX", "IX"])
+		"unir_mbr_ao_aux_e_mover_para_alu_a":
+			adicionar_fila_registrador_interagindo(["AUX", "ULAA"])
+		"dividir_ix_e_mover_para_mbr_e_aux":
+			adicionar_fila_registrador_interagindo(["IX", "MBR", "AUX"])
+		"dividir_pc_e_mover_para_mbr_e_aux":
+			adicionar_fila_registrador_interagindo(["PC", "MBR", "AUX"])
+		"dividir_alu_saida_e_mover_para_mbr_e_aux":
+			adicionar_fila_registrador_interagindo(["ULASaida", "MBR", "AUX"])
+		"transferir_a_para_alu_a":
+			adicionar_fila_registrador_interagindo(["A", "ULAA"])
+		"transferir_b_para_alu_b":
+			adicionar_fila_registrador_interagindo(["B", "ULAB"])
+		"transferir_b_para_alu_a":
+			adicionar_fila_registrador_interagindo(["B", "ULAA"])
+		"transferir_mar_para_alu_a":
+			adicionar_fila_registrador_interagindo(["MAR", "ULAA"])
+		"transferir_ix_para_alu_b":
+			adicionar_fila_registrador_interagindo(["IX", "ULAB"])
+		"transferir_mbr_para_alu_b":
+			adicionar_fila_registrador_interagindo(["MBR", "ULAB"])
+		"transferir_mbr_para_alu_a":
+			adicionar_fila_registrador_interagindo(["MBR", "ULAA"])
+		"transferir_mar_para_pc":
+			adicionar_fila_registrador_interagindo(["MAR", "PC"])
+		"transferir_b_para_a":
+			adicionar_fila_registrador_interagindo(["B", "A"])
+		"transferir_mar_para_pp":
+			adicionar_fila_registrador_interagindo(["MAR", "PP"])
+		"transferir_ix_para_a":
+			adicionar_fila_registrador_interagindo(["IX", "A"])
+		"transferir_ix_para_b":
+			adicionar_fila_registrador_interagindo(["IX", "B"])
+		"transferir_b_para_aux":
+			adicionar_fila_registrador_interagindo(["B", "AUX"])
+		"transferir_alu_saida_para_a":
+			adicionar_fila_registrador_interagindo(["ULASaida", "A"])
+		"transferir_alu_saida_para_b":
+			adicionar_fila_registrador_interagindo(["ULASaida", "B"])
+		"transferir_alu_saida_para_mar":
+			adicionar_fila_registrador_interagindo(["ULASaida", "MAR"])
+		"transferir_alu_saida_para_mbr":
+			adicionar_fila_registrador_interagindo(["ULASaida", "MBR"])
+		"transferir_pp_para_mar":
+			adicionar_fila_registrador_interagindo(["PP", "MAR"])
+		"transferir_flags_para_mbr":
+			adicionar_fila_registrador_interagindo(["Z", "N", "C", "O", "MBR"])
 		"mover_mar_ao_endereco_de_memoria":
-			registradores_interagindo.append(registradores_nos["MAR"])
-			registradores_interagindo.append(registradores_nos["MemoriaEndereco"])
+			adicionar_fila_registrador_interagindo(["MAR", "MemoriaEndereco"])
+		"mover_valor_da_memoria_ao_aux":
+			adicionar_fila_registrador_interagindo(["MemoriaValor", "AUX"])
 		"mover_valor_da_memoria_ao_mbr":
 			var valores = obter_info_memorias()
-			remover_fluxos()
 			# Resolvendo animação de leitura da memória
+			
+			tween_memoria = create_tween()
+
 			var caminho_fluxo_linha = %Linhas.get_node("fluxo_end_selec")
-			caminho_fluxo_linha.visible = true
-			await get_tree().create_timer(1).timeout
-			caminho_fluxo_linha.visible = false
-			
-			%MemoriaEnderecoAnteriorLabel.text = valores[0]
-			%MemoriaEnderecoButton.text = valores[1]
-			%MemoriaEnderecoPosteriorLabel.text = valores[2]
-			
+			tween_memoria.tween_property(caminho_fluxo_linha, "visible", true, WAIT_TIME)
+			tween_memoria.tween_property(%MemoriaEnderecoAnteriorLabel, "text", valores[0], 0)
+			tween_memoria.tween_property(%MemoriaEnderecoButton, "text", valores[1], 0)
+			tween_memoria.tween_property(%MemoriaEnderecoPosteriorLabel, "text", valores[2], 0)
+			tween_memoria.tween_property(caminho_fluxo_linha, "visible", false, WAIT_TIME)
+
 			caminho_fluxo_linha = %Linhas.get_node("fluxo_leimem")
-			caminho_fluxo_linha.visible = true
-			await get_tree().create_timer(1).timeout
-			caminho_fluxo_linha.visible = false
+			tween_memoria.tween_property(caminho_fluxo_linha, "visible", true, WAIT_TIME)
+			tween_memoria.tween_property(%MemoriaValorAnteriorLabel, "text", valores[3], 0)
+			tween_memoria.tween_property(%MemoriaValorButton, "text", valores[4], 0)
+			tween_memoria.tween_property(%MemoriaValorPosteriorLabel, "text", valores[5], 0)
+			tween_memoria.tween_property(caminho_fluxo_linha, "visible", false, WAIT_TIME)
 			
-			%MemoriaValorAnteriorLabel.text = valores[3]
-			%MemoriaValorButton.text = valores[4]
-			%MemoriaValorPosteriorLabel.text = valores[5]
+			await tween_memoria.finished
 			
-			await get_tree().create_timer(1).timeout
-			
-			registradores_interagindo.append(registradores_nos["MemoriaValor"])
-			registradores_interagindo.append(registradores_nos["MBR"])
-		"transferir_mbr_para_ir":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["IR"])
-		"incrementar_registrador_pc":
-			registradores_interagindo.append(registradores_nos["PC"])
-
-	acender_registradores_interagindo()
+			adicionar_fila_registrador_interagindo(["MemoriaValor", "MBR"])
+		"mover_mbr_para_endereco_selecionado":
+			adicionar_fila_registrador_interagindo(["MBR", "MemoriaEndereco"])
+		"mover_aux_para_endereco_selecionado":
+			adicionar_fila_registrador_interagindo(["AUX", "MemoriaEndereco"])
+		"incrementar_registrador_pc", "iniciar_registrador_pc":
+			adicionar_fila_registrador_interagindo(["PC"])
+		"incrementar_registrador_mar":
+			adicionar_fila_registrador_interagindo(["MAR"])
+		"incrementar_registrador_pp", "decrementar_registrador_pp":
+			adicionar_fila_registrador_interagindo(["PP"])
+		"decrementar_registrador_ix":
+			adicionar_fila_registrador_interagindo(["IX"])
+		"decrementar_registrador_a":
+			adicionar_fila_registrador_interagindo(["A"])
+		"calcular_flags":
+			for flag in flags_atualizadas:
+				registradores_interagindo.append(flag)
+			flags_atualizadas.clear()
 	
-	# Resolvendo linhas
-	var caminho_linha 		= %Linhas.get_node(instrucao_atual)
-	var caminho_fluxo_linha = %Linhas.get_node("fluxo_" + instrucao_atual)
-	
-	if not caminho_linha:
-		return
-
-	caminhar_fluxo(caminho_fluxo_linha)
+	# Demonstração do fluxo
+	if instrucao_atual == SoftwareManager.obter_instrucao_atual():
+		acender_registradores_interagindo()
+		
+		var fluxo_instrucao = %Linhas.find_child("fluxo_" + instrucao_atual)
+		if fluxo_instrucao:
+			fluxo_ligado = fluxo_instrucao
+			caminhar_fluxo(fluxo_instrucao)
+	else:
+		# Se instrucao_atual não combina mais com a instrução atual,
+		# então significa que a instrução foi saltada e não deve criar um novo fluxo
+		pass
 
 func acender_registradores_interagindo() -> void:
 	for reg in registradores_interagindo:
@@ -124,20 +236,19 @@ func acender_registradores_interagindo() -> void:
 		tw.tween_property(reg, "modulate", Color.DARK_RED, 0.5).set_trans(Tween.TRANS_LINEAR)
 		tw.tween_property(reg, "modulate", Color.WHITE, 0.5).set_trans(Tween.TRANS_LINEAR)
 		tw.set_loops()
-		tweens.append(tw)
+		tweens_piscar_registradores.append(tw)
 
 func apagar_tweens():
-	for tween in tweens:
+	for tween in tweens_piscar_registradores:
 		tween.kill()
 	
-	if tweens:
+	if tweens_piscar_registradores:
 		for reg in registradores_interagindo:
 			reg.modulate = Color.WHITE
 		registradores_interagindo.clear()
 	
 	if fluxo_tween:
 		fluxo_tween.kill()
-		fluxo.visible = false
 
 func atualizar_registrador(registrador: String):
 	if not SoftwareManager.atualizacao_visual_ativa:
@@ -152,12 +263,14 @@ func atualizar_registrador(registrador: String):
 			registradores_nos["PC"].text = CPU.registrador_pc.como_hex(4)
 		"IX":
 			registradores_nos["IX"].text = CPU.registrador_ix.como_hex(4)
-		"MAR":
-			registradores_nos["MAR"].text = CPU.registrador_mar.como_hex(4)
 		"PP":
 			registradores_nos["PP"].text = CPU.registrador_pp.como_hex(4)
 		"MBR":
 			registradores_nos["MBR"].text = CPU.registrador_mbr.como_hex(2)
+		"AUX":
+			registradores_nos["AUX"].text = CPU.registrador_aux.como_hex(2)
+		"MAR":
+			registradores_nos["MAR"].text = CPU.registrador_mar.como_hex(4)
 		"Z":
 			registradores_nos["Z"].text = CPU.flag_z.como_hex(1)
 		"N":
@@ -168,6 +281,12 @@ func atualizar_registrador(registrador: String):
 			registradores_nos["O"].text = CPU.flag_o.como_hex(1)
 		"IR":
 			registradores_nos["IR"].text = CPU.registrador_ir.como_hex(2)
+		"ULAA":
+			registradores_nos["ULAA"].text = CPU.alu_entrada_a.como_hex(4)
+		"ULAB":
+			registradores_nos["ULAB"].text = CPU.alu_entrada_b.como_hex(4)
+		"ULASaida":
+			registradores_nos["ULASaida"].text = CPU.alu_saida.como_hex(4)
 
 func caminhar_fluxo(linha_fluxo: Line2D):
 	if not linha_fluxo:
@@ -179,6 +298,9 @@ func caminhar_fluxo(linha_fluxo: Line2D):
 func remover_fluxos():
 	if fluxo_ligado:
 		fluxo_ligado.visible = false
+	
+	if tween_memoria:
+		tween_memoria.set_speed_scale(10)
 
 func obter_info_memorias():
 	var valor = Memoria.endereco_selecionado.como_hex(4)
@@ -219,4 +341,14 @@ func fase_foi_alterada(fase : SoftwareManager.Fase):
 		SoftwareManager.Fase.DECODIFICACAO:
 			print("Fase atual: decodificacao")
 		SoftwareManager.Fase.EXECUCAO:
-			print("Fase atual: execucao")	
+			print("Fase atual: execucao")
+
+func adicionar_flags_interagindo(registrador: Button):
+	flags_atualizadas.append(registrador)
+
+func limpar_flags():
+	flags_atualizadas.clear()
+
+func adicionar_fila_registrador_interagindo(fila: Array[String]):
+	for reg in fila:
+		registradores_interagindo.append(registradores_nos[reg])
