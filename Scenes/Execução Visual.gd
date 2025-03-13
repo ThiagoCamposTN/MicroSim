@@ -1,15 +1,14 @@
 extends TabBar
 
 var registradores_interagindo 	: Array[Button] = []
-var tweens						: Array[Tween]
+var tweens_piscar_registradores	: Array[Tween]
 
-@export var fluxo 				: ColorRect
 var fluxo_tween					: Tween
 @export var tempo_fluxo			: float = 1
 
 var fluxo_ligado : Node2D
 
-var tween_mem: Tween
+var tween_memoria: Tween
 var WAIT_TIME = 0.5
 
 var flags_atualizadas: Array[Button] = []
@@ -37,7 +36,7 @@ var flags_atualizadas: Array[Button] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	SoftwareManager.microoperacao_executada.connect(atualizar_linha)
+	SoftwareManager.microoperacao_executada.connect(atualizar_visualizacao)
 	
 	CPU.registrador_a_foi_atualizado.connect(atualizar_registrador.bind("A"))
 	CPU.registrador_b_foi_atualizado.connect(atualizar_registrador.bind("B"))
@@ -69,7 +68,7 @@ func _ready():
 func _process(delta):
 	pass
 
-func atualizar_linha():
+func atualizar_visualizacao():
 	# Resolvendo caixas
 	apagar_tweens()
 
@@ -91,161 +90,99 @@ func atualizar_linha():
 	remover_fluxos()
 	match instrucao_atual:
 		"mover_pc_para_mar":
-			registradores_interagindo.append(registradores_nos["PC"])
-			registradores_interagindo.append(registradores_nos["MAR"])
+			adicionar_fila_registrador_interagindo(["PC", "MAR"])
 		"transferir_mbr_para_ir":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["IR"])
-		"transferir_mbr_para_a":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["A"])
-		"transferir_mbr_para_b":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["B"])
+			adicionar_fila_registrador_interagindo(["MBR", "IR"])
+		"transferir_mbr_para_a", "transferir_a_para_mbr":
+			adicionar_fila_registrador_interagindo(["MBR", "A"])
+		"transferir_mbr_para_b", "transferir_b_para_mbr":
+			adicionar_fila_registrador_interagindo(["MBR", "B"])
 		"transferir_aux_para_b":
-			registradores_interagindo.append(registradores_nos["AUX"])
-			registradores_interagindo.append(registradores_nos["B"])
+			adicionar_fila_registrador_interagindo(["AUX", "B"])
 		"unir_mbr_ao_aux_e_mover_para_mar":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["AUX"])
-			registradores_interagindo.append(registradores_nos["MAR"])
+			adicionar_fila_registrador_interagindo(["MBR", "AUX", "MAR"])
 		"unir_mbr_ao_aux_e_mover_para_pc":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["AUX"])
-			registradores_interagindo.append(registradores_nos["PC"])
+			adicionar_fila_registrador_interagindo(["MBR", "AUX", "PC"])
 		"unir_mbr_ao_aux_e_mover_para_ix":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["AUX"])
-			registradores_interagindo.append(registradores_nos["IX"])
+			adicionar_fila_registrador_interagindo(["MBR", "AUX", "IX"])
 		"unir_mbr_ao_aux_e_mover_para_alu_a":
-			registradores_interagindo.append(registradores_nos["AUX"])
-			registradores_interagindo.append(registradores_nos["ULAA"])
+			adicionar_fila_registrador_interagindo(["AUX", "ULAA"])
 		"dividir_ix_e_mover_para_mbr_e_aux":
-			registradores_interagindo.append(registradores_nos["IX"])
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["ULAA"])
+			adicionar_fila_registrador_interagindo(["IX", "MBR", "AUX"])
 		"dividir_pc_e_mover_para_mbr_e_aux":
-			registradores_interagindo.append(registradores_nos["PC"])
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["AUX"])
+			adicionar_fila_registrador_interagindo(["PC", "MBR", "AUX"])
 		"dividir_alu_saida_e_mover_para_mbr_e_aux":
-			registradores_interagindo.append(registradores_nos["ULASaida"])
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["AUX"])
+			adicionar_fila_registrador_interagindo(["ULASaida", "MBR", "AUX"])
 		"mover_pc_para_mar":
-			registradores_interagindo.append(registradores_nos["PC"])
-			registradores_interagindo.append(registradores_nos["MAR"])
+			adicionar_fila_registrador_interagindo(["PC", "MAR"])
 		"transferir_mbr_para_ir":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["IR"])
+			adicionar_fila_registrador_interagindo(["MBR", "IR"])
 		"transferir_mbr_para_a":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["A"])
+			adicionar_fila_registrador_interagindo(["MBR", "A"])
 		"transferir_mbr_para_b":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["B"])
+			adicionar_fila_registrador_interagindo(["MBR", "B"])
 		"transferir_aux_para_b":
-			registradores_interagindo.append(registradores_nos["AUX"])
-			registradores_interagindo.append(registradores_nos["B"])
+			adicionar_fila_registrador_interagindo(["AUX", "B"])
 		"unir_mbr_ao_aux_e_mover_para_mar":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["AUX"])
-			registradores_interagindo.append(registradores_nos["MAR"])
+			adicionar_fila_registrador_interagindo(["MBR", "AUX", "MAR"])
 		"unir_mbr_ao_aux_e_mover_para_pc":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["AUX"])
-			registradores_interagindo.append(registradores_nos["PC"])
+			adicionar_fila_registrador_interagindo(["MBR", "AUX", "PC"])
 		"unir_mbr_ao_aux_e_mover_para_ix":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["AUX"])
-			registradores_interagindo.append(registradores_nos["IX"])
+			adicionar_fila_registrador_interagindo(["MBR", "AUX", "IX"])
 		"unir_mbr_ao_aux_e_mover_para_alu_a":
-			registradores_interagindo.append(registradores_nos["AUX"])
-			registradores_interagindo.append(registradores_nos["ULAA"])
+			adicionar_fila_registrador_interagindo(["AUX", "ULAA"])
 		"dividir_ix_e_mover_para_mbr_e_aux":
-			registradores_interagindo.append(registradores_nos["IX"])
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["AUX"])
+			adicionar_fila_registrador_interagindo(["IX", "MBR", "AUX"])
 		"dividir_pc_e_mover_para_mbr_e_aux":
-			registradores_interagindo.append(registradores_nos["PC"])
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["AUX"])
+			adicionar_fila_registrador_interagindo(["PC", "MBR", "AUX"])
 		"dividir_alu_saida_e_mover_para_mbr_e_aux":
-			registradores_interagindo.append(registradores_nos["ULASaida"])
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["AUX"])
+			adicionar_fila_registrador_interagindo(["ULASaida", "MBR", "AUX"])
 		"transferir_a_para_mbr":
-			registradores_interagindo.append(registradores_nos["A"])
-			registradores_interagindo.append(registradores_nos["MBR"])
+			adicionar_fila_registrador_interagindo(["A", "MBR"])
 		"transferir_b_para_mbr":
-			registradores_interagindo.append(registradores_nos["B"])
-			registradores_interagindo.append(registradores_nos["MBR"])
+			adicionar_fila_registrador_interagindo(["B", "MBR"])
 		"transferir_a_para_alu_a":
-			registradores_interagindo.append(registradores_nos["A"])
-			registradores_interagindo.append(registradores_nos["ULAA"])
+			adicionar_fila_registrador_interagindo(["A", "ULAA"])
 		"transferir_b_para_alu_b":
-			registradores_interagindo.append(registradores_nos["B"])
-			registradores_interagindo.append(registradores_nos["ULAB"])
+			adicionar_fila_registrador_interagindo(["B", "ULAB"])
 		"transferir_b_para_alu_a":
-			registradores_interagindo.append(registradores_nos["B"])
-			registradores_interagindo.append(registradores_nos["ULAA"])
+			adicionar_fila_registrador_interagindo(["B", "ULAA"])
 		"transferir_mar_para_alu_a":
-			registradores_interagindo.append(registradores_nos["MAR"])
-			registradores_interagindo.append(registradores_nos["ULAA"])
+			adicionar_fila_registrador_interagindo(["MAR", "ULAA"])
 		"transferir_ix_para_alu_b":
-			registradores_interagindo.append(registradores_nos["IX"])
-			registradores_interagindo.append(registradores_nos["ULAB"])
+			adicionar_fila_registrador_interagindo(["IX", "ULAB"])
 		"transferir_mbr_para_alu_b":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["ULAB"])
+			adicionar_fila_registrador_interagindo(["MBR", "ULAB"])
 		"transferir_mbr_para_alu_a":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["ULAA"])
+			adicionar_fila_registrador_interagindo(["MBR", "ULAA"])
 		"transferir_mar_para_pc":
-			registradores_interagindo.append(registradores_nos["MAR"])
-			registradores_interagindo.append(registradores_nos["PC"])
+			adicionar_fila_registrador_interagindo(["MAR", "PC"])
 		"transferir_b_para_a":
-			registradores_interagindo.append(registradores_nos["B"])
-			registradores_interagindo.append(registradores_nos["A"])
+			adicionar_fila_registrador_interagindo(["B", "A"])
 		"transferir_mar_para_pp":
-			registradores_interagindo.append(registradores_nos["MAR"])
-			registradores_interagindo.append(registradores_nos["PP"])
+			adicionar_fila_registrador_interagindo(["MAR", "PP"])
 		"transferir_ix_para_a":
-			registradores_interagindo.append(registradores_nos["IX"])
-			registradores_interagindo.append(registradores_nos["A"])
+			adicionar_fila_registrador_interagindo(["IX", "A"])
 		"transferir_ix_para_b":
-			registradores_interagindo.append(registradores_nos["IX"])
-			registradores_interagindo.append(registradores_nos["B"])
+			adicionar_fila_registrador_interagindo(["IX", "B"])
 		"transferir_b_para_aux":
-			registradores_interagindo.append(registradores_nos["B"])
-			registradores_interagindo.append(registradores_nos["AUX"])
+			adicionar_fila_registrador_interagindo(["B", "AUX"])
 		"transferir_alu_saida_para_a":
-			registradores_interagindo.append(registradores_nos["ULASaida"])
-			registradores_interagindo.append(registradores_nos["A"])
+			adicionar_fila_registrador_interagindo(["ULASaida", "A"])
 		"transferir_alu_saida_para_b":
-			registradores_interagindo.append(registradores_nos["ULASaida"])
-			registradores_interagindo.append(registradores_nos["B"])
+			adicionar_fila_registrador_interagindo(["ULASaida", "B"])
 		"transferir_alu_saida_para_mar":
-			registradores_interagindo.append(registradores_nos["ULASaida"])
-			registradores_interagindo.append(registradores_nos["MAR"])
+			adicionar_fila_registrador_interagindo(["ULASaida", "MAR"])
 		"transferir_alu_saida_para_mbr":
-			registradores_interagindo.append(registradores_nos["ULASaida"])
-			registradores_interagindo.append(registradores_nos["MBR"])
+			adicionar_fila_registrador_interagindo(["ULASaida", "MBR"])
 		"transferir_pp_para_mar":
-			registradores_interagindo.append(registradores_nos["PP"])
-			registradores_interagindo.append(registradores_nos["MAR"])
+			adicionar_fila_registrador_interagindo(["PP", "MAR"])
 		"transferir_flags_para_mbr":
-			registradores_interagindo.append(registradores_nos["Z"])
-			registradores_interagindo.append(registradores_nos["N"])
-			registradores_interagindo.append(registradores_nos["C"])
-			registradores_interagindo.append(registradores_nos["O"])
-			registradores_interagindo.append(registradores_nos["MBR"])
+			adicionar_fila_registrador_interagindo(["Z", "N", "C", "O", "MBR"])
 		"mover_mar_ao_endereco_de_memoria":
-			registradores_interagindo.append(registradores_nos["MAR"])
-			registradores_interagindo.append(registradores_nos["MemoriaEndereco"])
+			adicionar_fila_registrador_interagindo(["MAR", "MemoriaEndereco"])
 		"mover_valor_da_memoria_ao_aux":
-			registradores_interagindo.append(registradores_nos["MemoriaValor"])
-			registradores_interagindo.append(registradores_nos["AUX"])
+			adicionar_fila_registrador_interagindo(["MemoriaValor", "AUX"])
 		"mover_valor_da_memoria_ao_mbr":
 			var valores = obter_info_memorias()
 			remover_fluxos()
@@ -269,34 +206,26 @@ func atualizar_linha():
 			
 			await tween_memoria.finished
 			
-			registradores_interagindo.append(registradores_nos["MemoriaValor"])
-			registradores_interagindo.append(registradores_nos["MBR"])
+			adicionar_fila_registrador_interagindo(["MemoriaValor", "MBR"])
 		"mover_mbr_para_endereco_selecionado":
-			registradores_interagindo.append(registradores_nos["MBR"])
-			registradores_interagindo.append(registradores_nos["MemoriaEndereco"])
+			adicionar_fila_registrador_interagindo(["MBR", "MemoriaEndereco"])
 		"mover_aux_para_endereco_selecionado":
-			registradores_interagindo.append(registradores_nos["AUX"])
-			registradores_interagindo.append(registradores_nos["MemoriaEndereco"])
-		"mover_mar_ao_endereco_de_memoria":
-			registradores_interagindo.append(registradores_nos["MAR"])
-			registradores_interagindo.append(registradores_nos["MemoriaEndereco"])
-		"incrementar_registrador_pc":
-			registradores_interagindo.append(registradores_nos["PC"])
+			adicionar_fila_registrador_interagindo(["AUX", "MemoriaEndereco"])
+		"incrementar_registrador_pc", "iniciar_registrador_pc":
+			adicionar_fila_registrador_interagindo(["PC"])
 		"incrementar_registrador_mar":
-			registradores_interagindo.append(registradores_nos["MAR"])
+			adicionar_fila_registrador_interagindo(["MAR"])
 		"incrementar_registrador_pp", "decrementar_registrador_pp":
-			registradores_interagindo.append(registradores_nos["PP"])
+			adicionar_fila_registrador_interagindo(["PP"])
 		"decrementar_registrador_ix":
-			registradores_interagindo.append(registradores_nos["IX"])
+			adicionar_fila_registrador_interagindo(["IX"])
 		"decrementar_registrador_a":
-			registradores_interagindo.append(registradores_nos["A"])
-		"iniciar_registrador_pc":
-			registradores_interagindo.append(registradores_nos["PC"])
+			adicionar_fila_registrador_interagindo(["A"])
 		"calcular_flags":
 			for flag in flags_atualizadas:
 				registradores_interagindo.append(flag)
 			flags_atualizadas.clear()
-
+	
 	acender_registradores_interagindo()
 	
 	# Resolvendo linhas
@@ -314,20 +243,19 @@ func acender_registradores_interagindo() -> void:
 		tw.tween_property(reg, "modulate", Color.DARK_RED, 0.5).set_trans(Tween.TRANS_LINEAR)
 		tw.tween_property(reg, "modulate", Color.WHITE, 0.5).set_trans(Tween.TRANS_LINEAR)
 		tw.set_loops()
-		tweens.append(tw)
+		tweens_piscar_registradores.append(tw)
 
 func apagar_tweens():
-	for tween in tweens:
+	for tween in tweens_piscar_registradores:
 		tween.kill()
 	
-	if tweens:
+	if tweens_piscar_registradores:
 		for reg in registradores_interagindo:
 			reg.modulate = Color.WHITE
 		registradores_interagindo.clear()
 	
 	if fluxo_tween:
 		fluxo_tween.kill()
-		fluxo.visible = false
 
 func atualizar_registrador(registrador: String):
 	if not SoftwareManager.atualizacao_visual_ativa:
@@ -424,3 +352,7 @@ func adicionar_flags_interagindo(registrador: Button):
 
 func limpar_flags():
 	flags_atualizadas.clear()
+
+func adicionar_fila_registrador_interagindo(fila: Array[String]):
+	for reg in fila:
+		registradores_interagindo.append(registradores_nos[reg])
