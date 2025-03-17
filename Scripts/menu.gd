@@ -77,4 +77,4 @@ func _on_configurações_id_pressed(id):
 	match id:
 		Configuracoes.DESATIVAR_VISUAL:
 			$Configurações.toggle_item_checked(id)
-			SoftwareManager.atualizacao_visual_ativa = not $Configurações.is_item_checked(id)
+			Simulador.atualizacao_visual_ativa = not $Configurações.is_item_checked(id)

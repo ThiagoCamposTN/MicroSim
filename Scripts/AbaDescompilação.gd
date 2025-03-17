@@ -21,7 +21,7 @@ func _process(_delta):
 			iniciar_descompilação = false
 			return
 		
-		if SoftwareManager.modo_atual == SoftwareManager.ModoExecucao.UNICA_INSTRUCAO:
+		if Simulador.modo_atual == Simulador.ModoExecucao.UNICA_INSTRUCAO:
 			iniciar_descompilação = false
 		
 		var valor 			: Valor		= Memoria.ler_conteudo_no_endereco(endereço_inicial)

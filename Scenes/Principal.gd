@@ -6,7 +6,7 @@ extends TabBar
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	visualizador_hex.hex_foi_selecionado.connect(inspetor.atualizar_tela)
-	#SoftwareManager.inicialização_finalizada.connect(restart_hex_view)
+	#Simulador.inicialização_finalizada.connect(restart_hex_view)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

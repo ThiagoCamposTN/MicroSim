@@ -29,7 +29,7 @@ func adicionar_label(texto: String, nome: String = ""):
 	elementos_viewer.append(hex_view_byte)
 
 func reinicializar_hex_grid():
-	if not SoftwareManager.atualizacao_visual_ativa:
+	if not Simulador.atualizacao_visual_ativa:
 		return
 	
 	self.inicializar_hex_grid()

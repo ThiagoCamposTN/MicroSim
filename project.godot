@@ -17,13 +17,14 @@ config/icon="res://icon.png"
 
 [autoload]
 
-SoftwareManager="*res://Scripts/SoftwareManager.gd"
+Simulador="*res://Scripts/Simulador.gd"
 CPU="*res://Scripts/cpu.gd"
 Memoria="*res://Scripts/memoria.gd"
 Operacoes="*res://Scripts/Operacoes.gd"
 Teste="*res://Scripts/Teste.gd"
 Estado="*res://Scripts/Estado.gd"
 Programa="*res://Scripts/Programa.gd"
+UnidadeDeControle="*res://Scripts/UnidadeDeControle.gd"
 
 [physics]
 

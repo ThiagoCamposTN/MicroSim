@@ -18,7 +18,7 @@
 [ext_resource type="Theme" uid="uid://co6m50csib0ee" path="res://Themes/visual_interpreter.tres" id="15_qx21s"]
 [ext_resource type="Texture2D" uid="uid://bxi8pn524w8ha" path="res://Imagens/visualizador/Memoria.svg" id="16_0dbly"]
 [ext_resource type="Texture2D" uid="uid://bs736r8h6l41v" path="res://Imagens/triangulo.tres" id="16_hf3vw"]
-[ext_resource type="PackedScene" path="res://Scenes/Tela.tscn" id="17_8ruui"]
+[ext_resource type="PackedScene" uid="uid://clbuqxv2744t4" path="res://Scenes/Tela.tscn" id="17_8ruui"]
 [ext_resource type="Texture2D" uid="uid://64w3ypp8gorj" path="res://Imagens/visualizador/ConexaoMBR-AUX.svg" id="17_c1jhb"]
 [ext_resource type="Texture2D" uid="uid://clqxflehlu8n1" path="res://Imagens/Caminho.png" id="18_uu7v4"]
 
@@ -798,20 +798,20 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
-[node name="mover_pc_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="transferir_pc_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(0, -28)
 points = PackedVector2Array(312, 225, 392, 225, 392, 271, 432, 271)
 width = 15.0
 default_color = Color(0.384314, 0.384314, 0.384314, 1)
 texture_mode = 1
 
-[node name="mover_mar_ao_endereco_de_memoria" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="transferir_mar_ao_endereco_de_memoria" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(16, -35)
 points = PackedVector2Array(512, 281, 840, 281)
 width = 15.0
 default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="mover_valor_da_memoria_ao_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="transferir_valor_da_memoria_ao_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(0, -20)
 points = PackedVector2Array(952, 149, 952, 121, 528, 121)
 width = 15.0
@@ -823,7 +823,7 @@ points = PackedVector2Array(456, 119, 392, 119, 392, 473, 508, 473)
 width = 15.0
 default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="mover_valor_da_memoria_ao_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="transferir_valor_da_memoria_ao_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(0, -28)
 points = PackedVector2Array(528, 227, 564, 227, 564, 129, 952, 129, 952, 157)
 width = 15.0
@@ -865,13 +865,13 @@ points = PackedVector2Array(312, 497, 392, 497, 392, 458.719, 392, 177, 312, 177
 width = 15.0
 default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="unir_mbr_ao_aux_e_mover_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="unir_mbr_ao_aux_e_transferir_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(0, -27)
 points = PackedVector2Array(456, 224, 392, 224, 392, 270, 432, 270)
 width = 15.0
 default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="unir_mbr_ao_aux_e_mover_para_ix" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="unir_mbr_ao_aux_e_transferir_para_ix" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(0, -27)
 points = PackedVector2Array(456, 224, 392, 224, 392, 270, 312, 270)
 width = 15.0
@@ -904,7 +904,7 @@ width = 15.0
 default_color = Color(0.384314, 0.384314, 0.384314, 1)
 texture_mode = 1
 
-[node name="mover_mbr_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="transferir_mbr_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 position = Vector2(0, -20)
 points = PackedVector2Array(528, 121, 952, 121, 952, 149)
 width = 15.0
@@ -928,7 +928,7 @@ points = PackedVector2Array(667, 496, 896, 496, 896, 392)
 width = 15.0
 default_color = Color(0.384314, 0.384314, 0.384314, 1)
 
-[node name="fluxo_mover_pc_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_transferir_pc_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(0, -28)
 points = PackedVector2Array(311, 225, 392, 225, 392, 225, 392, 270, 392, 270, 432, 270)
@@ -973,7 +973,7 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_unir_mbr_ao_aux_e_mover_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_unir_mbr_ao_aux_e_transferir_para_mar" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(220, 22)
 points = PackedVector2Array(234, 175, 172, 175, 172, 175, 172, 222, 172, 222, 211, 222)
@@ -982,14 +982,14 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_unir_mbr_ao_aux_e_mover_para_mar2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_unir_mbr_ao_aux_e_mover_para_mar"]
+[node name="fluxo_unir_mbr_ao_aux_e_transferir_para_mar2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_unir_mbr_ao_aux_e_transferir_para_mar"]
 points = PackedVector2Array(232, 79, 171, 78, 171, 78, 172, 176)
 default_color = Color(0.94661, 0.865919, 0, 1)
 texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_unir_mbr_ao_aux_e_mover_para_pc" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_unir_mbr_ao_aux_e_transferir_para_pc" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(220, 22)
 points = PackedVector2Array(234, 175, 172, 175, 172, 175, 92, 175)
@@ -998,14 +998,14 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_unir_mbr_ao_aux_e_mover_para_pc2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_unir_mbr_ao_aux_e_mover_para_pc"]
+[node name="fluxo_unir_mbr_ao_aux_e_transferir_para_pc2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_unir_mbr_ao_aux_e_transferir_para_pc"]
 points = PackedVector2Array(232, 79, 171, 78, 171, 78, 172, 176)
 default_color = Color(0.94661, 0.865919, 0, 1)
 texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_unir_mbr_ao_aux_e_mover_para_ix" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_unir_mbr_ao_aux_e_transferir_para_ix" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(220, 22)
 points = PackedVector2Array(234, 175, 172, 175, 172, 175, 172, 221, 172, 221, 92, 221)
@@ -1014,14 +1014,14 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_unir_mbr_ao_aux_e_mover_para_ix2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_unir_mbr_ao_aux_e_mover_para_ix"]
+[node name="fluxo_unir_mbr_ao_aux_e_transferir_para_ix2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_unir_mbr_ao_aux_e_transferir_para_ix"]
 points = PackedVector2Array(232, 79, 171, 78, 171, 78, 172, 176)
 default_color = Color(0.94661, 0.865919, 0, 1)
 texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_unir_mbr_ao_aux_e_mover_para_alu_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_unir_mbr_ao_aux_e_transferir_para_alu_a" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(220, 22)
 points = PackedVector2Array(234, 175, 172, 175, 172, 175, 172, 319, 172, 319, 28, 319, 28, 319, 28, 343)
@@ -1030,14 +1030,14 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_unir_mbr_ao_aux_e_mover_para_alu_a2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_unir_mbr_ao_aux_e_mover_para_alu_a"]
+[node name="fluxo_unir_mbr_ao_aux_e_transferir_para_alu_a2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_unir_mbr_ao_aux_e_transferir_para_alu_a"]
 points = PackedVector2Array(232, 79, 171, 78, 171, 78, 172, 176)
 default_color = Color(0.94661, 0.865919, 0, 1)
 texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_dividir_ix_e_mover_para_mbr_e_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_dividir_ix_e_transferir_para_mbr_e_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(220, 22)
 points = PackedVector2Array(93, 221, 171, 221, 171, 221, 171, 175, 171, 175, 235, 175)
@@ -1046,14 +1046,14 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_dividir_ix_e_mover_para_mbr_e_aux2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_dividir_ix_e_mover_para_mbr_e_aux"]
+[node name="fluxo_dividir_ix_e_transferir_para_mbr_e_aux2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_dividir_ix_e_transferir_para_mbr_e_aux"]
 points = PackedVector2Array(171, 182, 171, 78, 171, 78, 232, 78)
 default_color = Color(0.94661, 0.865919, 0, 1)
 texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_dividir_pc_e_mover_para_mbr_e_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_dividir_pc_e_transferir_para_mbr_e_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(220, 22)
 points = PackedVector2Array(93, 175, 171, 175, 171, 175, 235, 175)
@@ -1062,14 +1062,14 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_dividir_pc_e_mover_para_mbr_e_aux2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_dividir_pc_e_mover_para_mbr_e_aux"]
+[node name="fluxo_dividir_pc_e_transferir_para_mbr_e_aux2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_dividir_pc_e_transferir_para_mbr_e_aux"]
 points = PackedVector2Array(171, 178, 171, 78, 171, 78, 232, 78)
 default_color = Color(0.94661, 0.865919, 0, 1)
 texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_dividir_alu_saida_e_mover_para_mbr_e_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_dividir_alu_saida_e_transferir_para_mbr_e_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(220, 22)
 points = PackedVector2Array(92, 447, 172, 447, 172, 447, 172, 175, 172, 175, 235, 175)
@@ -1078,7 +1078,7 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_dividir_alu_saida_e_mover_para_mbr_e_aux2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_dividir_alu_saida_e_mover_para_mbr_e_aux"]
+[node name="fluxo_dividir_alu_saida_e_transferir_para_mbr_e_aux2" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas/fluxo_dividir_alu_saida_e_transferir_para_mbr_e_aux"]
 points = PackedVector2Array(172, 186, 172, 78, 172, 78, 232, 78)
 default_color = Color(0.94661, 0.865919, 0, 1)
 texture = ExtResource("16_hf3vw")
@@ -1274,7 +1274,7 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_mover_mar_ao_endereco_de_memoria" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_transferir_mar_ao_endereco_de_memoria" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(220, 22)
 points = PackedVector2Array(311, 224, 635, 224)
@@ -1283,7 +1283,7 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_mover_valor_da_memoria_ao_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_transferir_valor_da_memoria_ao_aux" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(220, 22)
 points = PackedVector2Array(732, 106, 732, 78, 732, 78, 343, 80, 343, 80, 344, 176, 344, 176, 310, 176)
@@ -1292,7 +1292,7 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_mover_valor_da_memoria_ao_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_transferir_valor_da_memoria_ao_mbr" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(220, 22)
 points = PackedVector2Array(732, 107, 733, 78, 733, 78, 308, 79)
@@ -1301,7 +1301,7 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_mover_mbr_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_transferir_mbr_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(220, 22)
 points = PackedVector2Array(312, 79, 732, 79, 732, 79, 732, 106)
@@ -1310,7 +1310,7 @@ texture = ExtResource("16_hf3vw")
 texture_mode = 1
 joint_mode = 1
 
-[node name="fluxo_mover_aux_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
+[node name="fluxo_transferir_aux_para_endereco_selecionado" type="Line2D" parent="VBoxContainer/TabContainer/Execução Visual/Container/Linhas"]
 visible = false
 position = Vector2(220, 22)
 points = PackedVector2Array(308, 177, 344, 177, 344, 177, 344, 79, 344, 79, 732, 79, 732, 79, 732, 106)
