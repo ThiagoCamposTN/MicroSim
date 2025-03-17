@@ -89,7 +89,7 @@ func atualizar_visualizacao():
 	
 	remover_fluxos()
 	match instrucao_atual:
-		"mover_pc_para_mar":
+		"transferir_pc_para_mar":
 			adicionar_fila_registrador_interagindo(["PC", "MAR"])
 		"transferir_mbr_para_ir":
 			adicionar_fila_registrador_interagindo(["MBR", "IR"])
@@ -99,39 +99,39 @@ func atualizar_visualizacao():
 			adicionar_fila_registrador_interagindo(["MBR", "B"])
 		"transferir_aux_para_b":
 			adicionar_fila_registrador_interagindo(["AUX", "B"])
-		"unir_mbr_ao_aux_e_mover_para_mar":
+		"unir_mbr_ao_aux_e_transferir_para_mar":
 			adicionar_fila_registrador_interagindo(["MBR", "AUX", "MAR"])
-		"unir_mbr_ao_aux_e_mover_para_pc":
+		"unir_mbr_ao_aux_e_transferir_para_pc":
 			adicionar_fila_registrador_interagindo(["MBR", "AUX", "PC"])
-		"unir_mbr_ao_aux_e_mover_para_ix":
+		"unir_mbr_ao_aux_e_transferir_para_ix":
 			adicionar_fila_registrador_interagindo(["MBR", "AUX", "IX"])
-		"unir_mbr_ao_aux_e_mover_para_alu_a":
+		"unir_mbr_ao_aux_e_transferir_para_alu_a":
 			adicionar_fila_registrador_interagindo(["AUX", "ULAA"])
-		"dividir_ix_e_mover_para_mbr_e_aux":
+		"dividir_ix_e_transferir_para_mbr_e_aux":
 			adicionar_fila_registrador_interagindo(["IX", "MBR", "AUX"])
-		"dividir_pc_e_mover_para_mbr_e_aux":
+		"dividir_pc_e_transferir_para_mbr_e_aux":
 			adicionar_fila_registrador_interagindo(["PC", "MBR", "AUX"])
-		"dividir_alu_saida_e_mover_para_mbr_e_aux":
+		"dividir_alu_saida_e_transferir_para_mbr_e_aux":
 			adicionar_fila_registrador_interagindo(["ULASaida", "MBR", "AUX"])
-		"mover_pc_para_mar":
+		"transferir_pc_para_mar":
 			adicionar_fila_registrador_interagindo(["PC", "MAR"])
 		"transferir_mbr_para_ir":
 			adicionar_fila_registrador_interagindo(["MBR", "IR"])
 		"transferir_aux_para_b":
 			adicionar_fila_registrador_interagindo(["AUX", "B"])
-		"unir_mbr_ao_aux_e_mover_para_mar":
+		"unir_mbr_ao_aux_e_transferir_para_mar":
 			adicionar_fila_registrador_interagindo(["MBR", "AUX", "MAR"])
-		"unir_mbr_ao_aux_e_mover_para_pc":
+		"unir_mbr_ao_aux_e_transferir_para_pc":
 			adicionar_fila_registrador_interagindo(["MBR", "AUX", "PC"])
-		"unir_mbr_ao_aux_e_mover_para_ix":
+		"unir_mbr_ao_aux_e_transferir_para_ix":
 			adicionar_fila_registrador_interagindo(["MBR", "AUX", "IX"])
-		"unir_mbr_ao_aux_e_mover_para_alu_a":
+		"unir_mbr_ao_aux_e_transferir_para_alu_a":
 			adicionar_fila_registrador_interagindo(["AUX", "ULAA"])
-		"dividir_ix_e_mover_para_mbr_e_aux":
+		"dividir_ix_e_transferir_para_mbr_e_aux":
 			adicionar_fila_registrador_interagindo(["IX", "MBR", "AUX"])
-		"dividir_pc_e_mover_para_mbr_e_aux":
+		"dividir_pc_e_transferir_para_mbr_e_aux":
 			adicionar_fila_registrador_interagindo(["PC", "MBR", "AUX"])
-		"dividir_alu_saida_e_mover_para_mbr_e_aux":
+		"dividir_alu_saida_e_transferir_para_mbr_e_aux":
 			adicionar_fila_registrador_interagindo(["ULASaida", "MBR", "AUX"])
 		"transferir_a_para_alu_a":
 			adicionar_fila_registrador_interagindo(["A", "ULAA"])
@@ -171,11 +171,11 @@ func atualizar_visualizacao():
 			adicionar_fila_registrador_interagindo(["PP", "MAR"])
 		"transferir_flags_para_mbr":
 			adicionar_fila_registrador_interagindo(["Z", "N", "C", "O", "MBR"])
-		"mover_mar_ao_endereco_de_memoria":
+		"transferir_mar_ao_endereco_de_memoria":
 			adicionar_fila_registrador_interagindo(["MAR", "MemoriaEndereco"])
-		"mover_valor_da_memoria_ao_aux":
+		"transferir_valor_da_memoria_ao_aux":
 			adicionar_fila_registrador_interagindo(["MemoriaValor", "AUX"])
-		"mover_valor_da_memoria_ao_mbr":
+		"transferir_valor_da_memoria_ao_mbr":
 			var valores = obter_info_memorias()
 			# Resolvendo animação de leitura da memória
 			
@@ -198,9 +198,9 @@ func atualizar_visualizacao():
 			await tween_memoria.finished
 			
 			adicionar_fila_registrador_interagindo(["MemoriaValor", "MBR"])
-		"mover_mbr_para_endereco_selecionado":
+		"transferir_mbr_para_endereco_selecionado":
 			adicionar_fila_registrador_interagindo(["MBR", "MemoriaEndereco"])
-		"mover_aux_para_endereco_selecionado":
+		"transferir_aux_para_endereco_selecionado":
 			adicionar_fila_registrador_interagindo(["AUX", "MemoriaEndereco"])
 		"incrementar_registrador_pc", "iniciar_registrador_pc":
 			adicionar_fila_registrador_interagindo(["PC"])

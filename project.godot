@@ -24,6 +24,7 @@ Operacoes="*res://Scripts/Operacoes.gd"
 Teste="*res://Scripts/Teste.gd"
 Estado="*res://Scripts/Estado.gd"
 Programa="*res://Scripts/Programa.gd"
+UnidadeDeControle="*res://Scripts/UnidadeDeControle.gd"
 
 [physics]
 
