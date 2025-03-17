@@ -36,7 +36,7 @@ var flags_atualizadas: Array[Button] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	SoftwareManager.microoperacao_executada.connect(atualizar_visualizacao)
+	Simulador.microoperacao_executada.connect(atualizar_visualizacao)
 	
 	CPU.registrador_a_foi_atualizado.connect(atualizar_registrador.bind("A"))
 	CPU.registrador_b_foi_atualizado.connect(atualizar_registrador.bind("B"))
@@ -52,7 +52,7 @@ func _ready():
 	CPU.flag_o_foi_atualizada.connect(atualizar_registrador.bind("O"))
 	CPU.registrador_ir_foi_atualizado.connect(atualizar_registrador.bind("IR"))
 
-	SoftwareManager.programa_iniciado.connect(limpar_flags)
+	Simulador.programa_iniciado.connect(limpar_flags)
 	CPU.flag_z_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorZButton))
 	CPU.flag_n_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorNButton))
 	CPU.flag_c_foi_atualizada.connect(adicionar_flags_interagindo.bind(%RegistradorCButton))
@@ -62,7 +62,7 @@ func _ready():
 	CPU.alu_entrada_b_foi_atualizado.connect(atualizar_registrador.bind("ULAB"))
 	CPU.alu_saida_foi_atualizado.connect(atualizar_registrador.bind("ULASaida"))
 
-	SoftwareManager.mudanca_de_fase.connect(fase_foi_alterada)
+	Simulador.mudanca_de_fase.connect(fase_foi_alterada)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -72,13 +72,13 @@ func atualizar_visualizacao():
 	# Resolvendo caixas
 	apagar_tweens()
 
-	if not SoftwareManager.atualizacao_visual_ativa:
+	if not Simulador.atualizacao_visual_ativa:
 		return
 	
-	if SoftwareManager.fila_de_microoperacoes_esta_vazia():
+	if Simulador.fila_de_microoperacoes_esta_vazia():
 		return
 	
-	var instrucao_atual = SoftwareManager.consultar_microperacao_atual()
+	var instrucao_atual = Simulador.consultar_microperacao_atual()
 	
 	if not instrucao_atual or typeof(instrucao_atual) != TYPE_STRING:
 		return
@@ -218,7 +218,7 @@ func atualizar_visualizacao():
 			flags_atualizadas.clear()
 	
 	# Demonstração do fluxo
-	if instrucao_atual == SoftwareManager.consultar_microperacao_atual():
+	if instrucao_atual == Simulador.consultar_microperacao_atual():
 		acender_registradores_interagindo()
 		
 		var fluxo_instrucao = %Linhas.find_child("fluxo_" + instrucao_atual)
@@ -251,7 +251,7 @@ func apagar_tweens():
 		fluxo_tween.kill()
 
 func atualizar_registrador(registrador: String):
-	if not SoftwareManager.atualizacao_visual_ativa:
+	if not Simulador.atualizacao_visual_ativa:
 		return
 	
 	match registrador:
@@ -331,16 +331,16 @@ func obter_info_memorias():
 	
 	return [texto_antes, valor, texto_depois, texto_conteudo_antes, valor_conteudo, texto_conteudo_depois]
 
-func fase_foi_alterada(fase : SoftwareManager.Fase):
+func fase_foi_alterada(fase : Simulador.Fase):
 	if Teste.em_modo_multiplos_teste():
 		return
 	
 	match fase:
-		SoftwareManager.Fase.BUSCA:
+		Simulador.Fase.BUSCA:
 			print("Fase atual: busca")
-		SoftwareManager.Fase.DECODIFICACAO:
+		Simulador.Fase.DECODIFICACAO:
 			print("Fase atual: decodificacao")
-		SoftwareManager.Fase.EXECUCAO:
+		Simulador.Fase.EXECUCAO:
 			print("Fase atual: execucao")
 
 func adicionar_flags_interagindo(registrador: Button):

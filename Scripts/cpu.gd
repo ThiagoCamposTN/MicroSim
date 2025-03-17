@@ -135,7 +135,7 @@ func atualizar_flags(valor: Valor, z: bool, n: bool, c: bool, o: bool):
 		self.atualizar_flag_o(_flag_o)
 		self.flag_o_foi_atualizada.emit()
 	
-	SoftwareManager.realizar_calculo_de_flags()
+	Simulador.realizar_calculo_de_flags()
 
 func eh_fim_de_execucao() -> bool:
 	return (CPU.registrador_ir.como_int() == 0x58) and (CPU.registrador_mar.como_int() == 0x1200)

@@ -14,7 +14,7 @@ var operacao_atual		: Estagio = Estagio.PARADO
 
 
 func _ready():
-	SoftwareManager.execucao_finalizada.connect(teste_finalizado)
+	Simulador.execucao_finalizada.connect(teste_finalizado)
 	Programa.programa_carregado.connect(atualizar_programa)
 
 func _physics_process(_delta):
@@ -41,7 +41,7 @@ func inicializar_teste(arquivo : String) -> void:
 	self.teste_sem_erros 	= true
 
 	# limpar a fila de instruções (não é necessário aqui, mas é mais uma medida de segurança)
-	SoftwareManager.limpar_fila_de_microoperacoes()
+	Simulador.limpar_fila_de_microoperacoes()
 
 	# carregar o estado antes de executar o teste
 	Estado.carregar_estado(arquivo)
@@ -53,7 +53,7 @@ func inicializar_teste(arquivo : String) -> void:
 
 
 func executar_teste() -> void:
-	SoftwareManager.executar_programa(CPU.registrador_pc)
+	Simulador.executar_programa(CPU.registrador_pc)
 
 func teste_finalizado(sucesso:bool = true) -> void:
 	# realiza a comparação do estado final com o esperado
@@ -99,7 +99,7 @@ func teste_finalizado(sucesso:bool = true) -> void:
 
 func atualizar_programa(instrucoes: PackedStringArray):
 	if self.teste_em_execucao():
-		SoftwareManager.salvar_codigo_em_memoria(instrucoes, CPU.registrador_pc)
+		Simulador.salvar_codigo_em_memoria(instrucoes, CPU.registrador_pc)
 
 func validar_valor(config: ConfigFile, chave: String, valor_atual: Valor) -> void:
 	var _valor_esperado = config.get_value("fim", chave, "")

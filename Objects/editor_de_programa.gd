@@ -23,7 +23,7 @@ func _on_button_pressed():
 	var numero_endereco: Valor = $HBoxContainer/LineEdit2.obter_endereco()
 	var linhas: PackedStringArray = self.obter_código()
 
-	SoftwareManager.salvar_codigo_em_memoria(linhas, numero_endereco)
+	Simulador.salvar_codigo_em_memoria(linhas, numero_endereco)
 	#print("Dado no endereço de memória [0000]: ", Memoria.ler_conteudo_no_endereco(0))
 
 func atualizar_codigo(instrucoes: PackedStringArray):

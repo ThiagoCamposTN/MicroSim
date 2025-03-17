@@ -222,7 +222,7 @@ func realizar_divisao_na_alu():
 
 	if divisor == 0:
 		print("Errro de divisão por zero")
-		SoftwareManager.finalizar_execucao(false)
+		Simulador.finalizar_execucao(false)
 		return
 
 	var resto		: int = dividendo % divisor

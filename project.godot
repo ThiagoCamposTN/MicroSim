@@ -17,7 +17,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-SoftwareManager="*res://Scripts/SoftwareManager.gd"
+Simulador="*res://Scripts/Simulador.gd"
 CPU="*res://Scripts/cpu.gd"
 Memoria="*res://Scripts/memoria.gd"
 Operacoes="*res://Scripts/Operacoes.gd"

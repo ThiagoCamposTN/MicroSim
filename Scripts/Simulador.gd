@@ -83,7 +83,7 @@ func executar_proxima_microoperacao():
 			if UnidadeDeControle.has_method(instrucao):
 				UnidadeDeControle.call(instrucao)
 			else:
-				SoftwareManager.call(instrucao)
+				Simulador.call(instrucao)
 
 func executar_programa(endereco_inicial: Valor, modo: ModoExecucao = ModoExecucao.TUDO):
 	CPU.iniciar_registrador_pc(endereco_inicial)
