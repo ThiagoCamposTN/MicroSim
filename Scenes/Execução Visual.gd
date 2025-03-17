@@ -83,10 +83,6 @@ func atualizar_visualizacao():
 	if not instrucao_atual or typeof(instrucao_atual) != TYPE_STRING:
 		return
 	
-	# Evita demonstrar instruções auxiliares que não estão na CPU
-	if not CPU.has_method(instrucao_atual):
-		return
-	
 	remover_fluxos()
 	match instrucao_atual:
 		"transferir_pc_para_mar":
