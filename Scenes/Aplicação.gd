@@ -25,6 +25,7 @@ func _on_avancar_instrucao_button_pressed():
 func _on_executar_tudo_button_pressed():
 	executar(SoftwareManager.ModoExecucao.TUDO)
 
+
 func executar(modo : SoftwareManager.ModoExecucao) -> void:
 	var valor_atual_PC: Valor = Valor.novo_de_hex(valor_PC.text)
 	SoftwareManager.executar_programa(valor_atual_PC, modo)
@@ -36,7 +37,7 @@ func _on_pc_line_edit_text_changed(_new_text):
 	pass
 
 func _on_pc_line_edit_focus_exited():
-	SoftwareManager.limpar_fila_de_instrucoes()
+	SoftwareManager.limpar_fila_de_microoperacoes()
 	var valor_atual_PC: Valor = Valor.novo_de_hex(valor_PC.text)
 	valor_atual_PC.limitar_entre(0, Memoria.TAMANHO_MEMORIA - 1)
 	CPU.iniciar_registrador_pc(valor_atual_PC)

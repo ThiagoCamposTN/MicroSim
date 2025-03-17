@@ -75,10 +75,10 @@ func atualizar_visualizacao():
 	if not SoftwareManager.atualizacao_visual_ativa:
 		return
 	
-	if SoftwareManager.fila_de_instrucoes_esta_vazia():
+	if SoftwareManager.fila_de_microoperacoes_esta_vazia():
 		return
 	
-	var instrucao_atual = SoftwareManager.obter_instrucao_atual()
+	var instrucao_atual = SoftwareManager.consultar_microperacao_atual()
 	
 	if not instrucao_atual or typeof(instrucao_atual) != TYPE_STRING:
 		return
@@ -218,7 +218,7 @@ func atualizar_visualizacao():
 			flags_atualizadas.clear()
 	
 	# Demonstração do fluxo
-	if instrucao_atual == SoftwareManager.obter_instrucao_atual():
+	if instrucao_atual == SoftwareManager.consultar_microperacao_atual():
 		acender_registradores_interagindo()
 		
 		var fluxo_instrucao = %Linhas.find_child("fluxo_" + instrucao_atual)
