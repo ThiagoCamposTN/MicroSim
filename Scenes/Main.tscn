@@ -1373,7 +1373,7 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "0000"
 
-[node name="AvancarMicrocodigoButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="AvancarMicrooperacaoButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 tooltip_text = "Executa o próximo microcódigo localizado pelo Contador de Programa e interrompe a execução."
 text = "Avançar microoperação"
@@ -1391,6 +1391,6 @@ text = "Executar tudo"
 [connection signal="pressed" from="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilação/MarginContainer/HSplitContainer/VBoxContainer2/HBoxContainer/DescompilarButton" to="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Descompilação" method="_on_descompilar_button_pressed"]
 [connection signal="focus_exited" from="VBoxContainer/MarginContainer/HBoxContainer/PCLineEdit" to="." method="_on_pc_line_edit_focus_exited"]
 [connection signal="text_changed" from="VBoxContainer/MarginContainer/HBoxContainer/PCLineEdit" to="." method="_on_pc_line_edit_text_changed"]
-[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/AvancarMicrocodigoButton" to="." method="_on_avancar_microcodigo_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/AvancarMicrooperacaoButton" to="." method="_on_avancar_microoperacao_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/AvancarInstrucaoButton" to="." method="_on_avancar_instrucao_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/ExecutarTudoButton" to="." method="_on_executar_tudo_button_pressed"]

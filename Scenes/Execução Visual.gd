@@ -198,16 +198,16 @@ func atualizar_visualizacao():
 			adicionar_fila_registrador_interagindo(["MBR", "MemoriaEndereco"])
 		"transferir_aux_para_endereco_selecionado":
 			adicionar_fila_registrador_interagindo(["AUX", "MemoriaEndereco"])
-		"incrementar_registrador_pc", "iniciar_registrador_pc":
-			adicionar_fila_registrador_interagindo(["PC"])
-		"incrementar_registrador_mar":
-			adicionar_fila_registrador_interagindo(["MAR"])
-		"incrementar_registrador_pp", "decrementar_registrador_pp":
-			adicionar_fila_registrador_interagindo(["PP"])
-		"decrementar_registrador_ix":
-			adicionar_fila_registrador_interagindo(["IX"])
-		"decrementar_registrador_a":
-			adicionar_fila_registrador_interagindo(["A"])
+		# "incrementar_registrador_pc", "iniciar_registrador_pc":
+		# 	adicionar_fila_registrador_interagindo(["PC"])
+		# "incrementar_registrador_mar":
+		# 	adicionar_fila_registrador_interagindo(["MAR"])
+		# "incrementar_registrador_pp", "decrementar_registrador_pp":
+		# 	adicionar_fila_registrador_interagindo(["PP"])
+		# "decrementar_registrador_ix":
+		# 	adicionar_fila_registrador_interagindo(["IX"])
+		# "decrementar_registrador_a":
+		# 	adicionar_fila_registrador_interagindo(["A"])
 		"calcular_flags":
 			for flag in flags_atualizadas:
 				registradores_interagindo.append(flag)

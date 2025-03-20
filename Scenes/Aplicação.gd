@@ -8,23 +8,9 @@ func _ready():
 	CPU.registrador_pc_foi_atualizado.connect(atualizar_valor_PC)
 	# Simulador.recarregar_memoria()
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	pass
-
-
-func _on_avancar_microcodigo_button_pressed():
-	executar(Simulador.ModoExecucao.UNICO_MICROCODIGO)
-
-
-func _on_avancar_instrucao_button_pressed():
-	executar(Simulador.ModoExecucao.UNICA_INSTRUCAO)
-
-
-func _on_executar_tudo_button_pressed():
-	executar(Simulador.ModoExecucao.TUDO)
-
 
 func executar(modo : Simulador.ModoExecucao) -> void:
 	var valor_atual_PC: Valor = Valor.novo_de_hex(valor_PC.text)
@@ -33,6 +19,16 @@ func executar(modo : Simulador.ModoExecucao) -> void:
 func atualizar_valor_PC():
 	valor_PC.text = CPU.registrador_pc.como_hex(4)
 
+
+func _on_avancar_microoperacao_button_pressed():
+	executar(Simulador.ModoExecucao.UNICA_MICROOPERACAO)
+
+func _on_avancar_instrucao_button_pressed():
+	executar(Simulador.ModoExecucao.UNICA_INSTRUCAO)
+
+func _on_executar_tudo_button_pressed():
+	executar(Simulador.ModoExecucao.TUDO)
+	
 func _on_pc_line_edit_text_changed(_new_text):
 	pass
 

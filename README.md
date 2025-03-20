@@ -8,6 +8,54 @@ A tela é uma ferramenta de visualização dos dados da memória. Ela tem dimens
 Vale lembrar também que a stack começa no endereço 0xFFF (4095) por padrão, então se a tela for utilizada, deve-se trocar o ponto inicial da stack para começar antes da tela no endereço 0xEFF (3839) usando a instrução LDP no programa, por exemplo.
 Se não é desejado utilizar a tela, pode-se apenas a ignorar, não precisando realizar nenhuma operação pois a tela é passiva e só reflete os dados guardados na memória.
 
+## Memória
+
+Quando a aplicação é iniciada, uma memória é gerada automaticamente por padrão se não foi determinada o caminho de um arquivo de memória dentro do aquivo de estado padrão `padrão.sta` que é carregado automaticamente pela aplicação.
+
+Apesar de ser gerada por meio de um algoritmo aleatório, ela sempre utiliza o mesmo valor de *seed*, logo, toda inicialização resultará na exata mesma memória.
+
+## Fluxo de execução de um programa
+
+Para executar um progama, primeiro é necessário digitar o código fonte dele na caixa de Programa. Em seguida, deve-se clicar no botão para salvar o código na memória, que irá compilar o código e convertê-lo em bytes que serão armazenados na memória a partir do endereço indicado. O processo de compilação será mais detalhado posteriormente.
+
+Com o código na memória, para iniciar a execução basta indicar o endereço inicial e utilizar os botões de execução no modo que for desejado: avançar apenas uma microoperação, avançar uma instrução ou executar todo o código de uma vez. Essas opções permitem execução na medida em que é desejável para a compreensão do programa pelo usuário.
+
+### Compilação
+
+A rotina de compilação do código lê o código fonte linha a linha, transformando-as em bytes que serão salvos na memória.
+
+O processo de compilação ocorre da seguinte forma: cada linha é passada por um regex que irá extrair informações necessárias para gerar um objeto do tipo `Instrucao`.
+
+Usando de exemplo a linha `LDA#03`: os três primeiros caracteres são extraídos e considerados como a parte do mnemônico nesse comando. Nesse caso, é o mnemônico é `LDA`. O restante da linha, `#03`, é então enviado para uma função que detectará qual é o modo de endereçamento e qual é o parâmetro (se ele existir). Nesse exemplo, o modo de endereçamento será `imediato` por conta da `#` e o parâmetro será `03`. Então sabe-se as seguintes informações sobre a instrução atualmente:
+
+|                   |           |
+|:-----------------:|:----------|
+| Endereçamento     | imediato  |
+| Mnemônico         | LDA       |
+| Parâmetro         | 03        |
+
+Esses dados são usados para criar um objeto `Instrucao`. Se a instrução possui parâmetro (ou seja, o modo de endereçamento não é `implícito`), é necessário antes determinar qual é o tamanho do parâmetro. O único caso que é necessário fazer isso é no modo de endereçamento `imediato`, pois em todos os outros modos (novamente, excluindo o `implícito` que não tem parâmetro) o parâmetro sempre será um endereço de memória que sempre tem dois bytes.
+
+No modo `imediato`, é possível ter um ou dois bytes como parâmetro e isso é determinado por cada instrução em si. O modo de endereçamento apenas não é o bastante para obter essa informação. No exemplo atual, a instrução foi identificada como `LDA` no modo `imediato`, e nesse caso o parâmetro sempre será um dado de 1 byte pois essa instrução irá carregar um valor no registrador `A` que suporta apenas 1 byte. Já no caso da instrução `LDP` no modo `imediato`, o parâmetro sempre terá 2 bytes, pois essa instrução é realizada sobre o `registrador PP` que tem 2 bytes.
+
+Continuando o exemplo de compilação: durante a criação do objeto `Instrucao`, o mnemônico é utilizado para consultar todas as instruções existentes no processador a fim de determinar qual é opcode referente à instrução no modo de endereçamento detectado e qual é o tamanho do parâmetro no modo imediato. O objeto então possui as seguintes informações:
+
+|                   |           |
+|:-----------------:|:----------|
+| Endereçamento     | imediato  |
+| Mnemônico         | LDA       |
+| Parâmetro         | 03        |
+| Opcode            | 20        |
+| Tamanho do Dado   | 1         |
+
+Munido dessas informações, agora é possível invocar uma rotina que retorna os bytes que descrevem essa instrução. Então será retornado dois bytes: `20 03`. Esses bytes serão armazenados na memória na posição atual do registrador contador de programa `PC`.
+
+No caso da instrução `LDP#78`, por exemplo, os bytes resultantes serão `2B 00 78`.
+
+### Descompilação
+
+[WIP]
+
 ## Extensões de arquivos
 
 ### .prg
@@ -22,9 +70,13 @@ Se não é desejado utilizar a tela, pode-se apenas a ignorar, não precisando r
 
 É um arquivo de estado. Sua estrutura segue o padrão de arquivos de inicialização (*.ini*) e configuração (*.cfg*). Ele suporta duas seções: `inicio` e `fim`. A seção "inicio" é sempre obrigatória, ela descreve qual será o estado inicial que o simulador deve ter e pode substituir o estado atual se desejado. O simulador irá carregar todos os seus dados com as informações dessa seção. Já a seção "fim" é opcional, pois é usada apenas em casos de teste. 
 
-Todos os campos **devem** ser preenchidos com algum valor válido para garantir estabilidade da aplicação. Existe, porém, um campo opcional que é o "memoria.substituicoes" que é tratado caso não seja definido; outros campos são inicializados com um "0", mas o "memoria.base", por exemplo, ao não ser definido, não permitirá a execução do programa da forma esperada.
+Idealmente, é `recomendado` preencher todos os campos com algum valor válido para garantir estabilidade da aplicação. Porém, todos os campos possuem o valor inicial "0" caso não sejam definidos.
 
 Como mencionado anteriormente, arquivos de estado também são usados em testes, que começa com o estado inicial definido pela seção "inicio", e o estado final do simulador é comparado com os valores da seção "fim".
+
+### .MEM
+
+[WIP]
 
 ## Incrementação/Decrementação
 
@@ -55,25 +107,6 @@ Seria bom rever as menções nos recursos das instruções os nomes das flags e 
 * Na instrução `DIV` é explicitado que os registradores `A` e `B` são concatenados e enviados à `ULA entrada A` para formar o dividendo (ou seja, um número de 2 bytes), o parâmetro da instrução é enviado à `ULA entrada B` como o divisor, e a divisão ocorre. Na saída, apenas o nibble superior da divisão é mantido, enquanto o inferior é substituído pelo valor do resto. Esse número é então dividido e enviado para eventualmente popular os registradores `A` e `B`.
 Após realizar alguns testes manuais e consultas, parece que o cálculo de divisão do Micro3 está incorreto. Então o cálculo desenvolvido nessa aplicação vai ser utilizada em seu lugar, logo, os resultados entre os simuladores serão diferentes.
 
-## Fluxo de execução de um programa
-
-Para executar um progama, primeiro é necessário digitar o código na caixa de Programa, em seguida, deve-se clicar no botão para salvar o código na memória. Quando isso acontece, começa uma rotina de compilação do código que irá linha a linha transformando os comandos de mnemônicos em bytes que serão salvos na memória.
-
-### Compilação
-
-O processo de compilação ocorre da seguinte forma: cada comando é passado por um regex que irá extrair informações daquela linha de código para criar um objeto `Instrução`. Pegando, por exemplo, a instrução `LDA#03`: o regex captura o mnemônico `LDA` e usa a estrutura da linha para determinar que o tipo de endereçamento é `imediato` por conta da `#`, por exemplo, e também capturar o parâmetro `03`. O objeto instrução será então populado da seguinte forma:
-
-|                   |           |
-|:-----------------:|:----------|
-| Endereçamento     | imediato  |
-| Mnemônico         | LDA       |
-| Parâmetros        | 03        |
-
-Esses dados são então convertidos para bytes 
-
-### Descompilação
-
-Já a descompilação 
-
 ## Referências
-* [Documentação dos comandos do Micro3](referência.md), uma das maiores referências e inspirações pro projeto. As instruções desse simulador são baseadas nas existentes desse outro projeto.
+
+* [Documentação dos comandos do Micro3](referência.md), uma das maiores referências e inspirações pro projeto. As instruções desse simulador são baseadas nas existentes do MICRO3.

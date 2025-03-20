@@ -12,7 +12,7 @@ var execucao_timer		: Timer
 
 enum Estagio 		{ PREPARACAO, OPERACAO, TERMINO }
 enum Fase 			{ BUSCA, DECODIFICACAO, EXECUCAO }
-enum ModoExecucao 	{ UNICO_MICROCODIGO, UNICA_INSTRUCAO, TUDO }
+enum ModoExecucao 	{ UNICA_MICROOPERACAO, UNICA_INSTRUCAO, TUDO }
 
 var estagio_atual 	: Estagio		= Estagio.TERMINO
 var modo_atual 		: ModoExecucao	= ModoExecucao.TUDO
@@ -47,7 +47,7 @@ func _process(_delta):
 
 				executar_proxima_microoperacao()
 				
-				if self.modo_atual == ModoExecucao.UNICO_MICROCODIGO:
+				if self.modo_atual == ModoExecucao.UNICA_MICROOPERACAO:
 					self.estagio_atual = Estagio.TERMINO
 
 				microoperacao_executada.emit()
@@ -65,8 +65,8 @@ func executar_proxima_microoperacao():
 		TYPE_DICTIONARY:
 			for condicional in _instrucao:
 				if UnidadeDeControle.call(condicional):
-					for _microcodigo in _instrucao[condicional]:
-						self.inserir_na_fila_como_proxima_microoperacao(_microcodigo)
+					for _microoperacao in _instrucao[condicional]:
+						self.inserir_na_fila_como_proxima_microoperacao(_microoperacao)
 			return
 		_:
 			push_error("Operador de instrução inválido")
@@ -405,13 +405,13 @@ func decodificar_instrucao():
 	self.adicionar_a_fila_de_microoperacoes("validar_fim_de_execucao")
 	
 	# Estagio de execução
-	# Busca a lista de microcodigos enumeradas no recurso do Operador
-	var microcodigos = Operacoes.get_microcodigos(instrucao_descompilada.mnemonico)
+	# Busca a lista de microoperacoes enumeradas no recurso do Operador
+	var microoperacoes = Operacoes.obter_microoperacoes(instrucao_descompilada.mnemonico)
 
-	for microcodigo in microcodigos:
-		# Chama a função declarada em CPU que tem nome equivalente ao especificado nos microcodigos do operador
+	for microoperacao in microoperacoes:
+		# Chama a função declarada em CPU que tem nome equivalente ao especificado no microcodigo do operador
 		# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
-		self.adicionar_a_fila_de_microoperacoes(microcodigo)
+		self.adicionar_a_fila_de_microoperacoes(microoperacao)
 	
 	self.mudanca_de_fase.emit(Fase.DECODIFICACAO)
 

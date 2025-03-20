@@ -6,7 +6,7 @@ class_name Operador
 @export var descrição 	    : String
 @export var tamanho_do_dado : int = 2
 
-@export var microcodigos 	: Array
+@export var microoperacoes 	: Array
 
 @export_category("Bytecodes")
 @export var direto : String
