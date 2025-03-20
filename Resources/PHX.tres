@@ -8,9 +8,10 @@ nome = "Push IX"
 "mnemônico" = "PHX"
 "descrição" = "Armazena o conteúdo do registrador IX (2 bytes) em um endereço de pilha PP (1 byte) e no seu sucessor (1 byte)."
 tamanho_do_dado = 0
-microcodigos = ["decrementar_registrador_pp", "transferir_pp_para_mar", "transferir_mar_ao_endereco_de_memoria", 
-"dividir_ix_e_transferir_para_mbr_e_aux", "transferir_aux_para_endereco_selecionado", "incrementar_registrador_mar", "transferir_mar_ao_endereco_de_memoria", 
-"transferir_mbr_para_endereco_selecionado", "decrementar_registrador_pp"]
+microcodigos = ["transferir_pp_para_alu_a", "decrementar_um_na_alu_a_16_bits", "transferir_alu_saida_para_pp", "transferir_pp_para_mar", 
+"transferir_mar_ao_endereco_de_memoria", "dividir_ix_e_transferir_para_mbr_e_aux", "transferir_aux_para_endereco_selecionado", "transferir_mar_para_alu_a", 
+"incrementar_um_na_alu_a_16_bits", "transferir_alu_saida_para_mar", "transferir_mar_ao_endereco_de_memoria", "transferir_mbr_para_endereco_selecionado", 
+"transferir_pp_para_alu_a", "decrementar_um_na_alu_a_16_bits", "transferir_alu_saida_para_pp"]
 direto = ""
 imediato = ""
 indexado = ""

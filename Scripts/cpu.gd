@@ -11,7 +11,6 @@ signal registrador_mbr_foi_atualizado
 signal registrador_aux_foi_atualizado
 signal registrador_mar_foi_atualizado
 signal registrador_ir_foi_atualizado
-signal endereco_selecionado_foi_alterado
 
 signal alu_entrada_a_foi_atualizado
 signal alu_entrada_b_foi_atualizado
@@ -53,12 +52,10 @@ func iniciar_registrador_pc(endereco: Valor) -> void:
 func atualizar_registrador_a(novo_valor: Valor) -> void:
 	self.registrador_a = novo_valor
 	registrador_a_foi_atualizado.emit()
-	self.atualizar_flags(novo_valor, true, true, false, false)
 
 func atualizar_registrador_b(novo_valor: Valor) -> void:
 	self.registrador_b = novo_valor
 	registrador_b_foi_atualizado.emit()
-	self.atualizar_flags(novo_valor, true, true, false, false)
 
 func atualizar_registrador_pc(novo_valor: Valor) -> void:
 	self.registrador_pc = novo_valor
@@ -67,7 +64,6 @@ func atualizar_registrador_pc(novo_valor: Valor) -> void:
 func atualizar_registrador_ix(novo_valor: Valor) -> void:
 	self.registrador_ix = novo_valor
 	registrador_ix_foi_atualizado.emit()
-	self.atualizar_flags(novo_valor, true, true, false, false)
 
 func atualizar_registrador_pp(novo_valor: Valor) -> void:
 	self.registrador_pp = novo_valor
@@ -117,25 +113,25 @@ func atualizar_flag_o(novo_valor: Valor):
 	self.flag_o = novo_valor
 	self.flag_o_foi_atualizada.emit()
 
-func atualizar_flags(valor: Valor, z: bool, n: bool, c: bool, o: bool):
-	#TODO: talvez precise verificar se a operação é sobre números de 1 byte ou 2 bytes
-	if z:
-		var _flag_z: Valor = Valor.new(valor.como_int() == 0)
-		self.atualizar_flag_z(_flag_z)
+func filtrar_resultado_e_verificar_flags(valor: Valor, bytes) -> Valor:
+	var resultado: int = valor.como_int()
 	
-	if n:
-		var _flag_n: Valor = Valor.new(valor.como_int() > 127)
-		self.atualizar_flag_n(_flag_n)
+	var _flag_z: Valor = Valor.new(resultado == 0)
+	self.atualizar_flag_z(_flag_z)
 	
-	if c:
-		self.flag_c_foi_atualizada.emit()
-	
-	if o:
-		var _flag_o: Valor = Valor.new(valor.como_int() > 255)
-		self.atualizar_flag_o(_flag_o)
-		self.flag_o_foi_atualizada.emit()
-	
-	Simulador.realizar_calculo_de_flags()
+	var _flag_n: Valor
+
+	if bytes == 2:
+		_flag_n = Valor.new(resultado > 0x7FFF)
+	else:
+		_flag_n = Valor.new(resultado > 0x7F)
+
+	self.atualizar_flag_n(_flag_n)
+
+	if bytes == 2:
+		return Valor.new(resultado & 0xFFFF)
+	else:
+		return Valor.new(resultado & 0xFF)
 
 func eh_fim_de_execucao() -> bool:
 	return (CPU.registrador_ir.como_int() == 0x58) and (CPU.registrador_mar.como_int() == 0x1200)

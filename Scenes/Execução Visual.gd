@@ -214,7 +214,8 @@ func atualizar_visualizacao():
 			flags_atualizadas.clear()
 	
 	# Demonstração do fluxo
-	if instrucao_atual == Simulador.consultar_microperacao_atual():
+	if typeof(instrucao_atual) == typeof(Simulador.consultar_microperacao_atual()) and \
+		instrucao_atual == Simulador.consultar_microperacao_atual():
 		acender_registradores_interagindo()
 		
 		var fluxo_instrucao = %Linhas.find_child("fluxo_" + instrucao_atual)

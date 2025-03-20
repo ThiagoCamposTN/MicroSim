@@ -121,7 +121,7 @@ func preparar_proxima_instrucao():
 	# Início da instrução
 	self.adicionar_a_fila_de_microoperacoes("---")
 
-	# Transferência do CO (Contador Ordinal) para o RAD (Registrador de Endereço);
+	# Transferência do PC (Contador de Programa) para o MAR (Registrador de Endereço de Memória);
 	self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_mar")
 	
 	# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
@@ -130,12 +130,16 @@ func preparar_proxima_instrucao():
 	# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
 	self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_mbr")
 	
-	# O valor de DON é transferido ao DCOD (Decodificador de instrução) via o BUS de Dados;
+	# O valor de MBR (Registrador de Buffer de Memória) é 
+	# transferido ao IR (Registrador de Instrução) via o BUS de Dados;
 	self.adicionar_a_fila_de_microoperacoes("transferir_mbr_para_ir")
 
-	# O CO é incrementado em 1;
-	self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_pc")
+	# O PC é incrementado em 1;
+	self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+	self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+	self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
 
+	# A instrição é decodificada
 	self.adicionar_a_fila_de_microoperacoes("decodificar_instrucao")
 
 func decodificar_instrucao():
@@ -161,7 +165,10 @@ func decodificar_instrucao():
 			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_mar")
+			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
+
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
@@ -179,7 +186,9 @@ func decodificar_instrucao():
 			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_mar")
+			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
 
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
@@ -196,8 +205,14 @@ func decodificar_instrucao():
 			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
 
 			# O PC é incrementado em 2
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_pc")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_pc")
+			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+
+
 		Instrucao.Enderecamentos.PRE_INDEXADO:
 			# Transferência de PC para MAR
 			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_mar")
@@ -209,7 +224,9 @@ func decodificar_instrucao():
 			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_mar")
+			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
@@ -232,7 +249,9 @@ func decodificar_instrucao():
 			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_mar")
+			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
 
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
@@ -244,8 +263,12 @@ func decodificar_instrucao():
 			self.adicionar_a_fila_de_microoperacoes("unir_mbr_ao_aux_e_transferir_para_mar")
 
 			# O PC é incrementado em 2
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_pc")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_pc")
+			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
 		Instrucao.Enderecamentos.INDIRETO:
 			# Transferência de PC para MAR
 			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_mar")
@@ -257,7 +280,9 @@ func decodificar_instrucao():
 			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_mar")
+			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
@@ -275,7 +300,9 @@ func decodificar_instrucao():
 			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_mar")
+			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
@@ -287,14 +314,20 @@ func decodificar_instrucao():
 			self.adicionar_a_fila_de_microoperacoes("unir_mbr_ao_aux_e_transferir_para_mar")
 			
 			# O PC é incrementado em 2
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_pc")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_pc")
+			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
 		Instrucao.Enderecamentos.IMEDIATO:
 			# Transferência de PC para MAR
 			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_mar")
 
 			# PC é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_pc")
+			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
 		Instrucao.Enderecamentos.DIRETO:
 			# Transferência de PC para MAR
 			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_mar")
@@ -306,7 +339,9 @@ func decodificar_instrucao():
 			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_mar")
+			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
@@ -318,8 +353,12 @@ func decodificar_instrucao():
 			self.adicionar_a_fila_de_microoperacoes("unir_mbr_ao_aux_e_transferir_para_mar")
 			
 			# O PC é incrementado em 2
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_pc")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_pc")
+			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
 		Instrucao.Enderecamentos.IMPLICITO:
 			pass
 		Instrucao.Enderecamentos.INDEXADO:
@@ -333,7 +372,9 @@ func decodificar_instrucao():
 			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_mar")
+			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
@@ -344,12 +385,19 @@ func decodificar_instrucao():
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
 			self.adicionar_a_fila_de_microoperacoes("unir_mbr_ao_aux_e_transferir_para_mar")
 			
+			# Somar o valor de IX ao endereço calculado
 			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
 			self.adicionar_a_fila_de_microoperacoes("transferir_ix_para_alu_b")
 			self.adicionar_a_fila_de_microoperacoes("adicao_alu_a_alu_b")
 			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_pc")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_registrador_pc")
+			
+			# O PC é incrementado em 2
+			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
 		_:
 			pass
 
