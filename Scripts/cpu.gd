@@ -21,6 +21,7 @@ signal flag_n_foi_atualizada
 signal flag_c_foi_atualizada
 signal flag_o_foi_atualizada
 
+
 # registradores
 var registrador_a	: Valor = Valor.new(0x00) # Registrador de 8 bits
 var registrador_b	: Valor = Valor.new(0x08) # Registrador de 8 bits

@@ -5,7 +5,6 @@ signal execucao_finalizada
 signal mudanca_de_fase
 signal programa_iniciado
 
-var fila_de_microoperacoes: Array = []
 
 @export var time_delay 	: float = 0.1
 var execucao_timer		: Timer
@@ -16,8 +15,16 @@ enum ModoExecucao 	{ UNICA_MICROOPERACAO, UNICA_INSTRUCAO, TUDO }
 
 var estagio_atual 	: Estagio		= Estagio.TERMINO
 var modo_atual 		: ModoExecucao	= ModoExecucao.TUDO
+var fase_atual 		: Fase			= Fase.BUSCA
 
 var atualizacao_visual_ativa: bool = true
+
+
+var filas_de_microoperacoes: Dictionary = {
+	Fase.BUSCA			: [],
+	Fase.DECODIFICACAO	: [],
+	Fase.EXECUCAO		: []
+}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,10 +41,30 @@ func _process(_delta):
 			Estagio.TERMINO:
 				return
 			Estagio.PREPARACAO:
-				if self.fila_de_microoperacoes_esta_vazia():
-					preparar_proxima_instrucao()
+				match fase_atual:
+					Fase.BUSCA:
+						if self.fila_atual_esta_vazia():
+							self.preparar_proxima_instrucao()
 				estagio_atual = Estagio.OPERACAO
 			Estagio.OPERACAO:
+				match fase_atual:
+					Fase.BUSCA:
+						if self.fila_atual_esta_vazia():
+							fase_atual = Fase.DECODIFICACAO
+					Fase.DECODIFICACAO:
+						if self.fila_atual_esta_vazia():
+							fase_atual = Fase.DECODIFICACAO
+						
+							if self.modo_atual == ModoExecucao.UNICA_INSTRUCAO:
+								estagio_atual = Estagio.TERMINO
+							else:
+								estagio_atual = Estagio.PREPARACAO
+							return
+						
+						self.executar_proxima_microoperacao()
+
+
+
 				if self.fila_de_microoperacoes_esta_vazia():
 					if self.modo_atual == ModoExecucao.UNICA_INSTRUCAO:
 						estagio_atual = Estagio.TERMINO
@@ -119,28 +146,28 @@ func preparar_proxima_instrucao():
 	# Inicia-se a fase de acesso à instrução;
 
 	# Início da instrução
-	self.adicionar_a_fila_de_microoperacoes("---")
+	self.adicionar_a_fila_de_busca("---")
 
 	# Transferência do PC (Contador de Programa) para o MAR (Registrador de Endereço de Memória);
-	self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_mar")
+	self.adicionar_a_fila_de_busca("transferir_pc_para_mar")
 	
 	# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-	self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+	self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 	
 	# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-	self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_mbr")
+	self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_mbr")
 	
 	# O valor de MBR (Registrador de Buffer de Memória) é 
 	# transferido ao IR (Registrador de Instrução) via o BUS de Dados;
-	self.adicionar_a_fila_de_microoperacoes("transferir_mbr_para_ir")
+	self.adicionar_a_fila_de_busca("transferir_mbr_para_ir")
 
 	# O PC é incrementado em 1;
-	self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-	self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-	self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+	self.adicionar_a_fila_de_busca("transferir_pc_para_alu_a")
+	self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+	self.adicionar_a_fila_de_busca("transferir_alu_saida_para_pc")
 
 	# A instrição é decodificada
-	self.adicionar_a_fila_de_microoperacoes("decodificar_instrucao")
+	self.adicionar_a_fila_de_busca("decodificar_instrucao")
 
 func decodificar_instrucao():
 	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
@@ -156,253 +183,253 @@ func decodificar_instrucao():
 	match instrucao_descompilada.enderecamento:
 		Instrucao.Enderecamentos.POS_INDEXADO:
 			# Transferência de PC para MAR
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_mar")
 
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_mbr")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_mbr")
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
-			self.adicionar_a_fila_de_microoperacoes("unir_mbr_ao_aux_e_transferir_para_mar")
+			self.adicionar_a_fila_de_busca("unir_mbr_ao_aux_e_transferir_para_mar")
 
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_mar")
 
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_mbr")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_mbr")
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
-			self.adicionar_a_fila_de_microoperacoes("unir_mbr_ao_aux_e_transferir_para_mar")
+			self.adicionar_a_fila_de_busca("unir_mbr_ao_aux_e_transferir_para_mar")
 
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("transferir_ix_para_alu_b")
-			self.adicionar_a_fila_de_microoperacoes("adicao_alu_a_alu_b")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_busca("transferir_ix_para_alu_b")
+			self.adicionar_a_fila_de_busca("adicao_alu_a_alu_b")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_mar")
 
 			# O PC é incrementado em 2
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_pc")
 
 
 		Instrucao.Enderecamentos.PRE_INDEXADO:
 			# Transferência de PC para MAR
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_mbr")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_mbr")
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
-			self.adicionar_a_fila_de_microoperacoes("unir_mbr_ao_aux_e_transferir_para_mar")
+			self.adicionar_a_fila_de_busca("unir_mbr_ao_aux_e_transferir_para_mar")
 			
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("transferir_ix_para_alu_b")
-			self.adicionar_a_fila_de_microoperacoes("adicao_alu_a_alu_b")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_busca("transferir_ix_para_alu_b")
+			self.adicionar_a_fila_de_busca("adicao_alu_a_alu_b")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_mar")
 
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_mar")
 
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_mbr")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_mbr")
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
-			self.adicionar_a_fila_de_microoperacoes("unir_mbr_ao_aux_e_transferir_para_mar")
+			self.adicionar_a_fila_de_busca("unir_mbr_ao_aux_e_transferir_para_mar")
 
 			# O PC é incrementado em 2
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_pc")
 		Instrucao.Enderecamentos.INDIRETO:
 			# Transferência de PC para MAR
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_mbr")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_mbr")
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
-			self.adicionar_a_fila_de_microoperacoes("unir_mbr_ao_aux_e_transferir_para_mar")
+			self.adicionar_a_fila_de_busca("unir_mbr_ao_aux_e_transferir_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_mbr")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_mbr")
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
-			self.adicionar_a_fila_de_microoperacoes("unir_mbr_ao_aux_e_transferir_para_mar")
+			self.adicionar_a_fila_de_busca("unir_mbr_ao_aux_e_transferir_para_mar")
 			
 			# O PC é incrementado em 2
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_pc")
 		Instrucao.Enderecamentos.IMEDIATO:
 			# Transferência de PC para MAR
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_mar")
 
 			# PC é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_pc")
 		Instrucao.Enderecamentos.DIRETO:
 			# Transferência de PC para MAR
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_mbr")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_mbr")
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
-			self.adicionar_a_fila_de_microoperacoes("unir_mbr_ao_aux_e_transferir_para_mar")
+			self.adicionar_a_fila_de_busca("unir_mbr_ao_aux_e_transferir_para_mar")
 			
 			# O PC é incrementado em 2
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_pc")
 		Instrucao.Enderecamentos.IMPLICITO:
 			pass
 		Instrucao.Enderecamentos.INDEXADO:
 			# Transferência de PC para MAR
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao AUX via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_aux")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_ao_endereco_de_memoria")
+			self.adicionar_a_fila_de_busca("transferir_mar_ao_endereco_de_memoria")
 			
 			# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-			self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_mbr")
+			self.adicionar_a_fila_de_busca("transferir_valor_da_memoria_ao_mbr")
 			
 			# Une MBR e AUX para formar um endereço 16 bits que é transferido para MAR
-			self.adicionar_a_fila_de_microoperacoes("unir_mbr_ao_aux_e_transferir_para_mar")
+			self.adicionar_a_fila_de_busca("unir_mbr_ao_aux_e_transferir_para_mar")
 			
 			# Somar o valor de IX ao endereço calculado
-			self.adicionar_a_fila_de_microoperacoes("transferir_mar_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("transferir_ix_para_alu_b")
-			self.adicionar_a_fila_de_microoperacoes("adicao_alu_a_alu_b")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila_de_busca("transferir_mar_para_alu_a")
+			self.adicionar_a_fila_de_busca("transferir_ix_para_alu_b")
+			self.adicionar_a_fila_de_busca("adicao_alu_a_alu_b")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_mar")
 			
 			# O PC é incrementado em 2
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
-			self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-			self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila_de_busca("transferir_pc_para_alu_a")
+			self.adicionar_a_fila_de_busca("incrementar_um_na_alu_a_16_bits")
+			self.adicionar_a_fila_de_busca("transferir_alu_saida_para_pc")
 		_:
 			pass
 
 	# checando se houve o término do programa
-	self.adicionar_a_fila_de_microoperacoes("validar_fim_de_execucao")
+	self.filas_de_microoperacoes("validar_fim_de_execucao")
 	
 	# Estagio de execução
 	# Busca a lista de microoperacoes enumeradas no recurso do Operador
@@ -411,7 +438,7 @@ func decodificar_instrucao():
 	for microoperacao in microoperacoes:
 		# Chama a função declarada em CPU que tem nome equivalente ao especificado no microcodigo do operador
 		# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
-		self.adicionar_a_fila_de_microoperacoes(microoperacao)
+		self.filas_de_microoperacoes(microoperacao)
 	
 	self.mudanca_de_fase.emit(Fase.DECODIFICACAO)
 
@@ -438,21 +465,37 @@ func realizar_calculo_de_flags():
 	self.inserir_na_fila_como_proxima_microoperacao("calcular_flags")
 
 func limpar_fila_de_microoperacoes() -> void:
-	self.fila_de_microoperacoes.clear()
+	self.filas_de_microoperacoes.clear()
 
 func consultar_microperacao_atual():
 	if self.fila_de_microoperacoes_esta_vazia():
 		return ""
-	return self.fila_de_microoperacoes[0]
+	return self.filas_de_microoperacoes[0]
 
 func fila_de_microoperacoes_esta_vazia() -> bool:
-	return self.fila_de_microoperacoes.size() == 0
+	for fase in self.filas_de_microoperacoes:
+		if len(self.filas_de_microoperacoes[fase]) > 0:
+			return false
+	return true
+
+func fila_da_fase_atual_esta_vazia(fase: Fase) -> bool:
+	if len(self.filas_de_microoperacoes[fase]) > 0:
+		return false
+	return true
+
+func fila_atual_esta_vazia() -> bool:
+	if len(self.filas_de_microoperacoes[fase_atual]) > 0:
+		return false
+	return true
+
+func adicionar_a_fila_de_busca(microoperacao) -> void:
+	self.filas_de_microoperacoes[Fase.BUSCA].push_back(microoperacao)
 
 func adicionar_a_fila_de_microoperacoes(microoperacao) -> void:
-	self.fila_de_microoperacoes.push_back(microoperacao)
+	self.filas_de_microoperacoes.push_back(microoperacao)
 
 func inserir_na_fila_como_proxima_microoperacao(microoperacao) -> void:
-	self.fila_de_microoperacoes.push_front(microoperacao)
+	self.filas_de_microoperacoes.push_front(microoperacao)
 
 func obter_proxima_microoperacao():
-	return self.fila_de_microoperacoes.pop_front()
+	return self.filas_de_microoperacoes.pop_front()
