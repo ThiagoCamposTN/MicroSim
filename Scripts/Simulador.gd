@@ -44,10 +44,11 @@ func _process(_delta):
 						self.preparar_busca_de_instrucao()
 						self.alternar_fase()
 					Fase.OPERACAO:
-						self.executar_microoperacao_da_fila_atual()
-				
-				if fila_esta_vazia():
-					self.avancar_estagio()
+						if fila_esta_vazia():
+							self.avancar_estagio()
+							return
+
+						self.executar_proxima_microoperacao_da_fila()
 			Estagio.DECODIFICACAO:
 				match self.fase_atual:
 					Fase.INICIALIZACAO:
@@ -55,11 +56,12 @@ func _process(_delta):
 						self.preparar_decodificacao()
 						self.alternar_fase()
 					Fase.OPERACAO:
-						self.executar_microoperacao_da_fila_atual()
-				
-				if fila_esta_vazia():
-					self.instrucao_atual = self.decodificar()
-					self.avancar_estagio()
+						if fila_esta_vazia():
+							self.instrucao_atual = self.decodificar()
+							self.avancar_estagio()
+							return
+
+						self.executar_proxima_microoperacao_da_fila()
 			Estagio.ENDERECAMENTO:
 				match self.fase_atual:
 					Fase.INICIALIZACAO:
@@ -67,27 +69,29 @@ func _process(_delta):
 						self.preparar_enderecamento(self.instrucao_atual)
 						self.alternar_fase()
 					Fase.OPERACAO:
-						self.executar_microoperacao_da_fila_atual()
-				
-				if fila_esta_vazia():
-					# Se a instrução atual for CAL EXIT, finalizar a execução
-					if CPU.instrucao_atual_finalizacao():
-						self.finalizar_execucao(true)
-						return
-					
-					self.avancar_estagio()
+						if fila_esta_vazia():
+							# Se a instrução atual for CAL EXIT, finalizar a execução
+							if CPU.instrucao_atual_finalizacao():
+								self.finalizar_execucao(true)
+								return
+							
+							self.avancar_estagio()
+							return
+
+						self.executar_proxima_microoperacao_da_fila()
 			Estagio.EXECUCAO:
 				match self.fase_atual:
 					Fase.INICIALIZACAO:
 						self.preparar_execucao(self.instrucao_atual)
 						self.alternar_fase()
 					Fase.OPERACAO:
-						self.executar_microoperacao_da_fila_atual()
-				
-				if fila_esta_vazia():
-					self.finalizar_execucao(true)
+						if fila_esta_vazia():
+							self.finalizar_execucao(true)
+							return
 
-func executar_microoperacao_da_fila_atual():
+						self.executar_proxima_microoperacao_da_fila()
+
+func executar_proxima_microoperacao_da_fila():
 	var _instrucao = self.obter_proxima_microoperacao()
 	var instrucao: String
 
@@ -107,13 +111,7 @@ func executar_microoperacao_da_fila_atual():
 	if not Teste.em_modo_multiplos_teste():
 		print("Executando: ", instrucao)
 
-	# TODO: provavelmente isso não é mais necessário
-	if CPU.has_method(instrucao):
-		CPU.call(instrucao)
-	elif UnidadeDeControle.has_method(instrucao):
-		UnidadeDeControle.call(instrucao)
-	else:
-		Simulador.call(instrucao)
+	UnidadeDeControle.call(instrucao)
 	
 	self.microoperacao_executada.emit()
 	self.execucao_timer.start(self.time_delay)
