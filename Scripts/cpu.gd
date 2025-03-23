@@ -136,5 +136,5 @@ func filtrar_resultado_e_verificar_flags(valor: Valor, bytes: int, atualizar_fla
 	else:
 		return Valor.new(resultado & 0xFF)
 
-func eh_fim_de_execucao() -> bool:
+func instrucao_atual_finalizacao() -> bool:
 	return (CPU.registrador_ir.como_int() == 0x58) and (CPU.registrador_mar.como_int() == 0x1200)
