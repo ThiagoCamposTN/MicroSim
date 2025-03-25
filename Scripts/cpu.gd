@@ -113,11 +113,12 @@ func atualizar_flag_o(novo_valor: Valor):
 	self.flag_o = novo_valor
 	self.flag_o_foi_atualizada.emit()
 
-func filtrar_resultado_e_verificar_flags(valor: Valor, bytes) -> Valor:
+func filtrar_resultado_e_verificar_flags(valor: Valor, bytes: int, atualizar_flags: bool=true) -> Valor:
 	var resultado: int = valor.como_int()
 	
 	var _flag_z: Valor = Valor.new(resultado == 0)
-	self.atualizar_flag_z(_flag_z)
+	if atualizar_flags:
+		self.atualizar_flag_z(_flag_z)
 	
 	var _flag_n: Valor
 
@@ -126,7 +127,8 @@ func filtrar_resultado_e_verificar_flags(valor: Valor, bytes) -> Valor:
 	else:
 		_flag_n = Valor.new(resultado > 0x7F)
 
-	self.atualizar_flag_n(_flag_n)
+	if atualizar_flags:
+		self.atualizar_flag_n(_flag_n)
 
 	if bytes == 2:
 		return Valor.new(resultado & 0xFFFF)

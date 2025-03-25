@@ -2,16 +2,16 @@ extends Node
 
 
 func incrementar_um_na_alu_a_8_bits() -> void:
-	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 1, 1)
+	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 1, 1, false)
 
 func incrementar_um_na_alu_a_16_bits() -> void:
-	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 2, 1)
+	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 2, 1, false)
 
 func decrementar_um_na_alu_a_8_bits() -> void:
-	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 2, -1)
+	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 2, -1, false)
 
 func decrementar_um_na_alu_a_16_bits() -> void:
-	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 2, -1)
+	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 2, -1, false)
 
 func transferir_pc_para_mar() -> void:
 	CPU.atualizar_registrador_mar(CPU.registrador_pc)
@@ -246,12 +246,13 @@ func atribuir_um_a_flag_c():
 func atribuir_um_a_flag_o():
 	CPU.atualizar_flag_o(Valor.new(1))
 
-func _operacao_de_soma_na_alu(entrada: Valor, bytes: int, quantia: int) -> void:
+func _operacao_de_soma_na_alu(entrada: Valor, bytes: int, quantia: int, atualizar_flags:bool=true) -> void:
 	var resultado = Valor.novo_de_valor(entrada)
 	resultado.somar_int(quantia)
 	var _flag_o: Valor = Valor.new(resultado.como_int() > 0xFFFF)
-	CPU.atualizar_flag_o(_flag_o)
-	var valor: Valor = CPU.filtrar_resultado_e_verificar_flags(resultado, bytes)
+	if atualizar_flags:
+		CPU.atualizar_flag_o(_flag_o)
+	var valor: Valor = CPU.filtrar_resultado_e_verificar_flags(resultado, bytes, atualizar_flags)
 	CPU.atualizar_alu_saida(valor)
 
 func _operacao_de_uniao_mbr_ao_aux() -> Valor:
