@@ -414,28 +414,28 @@ func obter_proxima_microoperacao() -> Variant:
 
 
 class Fase:
-	var entrada: bool = true
+	var em_inicialização: bool = true
 	
 	func atualizar() -> void:
-		if self.entrada:
-			self.inicialização()
-			self.entrada = false
+		if self.em_inicialização:
+			self.entrada()
+			self.em_inicialização = false
 		else:
-			self._operação()
+			self.ação()
 	
-	func _operação() -> void:
+	func ação() -> void:
 		if Simulador.fila_esta_vazia():
-			self.operação()
+			self.saída()
 		else:
 			Simulador.executar_proxima_microoperacao_da_fila()
 
 			if Simulador.modo_atual == ModoExecucao.UNICA_MICROOPERACAO:
 				self.alterar_estagio(Suspencao.new(self))
 	
-	func inicialização() -> void:
+	func entrada() -> void:
 		pass
 	
-	func operação() -> void:
+	func saída() -> void:
 		pass
 	
 	func retomar() -> void:
@@ -445,27 +445,27 @@ class Fase:
 		Simulador.fase_atual = novo_estagio
 	
 class Busca extends Fase:
-	func inicialização() -> void:
+	func entrada() -> void:
 		Simulador.mudanca_de_ciclo.emit(Ciclo.BUSCA)
 		Simulador.preparar_busca_de_instrucao()
 	
-	func operação() -> void:
+	func saída() -> void:
 		self.alterar_estagio(Decodificacao.new())
 
 class Decodificacao extends Fase:
-	func inicialização():
+	func entrada():
 		Simulador.mudanca_de_ciclo.emit(Ciclo.DECODIFICACAO)
 		Simulador.preparar_decodificacao()
 	
-	func operação() -> void:
+	func saída() -> void:
 		self.alterar_estagio(Enderecamento.new())
 
 class Enderecamento extends Fase:
-	func inicialização() -> void:
+	func entrada() -> void:
 		Simulador.mudanca_de_ciclo.emit(Ciclo.EXECUCAO)
 		Simulador.preparar_enderecamento()
 	
-	func operação() -> void:
+	func saída() -> void:
 		# Se a instrução atual for CAL EXIT, finalizar a execução
 		if CPU.instrucao_atual_finalizacao():
 			Simulador.finalizar_execucao(true)
@@ -474,12 +474,14 @@ class Enderecamento extends Fase:
 			self.alterar_estagio(Execucao.new())
 
 class Execucao extends Fase:
-	func inicialização() -> void:
+	func entrada() -> void:
 		Simulador.preparar_execucao()
 	
-	func operação() -> void:
-		Simulador.finalizar_execucao(true)
-		self.alterar_estagio(Busca.new())
+	func saída() -> void:
+		if Simulador.modo_atual == ModoExecucao.UNICA_INSTRUCAO:
+			self.alterar_estagio(Suspencao.new(Busca.new()))
+		else:
+			self.alterar_estagio(Busca.new())
 
 class Suspencao extends Fase:
 	var _estagio_anterior: Fase
