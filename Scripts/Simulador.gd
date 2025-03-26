@@ -115,16 +115,7 @@ func preparar_decodificacao():
 	# O valor de MBR (Registrador de Buffer de Memória) é 
 	# transferido ao IR (Registrador de Instrução) via o BUS de Dados;
 	self.adicionar_a_fila_de_microoperacoes("transferir_mbr_para_ir")
-
-func decodificar() -> void:
-	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
-	self.instrucao_atual = Compilador.descompilar(CPU.registrador_ir)
-	
-	# se não a instrução não existe
-	if not self.instrucao_atual:
-		print("Instrução inválida. Encerrando execução.")
-		self.finalizar_execucao()
-		return
+	self.adicionar_a_fila_de_microoperacoes("decodificar")
 
 func preparar_enderecamento():
 	# Estágio de pesquisa e endereço do operando
@@ -400,11 +391,6 @@ func validar_fim_de_execucao() -> void:
 	if CPU.instrucao_atual_finalizacao():
 		self.finalizar_execucao()
 
-func realizar_calculo_de_flags():
-	# pode haver multiplos calcular flags empurrados pois pode haver
-	# multiplas operacoes que dão push da flag em seguida uma da outra
-	self.inserir_na_fila_como_proxima_microoperacao("calcular_flags")
-
 func limpar_fila_de_microoperacoes() -> void:
 	for fase in self.fila_de_microoperacoes:
 		self.fila_de_microoperacoes[fase].clear()
@@ -464,7 +450,7 @@ class Busca extends Fase:
 		Simulador.preparar_proxima_instrucao()
 	
 	func operação() -> void:
-		return self.alterar_estagio(Decodificacao.new())
+		self.alterar_estagio(Decodificacao.new())
 
 class Decodificacao extends Fase:
 	func inicialização():
@@ -472,7 +458,6 @@ class Decodificacao extends Fase:
 		Simulador.preparar_decodificacao()
 	
 	func operação() -> void:
-		Simulador.decodificar()
 		self.alterar_estagio(Enderecamento.new())
 
 class Enderecamento extends Fase:

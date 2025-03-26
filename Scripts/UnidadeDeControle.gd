@@ -262,3 +262,11 @@ func _operacao_de_uniao_mbr_ao_aux() -> Valor:
 	]
 	var resultado: Valor = Valor.novo_de_byte_array(byte_array)
 	return resultado
+
+func decodificar() -> void:
+	Simulador.instrucao_atual = Compilador.descompilar(CPU.registrador_ir)
+	
+	# se não a instrução não existe
+	if not Simulador.instrucao_atual:
+		print("Instrução inválida. Encerrando execução.")
+		Simulador.finalizar_execucao()
