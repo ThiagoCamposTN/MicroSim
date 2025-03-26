@@ -11,7 +11,7 @@ enum ModoExecucao 	{ UNICA_MICROOPERACAO, UNICA_INSTRUCAO, TUDO }
 
 @export var time_delay 		: float 		= 0.1
 var execucao_timer			: Timer
-var estagio_atual 			: Estagio 		= Suspencao.new(Busca.new())
+var fase_atual 				: Fase 			= Suspencao.new(Busca.new())
 var modo_atual 				: ModoExecucao	= ModoExecucao.TUDO
 var instrucao_atual			: Instrucao
 var atualizacao_visual_ativa: bool 			= true
@@ -28,7 +28,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if execucao_timer.is_stopped() or Teste.teste_em_execucao():
-		estagio_atual.atualizar()
+		self.fase_atual.atualizar()
 
 func executar_proxima_microoperacao_da_fila():
 	var _instrucao = self.obter_proxima_microoperacao()
@@ -67,7 +67,7 @@ func executar_proxima_microoperacao_da_fila():
 func executar_programa(endereco_inicial: Valor, modo: ModoExecucao = ModoExecucao.TUDO):
 	CPU.iniciar_registrador_pc(endereco_inicial)
 	self.modo_atual = modo
-	self.estagio_atual.retomar()
+	self.fase_atual.retomar()
 	programa_iniciado.emit()
 
 func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: Valor):
@@ -427,22 +427,15 @@ func obter_proxima_microoperacao() -> Variant:
 	return self.fila_de_microoperacoes.pop_front()
 
 
-
-enum Fase { ENTRADA, OPERACAO }
-
-class Estagio:
-	var _estado: Fase = Fase.ENTRADA
+class Fase:
+	var entrada: bool = true
 	
 	func atualizar() -> void:
-		match self._estado:
-			Fase.ENTRADA:
-				self.inicialização()
-				self.avancar_estado()
-			Fase.OPERACAO:
-				self._operação()
-	
-	func avancar_estado() -> void:
-		self._estado = Fase.OPERACAO
+		if self.entrada:
+			self.inicialização()
+			self.entrada = false
+		else:
+			self._operação()
 	
 	func _operação() -> void:
 		if Simulador.fila_de_microoperacoes_esta_vazia():
@@ -462,10 +455,10 @@ class Estagio:
 	func retomar() -> void:
 		pass
 	
-	func alterar_estagio(novo_estagio: Estagio) -> void:
-		Simulador.estagio_atual = novo_estagio
+	func alterar_estagio(novo_estagio: Fase) -> void:
+		Simulador.fase_atual = novo_estagio
 	
-class Busca extends Estagio:
+class Busca extends Fase:
 	func inicialização() -> void:
 		Simulador.mudanca_de_ciclo.emit(Ciclo.BUSCA)
 		Simulador.preparar_proxima_instrucao()
@@ -473,7 +466,7 @@ class Busca extends Estagio:
 	func operação() -> void:
 		return self.alterar_estagio(Decodificacao.new())
 
-class Decodificacao extends Estagio:
+class Decodificacao extends Fase:
 	func inicialização():
 		Simulador.mudanca_de_ciclo.emit(Ciclo.DECODIFICACAO)
 		Simulador.preparar_decodificacao()
@@ -482,7 +475,7 @@ class Decodificacao extends Estagio:
 		Simulador.decodificar()
 		self.alterar_estagio(Enderecamento.new())
 
-class Enderecamento extends Estagio:
+class Enderecamento extends Fase:
 	func inicialização() -> void:
 		Simulador.mudanca_de_ciclo.emit(Ciclo.EXECUCAO)
 		Simulador.preparar_enderecamento()
@@ -495,7 +488,7 @@ class Enderecamento extends Estagio:
 		else:
 			self.alterar_estagio(Execucao.new())
 
-class Execucao extends Estagio:
+class Execucao extends Fase:
 	func inicialização() -> void:
 		Simulador.preparar_execucao()
 	
@@ -503,13 +496,13 @@ class Execucao extends Estagio:
 		Simulador.finalizar_execucao(true)
 		self.alterar_estagio(Busca.new())
 
-class Suspencao extends Estagio:
-	var _estagio_anterior: Estagio
+class Suspencao extends Fase:
+	var _estagio_anterior: Fase
 
 	func atualizar() -> void:
 		pass
 
-	func _init(estagio_anterior: Estagio) -> void:
+	func _init(estagio_anterior: Fase) -> void:
 		self._estagio_anterior = estagio_anterior
 	
 	func retomar() -> void:
