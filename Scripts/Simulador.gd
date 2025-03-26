@@ -5,21 +5,17 @@ signal execucao_finalizada
 signal mudanca_de_ciclo
 signal programa_iniciado
 
-enum Estagio 		{ BUSCA, DECODIFICACAO, ENDERECAMENTO, EXECUCAO, PAUSA, SUSPENSAO }
-enum Fase 			{ INICIALIZACAO, OPERACAO }
+
+enum Ciclo 			{ BUSCA, DECODIFICACAO, EXECUCAO }
 enum ModoExecucao 	{ UNICA_MICROOPERACAO, UNICA_INSTRUCAO, TUDO }
 
-
-@export var time_delay 		: float = 0.1
+@export var time_delay 		: float 		= 0.1
 var execucao_timer			: Timer
-var estagio_atual 			: Estagio		= Estagio.SUSPENSAO
-var estagio_anterior		: Estagio
-var fase_atual 				: Fase			= Fase.INICIALIZACAO
+var estagio_atual 			: Estagio 		= Suspencao.new(Busca.new())
 var modo_atual 				: ModoExecucao	= ModoExecucao.TUDO
-var instrucao_atual 		: Instrucao
+var instrucao_atual			: Instrucao
 var atualizacao_visual_ativa: bool 			= true
 var fila_de_microoperacoes	: Array 		= []
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -32,64 +28,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if execucao_timer.is_stopped() or Teste.teste_em_execucao():
-		match estagio_atual:
-			Estagio.SUSPENSAO:
-				return
-			Estagio.PAUSA:
-				return
-			Estagio.BUSCA:
-				match self.fase_atual:
-					Fase.INICIALIZACAO:
-						self.mudanca_de_ciclo.emit("busca")
-						self.preparar_busca_de_instrucao()
-						self.alternar_fase()
-					Fase.OPERACAO:
-						if fila_esta_vazia():
-							self.avancar_estagio()
-							return
-
-						self.executar_proxima_microoperacao_da_fila()
-			Estagio.DECODIFICACAO:
-				match self.fase_atual:
-					Fase.INICIALIZACAO:
-						self.mudanca_de_ciclo.emit("decodificacao")
-						self.preparar_decodificacao()
-						self.alternar_fase()
-					Fase.OPERACAO:
-						if fila_esta_vazia():
-							self.instrucao_atual = self.decodificar()
-							self.avancar_estagio()
-							return
-
-						self.executar_proxima_microoperacao_da_fila()
-			Estagio.ENDERECAMENTO:
-				match self.fase_atual:
-					Fase.INICIALIZACAO:
-						self.mudanca_de_ciclo.emit("execucao")
-						self.preparar_enderecamento(self.instrucao_atual)
-						self.alternar_fase()
-					Fase.OPERACAO:
-						if fila_esta_vazia():
-							# Se a instrução atual for CAL EXIT, finalizar a execução
-							if CPU.instrucao_atual_finalizacao():
-								self.finalizar_execucao(true)
-								return
-							
-							self.avancar_estagio()
-							return
-
-						self.executar_proxima_microoperacao_da_fila()
-			Estagio.EXECUCAO:
-				match self.fase_atual:
-					Fase.INICIALIZACAO:
-						self.preparar_execucao(self.instrucao_atual)
-						self.alternar_fase()
-					Fase.OPERACAO:
-						if fila_esta_vazia():
-							self.finalizar_execucao(true)
-							return
-
-						self.executar_proxima_microoperacao_da_fila()
+		estagio_atual.atualizar()
 
 func executar_proxima_microoperacao_da_fila():
 	var _instrucao = self.obter_proxima_microoperacao()
@@ -111,21 +50,24 @@ func executar_proxima_microoperacao_da_fila():
 	if not Teste.em_modo_multiplos_teste():
 		print("Executando: ", instrucao)
 
-	UnidadeDeControle.call(instrucao)
-	
-	self.microoperacao_executada.emit()
-	self.execucao_timer.start(self.time_delay)
+	if CPU.has_method(instrucao):
+		CPU.call(instrucao)
+	else:
+		if instrucao == "---":
+			self.mudanca_de_ciclo.emit(Ciclo.BUSCA)
+		else:
+			if UnidadeDeControle.has_method(instrucao):
+				UnidadeDeControle.call(instrucao)
+			else:
+				Simulador.call(instrucao)
 
-	if self.modo_atual == ModoExecucao.UNICA_MICROOPERACAO:
-		self.pausar_estagio()
+			microoperacao_executada.emit()
+			execucao_timer.start(time_delay)
 
 func executar_programa(endereco_inicial: Valor, modo: ModoExecucao = ModoExecucao.TUDO):
 	CPU.iniciar_registrador_pc(endereco_inicial)
-	if self.estagio_atual == Estagio.SUSPENSAO:
-		self.alterar_estagio_para(Estagio.BUSCA)
-	elif self.estagio_atual == Estagio.PAUSA:
-		self.alterar_estagio_para(self.estagio_anterior)
 	self.modo_atual = modo
+	self.estagio_atual.retomar()
 	programa_iniciado.emit()
 
 func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial: Valor):
@@ -162,33 +104,31 @@ func preparar_busca_de_instrucao():
 	self.adicionar_a_fila("transferir_mar_ao_endereco_de_memoria")
 	
 	# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-	self.adicionar_a_fila("transferir_valor_da_memoria_ao_mbr")
+	self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_mbr")
 
 	# O PC é incrementado em 1;
-	self.adicionar_a_fila("transferir_pc_para_alu_a")
-	self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-	self.adicionar_a_fila("transferir_alu_saida_para_pc")
+	self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
+	self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
+	self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
 
 func preparar_decodificacao():
 	# O valor de MBR (Registrador de Buffer de Memória) é 
 	# transferido ao IR (Registrador de Instrução) via o BUS de Dados;
-	self.adicionar_a_fila("transferir_mbr_para_ir")
+	self.adicionar_a_fila_de_microoperacoes("transferir_mbr_para_ir")
 
-func decodificar() -> Instrucao:
+func decodificar() -> void:
 	# TODO: Todos os caminhos de dados devem ter suas próprias funções no futuro
-	var instrucao_descompilada: Instrucao = Compilador.descompilar(CPU.registrador_ir)
+	self.instrucao_atual = Compilador.descompilar(CPU.registrador_ir)
 	
 	# se não a instrução não existe
-	if not instrucao_descompilada:
+	if not self.instrucao_atual:
 		print("Instrução inválida. Encerrando execução.")
 		self.finalizar_execucao()
 		return
-	
-	return instrucao_descompilada
 
-func preparar_enderecamento(instrucao_descompilada: Instrucao) -> void:
-	# Estagio de pesquisa e endereço do operando
-	match instrucao_descompilada.enderecamento:
+func preparar_enderecamento():
+	# Estágio de pesquisa e endereço do operando
+	match self.instrucao_atual.enderecamento:
 		Instrucao.Enderecamentos.POS_INDEXADO:
 			# Transferência de PC para MAR
 			self.adicionar_a_fila("transferir_pc_para_mar")
@@ -436,18 +376,17 @@ func preparar_enderecamento(instrucao_descompilada: Instrucao) -> void:
 		_:
 			pass
 
-func preparar_execucao(instrucao_descompilada: Instrucao) -> void:
-	# Estagio de execução
+func preparar_execucao():
+	# Estágio de execução
 	# Busca a lista de microoperacoes enumeradas no recurso do Operador
-	var microoperacoes = Operacoes.obter_microoperacoes(instrucao_descompilada.mnemonico)
+	var microoperacoes = Operacoes.obter_microoperacoes(self.instrucao_atual.mnemonico)
 
 	for microoperacao in microoperacoes:
 		# Chama a função declarada em CPU que tem nome equivalente ao especificado no microcodigo do operador
 		# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
-		self.adicionar_a_fila(microoperacao)
+		self.adicionar_a_fila_de_microoperacoes(microoperacao)
 
 func finalizar_execucao(sucesso: bool=true):
-	self.alterar_estagio_para(Estagio.SUSPENSAO)
 	self.limpar_fila_de_microoperacoes() # todo: verificar se a lista não esvaziar sozinha é bug ou não
 	execucao_finalizada.emit(sucesso)
 
@@ -455,6 +394,16 @@ func prepara_o_estado_inicial(_emitir_sinal_de_finalização: bool = true):
 	Estado.carregar_estado()
 	# if emitir_sinal_de_finalização:
 	# 	self.inicialização_finalizada.emit()
+
+func validar_fim_de_execucao() -> void:
+	# Se a instrução atual for CAL EXIT, finalizar a execução
+	if CPU.instrucao_atual_finalizacao():
+		self.finalizar_execucao()
+
+func realizar_calculo_de_flags():
+	# pode haver multiplos calcular flags empurrados pois pode haver
+	# multiplas operacoes que dão push da flag em seguida uma da outra
+	self.inserir_na_fila_como_proxima_microoperacao("calcular_flags")
 
 func limpar_fila_de_microoperacoes() -> void:
 	for fase in self.fila_de_microoperacoes:
@@ -477,29 +426,91 @@ func adicionar_a_fila(microoperacao: Variant) -> void:
 func obter_proxima_microoperacao() -> Variant:
 	return self.fila_de_microoperacoes.pop_front()
 
-func alternar_fase() -> void:
-	match self.fase_atual:
-		Fase.INICIALIZACAO:
-			self.fase_atual = Fase.OPERACAO
-		Fase.OPERACAO:
-			self.fase_atual = Fase.INICIALIZACAO
 
-func avancar_estagio() -> void:
-	match self.estagio_atual:
-		Estagio.BUSCA:
-			self.alterar_estagio_para(Estagio.DECODIFICACAO)
-		Estagio.DECODIFICACAO:
-			self.alterar_estagio_para(Estagio.ENDERECAMENTO)
-		Estagio.ENDERECAMENTO:
-			self.alterar_estagio_para(Estagio.EXECUCAO)
-		Estagio.EXECUCAO:
-			self.alterar_estagio_para(Estagio.BUSCA)
+
+enum Fase { ENTRADA, OPERACAO }
+
+class Estagio:
+	var _estado: Fase = Fase.ENTRADA
 	
-	self.alternar_fase()
+	func atualizar() -> void:
+		match self._estado:
+			Fase.ENTRADA:
+				self.inicialização()
+				self.avancar_estado()
+			Fase.OPERACAO:
+				self._operação()
+	
+	func avancar_estado() -> void:
+		self._estado = Fase.OPERACAO
+	
+	func _operação() -> void:
+		if Simulador.fila_de_microoperacoes_esta_vazia():
+			self.operação()
+		else:
+			Simulador.executar_proxima_microoperacao_da_fila()
 
-func alterar_estagio_para(estagio: Estagio) -> void:
-	self.estagio_atual = estagio
+			if Simulador.modo_atual == ModoExecucao.UNICA_MICROOPERACAO:
+				self.alterar_estagio(Suspencao.new(self))
+	
+	func inicialização() -> void:
+		pass
+	
+	func operação() -> void:
+		pass
+	
+	func retomar() -> void:
+		pass
+	
+	func alterar_estagio(novo_estagio: Estagio) -> void:
+		Simulador.estagio_atual = novo_estagio
+	
+class Busca extends Estagio:
+	func inicialização() -> void:
+		Simulador.mudanca_de_ciclo.emit(Ciclo.BUSCA)
+		Simulador.preparar_proxima_instrucao()
+	
+	func operação() -> void:
+		return self.alterar_estagio(Decodificacao.new())
 
-func pausar_estagio() -> void:
-	self.estagio_anterior = self.estagio_atual
-	self.alterar_estagio_para(Estagio.PAUSA)
+class Decodificacao extends Estagio:
+	func inicialização():
+		Simulador.mudanca_de_ciclo.emit(Ciclo.DECODIFICACAO)
+		Simulador.preparar_decodificacao()
+	
+	func operação() -> void:
+		Simulador.decodificar()
+		self.alterar_estagio(Enderecamento.new())
+
+class Enderecamento extends Estagio:
+	func inicialização() -> void:
+		Simulador.mudanca_de_ciclo.emit(Ciclo.EXECUCAO)
+		Simulador.preparar_enderecamento()
+	
+	func operação() -> void:
+		# Se a instrução atual for CAL EXIT, finalizar a execução
+		if CPU.instrucao_atual_finalizacao():
+			Simulador.finalizar_execucao(true)
+			self.alterar_estagio(Suspencao.new(Busca.new()))
+		else:
+			self.alterar_estagio(Execucao.new())
+
+class Execucao extends Estagio:
+	func inicialização() -> void:
+		Simulador.preparar_execucao()
+	
+	func operação() -> void:
+		Simulador.finalizar_execucao(true)
+		self.alterar_estagio(Busca.new())
+
+class Suspencao extends Estagio:
+	var _estagio_anterior: Estagio
+
+	func atualizar() -> void:
+		pass
+
+	func _init(estagio_anterior: Estagio) -> void:
+		self._estagio_anterior = estagio_anterior
+	
+	func retomar() -> void:
+		self.alterar_estagio(self._estagio_anterior)
