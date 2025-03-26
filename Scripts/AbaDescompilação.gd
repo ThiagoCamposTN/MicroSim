@@ -1,6 +1,5 @@
 extends TabBar
 
-
 @onready var painel_instrucoes: Tree = %PainelInstrucoes
 var painel_root: TreeItem
 
@@ -13,6 +12,8 @@ func _ready():
 	painel_instrucoes.set_column_title(1, "Bytes")
 	painel_instrucoes.set_column_title(2, "Instrução")
 	self.limpar_arvore()
+
+	Memoria.grupo_da_memoria_foi_atualizado.connect(func(_endereco, _valor): limpar_arvore())
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -59,5 +60,6 @@ func adicionar_instrucao(posicao: String, bytes: String, instrucao: String):
 	tree_item.set_text(2, instrucao)
 
 func limpar_arvore():
+	iniciar_descompilação = false
 	painel_instrucoes.clear()
 	painel_root = painel_instrucoes.create_item()
