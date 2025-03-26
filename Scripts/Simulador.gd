@@ -104,18 +104,18 @@ func preparar_busca_de_instrucao():
 	self.adicionar_a_fila("transferir_mar_ao_endereco_de_memoria")
 	
 	# O valor no Endereço de Memória é transferido ao MBR via o BUS de Dados
-	self.adicionar_a_fila_de_microoperacoes("transferir_valor_da_memoria_ao_mbr")
+	self.adicionar_a_fila("transferir_valor_da_memoria_ao_mbr")
 
 	# O PC é incrementado em 1;
-	self.adicionar_a_fila_de_microoperacoes("transferir_pc_para_alu_a")
-	self.adicionar_a_fila_de_microoperacoes("incrementar_um_na_alu_a_16_bits")
-	self.adicionar_a_fila_de_microoperacoes("transferir_alu_saida_para_pc")
+	self.adicionar_a_fila("transferir_pc_para_alu_a")
+	self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
+	self.adicionar_a_fila("transferir_alu_saida_para_pc")
 
 func preparar_decodificacao():
 	# O valor de MBR (Registrador de Buffer de Memória) é 
 	# transferido ao IR (Registrador de Instrução) via o BUS de Dados;
-	self.adicionar_a_fila_de_microoperacoes("transferir_mbr_para_ir")
-	self.adicionar_a_fila_de_microoperacoes("decodificar")
+	self.adicionar_a_fila("transferir_mbr_para_ir")
+	self.adicionar_a_fila("decodificar")
 
 func preparar_enderecamento():
 	# Estágio de pesquisa e endereço do operando
@@ -375,7 +375,7 @@ func preparar_execucao():
 	for microoperacao in microoperacoes:
 		# Chama a função declarada em CPU que tem nome equivalente ao especificado no microcodigo do operador
 		# Nota: `CPU.call("transferir_a_para_mbr")` é equivalente a `CPU.transferir_a_para_mbr()`
-		self.adicionar_a_fila_de_microoperacoes(microoperacao)
+		self.adicionar_a_fila(microoperacao)
 
 func finalizar_execucao(sucesso: bool=true):
 	self.limpar_fila_de_microoperacoes() # todo: verificar se a lista não esvaziar sozinha é bug ou não
@@ -424,7 +424,7 @@ class Fase:
 			self._operação()
 	
 	func _operação() -> void:
-		if Simulador.fila_de_microoperacoes_esta_vazia():
+		if Simulador.fila_esta_vazia():
 			self.operação()
 		else:
 			Simulador.executar_proxima_microoperacao_da_fila()
@@ -447,7 +447,7 @@ class Fase:
 class Busca extends Fase:
 	func inicialização() -> void:
 		Simulador.mudanca_de_ciclo.emit(Ciclo.BUSCA)
-		Simulador.preparar_proxima_instrucao()
+		Simulador.preparar_busca_de_instrucao()
 	
 	func operação() -> void:
 		self.alterar_estagio(Decodificacao.new())
