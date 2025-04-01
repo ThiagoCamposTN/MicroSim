@@ -97,6 +97,9 @@ func preparar_busca_de_instrucao():
 	# Coloca todos os microcódigos necessários para a execução de uma operacao em fila
 	# Inicia-se a fase de acesso à instrução;
 
+	# Início da instrução
+	self.adicionar_a_fila("---")
+
 	# Transferência do PC (Contador de Programa) para o MAR (Registrador de Endereço de Memória);
 	self.adicionar_a_fila("transferir_pc_para_mar")
 	
