@@ -13,11 +13,9 @@ func _ready():
 	
 	Programa.programa_carregado.connect(atualizar_codigo)
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-
 
 func _on_button_pressed():
 	var numero_endereco: Valor = $HBoxContainer/LineEdit2.obter_endereco()
