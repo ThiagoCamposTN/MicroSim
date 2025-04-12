@@ -1,17 +1,35 @@
 extends Node
 
 
-func incrementar_um_na_alu_a_8_bits() -> void:
-	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 1, 1, false)
+func incrementar_registrador_pc() -> void:
+	var resultado = Valor.novo_de_valor(CPU.registrador_pc)
+	resultado.somar_int(1)
+	CPU.atualizar_registrador_pc(resultado)
 
-func incrementar_um_na_alu_a_16_bits() -> void:
-	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 2, 1, false)
+func incrementar_registrador_mar() -> void:
+	var resultado = Valor.novo_de_valor(CPU.registrador_mar)
+	resultado.somar_int(1)
+	CPU.atualizar_registrador_mar(resultado)
 
-func decrementar_um_na_alu_a_8_bits() -> void:
-	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 2, -1, false)
+func incrementar_registrador_pp() -> void:
+	var resultado = Valor.novo_de_valor(CPU.registrador_pp)
+	resultado.somar_int(1)
+	CPU.atualizar_registrador_pp(resultado)
 
-func decrementar_um_na_alu_a_16_bits() -> void:
-	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 2, -1, false)
+func decrementar_registrador_pp() -> void:
+	var resultado = Valor.novo_de_valor(CPU.registrador_pp)
+	resultado.somar_int(-1)
+	CPU.atualizar_registrador_pp(resultado)
+
+func decrementar_registrador_ix() -> void:
+	var resultado = Valor.novo_de_valor(CPU.registrador_ix)
+	resultado.somar_int(-1)
+	CPU.atualizar_registrador_ix(resultado)
+
+func decrementar_registrador_a() -> void:
+	var resultado = Valor.novo_de_valor(CPU.registrador_a)
+	resultado.somar_int(-1)
+	CPU.atualizar_registrador_a(resultado)
 
 func transferir_pc_para_mar() -> void:
 	CPU.atualizar_registrador_mar(CPU.registrador_pc)

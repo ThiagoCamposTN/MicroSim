@@ -250,6 +250,7 @@ texture = ExtResource("18_uu7v4")
 texture_mode = 1
 
 [node name="ADD" type="TextureRect" parent="VBoxContainer/TabContainer/Execução Visual/Container/Fundo"]
+layout_mode = 0
 offset_left = 425.0
 offset_top = 382.0
 offset_right = 519.0
