@@ -94,6 +94,17 @@ a instrução de carregamento para passar pela ULA, a qual é responsável por m
 Atualmente, foi decidido por remover as atualizações de flags após carregamento. Uma das razões é que ainda não foi determinado se isso sempre é verdade, pois na instrução `XAB` não há atualização das flags; então teria que ser explorado se isso só ocorre especificamente durante o carregamento vindo da memória ou algo assim.
 Outra razão da remoção foi por conta da decisão que apenas a `ULA` pode provocar a verificação das flags. Mas se for desejável manter o mesmo comportamento (após entendê-lo melhor), então seria possível usar a mesma abordagem do trabalho mencionado: adicionar microoperações nas intruções que provoque uma soma com zero na `ULA`, causando atualização nas flags que não cause nenhuma perturbação na execução.
 
+### Descontinuidade (o)
+
+A flag de descontinuidade aponta quando, após uma operação na `ULA`, um valor muda de sinal de forma inesperada. Isso ocorre, por exemplo, quando o bit que está sendo usado como sinal de um byte é alterado por conta de uma operação aritmética de forma não desejada. Um exemplo é quando somamos um ao valor positivo `0x7F` (`0b01111111`). O resultado será o valor negativo `0x80` (`0b10000000`). Como não é esperado que uma soma cause a troca do sinal desse valor, então a flag de descontinuidade se torna 1.
+
+### Vai um (c)
+
+A flag de vai um ocorre quando uma operação feita na `ULA` irá "emprestar" um bit para uma casa e ele não será utilizado ou quando ele vai precisar "pegar emprestado" um bit inicial que ele não possui.
+Um exemplo é quando é incrementado um para o valor de um byte `0xFF`. O resultado seria `0x100` (`0b100000000`). Como esse valor é maior do que um byte consegue guardar, então esse bit a mais vai ser descartado (foi emprestado mas sobrou).
+O mesmo acontece quando temos `0x00` e vamos substrair um. Ele vai precisar de um bit emprestado, já que ele não possui nenhum em si. Logo, a flag é ativada.
+
+
 ## Notas
 
 * No MICRO3, apesar da execução da instrução `CAL` produzir o resultado correto, a seção de que realiza a demonstração da simulação da execução da instrução não está correta. A implementação dos passos da simulação não levou ao mesmo resultado da execução. Logo, foi necessário o desenvolvimento do zero dos microcódigos referentes à essa instrução em particular.

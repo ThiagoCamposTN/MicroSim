@@ -27,9 +27,8 @@ func decrementar_registrador_ix() -> void:
 	CPU.atualizar_registrador_ix(resultado)
 
 func decrementar_registrador_a() -> void:
-	var resultado = Valor.novo_de_valor(CPU.registrador_a)
-	resultado.somar_int(-1)
-	CPU.atualizar_registrador_a(resultado)
+	var valor: Valor = self._decrementar_e_filtrar_valor(CPU.registrador_a, 1)
+	CPU.atualizar_registrador_a(valor)
 
 func transferir_pc_para_mar() -> void:
 	CPU.atualizar_registrador_mar(CPU.registrador_pc)
@@ -210,13 +209,14 @@ func dividir_alu_saida_e_transferir_para_mbr_e_aux() -> void:
 	CPU.atualizar_registrador_mbr(Valor.new(registrador[0]))
 	CPU.atualizar_registrador_aux(Valor.new(registrador[1]))
 
-func realizar_complemento_a_dois_na_alu_8_bits() -> void:
-	var resultado = Valor.new(~CPU.alu_entrada_a.como_int())
-	self._operacao_de_soma_na_alu(resultado, 1, 1)
+func operação_de_complemento_a_dois_na_alu_8_bits() -> void:
+	var resultado = self._realizar_complemento_a_dois(CPU.alu_entrada_a)
+	var valor: Valor = CPU.verificar_flags_z_n(resultado, 1)
+	CPU.atualizar_alu_saida(valor)
 
-func realizar_complemento_a_um_na_alu_a_8_bits() -> void:
-	var resultado = Valor.new(~CPU.alu_entrada_a.como_int())
-	var valor: Valor = CPU.filtrar_resultado_e_verificar_flags(resultado, 1)
+func operação_de_complemento_a_um_na_alu_8_bits() -> void:
+	var resultado = self._realizar_complemento_a_um(CPU.alu_entrada_a)
+	var valor: Valor = CPU.verificar_flags_z_n(resultado, 1)
 	CPU.atualizar_alu_saida(valor)
 
 func realizar_e_logico_alu_a_alu_b():
@@ -239,7 +239,7 @@ func realizar_divisao_na_alu():
 	var resultado: PackedByteArray = quociente.como_byte_array(2)
 	var valor: Valor = Valor.novo_de_byte_array([resultado[0], resto])
 
-	valor = CPU.filtrar_resultado_e_verificar_flags(valor, 2)
+	valor = CPU.verificar_flags_z_n(valor, 2)
 
 	CPU.atualizar_alu_saida(valor)
 
@@ -247,13 +247,12 @@ func realizar_multiplicacao_na_alu_16_bits():
 	var fator_um	: int = CPU.alu_entrada_a.como_int()
 	var fator_dois	: int = CPU.alu_entrada_b.como_int()
 	var produto		: Valor = Valor.new(fator_um * fator_dois)
+	var resultado	: Valor
 
-	var _flag_o: Valor = Valor.new(produto.como_int() > 0xFFFF)
-	CPU.atualizar_flag_o(_flag_o)
+	resultado = CPU._filtrar_valor(produto, 2)
+	resultado = CPU.verificar_flags_z_n(resultado, 2)
 
-	var valor: Valor = CPU.filtrar_resultado_e_verificar_flags(produto, 2)
-
-	CPU.atualizar_alu_saida(valor)
+	CPU.atualizar_alu_saida(resultado)
 
 func se_ix_diferente_de_zero():
 	return not CPU.registrador_ix.igual(Valor.new(0))
@@ -267,10 +266,10 @@ func atribuir_um_a_flag_o():
 func _operacao_de_soma_na_alu(entrada: Valor, bytes: int, quantia: int, atualizar_flags:bool=true) -> void:
 	var resultado = Valor.novo_de_valor(entrada)
 	resultado.somar_int(quantia)
-	var _flag_o: Valor = Valor.new(resultado.como_int() > 0xFFFF)
-	if atualizar_flags:
-		CPU.atualizar_flag_o(_flag_o)
-	var valor: Valor = CPU.filtrar_resultado_e_verificar_flags(resultado, bytes, atualizar_flags)
+
+	CPU._filtrar_valor(resultado, bytes)
+	
+	var valor: Valor = CPU.verificar_flags_z_n(resultado, bytes, atualizar_flags)
 	CPU.atualizar_alu_saida(valor)
 
 func _operacao_de_uniao_mbr_ao_aux() -> Valor:
@@ -288,3 +287,27 @@ func decodificar() -> void:
 	if not Simulador.instrucao_atual:
 		print("Instrução inválida. Encerrando execução.")
 		Simulador.finalizar_execucao()
+
+func _realizar_complemento_a_um(valor: Valor) -> Valor:
+	var resultado: int = ~valor.como_int()
+	return Valor.new(resultado)
+
+func _realizar_complemento_a_dois(valor: Valor) -> Valor:
+	var resultado: int = self._realizar_complemento_a_um(valor).como_int()
+	return Valor.new(resultado + 1)
+
+func _decrementar_e_filtrar_valor(valor : Valor, bytes: int) -> Valor:
+	var resultado: Valor = self._realizar_complemento_a_dois(valor)
+	var valor_inicial: int = resultado.como_int()
+	resultado.somar_int(-1)
+	var valor_final: int = resultado.como_int()
+	CPU.verificar_flag_z(resultado)
+	CPU.verificar_flag_n(resultado, bytes)
+	CPU.verificar_flag_c(resultado, bytes)
+	CPU.verificar_flag_o(valor_inicial, valor_final, bytes)
+	return self._filtrar_valor(resultado, bytes)
+
+func _filtrar_valor(valor : Valor, bytes: int) -> Valor:
+	var filtro 		: int = 0xFFFF if (bytes == 2) else 0xFF
+	var resultado 	: int = valor.como_int() & filtro
+	return Valor.new(resultado)

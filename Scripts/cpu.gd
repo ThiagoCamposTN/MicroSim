@@ -114,7 +114,7 @@ func atualizar_flag_o(novo_valor: Valor):
 	self.flag_o = novo_valor
 	self.flag_o_foi_atualizada.emit()
 
-func filtrar_resultado_e_verificar_flags(valor: Valor, bytes: int, atualizar_flags: bool=true) -> Valor:
+func verificar_flags_z_n(valor: Valor, bytes: int, atualizar_flags: bool=true) -> Valor:
 	var resultado: int = valor.como_int()
 	
 	var _flag_z: Valor = Valor.new(resultado == 0)
@@ -138,3 +138,28 @@ func filtrar_resultado_e_verificar_flags(valor: Valor, bytes: int, atualizar_fla
 
 func instrucao_atual_finalizacao() -> bool:
 	return (CPU.registrador_ir.como_int() == 0x58) and (CPU.registrador_mar.como_int() == 0x1200)
+
+func verificar_flag_z(valor: Valor) -> void:
+	# verificar se o valor é zero
+	var _flag_z : Valor = Valor.new(valor.como_int() == 0)
+	self.atualizar_flag_z(_flag_z)
+
+func verificar_flag_n(valor: Valor, bytes: int) -> void:
+	# verificar se o valor é negativo (maior ou igual a metade do tamanho do byte)
+	var filtro 	: int 	= 0x7FFF if (bytes == 2) else 0x7F
+	var _flag_n : Valor = Valor.new(valor.como_int() > filtro)
+	self.atualizar_flag_n(_flag_n)
+
+func verificar_flag_c(valor: Valor, bytes: int) -> void:
+	# verificar se existe um bit extra, passando do limite do byte
+	var filtro 	: int 	= 0xFFFF if (bytes == 2) else 0xFF
+	var _flag_c : Valor = Valor.new(valor.como_int() > filtro)
+	self.atualizar_flag_c(_flag_c)
+
+func verificar_flag_o(valor_inicial: int, valor_final: int, bytes: int) -> void:
+	# verificar se o sinal do valor inicial e final são iguais
+	var filtro 			: int 	= 0x7FFF if (bytes == 2) else 0x7F
+	var sinais_positivos: int 	= (valor_inicial > filtro) and (valor_final > filtro)
+	var sinais_negativos: int 	= (valor_inicial <= filtro) and (valor_final <= filtro)
+	var _flag_o 		: Valor = Valor.new(sinais_positivos or sinais_negativos)
+	self.atualizar_flag_o(_flag_o)
