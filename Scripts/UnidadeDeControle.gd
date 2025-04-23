@@ -2,29 +2,24 @@ extends Node
 
 
 func incrementar_registrador_pc() -> void:
-	var resultado = Valor.novo_de_valor(CPU.registrador_pc)
-	resultado.somar_int(1)
-	CPU.atualizar_registrador_pc(resultado)
+	var valor: Valor = self._incrementar_e_filtrar_valor(CPU.registrador_pc, 2)
+	CPU.atualizar_registrador_pc(valor)
 
 func incrementar_registrador_mar() -> void:
-	var resultado = Valor.novo_de_valor(CPU.registrador_mar)
-	resultado.somar_int(1)
-	CPU.atualizar_registrador_mar(resultado)
+	var valor: Valor = self._incrementar_e_filtrar_valor(CPU.registrador_mar, 2)
+	CPU.atualizar_registrador_mar(valor)
 
 func incrementar_registrador_pp() -> void:
-	var resultado = Valor.novo_de_valor(CPU.registrador_pp)
-	resultado.somar_int(1)
-	CPU.atualizar_registrador_pp(resultado)
+	var valor: Valor = self._incrementar_e_filtrar_valor(CPU.registrador_pp, 2)
+	CPU.atualizar_registrador_pp(valor)
 
 func decrementar_registrador_pp() -> void:
-	var resultado = Valor.novo_de_valor(CPU.registrador_pp)
-	resultado.somar_int(-1)
-	CPU.atualizar_registrador_pp(resultado)
+	var valor: Valor = self._decrementar_e_filtrar_valor(CPU.registrador_pp, 2)
+	CPU.atualizar_registrador_pp(valor)
 
 func decrementar_registrador_ix() -> void:
-	var resultado = Valor.novo_de_valor(CPU.registrador_ix)
-	resultado.somar_int(-1)
-	CPU.atualizar_registrador_ix(resultado)
+	var valor: Valor = self._decrementar_e_filtrar_valor(CPU.registrador_ix, 2)
+	CPU.atualizar_registrador_ix(valor)
 
 func decrementar_registrador_a() -> void:
 	var valor: Valor = self._decrementar_e_filtrar_valor(CPU.registrador_a, 1)
@@ -310,3 +305,14 @@ func _filtrar_valor(valor : Valor, bytes: int) -> Valor:
 	var filtro 		: int = 0xFFFF if (bytes == 2) else 0xFF
 	var resultado 	: int = valor.como_int() & filtro
 	return Valor.new(resultado)
+
+func _incrementar_e_filtrar_valor(valor : Valor, bytes: int) -> Valor:
+	var parcela_um		: int 	= valor.como_int()
+	var parcela_dois	: int 	= 1
+	var total			: Valor = Valor.new(parcela_um + parcela_dois)
+	CPU.verificar_flag_c(total, bytes)
+	var resultado		: Valor = self._filtrar_valor(total, bytes)
+	CPU.verificar_flag_z(resultado)
+	CPU.verificar_flag_n(resultado, bytes)
+	CPU.verificar_flag_o(parcela_um, parcela_dois, resultado.como_int(), bytes)
+	return resultado
