@@ -156,10 +156,11 @@ func verificar_flag_c(valor: Valor, bytes: int) -> void:
 	var _flag_c : Valor = Valor.new(valor.como_int() > filtro)
 	self.atualizar_flag_c(_flag_c)
 
-func verificar_flag_o(valor_inicial: int, valor_final: int, bytes: int) -> void:
+func verificar_flag_o(entrada_a: int, entrada_b: int, resultado: int, bytes: int) -> void:
 	# verificar se o sinal do valor inicial e final são iguais
-	var filtro 			: int 	= 0x7FFF if (bytes == 2) else 0x7F
-	var sinais_positivos: int 	= (valor_inicial > filtro) and (valor_final > filtro)
-	var sinais_negativos: int 	= (valor_inicial <= filtro) and (valor_final <= filtro)
-	var _flag_o 		: Valor = Valor.new(sinais_positivos or sinais_negativos)
+	var filtro 				: int 	= 0x7FFF if (bytes == 2) else 0x7F
+	var entrada_a_positiva	: bool 	= entrada_a <= filtro
+	var entrada_b_positiva	: bool 	= entrada_b <= filtro
+	var resultado_positivo	: bool 	= resultado <= filtro
+	var _flag_o 			: Valor = Valor.new((entrada_a_positiva == entrada_b_positiva) and (entrada_a_positiva != resultado_positivo))
 	self.atualizar_flag_o(_flag_o)

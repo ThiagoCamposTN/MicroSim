@@ -247,11 +247,10 @@ func realizar_multiplicacao_na_alu_16_bits():
 	var fator_um	: int = CPU.alu_entrada_a.como_int()
 	var fator_dois	: int = CPU.alu_entrada_b.como_int()
 	var produto		: Valor = Valor.new(fator_um * fator_dois)
-	var resultado	: Valor
-
-	resultado = CPU._filtrar_valor(produto, 2)
-	resultado = CPU.verificar_flags_z_n(resultado, 2)
-
+	CPU.verificar_flag_c(produto, 2)
+	var resultado: Valor = self._filtrar_valor(produto, 2)
+	CPU.verificar_flag_z(resultado)
+	CPU.verificar_flag_n(resultado, 2)
 	CPU.atualizar_alu_saida(resultado)
 
 func se_ix_diferente_de_zero():
@@ -297,15 +296,15 @@ func _realizar_complemento_a_dois(valor: Valor) -> Valor:
 	return Valor.new(resultado + 1)
 
 func _decrementar_e_filtrar_valor(valor : Valor, bytes: int) -> Valor:
-	var resultado: Valor = self._realizar_complemento_a_dois(valor)
-	var valor_inicial: int = resultado.como_int()
-	resultado.somar_int(-1)
-	var valor_final: int = resultado.como_int()
+	var minuendo	: int 	= valor.como_int()
+	var subtraendo	: int 	= self._realizar_complemento_a_dois(Valor.new(1)).como_int()
+	var diferença	: Valor = Valor.new(minuendo + subtraendo)
+	CPU.verificar_flag_c(diferença, bytes)
+	var resultado	: Valor = self._filtrar_valor(diferença, bytes)
 	CPU.verificar_flag_z(resultado)
 	CPU.verificar_flag_n(resultado, bytes)
-	CPU.verificar_flag_c(resultado, bytes)
-	CPU.verificar_flag_o(valor_inicial, valor_final, bytes)
-	return self._filtrar_valor(resultado, bytes)
+	CPU.verificar_flag_o(minuendo, subtraendo, resultado.como_int(), bytes)
+	return resultado
 
 func _filtrar_valor(valor : Valor, bytes: int) -> Valor:
 	var filtro 		: int = 0xFFFF if (bytes == 2) else 0xFF
