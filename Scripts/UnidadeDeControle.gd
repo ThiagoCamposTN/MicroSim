@@ -4,37 +4,37 @@ extends Node
 func incrementar_registrador_pc() -> void:
 	var parcela_um	: int = CPU.registrador_pc.como_int()
 	var parcela_dois: int = 1
-	var valor: Valor = self._realizar_adicao(parcela_um, parcela_dois, 2)
+	var valor: Valor = self._realizar_adicao(parcela_um, parcela_dois, 2, false)
 	CPU.atualizar_registrador_pc(valor)
 
 func incrementar_registrador_mar() -> void:
 	var parcela_um	: int = CPU.registrador_mar.como_int()
 	var parcela_dois: int = 1
-	var valor: Valor = self._realizar_adicao(parcela_um, parcela_dois, 2)
+	var valor: Valor = self._realizar_adicao(parcela_um, parcela_dois, 2, false)
 	CPU.atualizar_registrador_mar(valor)
 
 func incrementar_registrador_pp() -> void:
 	var parcela_um	: int = CPU.registrador_pp.como_int()
 	var parcela_dois: int = 1
-	var valor: Valor = self._realizar_adicao(parcela_um, parcela_dois, 2)
+	var valor: Valor = self._realizar_adicao(parcela_um, parcela_dois, 2, false)
 	CPU.atualizar_registrador_pp(valor)
 
 func decrementar_registrador_pp() -> void:
 	var minuendo	: int 	= CPU.registrador_pp.como_int()
 	var subtraendo	: int 	= self._realizar_complemento_a_dois(Valor.new(1)).como_int()
-	var valor		: Valor = self._realizar_adicao(minuendo, subtraendo, 2)
+	var valor		: Valor = self._realizar_adicao(minuendo, subtraendo, 2, false)
 	CPU.atualizar_registrador_pp(valor)
 
 func decrementar_registrador_ix() -> void:
 	var minuendo	: int 	= CPU.registrador_ix.como_int()
 	var subtraendo	: int 	= self._realizar_complemento_a_dois(Valor.new(1)).como_int()
-	var valor		: Valor = self._realizar_adicao(minuendo, subtraendo, 2)
+	var valor		: Valor = self._realizar_adicao(minuendo, subtraendo, 2, false)
 	CPU.atualizar_registrador_ix(valor)
 
 func decrementar_registrador_a() -> void:
 	var minuendo	: int 	= CPU.registrador_a.como_int()
 	var subtraendo	: int 	= self._realizar_complemento_a_dois(Valor.new(1)).como_int()
-	var valor		: Valor = self._realizar_adicao(minuendo, subtraendo, 1)
+	var valor		: Valor = self._realizar_adicao(minuendo, subtraendo, 1, false)
 	CPU.atualizar_registrador_a(valor)
 
 func transferir_pc_para_mar() -> void:
@@ -177,7 +177,7 @@ func transferir_aux_para_endereco_selecionado() -> void:
 func adicao_alu_a_alu_b() -> void:
 	var parcela_um	: int 	= CPU.alu_entrada_a.como_int()
 	var parcela_dois: int 	= CPU.alu_entrada_b.como_int()
-	var resultado	: Valor = self._realizar_adicao(parcela_um, parcela_dois, 2)
+	var resultado	: Valor = self._realizar_adicao(parcela_um, parcela_dois, 2, true)
 	CPU.atualizar_alu_saida(resultado)
 
 func unir_mbr_ao_aux_e_transferir_para_mar() -> void:
@@ -300,11 +300,17 @@ func _filtrar_valor(valor : Valor, bytes: int) -> Valor:
 	var resultado 	: int = valor.como_int() & filtro
 	return Valor.new(resultado)
 
-func _realizar_adicao(parcela_um: int, parcela_dois: int, bytes: int=1):
+func _realizar_adicao(parcela_um: int, parcela_dois: int, bytes: int=1, atualizar_flags: bool=true) -> Valor:
 	var total: Valor = Valor.new(parcela_um + parcela_dois)
-	CPU.verificar_flag_c(total, bytes)
+	if atualizar_flags:
+		CPU.verificar_flag_c(total, bytes)
 	var resultado: Valor = self._filtrar_valor(total, bytes)
-	CPU.verificar_flag_z(resultado)
-	CPU.verificar_flag_n(resultado, bytes)
-	CPU.verificar_flag_o(parcela_um, parcela_dois, resultado.como_int(), bytes)
+	if atualizar_flags:
+		CPU.verificar_flag_z(resultado)
+		CPU.verificar_flag_n(resultado, bytes)
+		CPU.verificar_flag_o(parcela_um, parcela_dois, resultado.como_int(), bytes)
 	return resultado
+
+func _incrementar_e_filtrar_valor(parcela_um: int, parcela_dois: int, bytes: int=1):
+	var total: Valor = Valor.new(parcela_um + parcela_dois)
+	return self._filtrar_valor(total, bytes)
