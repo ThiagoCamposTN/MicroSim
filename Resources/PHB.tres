@@ -8,8 +8,7 @@ nome = "Push B"
 "mnemônico" = "PHB"
 "descrição" = "Armazena o conteúdo do registrador B no endereço de pilha PP."
 tamanho_do_dado = 0
-microoperacoes = ["transferir_pp_para_mar", "transferir_mar_ao_endereco_de_memoria", "transferir_b_para_mbr", "transferir_mbr_para_endereco_selecionado", 
-"transferir_pp_para_alu_a", "decrementar_um_na_alu_a_16_bits", "transferir_alu_saida_para_pp"]
+microoperacoes = ["transferir_pp_para_mar", "transferir_mar_ao_endereco_de_memoria", "transferir_b_para_mbr", "transferir_mbr_para_endereco_selecionado", "decrementar_registrador_pp"]
 direto = ""
 imediato = ""
 indexado = ""

@@ -110,9 +110,7 @@ func preparar_busca_de_instrucao():
 	self.adicionar_a_fila("transferir_valor_da_memoria_ao_mbr")
 
 	# O PC é incrementado em 1;
-	self.adicionar_a_fila("transferir_pc_para_alu_a")
-	self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-	self.adicionar_a_fila("transferir_alu_saida_para_pc")
+	self.adicionar_a_fila("incrementar_registrador_pc")
 
 func preparar_decodificacao():
 	# O valor de MBR (Registrador de Buffer de Memória) é 
@@ -134,9 +132,7 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila("transferir_mar_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila("incrementar_registrador_mar")
 
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
@@ -155,9 +151,7 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila("transferir_mar_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila("incrementar_registrador_mar")
 
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila("transferir_mar_ao_endereco_de_memoria")
@@ -174,12 +168,8 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("transferir_alu_saida_para_mar")
 
 			# O PC é incrementado em 2
-			self.adicionar_a_fila("transferir_pc_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_pc")
-			self.adicionar_a_fila("transferir_pc_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila("incrementar_registrador_pc")
+			self.adicionar_a_fila("incrementar_registrador_pc")
 
 
 		Instrucao.Enderecamentos.PRE_INDEXADO:
@@ -193,9 +183,7 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila("transferir_mar_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila("incrementar_registrador_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila("transferir_mar_ao_endereco_de_memoria")
@@ -218,9 +206,7 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila("transferir_mar_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila("incrementar_registrador_mar")
 
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila("transferir_mar_ao_endereco_de_memoria")
@@ -232,12 +218,8 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("unir_mbr_ao_aux_e_transferir_para_mar")
 
 			# O PC é incrementado em 2
-			self.adicionar_a_fila("transferir_pc_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_pc")
-			self.adicionar_a_fila("transferir_pc_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila("incrementar_registrador_pc")
+			self.adicionar_a_fila("incrementar_registrador_pc")
 		Instrucao.Enderecamentos.INDIRETO:
 			# Transferência de PC para MAR
 			self.adicionar_a_fila("transferir_pc_para_mar")
@@ -249,9 +231,7 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila("transferir_mar_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila("incrementar_registrador_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila("transferir_mar_ao_endereco_de_memoria")
@@ -269,9 +249,7 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila("transferir_mar_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila("incrementar_registrador_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila("transferir_mar_ao_endereco_de_memoria")
@@ -283,20 +261,14 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("unir_mbr_ao_aux_e_transferir_para_mar")
 			
 			# O PC é incrementado em 2
-			self.adicionar_a_fila("transferir_pc_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_pc")
-			self.adicionar_a_fila("transferir_pc_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila("incrementar_registrador_pc")
+			self.adicionar_a_fila("incrementar_registrador_pc")
 		Instrucao.Enderecamentos.IMEDIATO:
 			# Transferência de PC para MAR
 			self.adicionar_a_fila("transferir_pc_para_mar")
 
 			# PC é incrementado em 1
-			self.adicionar_a_fila("transferir_pc_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila("incrementar_registrador_pc")
 		Instrucao.Enderecamentos.DIRETO:
 			# Transferência de PC para MAR
 			self.adicionar_a_fila("transferir_pc_para_mar")
@@ -308,9 +280,7 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila("transferir_mar_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila("incrementar_registrador_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila("transferir_mar_ao_endereco_de_memoria")
@@ -322,12 +292,8 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("unir_mbr_ao_aux_e_transferir_para_mar")
 			
 			# O PC é incrementado em 2
-			self.adicionar_a_fila("transferir_pc_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_pc")
-			self.adicionar_a_fila("transferir_pc_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila("incrementar_registrador_pc")
+			self.adicionar_a_fila("incrementar_registrador_pc")
 		Instrucao.Enderecamentos.IMPLICITO:
 			pass
 		Instrucao.Enderecamentos.INDEXADO:
@@ -341,9 +307,7 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("transferir_valor_da_memoria_ao_aux")
 			
 			# O MAR é incrementado em 1
-			self.adicionar_a_fila("transferir_mar_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_mar")
+			self.adicionar_a_fila("incrementar_registrador_mar")
 			
 			# Transferência do MAR para o Endereço de Memória via o BUS de Endereço
 			self.adicionar_a_fila("transferir_mar_ao_endereco_de_memoria")
@@ -361,12 +325,8 @@ func preparar_enderecamento():
 			self.adicionar_a_fila("transferir_alu_saida_para_mar")
 			
 			# O PC é incrementado em 2
-			self.adicionar_a_fila("transferir_pc_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_pc")
-			self.adicionar_a_fila("transferir_pc_para_alu_a")
-			self.adicionar_a_fila("incrementar_um_na_alu_a_16_bits")
-			self.adicionar_a_fila("transferir_alu_saida_para_pc")
+			self.adicionar_a_fila("incrementar_registrador_pc")
+			self.adicionar_a_fila("incrementar_registrador_pc")
 		_:
 			pass
 

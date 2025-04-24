@@ -1,17 +1,41 @@
 extends Node
 
 
-func incrementar_um_na_alu_a_8_bits() -> void:
-	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 1, 1, false)
+func incrementar_registrador_pc() -> void:
+	var parcela_um	: int = CPU.registrador_pc.como_int()
+	var parcela_dois: int = 1
+	var valor: Valor = self._realizar_adicao(parcela_um, parcela_dois, 2, false)
+	CPU.atualizar_registrador_pc(valor)
 
-func incrementar_um_na_alu_a_16_bits() -> void:
-	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 2, 1, false)
+func incrementar_registrador_mar() -> void:
+	var parcela_um	: int = CPU.registrador_mar.como_int()
+	var parcela_dois: int = 1
+	var valor: Valor = self._realizar_adicao(parcela_um, parcela_dois, 2, false)
+	CPU.atualizar_registrador_mar(valor)
 
-func decrementar_um_na_alu_a_8_bits() -> void:
-	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 2, -1, false)
+func incrementar_registrador_pp() -> void:
+	var parcela_um	: int = CPU.registrador_pp.como_int()
+	var parcela_dois: int = 1
+	var valor: Valor = self._realizar_adicao(parcela_um, parcela_dois, 2, false)
+	CPU.atualizar_registrador_pp(valor)
 
-func decrementar_um_na_alu_a_16_bits() -> void:
-	self._operacao_de_soma_na_alu(CPU.alu_entrada_a, 2, -1, false)
+func decrementar_registrador_pp() -> void:
+	var minuendo	: int 	= CPU.registrador_pp.como_int()
+	var subtraendo	: int 	= self._realizar_complemento_a_dois(Valor.new(1)).como_int()
+	var valor		: Valor = self._realizar_adicao(minuendo, subtraendo, 2, false)
+	CPU.atualizar_registrador_pp(valor)
+
+func decrementar_registrador_ix() -> void:
+	var minuendo	: int 	= CPU.registrador_ix.como_int()
+	var subtraendo	: int 	= self._realizar_complemento_a_dois(Valor.new(1)).como_int()
+	var valor		: Valor = self._realizar_adicao(minuendo, subtraendo, 2, false)
+	CPU.atualizar_registrador_ix(valor)
+
+func decrementar_registrador_a() -> void:
+	var minuendo	: int 	= CPU.registrador_a.como_int()
+	var subtraendo	: int 	= self._realizar_complemento_a_dois(Valor.new(1)).como_int()
+	var valor		: Valor = self._realizar_adicao(minuendo, subtraendo, 1, false)
+	CPU.atualizar_registrador_a(valor)
 
 func transferir_pc_para_mar() -> void:
 	CPU.atualizar_registrador_mar(CPU.registrador_pc)
@@ -81,36 +105,35 @@ func transferir_b_para_aux() -> void:
 	CPU.atualizar_registrador_aux(CPU.registrador_b)
 	
 func transferir_alu_saida_para_a() -> void:
-	# TODO: Garantir que a saída é 8 bits
-	var resultado: Valor = Valor.novo_de_valor(CPU.alu_saida)
-	resultado._valor = resultado._valor & 0xFF
+	var valor: Valor = Valor.novo_de_valor(CPU.alu_saida)
+	var resultado: Valor = self._filtrar_valor(valor, 1)
 	CPU.atualizar_registrador_a(resultado)
 
 func transferir_alu_saida_para_b() -> void:
-	# TODO: Garantir que a saída é 8 bits
-	var resultado: Valor = Valor.novo_de_valor(CPU.alu_saida)
-	resultado._valor = resultado._valor & 0xFF
+	var valor: Valor = Valor.novo_de_valor(CPU.alu_saida)
+	var resultado: Valor = self._filtrar_valor(valor, 1)
 	CPU.atualizar_registrador_b(resultado)
 
 func transferir_alu_saida_para_mar() -> void:
-	#TODO: analisar se precisa converter a saída de 2 bytes para 1
-	var resultado: int = CPU.alu_saida.como_int()
-	var valor: Valor = Valor.novo_de_int(resultado)
-	CPU.atualizar_registrador_mar(valor)
+	var valor: Valor = Valor.novo_de_valor(CPU.alu_saida)
+	var resultado: Valor = self._filtrar_valor(valor, 2)
+	CPU.atualizar_registrador_mar(resultado)
 
 func transferir_alu_saida_para_mbr() -> void:
-	#TODO: analisar se precisa converter a saída de 2 bytes para 1
 	var valor: Valor = Valor.novo_de_valor(CPU.alu_saida)
-	CPU.atualizar_registrador_mbr(valor)
+	var resultado: Valor = self._filtrar_valor(valor, 2)
+	CPU.atualizar_registrador_mbr(resultado)
 
 func transferir_pp_para_mar() -> void:
-	CPU.atualizar_registrador_mar(CPU.registrador_pp)
+	var valor: Valor = Valor.novo_de_valor(CPU.registrador_pp)
+	CPU.atualizar_registrador_mar(valor)
 
 func transferir_flags_para_mbr() -> void:
 	var registrador_flag: PackedStringArray = ['0', '0', CPU.flag_o.como_hex(1), 
 	CPU.flag_c.como_hex(1), CPU.flag_n.como_hex(1), CPU.flag_z.como_hex(1), '0', '0']
 	var flag_como_int: int = "".join(registrador_flag).bin_to_int()
-	CPU.atualizar_registrador_mbr(Valor.new(flag_como_int))
+	var resultado: Valor = Valor.new(flag_como_int)
+	CPU.atualizar_registrador_mbr(resultado)
 
 func transferir_pp_para_alu_a() -> void:
 	var resultado: Valor = Valor.novo_de_valor(CPU.registrador_pp)
@@ -152,10 +175,9 @@ func transferir_aux_para_endereco_selecionado() -> void:
 	Memoria.atualizar_valor_no_endereco_selecionado(CPU.registrador_aux)
 
 func adicao_alu_a_alu_b() -> void:
-	# TODO: Lidar com flags e overflow
-	var resultado: Valor = Valor.novo_de_valor(CPU.alu_entrada_a)
-	resultado.somar_valor(CPU.alu_entrada_b)
-	resultado._valor = resultado._valor & 0xFFFF
+	var parcela_um	: int 	= CPU.alu_entrada_a.como_int()
+	var parcela_dois: int 	= CPU.alu_entrada_b.como_int()
+	var resultado	: Valor = self._realizar_adicao(parcela_um, parcela_dois, 2, true)
 	CPU.atualizar_alu_saida(resultado)
 
 func unir_mbr_ao_aux_e_transferir_para_mar() -> void:
@@ -192,14 +214,19 @@ func dividir_alu_saida_e_transferir_para_mbr_e_aux() -> void:
 	CPU.atualizar_registrador_mbr(Valor.new(registrador[0]))
 	CPU.atualizar_registrador_aux(Valor.new(registrador[1]))
 
-func realizar_complemento_a_dois_na_alu_8_bits() -> void:
-	var resultado = Valor.new(~CPU.alu_entrada_a.como_int())
-	self._operacao_de_soma_na_alu(resultado, 1, 1)
+func operação_de_complemento_a_dois_na_alu_8_bits() -> void:
+	var valor		: Valor = self._realizar_complemento_a_dois(CPU.alu_entrada_a)
+	var resultado	: Valor = self._filtrar_valor(valor, 1)
+	CPU.verificar_flag_z(resultado)
+	CPU.verificar_flag_n(resultado, 1)
+	CPU.atualizar_alu_saida(resultado)
 
-func realizar_complemento_a_um_na_alu_a_8_bits() -> void:
-	var resultado = Valor.new(~CPU.alu_entrada_a.como_int())
-	var valor: Valor = CPU.filtrar_resultado_e_verificar_flags(resultado, 1)
-	CPU.atualizar_alu_saida(valor)
+func operação_de_complemento_a_um_na_alu_8_bits() -> void:
+	var valor		: Valor = self._realizar_complemento_a_um(CPU.alu_entrada_a)
+	var resultado	: Valor = self._filtrar_valor(valor, 1)
+	CPU.verificar_flag_z(resultado)
+	CPU.verificar_flag_n(resultado, 1)
+	CPU.atualizar_alu_saida(resultado)
 
 func realizar_e_logico_alu_a_alu_b():
 	var resultado: int = CPU.alu_entrada_a.como_int() & CPU.alu_entrada_b.como_int()
@@ -211,31 +238,29 @@ func realizar_divisao_na_alu():
 	var divisor		: int = CPU.alu_entrada_b.como_int()
 
 	if divisor == 0:
-		print("Errro de divisão por zero")
+		print("Erro de divisão por zero")
 		Simulador.finalizar_execucao(false)
 		return
 
-	var resto		: int = dividendo % divisor
-	var quociente	: Valor = Valor.new(floori(dividendo / float(divisor)))
-	
-	var resultado: PackedByteArray = quociente.como_byte_array(2)
-	var valor: Valor = Valor.novo_de_byte_array([resultado[0], resto])
+	var resto			: int 				= dividendo % divisor
+	var quociente		: Valor 			= Valor.new(floori(dividendo / float(divisor)))
+	var resultado_array	: PackedByteArray 	= quociente.como_byte_array(2)
+	var valor			: Valor 			= Valor.novo_de_byte_array([resultado_array[0], resto])
+	var resultado		: Valor 			= self._filtrar_valor(valor, 2)
 
-	valor = CPU.filtrar_resultado_e_verificar_flags(valor, 2)
-
-	CPU.atualizar_alu_saida(valor)
+	CPU.verificar_flag_z(resultado)
+	CPU.verificar_flag_n(resultado, 2)
+	CPU.atualizar_alu_saida(resultado)
 
 func realizar_multiplicacao_na_alu_16_bits():
 	var fator_um	: int = CPU.alu_entrada_a.como_int()
 	var fator_dois	: int = CPU.alu_entrada_b.como_int()
 	var produto		: Valor = Valor.new(fator_um * fator_dois)
-
-	var _flag_o: Valor = Valor.new(produto.como_int() > 0xFFFF)
-	CPU.atualizar_flag_o(_flag_o)
-
-	var valor: Valor = CPU.filtrar_resultado_e_verificar_flags(produto, 2)
-
-	CPU.atualizar_alu_saida(valor)
+	CPU.verificar_flag_c(produto, 2)
+	var resultado: Valor = self._filtrar_valor(produto, 2)
+	CPU.verificar_flag_z(resultado)
+	CPU.verificar_flag_n(resultado, 2)
+	CPU.atualizar_alu_saida(resultado)
 
 func se_ix_diferente_de_zero():
 	return not CPU.registrador_ix.igual(Valor.new(0))
@@ -245,15 +270,6 @@ func atribuir_um_a_flag_c():
 
 func atribuir_um_a_flag_o():
 	CPU.atualizar_flag_o(Valor.new(1))
-
-func _operacao_de_soma_na_alu(entrada: Valor, bytes: int, quantia: int, atualizar_flags:bool=true) -> void:
-	var resultado = Valor.novo_de_valor(entrada)
-	resultado.somar_int(quantia)
-	var _flag_o: Valor = Valor.new(resultado.como_int() > 0xFFFF)
-	if atualizar_flags:
-		CPU.atualizar_flag_o(_flag_o)
-	var valor: Valor = CPU.filtrar_resultado_e_verificar_flags(resultado, bytes, atualizar_flags)
-	CPU.atualizar_alu_saida(valor)
 
 func _operacao_de_uniao_mbr_ao_aux() -> Valor:
 	var byte_array: PackedByteArray = [
@@ -270,3 +286,31 @@ func decodificar() -> void:
 	if not Simulador.instrucao_atual:
 		print("Instrução inválida. Encerrando execução.")
 		Simulador.finalizar_execucao()
+
+func _realizar_complemento_a_um(valor: Valor) -> Valor:
+	var resultado: int = ~valor.como_int()
+	return Valor.new(resultado)
+
+func _realizar_complemento_a_dois(valor: Valor) -> Valor:
+	var resultado: int = self._realizar_complemento_a_um(valor).como_int()
+	return Valor.new(resultado + 1)
+
+func _filtrar_valor(valor : Valor, bytes: int) -> Valor:
+	var filtro 		: int = 0xFFFF if (bytes == 2) else 0xFF
+	var resultado 	: int = valor.como_int() & filtro
+	return Valor.new(resultado)
+
+func _realizar_adicao(parcela_um: int, parcela_dois: int, bytes: int=1, atualizar_flags: bool=true) -> Valor:
+	var total: Valor = Valor.new(parcela_um + parcela_dois)
+	if atualizar_flags:
+		CPU.verificar_flag_c(total, bytes)
+	var resultado: Valor = self._filtrar_valor(total, bytes)
+	if atualizar_flags:
+		CPU.verificar_flag_z(resultado)
+		CPU.verificar_flag_n(resultado, bytes)
+		CPU.verificar_flag_o(parcela_um, parcela_dois, resultado.como_int(), bytes)
+	return resultado
+
+func _incrementar_e_filtrar_valor(parcela_um: int, parcela_dois: int, bytes: int=1):
+	var total: Valor = Valor.new(parcela_um + parcela_dois)
+	return self._filtrar_valor(total, bytes)
