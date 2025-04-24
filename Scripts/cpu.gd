@@ -21,6 +21,7 @@ signal flag_n_foi_atualizada
 signal flag_c_foi_atualizada
 signal flag_o_foi_atualizada
 
+
 # registradores
 var registrador_a	: Valor = Valor.new(0x00) # Registrador de 8 bits
 var registrador_b	: Valor = Valor.new(0x08) # Registrador de 8 bits
@@ -135,5 +136,5 @@ func filtrar_resultado_e_verificar_flags(valor: Valor, bytes: int, atualizar_fla
 	else:
 		return Valor.new(resultado & 0xFF)
 
-func eh_fim_de_execucao() -> bool:
+func instrucao_atual_finalizacao() -> bool:
 	return (CPU.registrador_ir.como_int() == 0x58) and (CPU.registrador_mar.como_int() == 0x1200)

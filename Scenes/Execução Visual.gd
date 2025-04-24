@@ -62,7 +62,7 @@ func _ready():
 	CPU.alu_entrada_b_foi_atualizado.connect(atualizar_registrador.bind("ULAB"))
 	CPU.alu_saida_foi_atualizado.connect(atualizar_registrador.bind("ULASaida"))
 
-	Simulador.mudanca_de_fase.connect(fase_foi_alterada)
+	Simulador.mudanca_de_ciclo.connect(fase_foi_alterada)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -75,7 +75,7 @@ func atualizar_visualizacao():
 	if not Simulador.atualizacao_visual_ativa:
 		return
 	
-	if Simulador.fila_de_microoperacoes_esta_vazia():
+	if Simulador.fila_esta_vazia():
 		return
 	
 	var instrucao_atual = Simulador.consultar_microperacao_atual()
@@ -328,17 +328,11 @@ func obter_info_memorias():
 	
 	return [texto_antes, valor, texto_depois, texto_conteudo_antes, valor_conteudo, texto_conteudo_depois]
 
-func fase_foi_alterada(fase : Simulador.Fase):
+func fase_foi_alterada(fase: String):
 	if Teste.em_modo_multiplos_teste():
 		return
 	
-	match fase:
-		Simulador.Fase.BUSCA:
-			print("Fase atual: busca")
-		Simulador.Fase.DECODIFICACAO:
-			print("Fase atual: decodificacao")
-		Simulador.Fase.EXECUCAO:
-			print("Fase atual: execucao")
+	print("Fase atual:", fase)
 
 func adicionar_flags_interagindo(registrador: Button):
 	flags_atualizadas.append(registrador)
