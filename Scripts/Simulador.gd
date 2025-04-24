@@ -11,7 +11,7 @@ enum ModoExecucao 	{ UNICA_MICROOPERACAO, UNICA_INSTRUCAO, TUDO }
 
 @export var time_delay 		: float 		= 0.1
 var execucao_timer			: Timer
-var fase_atual 				: Fase 			= Suspencao.new(Busca.new())
+var fase_atual 				: Fase 			= Suspensao.new(Busca.new())
 var modo_atual 				: ModoExecucao	= ModoExecucao.TUDO
 var instrucao_atual			: Instrucao
 var atualizacao_visual_ativa: bool 			= true
@@ -393,7 +393,7 @@ class Fase:
 			Simulador.executar_proxima_microoperacao_da_fila()
 
 			if Simulador.modo_atual == ModoExecucao.UNICA_MICROOPERACAO:
-				self.alterar_estagio(Suspencao.new(self))
+				self.alterar_estagio(Suspensao.new(self))
 	
 	func entrada() -> void:
 		pass
@@ -432,7 +432,7 @@ class Enderecamento extends Fase:
 		# Se a instrução atual for CAL EXIT, finalizar a execução
 		if CPU.instrucao_atual_finalizacao():
 			Simulador.finalizar_execucao(true)
-			self.alterar_estagio(Suspencao.new(Busca.new()))
+			self.alterar_estagio(Suspensao.new(Busca.new()))
 		else:
 			self.alterar_estagio(Execucao.new())
 
@@ -442,11 +442,11 @@ class Execucao extends Fase:
 	
 	func saída() -> void:
 		if Simulador.modo_atual == ModoExecucao.UNICA_INSTRUCAO:
-			self.alterar_estagio(Suspencao.new(Busca.new()))
+			self.alterar_estagio(Suspensao.new(Busca.new()))
 		else:
 			self.alterar_estagio(Busca.new())
 
-class Suspencao extends Fase:
+class Suspensao extends Fase:
 	var _estagio_anterior: Fase
 
 	func atualizar() -> void:
