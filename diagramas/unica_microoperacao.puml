@@ -4,7 +4,8 @@ state "Próxima fase" as ProxFase
 
 [*] --> Fase
 
-Fase --> Suspensão   : [fila não vazia]
-Fase --> ProxFase    : [fila vazia]
+Fase --> Suspensão  : [unica microperação] / suspensão retornará para essa fase
+Fase --> ProxFase   : [fila vazia]
+Fase --> Fase       : [fila não vazia]
 
 @enduml

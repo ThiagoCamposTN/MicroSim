@@ -1,0 +1,10 @@
+@startuml FluxoSimples
+
+[*]             --> Suspensão
+Suspensão       --> Busca
+Busca           --> Decodificação
+Decodificação   --> Endereçamento
+Endereçamento   --> Execução
+Execução        --> Suspensão
+
+@enduml
