@@ -1,0 +1,21 @@
+@startuml Fase
+
+
+[*] --> Suspensão : fase anterior é Busca
+
+Suspensão --> Busca : [fase anterior é Busca]
+
+Busca                   : Prepara e executa as microoperações de busca
+Busca --> Decodificação : [fila vazia]
+
+Decodificação                   : Prepara e executa as microoperações de decodificação
+Decodificação --> Endereçamento : [fila vazia]
+
+Endereçamento               : Prepara e executa as microoperações de endereçamento
+Endereçamento --> Execução  : [instrução não é CAL EXIT]
+Endereçamento --> [*]       : [instrução é CAL EXIT]
+
+Execução                : Prepara e executa as microoperações de execução
+Execução --> [*]
+
+@enduml

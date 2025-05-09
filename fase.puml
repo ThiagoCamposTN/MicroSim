@@ -1,0 +1,20 @@
+@startuml Fase
+
+[*] --> Fase
+
+state Fase as "Fase atual" {
+    [*]     --> entrada : [em inicialização]
+    [*]     --> ação    : [não em inicialização]
+
+    entrada --> [*]
+    ação    --> [*]
+
+    entrada : preparar microoperações da fase
+    entrada : em inicialização é falso
+    ação    : executar uma microoperação da fila
+}
+
+Fase --> Fase   : [fila não vazia]
+Fase --> [*]    : [fila vazia]
+
+@enduml

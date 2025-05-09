@@ -1,0 +1,20 @@
+@startuml Fase
+state "Próxima fase" as ProxFase
+[*] --> Fase
+
+state Fase as "Fase atual" {
+    [*]     --> entrada : [em inicialização]
+    [*]     --> ação    : [não em inicialização]
+
+    entrada --> [*]
+    ação    --> [*]
+
+    entrada : preparar microoperações da fase
+    entrada : em inicialização é falso
+    ação    : executar uma microoperação da fila
+}
+
+Fase --> Suspensão   : [fila não vazia]
+Fase --> ProxFase    : [fila vazia]
+
+@enduml
