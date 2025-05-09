@@ -393,7 +393,7 @@ class Fase:
 			Simulador.executar_proxima_microoperacao_da_fila()
 
 			if Simulador.modo_atual == ModoExecucao.UNICA_MICROOPERACAO:
-				self.alterar_estagio(Suspensao.new(self))
+				self.alterar_fase(Suspensao.new(self))
 	
 	func entrada() -> void:
 		pass
@@ -404,8 +404,8 @@ class Fase:
 	func retomar() -> void:
 		pass
 	
-	func alterar_estagio(novo_estagio: Fase) -> void:
-		Simulador.fase_atual = novo_estagio
+	func alterar_fase(novo_fase: Fase) -> void:
+		Simulador.fase_atual = novo_fase
 	
 class Busca extends Fase:
 	func entrada() -> void:
@@ -413,7 +413,7 @@ class Busca extends Fase:
 		Simulador.preparar_busca_de_instrucao()
 	
 	func saída() -> void:
-		self.alterar_estagio(Decodificacao.new())
+		self.alterar_fase(Decodificacao.new())
 
 class Decodificacao extends Fase:
 	func entrada():
@@ -421,7 +421,7 @@ class Decodificacao extends Fase:
 		Simulador.preparar_decodificacao()
 	
 	func saída() -> void:
-		self.alterar_estagio(Enderecamento.new())
+		self.alterar_fase(Enderecamento.new())
 
 class Enderecamento extends Fase:
 	func entrada() -> void:
@@ -432,9 +432,9 @@ class Enderecamento extends Fase:
 		# Se a instrução atual for CAL EXIT, finalizar a execução
 		if CPU.instrucao_atual_finalizacao():
 			Simulador.finalizar_execucao(true)
-			self.alterar_estagio(Suspensao.new(Busca.new()))
+			self.alterar_fase(Suspensao.new(Busca.new()))
 		else:
-			self.alterar_estagio(Execucao.new())
+			self.alterar_fase(Execucao.new())
 
 class Execucao extends Fase:
 	func entrada() -> void:
@@ -442,18 +442,18 @@ class Execucao extends Fase:
 	
 	func saída() -> void:
 		if Simulador.modo_atual == ModoExecucao.UNICA_INSTRUCAO:
-			self.alterar_estagio(Suspensao.new(Busca.new()))
+			self.alterar_fase(Suspensao.new(Busca.new()))
 		else:
-			self.alterar_estagio(Busca.new())
+			self.alterar_fase(Busca.new())
 
 class Suspensao extends Fase:
-	var _estagio_anterior: Fase
+	var _fase_anterior: Fase
 
 	func atualizar() -> void:
 		pass
 
-	func _init(estagio_anterior: Fase) -> void:
-		self._estagio_anterior = estagio_anterior
+	func _init(fase_anterior: Fase) -> void:
+		self._fase_anterior = fase_anterior
 	
 	func retomar() -> void:
-		self.alterar_estagio(self._estagio_anterior)
+		self.alterar_fase(self._fase_anterior)
