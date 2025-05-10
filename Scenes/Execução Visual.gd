@@ -328,11 +328,16 @@ func obter_info_memorias():
 	
 	return [texto_antes, valor, texto_depois, texto_conteudo_antes, valor_conteudo, texto_conteudo_depois]
 
-func fase_foi_alterada(fase: String):
+func fase_foi_alterada(fase: Simulador.Ciclo):
 	if Teste.em_modo_multiplos_teste():
 		return
-	
-	print("Fase atual:", fase)
+
+	var fase_atual = "Fase atual: " 
+	match fase:
+		Simulador.Ciclo.BUSCA: fase_atual += "BUSCA"
+		Simulador.Ciclo.DECODIFICACAO: fase_atual += "DECODIFICAÇÃO"
+		Simulador.Ciclo.EXECUCAO: fase_atual += "EXECUÇÃO"
+	print(fase_atual)
 
 func adicionar_flags_interagindo(registrador: Button):
 	flags_atualizadas.append(registrador)
