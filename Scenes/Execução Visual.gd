@@ -109,12 +109,6 @@ func atualizar_visualizacao():
 			adicionar_fila_registrador_interagindo(["PC", "MBR", "AUX"])
 		"dividir_alu_saida_e_transferir_para_mbr_e_aux":
 			adicionar_fila_registrador_interagindo(["ULASaida", "MBR", "AUX"])
-		"transferir_pc_para_mar":
-			adicionar_fila_registrador_interagindo(["PC", "MAR"])
-		"transferir_mbr_para_ir":
-			adicionar_fila_registrador_interagindo(["MBR", "IR"])
-		"transferir_aux_para_b":
-			adicionar_fila_registrador_interagindo(["AUX", "B"])
 		"unir_mbr_ao_aux_e_transferir_para_mar":
 			adicionar_fila_registrador_interagindo(["MBR", "AUX", "MAR"])
 		"unir_mbr_ao_aux_e_transferir_para_pc":

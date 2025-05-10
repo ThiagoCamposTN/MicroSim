@@ -61,8 +61,8 @@ func executar_proxima_microoperacao_da_fila():
 			else:
 				Simulador.call(instrucao)
 
-			microoperacao_executada.emit()
 			execucao_timer.start(time_delay)
+		microoperacao_executada.emit()
 
 func executar_programa(endereco_inicial: Valor, modo: ModoExecucao = ModoExecucao.TUDO):
 	CPU.iniciar_registrador_pc(endereco_inicial)
@@ -115,11 +115,13 @@ func preparar_busca_de_instrucao():
 func preparar_decodificacao():
 	# O valor de MBR (Registrador de Buffer de Memória) é 
 	# transferido ao IR (Registrador de Instrução) via o BUS de Dados;
+	self.adicionar_a_fila("---")
 	self.adicionar_a_fila("transferir_mbr_para_ir")
 	self.adicionar_a_fila("decodificar")
 
 func preparar_enderecamento():
 	# Estágio de pesquisa e endereço do operando
+	self.adicionar_a_fila("---")
 	match self.instrucao_atual.enderecamento:
 		Instrucao.Enderecamentos.POS_INDEXADO:
 			# Transferência de PC para MAR
@@ -334,6 +336,7 @@ func preparar_execucao():
 	# Estágio de execução
 	# Busca a lista de microoperacoes enumeradas no recurso do Operador
 	var microoperacoes = Operacoes.obter_microoperacoes(self.instrucao_atual.mnemonico)
+	self.adicionar_a_fila("---")
 
 	for microoperacao in microoperacoes:
 		# Chama a função declarada em CPU que tem nome equivalente ao especificado no microcodigo do operador
