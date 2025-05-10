@@ -206,6 +206,8 @@ func atualizar_visualizacao():
 			for flag in flags_atualizadas:
 				registradores_interagindo.append(flag)
 			flags_atualizadas.clear()
+		"decodificar":
+			adicionar_fila_registrador_interagindo(["IR"])
 	
 	# Demonstração do fluxo
 	if typeof(instrucao_atual) == typeof(Simulador.consultar_microperacao_atual()) and \
