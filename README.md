@@ -16,15 +16,15 @@ Apesar de ser gerada por meio de um algoritmo aleatório, ela sempre utiliza o m
 
 ## Fluxo de execução de um programa
 
-Para executar um progama, primeiro é necessário digitar o código fonte dele na caixa de Programa. Em seguida, deve-se clicar no botão para salvar o código na memória, que irá compilar o código e convertê-lo em bytes que serão armazenados na memória a partir do endereço indicado. O processo de compilação será mais detalhado posteriormente.
+Para executar um progama, primeiro é necessário digitar o código fonte dele na caixa de Programa. Em seguida, deve-se clicar no botão para salvar o código na memória, que irá montar o código e convertê-lo em bytes que serão armazenados na memória a partir do endereço indicado. O processo de montagem será mais detalhado posteriormente.
 
 Com o código na memória, para iniciar a execução basta indicar o endereço inicial e utilizar os botões de execução no modo que for desejado: avançar apenas uma microoperação, avançar uma instrução ou executar todo o código de uma vez. Essas opções permitem execução na medida em que é desejável para a compreensão do programa pelo usuário.
 
-### Compilação
+### Montagem
 
-A rotina de compilação do código lê o código fonte linha a linha, transformando-as em bytes que serão salvos na memória.
+A rotina de montagem do código lê o código fonte linha a linha, transformando-as em bytes que serão salvos na memória.
 
-O processo de compilação ocorre da seguinte forma: cada linha é passada por um regex que irá extrair informações necessárias para gerar um objeto do tipo `Instrucao`.
+O processo de montagem ocorre da seguinte forma: cada linha é passada por um regex que irá extrair informações necessárias para gerar um objeto do tipo `Instrucao`.
 
 Usando de exemplo a linha `LDA#03`: os três primeiros caracteres são extraídos e considerados como a parte do mnemônico nesse comando. Nesse caso, é o mnemônico é `LDA`. O restante da linha, `#03`, é então enviado para uma função que detectará qual é o modo de endereçamento e qual é o parâmetro (se ele existir). Nesse exemplo, o modo de endereçamento será `imediato` por conta da `#` e o parâmetro será `03`. Então sabe-se as seguintes informações sobre a instrução atualmente:
 
@@ -38,7 +38,7 @@ Esses dados são usados para criar um objeto `Instrucao`. Se a instrução possu
 
 No modo `imediato`, é possível ter um ou dois bytes como parâmetro e isso é determinado por cada instrução em si. O modo de endereçamento apenas não é o bastante para obter essa informação. No exemplo atual, a instrução foi identificada como `LDA` no modo `imediato`, e nesse caso o parâmetro sempre será um dado de 1 byte pois essa instrução irá carregar um valor no registrador `A` que suporta apenas 1 byte. Já no caso da instrução `LDP` no modo `imediato`, o parâmetro sempre terá 2 bytes, pois essa instrução é realizada sobre o `registrador PP` que tem 2 bytes.
 
-Continuando o exemplo de compilação: durante a criação do objeto `Instrucao`, o mnemônico é utilizado para consultar todas as instruções existentes no processador a fim de determinar qual é opcode referente à instrução no modo de endereçamento detectado e qual é o tamanho do parâmetro no modo imediato. O objeto então possui as seguintes informações:
+Continuando o exemplo de montagem: durante a criação do objeto `Instrucao`, o mnemônico é utilizado para consultar todas as instruções existentes no processador a fim de determinar qual é opcode referente à instrução no modo de endereçamento detectado e qual é o tamanho do parâmetro no modo imediato. O objeto então possui as seguintes informações:
 
 |                   |           |
 |:-----------------:|:----------|
@@ -52,7 +52,7 @@ Munido dessas informações, agora é possível invocar uma rotina que retorna o
 
 No caso da instrução `LDP#78`, por exemplo, os bytes resultantes serão `2B 00 78`.
 
-### Descompilação
+### Desmontagem
 
 [WIP]
 

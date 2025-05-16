@@ -13,7 +13,7 @@ func _process(delta):
 func atualizar_tela(elemento: Button):
 	var opcode = "???"
 	var valor 		: Valor 	= Valor.novo_de_hex(elemento.text)
-	var instrucao 	: Instrucao = Compilador.descompilar(valor)
+	var instrucao 	: Instrucao = Montador.desmontar(valor)
 	var endereco 	: Valor 	= Valor.novo_de_hex(elemento.name)
 	
 	if instrucao:
