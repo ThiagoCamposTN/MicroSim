@@ -280,7 +280,7 @@ func _operacao_de_uniao_mbr_ao_aux() -> Valor:
 	return resultado
 
 func decodificar() -> void:
-	Simulador.instrucao_atual = Compilador.descompilar(CPU.registrador_ir)
+	Simulador.instrucao_atual = Montador.desmontar(CPU.registrador_ir)
 	
 	# se não a instrução não existe
 	if not Simulador.instrucao_atual:

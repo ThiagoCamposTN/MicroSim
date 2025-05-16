@@ -74,7 +74,7 @@ func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial
 	var parte_memoria: PackedByteArray
 
 	for linha in linhas_codigo:
-		var bytes: PackedByteArray = self.compilar_linha_em_bytes(linha)
+		var bytes: PackedByteArray = self.montar_linha_em_bytes(linha)
 		
 		# instrução inválida
 		if not bytes:
@@ -84,8 +84,8 @@ func salvar_codigo_em_memoria(linhas_codigo: PackedStringArray, endereco_inicial
 	
 	Memoria.sobrescrever_parte_da_memoria(parte_memoria, endereco_inicial)
 
-func compilar_linha_em_bytes(linha: String) -> PackedByteArray:
-	var instrucao: Instrucao = Compilador.compilar(linha)
+func montar_linha_em_bytes(linha: String) -> PackedByteArray:
+	var instrucao: Instrucao = Montador.montar(linha)
 		
 	# instrução inválida
 	if not instrucao:

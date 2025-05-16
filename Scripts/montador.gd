@@ -1,6 +1,6 @@
-class_name Compilador
+class_name Montador
 
-static func compilar(linha : String) -> Instrucao:
+static func montar(linha : String) -> Instrucao:
 	var mnemonico	: String = linha.substr(0, 3)
 	var restante	: String = linha.substr(3, -1)
 
@@ -77,7 +77,7 @@ static func extrair_parametro(parametro : RegExMatch) -> String:
 	var _parametro: String = resultados[-1].strip_edges()
 	return _parametro
 
-static func descompilar(opcode: Valor) -> Instrucao:
+static func desmontar(opcode: Valor) -> Instrucao:
 	return Operacoes.opcode_para_instrucao(opcode)
 
 static func buscar_parametro_na_memoria(endereco_inicial: Valor, tamanho: int) -> String:

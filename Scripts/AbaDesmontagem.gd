@@ -3,7 +3,7 @@ extends TabBar
 @onready var painel_instrucoes: Tree = %PainelInstrucoes
 var painel_root: TreeItem
 
-var iniciar_descompilação : bool = false
+var iniciar_desmontagem : bool = false
 @onready var endereço_inicial: Valor = Valor.new(0)
 
 # Called when the node enters the scene tree for the first time.
@@ -17,16 +17,16 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if iniciar_descompilação:
+	if iniciar_desmontagem:
 		if endereço_inicial.como_int() >= Memoria.celulas.size():
-			iniciar_descompilação = false
+			iniciar_desmontagem = false
 			return
 		
 		if Simulador.modo_atual == Simulador.ModoExecucao.UNICA_INSTRUCAO:
-			iniciar_descompilação = false
+			iniciar_desmontagem = false
 		
 		var valor 			: Valor		= Memoria.ler_conteudo_no_endereco(endereço_inicial)
-		var instrucao_atual : Instrucao = Compilador.descompilar(valor)
+		var instrucao_atual : Instrucao = Montador.desmontar(valor)
 		var valor_em_hex 	: String 	= valor.como_hex(2)
 		var endereco_em_hex	: String 	= endereço_inicial.como_hex(3)
 
@@ -38,7 +38,7 @@ func _process(_delta):
 			adicionar_instrucao(endereco_em_hex, valor_em_hex, "??")
 			return
 		
-		instrucao_atual.parametro 	= Compilador.buscar_parametro_na_memoria(endereço_inicial, instrucao_atual.tamanho_do_dado)
+		instrucao_atual.parametro 	= Montador.buscar_parametro_na_memoria(endereço_inicial, instrucao_atual.tamanho_do_dado)
 		instrucao_atual.opcode 		= valor_em_hex
 
 		adicionar_instrucao(endereco_em_hex, valor_em_hex, instrucao_atual.instrucao_em_string())
@@ -47,10 +47,10 @@ func _process(_delta):
 
 func execucao_iniciada(endereco: Valor):
 	self.limpar_arvore()
-	iniciar_descompilação = true
+	iniciar_desmontagem = true
 	endereço_inicial = Valor.novo_de_valor(endereco)
 
-func _on_descompilar_button_pressed():
+func _on_desmontar_button_pressed():
 	execucao_iniciada(CPU.registrador_pc)
 
 func adicionar_instrucao(posicao: String, bytes: String, instrucao: String):
@@ -60,6 +60,6 @@ func adicionar_instrucao(posicao: String, bytes: String, instrucao: String):
 	tree_item.set_text(2, instrucao)
 
 func limpar_arvore():
-	iniciar_descompilação = false
+	iniciar_desmontagem = false
 	painel_instrucoes.clear()
 	painel_root = painel_instrucoes.create_item()
