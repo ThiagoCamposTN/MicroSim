@@ -48,7 +48,7 @@ func executar_proxima_microoperacao_da_fila():
 			push_error("Operador de instrução inválido")
 	
 	if not Teste.em_modo_multiplos_teste():
-		print("Executando: ", instrucao)
+		print("O simulador vai executar: ", instrucao, " | ", self.fila_de_microoperacoes)
 
 	if CPU.has_method(instrucao):
 		CPU.call(instrucao)

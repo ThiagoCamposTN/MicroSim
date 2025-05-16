@@ -79,6 +79,7 @@ func atualizar_visualizacao():
 		return
 	
 	var instrucao_atual = Simulador.consultar_microperacao_atual()
+	print("A próxima instrução do visual será: ", instrucao_atual)
 	
 	if not instrucao_atual or typeof(instrucao_atual) != TYPE_STRING:
 		return
