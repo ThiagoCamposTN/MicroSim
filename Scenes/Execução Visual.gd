@@ -109,12 +109,6 @@ func atualizar_visualizacao():
 			adicionar_fila_registrador_interagindo(["PC", "MBR", "AUX"])
 		"dividir_alu_saida_e_transferir_para_mbr_e_aux":
 			adicionar_fila_registrador_interagindo(["ULASaida", "MBR", "AUX"])
-		"transferir_pc_para_mar":
-			adicionar_fila_registrador_interagindo(["PC", "MAR"])
-		"transferir_mbr_para_ir":
-			adicionar_fila_registrador_interagindo(["MBR", "IR"])
-		"transferir_aux_para_b":
-			adicionar_fila_registrador_interagindo(["AUX", "B"])
 		"unir_mbr_ao_aux_e_transferir_para_mar":
 			adicionar_fila_registrador_interagindo(["MBR", "AUX", "MAR"])
 		"unir_mbr_ao_aux_e_transferir_para_pc":
@@ -212,6 +206,8 @@ func atualizar_visualizacao():
 			for flag in flags_atualizadas:
 				registradores_interagindo.append(flag)
 			flags_atualizadas.clear()
+		"decodificar":
+			adicionar_fila_registrador_interagindo(["IR"])
 	
 	# Demonstração do fluxo
 	if typeof(instrucao_atual) == typeof(Simulador.consultar_microperacao_atual()) and \
@@ -328,11 +324,16 @@ func obter_info_memorias():
 	
 	return [texto_antes, valor, texto_depois, texto_conteudo_antes, valor_conteudo, texto_conteudo_depois]
 
-func fase_foi_alterada(fase: String):
+func fase_foi_alterada(fase: Simulador.Ciclo):
 	if Teste.em_modo_multiplos_teste():
 		return
-	
-	print("Fase atual:", fase)
+
+	var fase_atual = "Fase atual: " 
+	match fase:
+		Simulador.Ciclo.BUSCA: fase_atual += "BUSCA"
+		Simulador.Ciclo.DECODIFICACAO: fase_atual += "DECODIFICAÇÃO"
+		Simulador.Ciclo.EXECUCAO: fase_atual += "EXECUÇÃO"
+	print(fase_atual)
 
 func adicionar_flags_interagindo(registrador: Button):
 	flags_atualizadas.append(registrador)
