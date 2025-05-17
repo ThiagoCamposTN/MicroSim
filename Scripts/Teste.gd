@@ -22,6 +22,7 @@ func _physics_process(_delta):
 		Estagio.COMECO:
 			self._tempo_inicial = Time.get_unix_time_from_system()
 			self.operacao_atual = Estagio.EM_EXECUCAO
+			Programa.status_atualizado.emit("Teste em execução")
 		Estagio.EM_EXECUCAO:
 			var teste_atual = lista_de_testes.pop_front()
 			print("###### ", teste_atual, " ######")
@@ -33,6 +34,7 @@ func _physics_process(_delta):
 			var tempo_total = tempo_final - self._tempo_inicial
 			print("Tempo total: ", tempo_total, "ms")
 			self.operacao_atual = Estagio.PARADO
+			Programa.status_atualizado.emit("Teste finalizado")
 		Estagio.PARADO:
 			pass
 

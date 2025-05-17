@@ -1354,43 +1354,63 @@ metadata/_tab_index = 2
 [node name="Panel" parent="VBoxContainer/TabContainer/Tela" instance=ExtResource("17_8ruui")]
 layout_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="PCLabel" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="PCLabel" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "PC: "
 
-[node name="PCLineEdit" type="LineEdit" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="PCLineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0000"
 
-[node name="AvancarMicrooperacaoButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="AvancarMicrooperacaoButton" type="Button" parent="VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 tooltip_text = "Executa o próximo microcódigo localizado pelo Contador de Programa e interrompe a execução."
 text = "Avançar microoperação"
 
-[node name="AvancarInstrucaoButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="AvancarInstrucaoButton" type="Button" parent="VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 tooltip_text = "Executa a próxima instrução localizada pelo Contador de Programa e interrompe a execução."
 text = "Avançar instrução"
 
-[node name="ExecutarTudoButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="ExecutarTudoButton" type="Button" parent="VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 tooltip_text = "Executa todas as instruções em sequência a partir do endereço pelo Contador de Programa até o próximo comando de parada ou instrução inválida."
 text = "Executar tudo"
 
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="Status" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Status: "
+
+[node name="CampoStatus" type="Button" parent="VBoxContainer/HBoxContainer/MarginContainer2/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+button_mask = 0
+
 [connection signal="pressed" from="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Desmontagem/MarginContainer/HSplitContainer/VBoxContainer2/HBoxContainer/DesmontarButton" to="VBoxContainer/TabContainer/Principal/MarginContainer/HSplitContainer/TabContainer/Desmontagem" method="_on_desmontar_button_pressed"]
-[connection signal="focus_exited" from="VBoxContainer/MarginContainer/HBoxContainer/PCLineEdit" to="." method="_on_pc_line_edit_focus_exited"]
-[connection signal="text_changed" from="VBoxContainer/MarginContainer/HBoxContainer/PCLineEdit" to="." method="_on_pc_line_edit_text_changed"]
-[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/AvancarMicrooperacaoButton" to="." method="_on_avancar_microoperacao_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/AvancarInstrucaoButton" to="." method="_on_avancar_instrucao_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/ExecutarTudoButton" to="." method="_on_executar_tudo_button_pressed"]
+[connection signal="focus_exited" from="VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer/PCLineEdit" to="." method="_on_pc_line_edit_focus_exited"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer/PCLineEdit" to="." method="_on_pc_line_edit_text_changed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer/AvancarMicrooperacaoButton" to="." method="_on_avancar_microoperacao_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer/AvancarInstrucaoButton" to="." method="_on_avancar_instrucao_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer/ExecutarTudoButton" to="." method="_on_executar_tudo_button_pressed"]

@@ -1,6 +1,7 @@
 extends Node
 
 signal programa_carregado
+signal status_atualizado
 
 
 # Called when the node enters the scene tree for the first time.

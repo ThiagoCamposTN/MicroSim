@@ -1,11 +1,11 @@
 extends Control
 
-
 @onready var valor_PC: LineEdit = %PCLineEdit
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	CPU.registrador_pc_foi_atualizado.connect(atualizar_valor_PC)
+	Programa.status_atualizado.connect(atualizar_status)
 	# Simulador.recarregar_memoria()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -37,3 +37,6 @@ func _on_pc_line_edit_focus_exited():
 	var valor_atual_PC: Valor = Valor.novo_de_hex(valor_PC.text)
 	valor_atual_PC.limitar_entre(0, Memoria.TAMANHO_MEMORIA - 1)
 	CPU.iniciar_registrador_pc(valor_atual_PC)
+
+func atualizar_status(novo_texto : String):
+	%CampoStatus.text = novo_texto
