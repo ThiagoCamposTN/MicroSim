@@ -1,8 +1,9 @@
 extends Node
 
-var arquivo_de_teste : String
-var lista_de_testes: Array[String] = []
-var teste_sem_erros: bool = true
+var arquivo_de_teste 		: String
+var lista_de_testes			: Array[String] = []
+var teste_sem_erros			: bool = true
+var todos_testes_sem_erros	: bool = true
 
 var _tempo_inicial: float = 0
 
@@ -22,7 +23,12 @@ func _physics_process(_delta):
 		Estagio.COMECO:
 			self._tempo_inicial = Time.get_unix_time_from_system()
 			self.operacao_atual = Estagio.EM_EXECUCAO
-			Programa.status_atualizado.emit("Teste em execução")
+			self.todos_testes_sem_erros = true
+
+			if self.tipo_de_execucao == TipoExecucao.MULTIPLOS_TESTES:
+				Programa.status_atualizado.emit("Testes em execução")
+			else:
+				Programa.status_atualizado.emit("Teste em execução")
 		Estagio.EM_EXECUCAO:
 			var teste_atual = lista_de_testes.pop_front()
 			print("###### ", teste_atual, " ######")
@@ -34,7 +40,18 @@ func _physics_process(_delta):
 			var tempo_total = tempo_final - self._tempo_inicial
 			print("Tempo total: ", tempo_total, "ms")
 			self.operacao_atual = Estagio.PARADO
-			Programa.status_atualizado.emit("Teste finalizado")
+			
+			var plural: String = ""
+			if self.tipo_de_execucao == TipoExecucao.MULTIPLOS_TESTES:
+				plural = "s"
+
+			var status: String = "sucesso"
+			if not self.todos_testes_sem_erros:
+				status = "falha"
+			
+			var mensagem = "Teste" + plural + " finalizado" + plural + " com " + status
+
+			Programa.status_atualizado.emit(mensagem)
 		Estagio.PARADO:
 			pass
 
@@ -92,6 +109,7 @@ func teste_finalizado(sucesso:bool = true) -> void:
 	if self.teste_sem_erros and sucesso:
 		print("Teste concluído com sucesso.")
 	else:
+		self.todos_testes_sem_erros = false
 		print("Teste concluído com falhas.")
 	
 	if self.lista_de_testes_vazia():
