@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://c8iw2ag460cdj"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_e3fov"]
+
+[resource]
+script = ExtResource("1_e3fov")
+nome = "Increment A"
+"mnemônico" = "INA"
+"descrição" = "Soma uma unidade ao valor do registrador A."
+tamanho_do_dado = 1
+microoperacoes = ["incrementar_registrador_a"]
+direto = "12"
+imediato = "22"
+indexado = "32"
+indireto = "92"
+pos_indexado = "B2"
+pre_indexado = "C2"
+implicito = ""

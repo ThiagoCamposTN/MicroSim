@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Operador" load_steps=2 format=3 uid="uid://d05o1fjg2h5su"]
+
+[ext_resource type="Script" path="res://Scripts/Operador.gd" id="1_1fq5f"]
+
+[resource]
+script = ExtResource("1_1fq5f")
+nome = "And in B"
+"mnemônico" = "ANB"
+"descrição" = "Faz a função E lógico entre o registrador B e o operando, e armazena o resultado em B"
+tamanho_do_dado = 1
+microoperacoes = ["transferir_mar_ao_endereco_de_memoria", "transferir_valor_da_memoria_ao_mbr", "transferir_b_para_alu_a", "transferir_mbr_para_alu_b", "realizar_e_logico_alu_a_alu_b", "transferir_alu_saida_para_b"]
+direto = "12"
+imediato = "22"
+indexado = "32"
+indireto = "92"
+pos_indexado = "B2"
+pre_indexado = "C2"
+implicito = ""
