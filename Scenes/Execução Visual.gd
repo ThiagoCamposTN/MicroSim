@@ -79,10 +79,16 @@ func atualizar_visualizacao():
 		return
 	
 	var microoperacao_atual = Simulador.consultar_microperacao_atual()
-	print("A próxima instrução do visual será: ", microoperacao_atual)
+	# print("A próxima instrução do visual será: ", microoperacao_atual)
 	
 	if not microoperacao_atual or typeof(microoperacao_atual) != TYPE_STRING:
 		return
+
+	if Simulador.instrucao_atual and not Simulador.instrucao_atual.parametro:
+		Simulador.instrucao_atual.parametro = Simulador.instrucao_atual.capturar_parametro_no_prox_endereço() if Simulador.instrucao_atual else ""
+	
+	var nome_instrucao = Simulador.instrucao_atual.instrucao_em_string() if Simulador.instrucao_atual else "???"
+	%InstrucaoAtualLabel.text = "Microoperação atual: " + str(microoperacao_atual) + " | Instrução: " + nome_instrucao
 	
 	remover_fluxos()
 	match microoperacao_atual:
@@ -334,6 +340,7 @@ func fase_foi_alterada(fase: Simulador.Ciclo):
 		Simulador.Ciclo.BUSCA: fase_atual += "BUSCA"
 		Simulador.Ciclo.DECODIFICACAO: fase_atual += "DECODIFICAÇÃO"
 		Simulador.Ciclo.EXECUCAO: fase_atual += "EXECUÇÃO"
+	
 	print(fase_atual)
 
 func adicionar_flags_interagindo(registrador: Button):
