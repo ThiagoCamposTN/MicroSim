@@ -1,6 +1,6 @@
-# MIPRO
+# GoytaSim
 
-O Mipro (nome provisório, vem de MIcro PROcessador) é um simulador de processador de uma arquitetura customizada simples.
+O GoytaSim é um simulador de processador de uma arquitetura customizada simples.
 
 ## Tela
 
