@@ -96,7 +96,7 @@ func capturar_parametro_na_memoria(endereço_inicial: Valor) -> String:
 	if (endereço_inicial.como_int() + self.tamanho_do_dado) >= Memoria.celulas.size():
 		return ""
 	else:
-		return Compilador.buscar_parametro_na_memoria(endereço_inicial, self.tamanho_do_dado)
+		return Montador.buscar_parametro_na_memoria(endereço_inicial, self.tamanho_do_dado)
 
 func capturar_parametro_no_prox_endereço() -> String:
 	var endereco_inicial: Valor = Valor.new(CPU.registrador_mar.como_int() + 1)
