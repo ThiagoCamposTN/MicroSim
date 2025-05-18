@@ -78,14 +78,14 @@ func atualizar_visualizacao():
 	if Simulador.fila_esta_vazia():
 		return
 	
-	var instrucao_atual = Simulador.consultar_microperacao_atual()
+	var microoperacao_atual = Simulador.consultar_microperacao_atual()
 	print("A próxima instrução do visual será: ", instrucao_atual)
 	
-	if not instrucao_atual or typeof(instrucao_atual) != TYPE_STRING:
+	if not microoperacao_atual or typeof(microoperacao_atual) != TYPE_STRING:
 		return
 	
 	remover_fluxos()
-	match instrucao_atual:
+	match microoperacao_atual:
 		"transferir_pc_para_mar":
 			adicionar_fila_registrador_interagindo(["PC", "MAR"])
 		"transferir_mbr_para_ir":
@@ -211,17 +211,17 @@ func atualizar_visualizacao():
 			adicionar_fila_registrador_interagindo(["IR"])
 	
 	# Demonstração do fluxo
-	if typeof(instrucao_atual) == typeof(Simulador.consultar_microperacao_atual()) and \
-		instrucao_atual == Simulador.consultar_microperacao_atual():
+	if typeof(microoperacao_atual) == typeof(Simulador.consultar_microperacao_atual()) and \
+		microoperacao_atual == Simulador.consultar_microperacao_atual():
 		acender_registradores_interagindo()
 		
-		var fluxo_instrucao = %Linhas.find_child("fluxo_" + instrucao_atual)
-		if fluxo_instrucao:
-			fluxo_ligado = fluxo_instrucao
-			caminhar_fluxo(fluxo_instrucao)
+		var fluxo_microoperacao = %Linhas.find_child("fluxo_" + microoperacao_atual)
+		if fluxo_microoperacao:
+			fluxo_ligado = fluxo_microoperacao
+			caminhar_fluxo(fluxo_microoperacao)
 	else:
-		# Se instrucao_atual não combina mais com a instrução atual,
-		# então significa que a instrução foi saltada e não deve criar um novo fluxo
+		# Se microoperacao_atual não combina mais com a microoperação atual,
+		# então significa que a microoperação foi saltada e não deve criar um novo fluxo
 		pass
 
 func acender_registradores_interagindo() -> void:
