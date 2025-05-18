@@ -91,3 +91,13 @@ static func instrucao_call_exit(instrucao : Instrucao) -> bool:
 	if not instrucao:
 		return false
 	return (instrucao.mnemonico == "CAL") and (instrucao.parametro == "EXIT")
+
+func capturar_parametro_na_memoria(endereço_inicial: Valor) -> String:
+	if (endereço_inicial.como_int() + self.tamanho_do_dado) >= Memoria.celulas.size():
+		return ""
+	else:
+		return Compilador.buscar_parametro_na_memoria(endereço_inicial, self.tamanho_do_dado)
+
+func capturar_parametro_no_prox_endereço() -> String:
+	var endereco_inicial: Valor = Valor.new(CPU.registrador_mar.como_int() + 1)
+	return self.capturar_parametro_na_memoria(endereco_inicial)

@@ -79,13 +79,15 @@ func atualizar_visualizacao():
 		return
 	
 	var microoperacao_atual = Simulador.consultar_microperacao_atual()
-	print("A próxima instrução do visual será: ", microoperacao_atual)
+	# print("A próxima instrução do visual será: ", microoperacao_atual)
 	
 	if not microoperacao_atual or typeof(microoperacao_atual) != TYPE_STRING:
 		return
 	
-	var nome_instrucao = Simulador.instrucao_atual.instrucao_em_string() + Simulador.instrucao_atual.parametro_como_hex() if Simulador.instrucao_atual else "???"
-	%InstrucaoAtualLabel.text = "Microoperação atual: " + str(instrucao_atual) + " | Ciclo: " + Simulador.obter_ciclo_atual() + " | Instrução: " + nome_instrucao
+	var parametro = Simulador.instrucao_atual.capturar_parametro_no_prox_endereço() if Simulador.instrucao_atual else ""
+	
+	var nome_instrucao = Simulador.instrucao_atual.instrucao_em_string() + parametro if Simulador.instrucao_atual else "???"
+	%InstrucaoAtualLabel.text = "Microoperação atual: " + str(microoperacao_atual) + " | Ciclo: " + Simulador.obter_ciclo_atual() + " | Instrução: " + nome_instrucao
 	
 	remover_fluxos()
 	match microoperacao_atual:
