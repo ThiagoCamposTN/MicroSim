@@ -201,7 +201,7 @@ func atualizar_visualizacao():
 			adicionar_fila_registrador_interagindo(["PP"])
 		"decrementar_registrador_ix":
 			adicionar_fila_registrador_interagindo(["IX"])
-		"decrementar_registrador_a":
+		"decrementar_registrador_a", "incrementar_registrador_a":
 			adicionar_fila_registrador_interagindo(["A"])
 		"calcular_flags":
 			for flag in flags_atualizadas:

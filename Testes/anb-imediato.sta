@@ -1,0 +1,19 @@
+versao="1.0"
+
+[inicio]
+registrador.pc="0"
+registrador.b="EC"
+instrucoes=[
+	"ANB #3C",
+	"CAL EXIT"
+]
+
+[fim]
+registrador.b="2C"
+memoria = {
+    "000": "62",
+    "001": "3C",
+    "002": "58",
+    "003": "12",
+    "004": "00",
+}

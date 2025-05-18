@@ -1,18 +1,16 @@
 versao="1.0"
 
 [inicio]
-registrador.a="10"
-registrador.b="9"
+registrador.a="33"
 instrucoes=[
-	"ABA",
+	"INA",
 	"CAL EXIT"
 ]
 
 [fim]
-registrador.a="19"
-registrador.b="9"
+registrador.a="34"
 memoria = {
-    "000": "48",
+    "000": "06",
     "001": "58",
     "002": "12",
     "003": "00",
