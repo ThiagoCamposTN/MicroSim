@@ -418,7 +418,7 @@ offset_left = 83.0
 offset_top = 4.0
 offset_right = 1071.0
 offset_bottom = 32.0
-text = "Microoperação atual: ??? | Ciclo: ??? | Instrução: ???"
+text = "Microoperação atual: ??? | Instrução: ???"
 vertical_alignment = 1
 autowrap_mode = 3
 

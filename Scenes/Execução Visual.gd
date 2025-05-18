@@ -87,7 +87,7 @@ func atualizar_visualizacao():
 	var parametro = Simulador.instrucao_atual.capturar_parametro_no_prox_endereço() if Simulador.instrucao_atual else ""
 	
 	var nome_instrucao = Simulador.instrucao_atual.instrucao_em_string() + parametro if Simulador.instrucao_atual else "???"
-	%InstrucaoAtualLabel.text = "Microoperação atual: " + str(microoperacao_atual) + " | Ciclo: " + Simulador.obter_ciclo_atual() + " | Instrução: " + nome_instrucao
+	%InstrucaoAtualLabel.text = "Microoperação atual: " + str(microoperacao_atual) + " | Instrução: " + nome_instrucao
 	
 	remover_fluxos()
 	match microoperacao_atual:
