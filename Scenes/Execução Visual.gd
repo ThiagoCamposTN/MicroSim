@@ -79,7 +79,7 @@ func atualizar_visualizacao():
 		return
 	
 	var microoperacao_atual = Simulador.consultar_microperacao_atual()
-	print("A próxima instrução do visual será: ", instrucao_atual)
+	print("A próxima instrução do visual será: ", microoperacao_atual)
 	
 	if not microoperacao_atual or typeof(microoperacao_atual) != TYPE_STRING:
 		return
