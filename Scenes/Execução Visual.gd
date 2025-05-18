@@ -84,6 +84,9 @@ func atualizar_visualizacao():
 	if not microoperacao_atual or typeof(microoperacao_atual) != TYPE_STRING:
 		return
 	
+	var nome_instrucao = Simulador.instrucao_atual.instrucao_em_string() + Simulador.instrucao_atual.parametro_como_hex() if Simulador.instrucao_atual else "???"
+	%InstrucaoAtualLabel.text = "Microoperação atual: " + str(instrucao_atual) + " | Ciclo: " + Simulador.obter_ciclo_atual() + " | Instrução: " + nome_instrucao
+	
 	remover_fluxos()
 	match microoperacao_atual:
 		"transferir_pc_para_mar":

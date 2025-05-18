@@ -16,6 +16,7 @@ var modo_atual 				: ModoExecucao	= ModoExecucao.TUDO
 var instrucao_atual			: Instrucao
 var atualizacao_visual_ativa: bool 			= true
 var fila_de_microoperacoes	: Array 		= []
+var ciclo_atual				: Ciclo
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,6 +25,7 @@ func _ready():
 	add_child(execucao_timer)
 
 	self.prepara_o_estado_inicial.call_deferred()
+	self.mudanca_de_ciclo.connect(self.atualizar_ciclo_atual)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -366,6 +368,14 @@ func consultar_microperacao_atual() -> Variant:
 		return ""
 	return self.fila_de_microoperacoes[0]
 
+func obter_nome_fase() -> String:
+	match self.fase_atual:
+		Simulador.Ciclo.BUSCA: return "BUSCA"
+		Simulador.Ciclo.DECODIFICACAO: return "DECODIFICACAO"
+		Simulador.Ciclo.EXECUCAO: return "EXECUCAO"
+		_:
+			return "SUSPENSAO"
+
 func fila_esta_vazia() -> bool:
 	return len(self.fila_de_microoperacoes) <= 0
 
@@ -378,6 +388,16 @@ func adicionar_a_fila(microoperacao: Variant) -> void:
 func obter_proxima_microoperacao() -> Variant:
 	return self.fila_de_microoperacoes.pop_front()
 
+func atualizar_ciclo_atual(ciclo: Ciclo) -> void:
+	self.ciclo_atual = ciclo
+
+func obter_ciclo_atual() -> String:
+	match self.ciclo_atual:
+		Ciclo.BUSCA: return "BUSCA"
+		Ciclo.DECODIFICACAO: return "DECODIFICACAO"
+		Ciclo.EXECUCAO: return "EXECUCAO"
+		_:
+			return ""
 
 class Fase:
 	var em_inicialização: bool = true
