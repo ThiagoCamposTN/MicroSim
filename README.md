@@ -1,6 +1,6 @@
-# GoytaSim
+# MicroSim
 
-O GoytaSim é um simulador de processador de uma arquitetura customizada simples.
+O MicroSim é um simulador de processador de uma arquitetura customizada simples.
 
 ## Tela
 
