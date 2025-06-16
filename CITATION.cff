@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Se usar este software, por favor faça uma citação como a abaixo"
+authors:
+- family-names: "Campos Teixeira e Nascimento"
+  given-names: "Lucas"
+- family-names: "Campos Teixeira e Nascimento"
+  given-names: "Thiago"
+title: "MicroSim"
+version: 1.0.0
+date-released: 2025-05-22
+url: "https://github.com/ThiagoCamposTN/MicroSim"
