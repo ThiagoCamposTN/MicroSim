@@ -19,6 +19,8 @@ func carregar_recursos() -> void:
 		var nome_arquivo = diretorio.get_next()
 		while nome_arquivo != "":
 			if not diretorio.current_is_dir():
+				if nome_arquivo.matchn("*.remap"):
+					nome_arquivo = nome_arquivo.replace(".remap", "")
 				var caminho_arquivo = caminho + nome_arquivo
 				var operador: Operador = load(caminho_arquivo)
 				operacoes[operador.mnemônico] = operador
