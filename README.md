@@ -2,6 +2,8 @@
 
 O MicroSim é um simulador de processador de uma arquitetura customizada simples.
 
+Esse projeto é o resultado do Trabalho de Conclusão de Curso "MicroSim: desenvolvimento de uma arquitetura CISC com simulador pedagógico integrado em linguagem de baixo nível" (disponível em: https://bd.centro.iff.edu.br/jspui/handle/123456789/4995) que apresenta de forma detalhada a aplicação e o código. 
+
 ## Tela
 
 A tela é uma ferramenta de visualização dos dados da memória. Ela tem dimensões 64x32 e a fim de reduzir espaço ocupado de memória, ela é monocromática e utiliza 1 bit para representar cada pixel, resultando num total de 2048 bits que equivalem à 256 bytes. Por causa disso, o espaço total livre da memória passa de 4096 bytes para 3840 bytes no caso em que ela for utilizada.
